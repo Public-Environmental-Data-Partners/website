@@ -1,6 +1,6 @@
-# Template
+# PEDP Website
 
-This repo is a template for PEDP repositories containing original PEDP projects (as opposed to forked/cloned/archived projects). Replace this paragraph with a description of the repo.
+MORE INFO COMING!
 
 # How to start contributing to this repo
 * Instructions go here
