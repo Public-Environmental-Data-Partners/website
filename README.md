@@ -1,28 +1,59 @@
 # PEDP Website
 
-MORE INFO COMING!
+Monorepo for the PEDP public website: a [Next.js](https://nextjs.org/) app (`apps/web`) and [Sanity Studio](https://www.sanity.io/) (`apps/studio`) for content.
 
-# How to start contributing to this repo
-* Instructions go here
-* Developer setup (if relevant)
-* Communication channels (if relevant)
+## Repository layout
 
-**Suggestions for additional components of Readmes:**
-* A "How to use" section if the repo's project is a tool or website
-* A link to the [good-first-issue](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Agood-first-issue+user%3APublic-Environmental-Data-Partners) label (this link across PEDP, or a specific link for the repo)
-* Highlight "ready" label on issues to mean "this is an issue that is ready to work on and needs an owner"
-* Additional badges at the top, such as code quality indicators
+| Path | Description |
+|------|-------------|
+| [`apps/web`](apps/web/README.md) | Next.js site (App Router) |
+| [`apps/studio`](apps/studio/README.md) | Sanity Content Studio and schema |
 
+## Prerequisites
 
-**When using this template, please look through all of the files to ensure they apply to the new repo.**
+- **Node.js** **24.x** ([Active LTS](https://nodejs.org/en/about/previous-releases)). The repo pins this line via [`.nvmrc`](.nvmrc); use [nvm](https://github.com/nvm-sh/nvm), [fnm](https://github.com/Schniz/fnm), or [asdf](https://asdf-vm.com/) so your shell matches the project.
+- **pnpm** >= 10 ([install](https://pnpm.io/installation))
 
----
+## Quick start
+
+1. Clone this repository and open a terminal at the repo root (`website/`).
+
+2. Install dependencies:
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Environment variables**
+
+   - **Studio:** copy [`apps/studio/.env.example`](apps/studio/.env.example) to `apps/studio/.env` and set `SANITY_STUDIO_PROJECT_ID` and `SANITY_STUDIO_DATASET`.
+   - **Web (when using Sanity from the app):** copy [`apps/web/.env.example`](apps/web/.env.example) to `apps/web/.env.local` and fill in values. See the [web app README](apps/web/README.md) for details.
+
+4. Start dev servers (Next.js + Studio in parallel):
+
+   ```bash
+   pnpm dev
+   ```
+
+   - Site: [http://localhost:3000](http://localhost:3000)
+   - Studio: [http://localhost:3333](http://localhost:3333)
+
+5. Production builds (both apps):
+
+   ```bash
+   pnpm build
+   ```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for PEDP-wide policies and repo-specific notes (issues, PRs, and tooling).
 
 ## License & Copyright
 
-Copyright (C) <year> Public Environmental Data Partners (PEDP)
+Copyright (C) 2026 Public Environmental Data Partners (PEDP)
+
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, version 3.0.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-See the [`LICENSE`](/LICENSE) file for details.
+See the [`LICENSE`](LICENSE) file for details.
