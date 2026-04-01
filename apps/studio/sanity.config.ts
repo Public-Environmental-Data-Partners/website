@@ -7,8 +7,8 @@ export default defineConfig({
   name: 'default',
   title: 'MonoRepo.Next.Vercel',
 
-  projectId: '69l29ybc',
-  dataset: 'production',
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID!,
+  dataset: process.env.SANITY_STUDIO_DATASET!,
 
   plugins: [structureTool(), visionTool()],
 
