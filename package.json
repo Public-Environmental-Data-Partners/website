@@ -1,0 +1,14 @@
+{
+    "name": "PEDP website",
+    "private": true,
+    "version": "1.0.0",
+    "description": "PEDP website",
+    "scripts": {
+      "dev": "pnpm run --parallel dev",
+      "build": "pnpm run --parallel build"
+    },
+    "engines": {
+      "node": ">=20.0.0",
+      "pnpm": ">=10.0.0"
+    }
+  }
