@@ -28,6 +28,7 @@ Monorepo for the PEDP public website: a [Next.js](https://nextjs.org/) app (`app
 
    - **Studio:** copy [`apps/studio/.env.example`](apps/studio/.env.example) to `apps/studio/.env` and set `SANITY_STUDIO_PROJECT_ID` and `SANITY_STUDIO_DATASET`.
    - **Web (when using Sanity from the app):** copy [`apps/web/.env.example`](apps/web/.env.example) to `apps/web/.env.local` and fill in values. See the [web app README](apps/web/README.md) for details.
+   - For access to shared or production values for these variables (tokens, secrets, deployment env), send your request to [dev@publicenvirodata.org](mailto:dev@publicenvirodata.org).
 
 4. Start dev servers (Next.js + Studio in parallel):
 
