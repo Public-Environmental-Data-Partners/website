@@ -4,7 +4,7 @@ Content Studio and schema for the PEDP website. Part of the monorepo — see the
 
 ## Requirements
 
-Same as the monorepo: Node **24.x** (LTS), **pnpm** **>= 10**.
+Same as the monorepo: use **Node** from the root [`.nvmrc`](../../.nvmrc) and **pnpm** from the root [`package.json`](../../package.json) (`packageManager` and `engines`). See the [root README](../../README.md#prerequisites).
 
 ## Environment
 

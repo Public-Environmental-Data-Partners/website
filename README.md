@@ -11,8 +11,8 @@ Monorepo for the PEDP public website: a [Next.js](https://nextjs.org/) app (`app
 
 ## Prerequisites
 
-- **Node.js** **24.x** ([Active LTS](https://nodejs.org/en/about/previous-releases)). The repo pins this line via [`.nvmrc`](.nvmrc); use [nvm](https://github.com/nvm-sh/nvm), [fnm](https://github.com/Schniz/fnm), or [asdf](https://asdf-vm.com/) so your shell matches the project.
-- **pnpm** >= 10 ([install](https://pnpm.io/installation))
+- **Node.js** — Use the version listed in [`.nvmrc`](.nvmrc) at the repo root (pinned Node for this project). Install or switch with [nvm](https://github.com/nvm-sh/nvm) (`nvm install` / `nvm use`), [fnm](https://github.com/Schniz/fnm), or [asdf](https://asdf-vm.com/). Supported range is also declared as `engines.node` in [`package.json`](package.json). See [Node.js releases](https://nodejs.org/en/about/previous-releases) for LTS context.
+- **pnpm** — Use the version declared in [`package.json`](package.json) under **`packageManager`** (Corepack reads this). Run `corepack enable`, then `pnpm install` from the repo root so your pnpm matches the project. Supported range is under `engines.pnpm` in the same file. [Install pnpm](https://pnpm.io/installation) if Corepack is not available.
 
 ## Quick start
 
