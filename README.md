@@ -45,6 +45,19 @@ Monorepo for the PEDP public website: a [Next.js](https://nextjs.org/) app (`app
    pnpm build
    ```
 
+## Linting and formatting
+
+From the **repo root**, run ESLint and Prettier across **`apps/*`**:
+
+| Command | Description |
+|---------|-------------|
+| `pnpm lint:all` | ESLint in web + studio |
+| `pnpm lint:fix:all` | ESLint with `--fix` in both |
+| `pnpm format:all` | Prettier write in both |
+| `pnpm format:check:all` | Prettier check (CI-friendly) |
+
+Per-app commands are in [apps/web README](apps/web/README.md#scripts) and [apps/studio README](apps/studio/README.md#scripts).
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for PEDP-wide policies and repo-specific notes (issues, PRs, and tooling).

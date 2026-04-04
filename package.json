@@ -5,7 +5,11 @@
     "description": "PEDP website",
     "scripts": {
         "dev": "pnpm run --parallel dev",
-        "build": "pnpm run --parallel build"
+        "build": "pnpm run --parallel build",
+        "lint:all": "pnpm --filter \"./apps/*\" run lint",
+        "lint:fix:all": "pnpm --filter \"./apps/*\" run lint:fix",
+        "format:all": "pnpm --filter \"./apps/*\" run format",
+        "format:check:all": "pnpm --filter \"./apps/*\" run format:check"
     },
     "engines": {
         "node": ">=24.14.1 <25",
