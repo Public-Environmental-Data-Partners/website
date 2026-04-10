@@ -12,7 +12,15 @@ Copy [`apps/studio/.env.example`](.env.example) to **`.env`** in this directory.
 
 ## Schema
 
-Schema types live under [`schemaTypes/`](schemaTypes/). Register them in [`schemaTypes/index.ts`](schemaTypes/index.ts).
+Types live under [`schemaTypes/`](schemaTypes/) and are registered in [`schemaTypes/index.ts`](schemaTypes/index.ts).
+
+After schema changes, run **`pnpm run deploy`** from this directory to update the [hosted Studio](https://pedp-website.sanity.studio/)
+
+## For editors
+
+Use **[hosted Studio](https://pedp-website.sanity.studio/)** or run **`pnpm dev`** here for [http://localhost:3333](http://localhost:3333). That is where you create and publish content.
+
+**Preview on the public website before publish:** the Next app supports draft preview (see [Draft mode in `apps/web` README](../web/README.md#draft-mode-sanity-preview)). The URL pattern is documented there; the **preview secret** is not in git — get it from the development team or your team’s secrets store.
 
 ## Scripts
 
@@ -30,8 +38,6 @@ From **`apps/studio`**:
 | `pnpm format:check` | Prettier check (CI-friendly)                                                                      |
 
 From the **repo root**, `pnpm dev` runs `web` and `studio` in parallel.
-
-To run your local Studio use `pnpm dev`. To deploy your local Studio the hosted Studio, use `pnpm run deploy`
 
 ## Learn more
 

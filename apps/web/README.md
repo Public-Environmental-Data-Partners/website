@@ -8,7 +8,27 @@ Same as the monorepo: use **Node** from the root [`.nvmrc`](../../.nvmrc) and **
 
 ## Environment
 
-Copy [`apps/web/.env.example`](.env.example) to **`.env.local`** in this directory and fill in values when you connect to Sanity (see [`.env.example`](.env.example) for variable names). Do not commit `.env.local`.
+Copy [`apps/web/.env.example`](.env.example) to `.env.local` in this directory and fill in values. For shared or production values (tokens, secrets, deployment env), contact [dev@publicenvirodata.org](mailto:dev@publicenvirodata.org).
+
+## Draft mode (Sanity preview)
+
+**What it is:** The site uses [Next.js Draft Mode](https://nextjs.org/docs/app/building-your-application/configuring/draft-mode). When draft mode is **on** for your browser session, the app requests Sanity with the `drafts` perspective so you can see **unpublished** changes. When it is **off**, only **published** content is shown. Draft mode is toggled with a cookie; it is not the same as logging into Studio.
+
+**Enable it locally by** opening the following URL (use the real value of `SANITY_PREVIEW_SECRET` from your env):
+
+```text
+http://localhost:3000/api/draft?secret=<SANITY_PREVIEW_SECRET>
+```
+
+Optional: `&slug=/` or another path — where to redirect after enabling (defaults to `/`).
+
+**Enable it on production by** opening the following URL
+
+```text
+https://some-vercel-url-tbd/api/draft?secret=<SANITY_PREVIEW_SECRET>
+```
+
+**Disable:** visit `/api/disable-draft`, or use **Exit preview** in the amber bar on the home page when draft mode is active.
 
 ## Scripts
 

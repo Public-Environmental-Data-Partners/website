@@ -39,13 +39,17 @@ Monorepo for the PEDP public website: a [Next.js](https://nextjs.org/) app (`app
    - Site: [http://localhost:3000](http://localhost:3000)
    - Studio: [http://localhost:3333](http://localhost:3333)
 
-   Editors can also use the hosted Studio at [https://pedp-website.sanity.studio/](https://pedp-website.sanity.studio/). See the [apps/studio README](apps/studio/README.md) more information.
+   Editors can also use the hosted Studio at [https://pedp-website.sanity.studio/](https://pedp-website.sanity.studio/). See the [apps/studio README](apps/studio/README.md) for more information.
 
 5. Production builds (both apps):
 
    ```bash
    pnpm build
    ```
+
+## Sanity and draft preview
+
+The Next app can show **unpublished** Sanity content in the browser using [Next.js Draft Mode](https://nextjs.org/docs/app/building-your-application/configuring/draft-mode) and a secret-gated route. For developers: notes are in the web app README — [Draft mode (Sanity preview)](apps/web/README.md#draft-mode-sanity-preview).
 
 ## Linting and formatting
 
