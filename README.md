@@ -9,6 +9,16 @@ Monorepo for the PEDP public website: a [Next.js](https://nextjs.org/) app (`app
 | [`apps/web`](apps/web/README.md) | Next.js site (App Router) |
 | [`apps/studio`](apps/studio/README.md) | Sanity Content Studio and schema |
 
+## Content Managers
+
+Non-technical overview (Studio, live site, draft preview): [`docs/content-managers.md`](docs/content-managers.md).
+
+## Local development (developers)
+
+- **Install:** from the repo root (`website/`), run `pnpm install`.
+- **Run:** `pnpm dev` — Next.js at [http://localhost:3000](http://localhost:3000), Studio at [http://localhost:3333](http://localhost:3333). Configure env files first; see [Quick start](#quick-start) below.
+- **Draft preview** on your machine: [Draft mode (Sanity preview)](apps/web/README.md#draft-mode-sanity-preview) in the web app README.
+
 ## Prerequisites
 
 - **Node.js** — Use the version listed in [`.nvmrc`](.nvmrc) at the repo root (pinned Node for this project). Install or switch with [nvm](https://github.com/nvm-sh/nvm) (`nvm install` / `nvm use`), [fnm](https://github.com/Schniz/fnm), or [asdf](https://asdf-vm.com/). Supported range is also declared as `engines.node` in [`package.json`](package.json). See [Node.js releases](https://nodejs.org/en/about/previous-releases) for LTS context.

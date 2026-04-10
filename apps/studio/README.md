@@ -18,9 +18,7 @@ After schema changes, run **`pnpm run deploy`** from this directory to update th
 
 ## For editors
 
-Use **[hosted Studio](https://pedp-website.sanity.studio/)** or run **`pnpm dev`** here for [http://localhost:3333](http://localhost:3333). That is where you create and publish content.
-
-**Preview on the public website before publish:** the Next app supports draft preview (see [Draft mode in `apps/web` README](../web/README.md#draft-mode-sanity-preview)). The URL pattern is documented there; the **preview secret** is not in git — get it from the development team or your team’s secrets store.
+Start here: **[`docs/content-managers.md`](../../docs/content-managers.md)** — hosted Studio, the live site, and how draft preview works in plain language.
 
 ## Scripts
 
