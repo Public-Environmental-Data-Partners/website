@@ -18,18 +18,20 @@ Schema types live under [`schemaTypes/`](schemaTypes/). Register them in [`schem
 
 From **`apps/studio`**:
 
-| Command             | Description                                                        |
-| ------------------- | ------------------------------------------------------------------ |
-| `pnpm dev`          | Studio dev server ([http://localhost:3333](http://localhost:3333)) |
-| `pnpm build`        | Production Studio build                                            |
-| `pnpm start`        | Serve built Studio                                                 |
-| `pnpm deploy`       | Deploy hosted Studio (`sanity deploy`)                             |
-| `pnpm lint`         | ESLint                                                             |
-| `pnpm lint:fix`     | ESLint with `--fix`                                                |
-| `pnpm format`       | Prettier write                                                     |
-| `pnpm format:check` | Prettier check (CI-friendly)                                       |
+| Command             | Description                                                                                       |
+| ------------------- | ------------------------------------------------------------------------------------------------- |
+| `pnpm dev`          | local Studio dev server ([http://localhost:3333](http://localhost:3333))                          |
+| `pnpm build`        | production Studio build                                                                           |
+| `pnpm start`        | serve built Studio                                                                                |
+| `pnpm run deploy`   | Deploy hosted Studio ([https://pedp-website.sanity.studio/](https://pedp-website.sanity.studio/)) |
+| `pnpm lint`         | ESLint                                                                                            |
+| `pnpm lint:fix`     | ESLint with `--fix`                                                                               |
+| `pnpm format`       | Prettier write                                                                                    |
+| `pnpm format:check` | Prettier check (CI-friendly)                                                                      |
 
 From the **repo root**, `pnpm dev` runs `web` and `studio` in parallel.
+
+To run your local Studio use `pnpm dev`. To deploy your local Studio the hosted Studio, use `pnpm run deploy`
 
 ## Learn more
 

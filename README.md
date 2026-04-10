@@ -39,6 +39,8 @@ Monorepo for the PEDP public website: a [Next.js](https://nextjs.org/) app (`app
    - Site: [http://localhost:3000](http://localhost:3000)
    - Studio: [http://localhost:3333](http://localhost:3333)
 
+   Editors can also use the hosted Studio at [https://pedp-website.sanity.studio/](https://pedp-website.sanity.studio/). See the [apps/studio README](apps/studio/README.md) more information.
+
 5. Production builds (both apps):
 
    ```bash
