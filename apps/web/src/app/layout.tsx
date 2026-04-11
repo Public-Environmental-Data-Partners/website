@@ -1,16 +1,24 @@
 import './globals.css'
 
 import type {Metadata} from 'next'
-import {Geist, Geist_Mono} from 'next/font/google'
+import {Geist_Mono, Inter, Playfair_Display} from 'next/font/google'
 
 import {SanityLive} from '@/sanity/live'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const fontSans = Inter({
   subsets: ['latin'],
+  variable: '--font-inter',
+  weight: ['400', '500', '600', '700'],
 })
 
-const geistMono = Geist_Mono({
+const fontSerif = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  style: ['normal', 'italic'],
+  weight: ['400', '500', '600', '700'],
+})
+
+const fontMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 })
@@ -26,7 +34,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} h-full antialiased`}
+    >
       <body className="min-h-full flex flex-col">
         {children}
         <SanityLive />
