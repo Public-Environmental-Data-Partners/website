@@ -1,0 +1,158 @@
+/*
+ * Loaded after globals.css in layout.tsx so these win over shadcn’s :root / generated CSS.
+ *
+ * How a token reaches the UI (example: --background and bg-background):
+ * 1. layout.tsx imports globals.css first, then this file — later rules override earlier ones.
+ * 2. globals.css imports Tailwind, tw-animate-css, and shadcn/tailwind.css, which set
+ *    default semantic variables (e.g. --background) on :root.
+ * 3. globals.css @theme inline maps Tailwind theme keys to those variables, e.g.
+ *    --color-background: var(--background), so utilities like bg-background resolve to
+ *    var(--background) — no hex in globals.css.
+ * 4. This file assigns the real hex values for --background, --foreground, etc. on
+ *    :root and again under @media (prefers-color-scheme: dark) and .dark for dark mode.
+ * 5. Components using bg-background or @apply bg-background read the current var(--*).
+ */
+
+:root {
+  --background: #faf8f5;
+  --foreground: #2c2c2c;
+  --muted: #f0ebe4;
+  --muted-foreground: #6b6560;
+  --border: #e0dbd4;
+  --surface: #ffffff;
+  --primary: #c8e067;
+  --primary-foreground: #1a1a1a;
+  --accent: #4a7c59;
+  --accent-foreground: #faf8f5;
+  --forest: #1e3d2f;
+  --forest-foreground: #f5f2eb;
+  --sky: #e3f1fa;
+  --sky-foreground: #1e3a4a;
+  --navy: #1a2f4a;
+  --mint: #e8f2ea;
+  --card: #ffffff;
+  --card-foreground: #2c2c2c;
+  --popover: #ffffff;
+  --popover-foreground: #2c2c2c;
+  --secondary: #f0ebe4;
+  --secondary-foreground: #2c2c2c;
+  --destructive: #b91c1c;
+  --destructive-foreground: #faf8f5;
+  --input: #e0dbd4;
+  --ring: #4a7c59;
+  --chart-1: #c8e067;
+  --chart-2: #4a7c59;
+  --chart-3: #1e3d2f;
+  --chart-4: #1a2f4a;
+  --chart-5: #6b6560;
+  --radius: 0.625rem;
+  --sidebar: #f0ebe4;
+  --sidebar-foreground: #2c2c2c;
+  --sidebar-primary: #4a7c59;
+  --sidebar-primary-foreground: #faf8f5;
+  --sidebar-accent: #e8f2ea;
+  --sidebar-accent-foreground: #2c2c2c;
+  --sidebar-border: #e0dbd4;
+  --sidebar-ring: #4a7c59;
+}
+
+/*
+ * Duplication between the prefers-color-scheme: dark block and .dark is intentional: two
+ * ways to get "dark tokens" (system media vs class). Values are aligned; future edits should
+ * change both.
+ *
+ * Why both: the @media block applies dark variables when the OS prefers dark but there is no
+ * JS (or before the theme script runs), so the page still matches the system without a dark
+ * class on html. The .dark block applies the same values when html has class dark, which the layout
+ * script sets to pair with Tailwind dark: utilities and class-based theming; media alone
+ * does not add that class, and class alone does not cover no-JS / first-paint cases.
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #121110;
+    --foreground: #f2f0ec;
+    --muted: #2b2825;
+    --muted-foreground: #a8a29a;
+    --border: #45413b;
+    --surface: #1f1e1b;
+    --primary: #d4e87a;
+    --primary-foreground: #141413;
+    --accent: #6b9c78;
+    --accent-foreground: #0f0f0e;
+    --forest: #162922;
+    --forest-foreground: #e8e6e1;
+    --sky: #1a2830;
+    --sky-foreground: #dbeafe;
+    --navy: #0f1728;
+    --mint: #1a231f;
+    --card: #22201d;
+    --card-foreground: #f2f0ec;
+    --popover: #22201d;
+    --popover-foreground: #f2f0ec;
+    --secondary: #3c3834;
+    --secondary-foreground: #f2f0ec;
+    --destructive: #ef4444;
+    --destructive-foreground: #faf8f5;
+    --input: #554f48;
+    --ring: #6b9c78;
+    --chart-1: #d4e87a;
+    --chart-2: #6b9c78;
+    --chart-3: #162922;
+    --chart-4: #dbeafe;
+    --chart-5: #a8a29a;
+    --sidebar: #2b2825;
+    --sidebar-foreground: #f2f0ec;
+    --sidebar-primary: #d4e87a;
+    --sidebar-primary-foreground: #141413;
+    --sidebar-accent: #3c3834;
+    --sidebar-accent-foreground: #f2f0ec;
+    --sidebar-border: #45413b;
+    --sidebar-ring: #6b9c78;
+  }
+}
+
+.dark {
+  --background: #121110;
+  --foreground: #f2f0ec;
+  --muted: #2b2825;
+  --muted-foreground: #a8a29a;
+  --border: #45413b;
+  --surface: #1f1e1b;
+  --primary: #d4e87a;
+  --primary-foreground: #141413;
+  --accent: #6b9c78;
+  --accent-foreground: #0f0f0e;
+  --forest: #162922;
+  --forest-foreground: #e8e6e1;
+  --sky: #1a2830;
+  --sky-foreground: #dbeafe;
+  --navy: #0f1728;
+  --mint: #1a231f;
+  --card: #22201d;
+  --card-foreground: #f2f0ec;
+  --popover: #22201d;
+  --popover-foreground: #f2f0ec;
+  --secondary: #3c3834;
+  --secondary-foreground: #f2f0ec;
+  --destructive: #ef4444;
+  --destructive-foreground: #faf8f5;
+  --input: #554f48;
+  --ring: #6b9c78;
+  --chart-1: #d4e87a;
+  --chart-2: #6b9c78;
+  --chart-3: #162922;
+  --chart-4: #dbeafe;
+  --chart-5: #a8a29a;
+  --sidebar: #2b2825;
+  --sidebar-foreground: #f2f0ec;
+  --sidebar-primary: #d4e87a;
+  --sidebar-primary-foreground: #141413;
+  --sidebar-accent: #3c3834;
+  --sidebar-accent-foreground: #f2f0ec;
+  --sidebar-border: #45413b;
+  --sidebar-ring: #6b9c78;
+}
+
+html {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}

@@ -70,12 +70,7 @@ export function SiteHeader() {
         >
           {mainNav.map((entry) =>
             entry.kind === 'group' ? (
-              <NavGroup
-                key={entry.id}
-                id={entry.id}
-                label={entry.label}
-                items={entry.items}
-              />
+              <NavGroup key={entry.id} id={entry.id} label={entry.label} items={entry.items} />
             ) : (
               <NavLinkItem key={entry.href} label={entry.label} href={entry.href} />
             ),
