@@ -29,6 +29,7 @@
     "@sanity/eslint-config-studio": "^6.0.0",
     "@types/react": "^19.2.14",
     "eslint": "^9.28",
+    "eslint-plugin-simple-import-sort": "^13.0.0",
     "prettier": "^3.5",
     "typescript": "^5.8"
   },

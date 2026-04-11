@@ -1,7 +1,8 @@
-import {defineConfig} from 'sanity'
-import {structureTool} from 'sanity/structure'
-import type {StructureResolver} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
+import {defineConfig} from 'sanity'
+import type {StructureResolver} from 'sanity/structure'
+import {structureTool} from 'sanity/structure'
+
 import {schemaTypes} from './schemaTypes'
 
 /** Single home document for GROQ `*[_type == "page" && _id == "page.home"]`. */
