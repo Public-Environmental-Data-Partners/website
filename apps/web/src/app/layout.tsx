@@ -3,6 +3,9 @@ import './globals.css'
 import type {Metadata} from 'next'
 import {Geist_Mono, Inter, Playfair_Display} from 'next/font/google'
 
+import {SiteFooter} from '@/components/site-footer'
+import {SiteHeader} from '@/components/site-header'
+import {siteDescription, siteName, siteUrl} from '@/config/site'
 import {SanityLive} from '@/sanity/live'
 
 const fontSans = Inter({
@@ -22,13 +25,6 @@ const fontMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 })
-
-const siteName = 'Public Environmental Data Partners'
-const siteDescription =
-  'PEDP is a coalition working to preserve environmental data and tools, strengthen standards, and support communities through advocacy and open infrastructure.'
-
-/** TODO: Update with the actual domain when the site is live */
-const siteUrl = 'https://pedp-website.vercel.app'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -67,8 +63,10 @@ export default function RootLayout({
       lang="en"
       className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        {children}
+      <body className="flex min-h-full flex-col bg-background text-foreground">
+        <SiteHeader />
+        <main className="flex flex-1 flex-col">{children}</main>
+        <SiteFooter />
         <SanityLive />
       </body>
     </html>

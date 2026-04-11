@@ -33,30 +33,30 @@ export default async function Home() {
 
   if (!data) {
     return (
-      <div className="flex flex-col flex-1 bg-zinc-50 font-sans dark:bg-black">
+      <div className="flex flex-1 flex-col font-sans">
         {isDraftMode ? <DraftPreviewBanner /> : null}
-        <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-6 py-20 md:px-12">
-          <p className="text-zinc-600 dark:text-zinc-400">No home page content.</p>
-        </main>
+        <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-6 py-20 md:px-12">
+          <p className="text-muted-foreground">No home page content.</p>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="flex flex-col flex-1 bg-zinc-50 font-sans dark:bg-black">
+    <div className="flex flex-1 flex-col font-sans">
       {isDraftMode ? <DraftPreviewBanner /> : null}
-      <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-6 py-20 md:px-12">
-        <p className="text-sm font-semibold uppercase tracking-wide text-zinc-600 dark:text-zinc-400">
+      <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-6 py-20 md:px-12">
+        <p className="text-muted-foreground text-sm font-semibold uppercase tracking-wide">
           {data.heroKicker}
         </p>
-        <h1 className="text-4xl font-semibold leading-tight tracking-tight text-zinc-950 md:text-5xl dark:text-zinc-50">
+        <h1 className="text-foreground text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
           {data.heroHeading}
         </h1>
-        <div className="max-w-none space-y-4 text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
+        <div className="text-foreground/90 max-w-none space-y-4 text-lg leading-relaxed">
           <PortableText value={data.heroParagraph1 as never} />
           {data.heroParagraph2 ? <PortableText value={data.heroParagraph2 as never} /> : null}
         </div>
-      </main>
+      </div>
     </div>
   )
 }
