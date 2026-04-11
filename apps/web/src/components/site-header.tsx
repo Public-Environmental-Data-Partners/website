@@ -1,45 +1,8 @@
 import Link from 'next/link'
 
+import {NavPrimaryGroup} from '@/components/nav-primary-group'
 import {donateNav, mainNav} from '@/config/nav'
 import {siteName} from '@/config/site'
-
-function NavGroup({
-  id,
-  label,
-  items,
-}: {
-  id: string
-  label: string
-  items: {label: string; href: string}[]
-}) {
-  return (
-    <details className="group relative">
-      <summary className="text-muted-foreground hover:text-foreground cursor-pointer list-none font-sans text-sm font-medium [&::-webkit-details-marker]:hidden">
-        <span className="inline-flex items-center gap-1">
-          {label}
-          <span aria-hidden className="text-xs">
-            ▾
-          </span>
-        </span>
-      </summary>
-      <ul
-        className="border-border bg-background absolute left-0 z-20 mt-1 min-w-[12rem] rounded-md border py-1 shadow-md"
-        role="list"
-      >
-        {items.map((item) => (
-          <li key={`${id}-${item.href}`}>
-            <Link
-              href={item.href}
-              className="text-foreground hover:bg-muted/80 block px-3 py-2 text-sm font-medium"
-            >
-              {item.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </details>
-  )
-}
 
 function NavLinkItem({label, href}: {label: string; href: string}) {
   return (
@@ -52,7 +15,7 @@ function NavLinkItem({label, href}: {label: string; href: string}) {
   )
 }
 
-/** Global header; nav data from `config/nav`. §g: Radix/shadcn dropdown; §h: mobile sheet. */
+/** Global header; nav data from `config/nav`. §h: mobile sheet. */
 export function SiteHeader() {
   return (
     <header className="border-border bg-background border-b">
@@ -70,7 +33,12 @@ export function SiteHeader() {
         >
           {mainNav.map((entry) =>
             entry.kind === 'group' ? (
-              <NavGroup key={entry.id} id={entry.id} label={entry.label} items={entry.items} />
+              <NavPrimaryGroup
+                key={entry.id}
+                id={entry.id}
+                label={entry.label}
+                items={entry.items}
+              />
             ) : (
               <NavLinkItem key={entry.href} label={entry.label} href={entry.href} />
             ),
