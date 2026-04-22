@@ -2,7 +2,7 @@ import './globals.css'
 import './pedp-token-overrides.css'
 
 import type {Metadata} from 'next'
-import {Geist_Mono, Inter, Playfair_Display} from 'next/font/google'
+import {Figtree, Geist_Mono} from 'next/font/google'
 import Script from 'next/script'
 
 import {SiteFooter} from '@/components/site-footer'
@@ -11,17 +11,11 @@ import {siteDescription, siteName, siteUrl} from '@/config/site'
 import {cn} from '@/lib/utils'
 import {SanityLive} from '@/sanity/live'
 
-const fontSans = Inter({
+const fontSans = Figtree({
   subsets: ['latin'],
-  variable: '--font-inter',
-  weight: ['400', '500', '600', '700'],
-})
-
-const fontSerif = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-playfair',
+  variable: '--font-figtree',
   style: ['normal', 'italic'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '600'],
 })
 
 const fontMono = Geist_Mono({
@@ -74,7 +68,6 @@ export default function RootLayout({
       className={cn(
         'h-full antialiased font-sans',
         fontSans.variable,
-        fontSerif.variable,
         fontMono.variable,
       )}
     >
