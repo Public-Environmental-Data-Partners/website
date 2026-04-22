@@ -1,7 +1,6 @@
 /**
- * Single source of truth for primary navigation. Paths match App Router segments
- * Todo: Replace Radix/shadcn dropdown
- * Todo: Refine mobile behavior
+ * Single source of truth for primary navigation. Paths match App Router segments.
+ * Desktop “What we do” uses a Radix dropdown; mobile uses a sheet with the same entries.
  */
 
 export type NavLeaf = {
