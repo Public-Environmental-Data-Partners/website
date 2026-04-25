@@ -96,5 +96,73 @@ export const page = defineType({
       type: 'boolean',
       initialValue: false,
     }),
+    defineField({
+      name: 'coalitionHeading',
+      title: 'Coalition heading',
+      type: 'string',
+      initialValue: 'Our coalition',
+      validation: (Rule) => Rule.required().max(60),
+    }),
+    defineField({
+      name: 'coalitionPartners',
+      title: 'Coalition partners',
+      type: 'array',
+      description:
+        'Add partner logos and links. Drag to reorder items in the desired display order.',
+      of: [
+        defineField({
+          name: 'partner',
+          title: 'Partner',
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'name',
+              title: 'Partner name',
+              type: 'string',
+              validation: (Rule) => Rule.required().max(120),
+            }),
+            defineField({
+              name: 'url',
+              title: 'Partner website URL',
+              type: 'url',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'ariaLabel',
+              title: 'Accessible label (optional)',
+              type: 'string',
+              description: 'Optional. Defaults to partner name when left blank.',
+              validation: (Rule) => Rule.max(160),
+            }),
+            defineField({
+              name: 'logo',
+              title: 'Partner logo',
+              type: 'image',
+              description:
+                'Preferred format: SVG (JPG also OK); use PNG only when transparency is required.\nAim for logos at least 400px wide to avoid blur on larger screens.',
+              options: {hotspot: true},
+              validation: (Rule) => Rule.required(),
+              fields: [
+                defineField({
+                  name: 'alt',
+                  title: 'Logo alternative text (optional)',
+                  type: 'string',
+                  description: 'Optional. Defaults to partner name when left blank.',
+                  validation: (Rule) => Rule.max(160),
+                }),
+              ],
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'name',
+              media: 'logo',
+              subtitle: 'url',
+            },
+          },
+        }),
+      ],
+      validation: (Rule) => Rule.required().min(1),
+    }),
   ],
 })

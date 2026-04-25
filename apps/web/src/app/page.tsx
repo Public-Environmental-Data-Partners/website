@@ -1,6 +1,8 @@
 import {draftMode} from 'next/headers'
 
+import {CoalitionSection} from '@/components/home/coalition-section'
 import {HeroSection} from '@/components/home/hero-section'
+import {mapCoalitionBlockToProps} from '@/lib/mappers/coalition-block'
 import {mapHeroBlockToProps} from '@/lib/mappers/hero-block'
 import {sanityFetch} from '@/sanity/live'
 
@@ -36,7 +38,25 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
       }
     }
   },
-  hideHeroImageOnMobile
+  hideHeroImageOnMobile,
+  coalitionHeading,
+  coalitionPartners[]{
+    name,
+    url,
+    ariaLabel,
+    logo{
+      alt,
+      asset->{
+        url,
+        metadata{
+          dimensions{
+            width,
+            height
+          }
+        }
+      }
+    }
+  }
 }`
 
 function DraftPreviewBanner() {
@@ -69,6 +89,7 @@ export default async function Home() {
   }
 
   const heroProps = mapHeroBlockToProps(data)
+  const coalitionProps = mapCoalitionBlockToProps(data)
 
   return (
     <div className="flex flex-1 flex-col font-sans">
@@ -80,6 +101,7 @@ export default async function Home() {
           <p className="text-muted-foreground">Home page hero is missing a heading.</p>
         </div>
       )}
+      {coalitionProps ? <CoalitionSection {...coalitionProps} /> : null}
     </div>
   )
 }

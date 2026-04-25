@@ -23,10 +23,7 @@ function SheetPortal({...props}: React.ComponentProps<typeof DialogPrimitive.Por
   return <DialogPrimitive.Portal data-slot="sheet-portal" {...props} />
 }
 
-function SheetOverlay({
-  className,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+function SheetOverlay({className, ...props}: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
   return (
     <DialogPrimitive.Overlay
       data-slot="sheet-overlay"
@@ -46,8 +43,7 @@ const sheetContentVariants = cva(
       side: {
         right:
           'data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-[min(100%,20rem)] border-l border-border',
-        left:
-          'data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left inset-y-0 left-0 h-full w-[min(100%,20rem)] border-r border-border',
+        left: 'data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left inset-y-0 left-0 h-full w-[min(100%,20rem)] border-r border-border',
         top: 'data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top inset-x-0 top-0 border-b border-border',
         bottom:
           'data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom inset-x-0 bottom-0 border-t border-border',
@@ -64,7 +60,8 @@ function SheetContent({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content> & VariantProps<typeof sheetContentVariants>) {
+}: React.ComponentProps<typeof DialogPrimitive.Content> &
+  VariantProps<typeof sheetContentVariants>) {
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -108,10 +105,7 @@ function SheetFooter({className, ...props}: React.ComponentProps<'div'>) {
 }
 
 /** Do not pass `id`: the dialog title must keep the internal id used for `aria-labelledby`. */
-function SheetTitle({
-  className,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Title>) {
+function SheetTitle({className, ...props}: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
       data-slot="sheet-title"

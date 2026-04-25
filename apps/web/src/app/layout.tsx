@@ -65,11 +65,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn(
-        'h-full antialiased font-sans',
-        fontSans.variable,
-        fontMono.variable,
-      )}
+      className={cn('h-full antialiased font-sans', fontSans.variable, fontMono.variable)}
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
         {/*

@@ -18,13 +18,9 @@ import {donateNav, mainNav} from '@/config/nav'
 import {isActiveNavPath} from '@/lib/nav-active'
 import {cn} from '@/lib/utils'
 
-const navRowTextClass =
-  'text-foreground block rounded-md px-3 py-2.5 text-base font-medium'
+const navRowTextClass = 'text-foreground block rounded-md px-3 py-2.5 text-base font-medium'
 
-const linkClass = cn(
-  navRowTextClass,
-  'transition-colors hover:text-foreground/90 hover:bg-muted',
-)
+const linkClass = cn(navRowTextClass, 'transition-colors hover:text-foreground/90 hover:bg-muted')
 
 const subLinkInactive =
   'text-muted-foreground hover:text-foreground block rounded-md py-2 pr-3 pl-6 text-sm font-medium transition-colors hover:bg-muted'
@@ -87,7 +83,10 @@ function MobilePrimaryNavSheetInner() {
           <span className="sr-only">Open menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="flex w-full max-w-sm flex-col gap-6 overflow-y-auto p-6">
+      <SheetContent
+        side="right"
+        className="flex w-full max-w-sm flex-col gap-6 overflow-y-auto p-6"
+      >
         <SheetHeader>
           <SheetTitle>Menu</SheetTitle>
           <SheetDescription className="sr-only">Primary navigation for the site.</SheetDescription>

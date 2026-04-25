@@ -168,6 +168,21 @@ blockquote,
   line-height: 1.45;
 }
 
+h2.section-label-heading {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 1024px) {
+  h2.section-label-heading {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
