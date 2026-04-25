@@ -56,5 +56,45 @@ export const page = defineType({
         },
       ],
     }),
+    defineField({
+      name: 'heroImage',
+      title: 'Hero image (desktop/default)',
+      type: 'image',
+      description:
+        'Preferred format: JPG (WebP also OK); use PNG only when transparency is required.\nUse images roughly 2000-2800px wide for desktop hero; avoid files under 1600px or over 5000px wide.',
+      options: {hotspot: true},
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative text',
+          type: 'string',
+          validation: (Rule) =>
+            Rule.max(160).warning('Keep alt text concise and descriptive (≤ 160 chars).'),
+        }),
+      ],
+    }),
+    defineField({
+      name: 'heroImageMobile',
+      title: 'Hero image (mobile override)',
+      type: 'image',
+      description:
+        'Preferred format: JPG (WebP also OK); use PNG only when transparency is required.\nUse images roughly 1080-1600px wide for mobile hero; avoid files under 900px or over 3000px wide.',
+      options: {hotspot: true},
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative text (mobile override)',
+          type: 'string',
+          validation: (Rule) =>
+            Rule.max(160).warning('Keep alt text concise and descriptive (≤ 160 chars).'),
+        }),
+      ],
+    }),
+    defineField({
+      name: 'hideHeroImageOnMobile',
+      title: 'Hide hero image on mobile',
+      type: 'boolean',
+      initialValue: false,
+    }),
   ],
 })

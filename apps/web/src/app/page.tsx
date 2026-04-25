@@ -1,6 +1,7 @@
-import {PortableText} from '@portabletext/react'
 import {draftMode} from 'next/headers'
 
+import {HeroSection} from '@/components/home/hero-section'
+import {mapHeroBlockToProps} from '@/lib/mappers/hero-block'
 import {sanityFetch} from '@/sanity/live'
 
 /** Draft preview must not use a single build-time snapshot. */
@@ -10,7 +11,32 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
   heroKicker,
   heroHeading,
   heroParagraph1,
-  heroParagraph2
+  heroParagraph2,
+  heroImage{
+    alt,
+    asset->{
+      url,
+      metadata{
+        dimensions{
+          width,
+          height
+        }
+      }
+    }
+  },
+  heroImageMobile{
+    alt,
+    asset->{
+      url,
+      metadata{
+        dimensions{
+          width,
+          height
+        }
+      }
+    }
+  },
+  hideHeroImageOnMobile
 }`
 
 function DraftPreviewBanner() {
@@ -42,21 +68,18 @@ export default async function Home() {
     )
   }
 
+  const heroProps = mapHeroBlockToProps(data)
+
   return (
     <div className="flex flex-1 flex-col font-sans">
       {isDraftMode ? <DraftPreviewBanner /> : null}
-      <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-6 py-20 md:px-12">
-        <p className="text-muted-foreground text-sm font-semibold uppercase tracking-wide">
-          {data.heroKicker}
-        </p>
-        <h1 className="text-foreground text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
-          {data.heroHeading}
-        </h1>
-        <div className="text-foreground/90 max-w-none space-y-4 text-lg leading-relaxed">
-          <PortableText value={data.heroParagraph1 as never} />
-          {data.heroParagraph2 ? <PortableText value={data.heroParagraph2 as never} /> : null}
+      {heroProps ? (
+        <HeroSection {...heroProps} />
+      ) : (
+        <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-6 py-20 md:px-12">
+          <p className="text-muted-foreground">Home page hero is missing a heading.</p>
         </div>
-      </div>
+      )}
     </div>
   )
 }
