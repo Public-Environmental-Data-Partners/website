@@ -164,5 +164,105 @@ export const page = defineType({
       ],
       validation: (Rule) => Rule.required().min(1),
     }),
+    defineField({
+      name: 'newsUpdatesHeading',
+      title: 'News section heading',
+      type: 'string',
+      initialValue: 'News & Updates',
+      validation: (Rule) => Rule.required().max(60),
+    }),
+    defineField({
+      name: 'newsCards',
+      title: 'News cards',
+      type: 'array',
+      description: 'Cards are shown in this order. Add and drag to reorder.',
+      of: [
+        defineField({
+          name: 'newsCard',
+          title: 'News card',
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'title',
+              title: 'Card title',
+              type: 'string',
+              validation: (Rule) => Rule.required().max(60),
+            }),
+            defineField({
+              name: 'image',
+              title: 'Card image',
+              type: 'image',
+              description:
+                'Required. Displayed at 4:3. Preferred format: JPG (WebP also OK); use PNG only when transparency is required.',
+              options: {hotspot: true},
+              validation: (Rule) => Rule.required(),
+              fields: [
+                defineField({
+                  name: 'alt',
+                  title: 'Image alternative text (optional)',
+                  type: 'string',
+                  description: 'Optional. Defaults to the card title when blank.',
+                  validation: (Rule) => Rule.max(160),
+                }),
+              ],
+            }),
+            defineField({
+              name: 'photoCredit',
+              title: 'Photo credit (optional)',
+              type: 'string',
+              validation: (Rule) => Rule.max(80),
+            }),
+            defineField({
+              name: 'excerpt',
+              title: 'Excerpt (optional)',
+              type: 'text',
+              rows: 3,
+              validation: (Rule) => Rule.max(140),
+            }),
+            defineField({
+              name: 'chip',
+              title: 'Card chip',
+              type: 'string',
+              options: {
+                list: [
+                  {title: 'Blog', value: 'Blog'},
+                  {title: 'Project', value: 'Project'},
+                  {title: 'News', value: 'News'},
+                ],
+                layout: 'dropdown',
+              },
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'route',
+              title: 'Link destination',
+              type: 'string',
+              options: {
+                list: [
+                  {title: "What's happening", value: '/whats-happening'},
+                  {title: 'Data preservation', value: '/what-we-do/data-preservation'},
+                  {title: 'Tool development', value: '/what-we-do/tool-development'},
+                  {title: 'Advocacy', value: '/what-we-do/advocacy'},
+                  {title: 'How we work', value: '/how-we-work'},
+                  {title: 'Get involved', value: '/get-involved'},
+                  {title: 'About', value: '/about'},
+                  {title: 'Donate', value: '/donate'},
+                ],
+                layout: 'dropdown',
+              },
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'title',
+              subtitle: 'route',
+              media: 'image',
+            },
+          },
+        }),
+      ],
+      validation: (Rule) => Rule.required().min(1),
+    }),
   ],
 })
