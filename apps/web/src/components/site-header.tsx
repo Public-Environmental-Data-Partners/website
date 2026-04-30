@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
 import {HeaderDonateLink, HeaderNavLink} from '@/components/header-nav-link'
@@ -13,9 +14,27 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link
           href="/"
-          className="font-sans min-w-0 shrink text-base font-semibold tracking-tight text-foreground hover:underline"
+          aria-label={siteName}
+          className="text-foreground focus-visible:ring-ring shrink-0 rounded-sm transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
         >
-          {siteName}
+          <Image
+            src="/brand/logo.webp"
+            alt=""
+            width={1500}
+            height={458}
+            priority
+            className="hidden h-10 w-auto lg:block"
+            sizes="(min-width: 1024px) 280px, 0px"
+          />
+          <Image
+            src="/brand/icon.webp"
+            alt=""
+            width={60}
+            height={50}
+            priority
+            className="h-9 w-auto lg:hidden"
+            sizes="(max-width: 1023px) 36px, 0px"
+          />
         </Link>
 
         <div className="flex min-w-0 items-center justify-end gap-3 lg:flex-1">
