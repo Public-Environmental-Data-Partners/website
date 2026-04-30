@@ -239,7 +239,9 @@ export const page = defineType({
               type: 'string',
               options: {
                 list: [
-                  {title: "What's happening", value: '/whats-happening'},
+                  {title: "What's happening (hub)", value: '/whats-happening'},
+                  {title: 'Blog', value: '/whats-happening/blog'},
+                  {title: 'Events', value: '/whats-happening/events'},
                   {title: 'Data preservation', value: '/what-we-do/data-preservation'},
                   {title: 'Tool development', value: '/what-we-do/tool-development'},
                   {title: 'Advocacy', value: '/what-we-do/advocacy'},

@@ -38,7 +38,15 @@ export const mainNav: MainNavEntry[] = [
   {kind: 'link', label: 'How we work', href: '/how-we-work'},
   {kind: 'link', label: 'Get involved', href: '/get-involved'},
   {kind: 'link', label: 'About', href: '/about'},
-  {kind: 'link', label: "What's happening", href: '/whats-happening'},
+  {
+    kind: 'group',
+    id: 'whats-happening',
+    label: "What's happening",
+    items: [
+      {label: 'Blog', href: '/whats-happening/blog'},
+      {label: 'Events', href: '/whats-happening/events'},
+    ],
+  },
 ]
 
 export const donateNav: NavLeaf = {
