@@ -191,3 +191,43 @@ h2.section-label-heading {
     @apply bg-background text-foreground;
   }
 }
+
+/*
+ * Coalition partner marquee (home): seamless horizontal scroll via duplicated strip.
+ * Reduced-motion users see the scroll fallback only (see coalition-section.tsx panels).
+ */
+@keyframes coalition-marquee-translate {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .coalition-marquee-track {
+    animation: coalition-marquee-translate 55s linear infinite;
+    will-change: transform;
+  }
+
+  .coalition-marquee-root:hover .coalition-marquee-track,
+  .coalition-marquee-root:focus-within .coalition-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+.coalition-strip-scroll-wrap {
+  display: none;
+}
+
+.coalition-strip-marquee-wrap {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coalition-strip-scroll-wrap {
+    display: block;
+  }
+
+  .coalition-strip-marquee-wrap {
+    display: none;
+  }
+}
