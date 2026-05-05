@@ -30,7 +30,7 @@ export function NewsUpdatesSection({heading, cards}: NewsUpdatesSectionProps) {
   return (
     <section className="bg-light-green">
       <div className="mx-auto w-full max-w-site px-6 py-10 md:px-12 md:py-14">
-        <h2 className="section-label-heading text-foreground mb-5 md:mb-7">{heading}</h2>
+        <h2 className="section-label-heading text-muted-foreground mb-5 md:mb-7">{heading}</h2>
         <div className="-mx-6 overflow-x-auto px-6 md:mx-0 md:px-0">
           <div className="grid w-max min-w-full grid-flow-col auto-cols-[minmax(18rem,18rem)] gap-5 pb-2 md:w-full md:grid-flow-row md:grid-cols-3 md:auto-cols-auto md:gap-6">
             {cards.map((card) => (
