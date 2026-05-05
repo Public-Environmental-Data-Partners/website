@@ -12,7 +12,7 @@ import {siteName} from '@/config/site'
 export function SiteHeader() {
   return (
     <header className="border-border bg-light-beige border-b">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+      <div className="mx-auto flex max-w-site items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link
           href="/"
           aria-label={siteName}

@@ -103,7 +103,7 @@ export default async function Home() {
     return (
       <div className="flex flex-1 flex-col font-sans">
         {isDraftMode ? <DraftPreviewBanner /> : null}
-        <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-6 py-20 md:px-12">
+        <div className="mx-auto flex w-full max-w-site flex-1 flex-col gap-6 px-6 py-20 md:px-12">
           <p className="text-muted-foreground">No home page content.</p>
         </div>
       </div>
@@ -120,7 +120,7 @@ export default async function Home() {
       {heroProps ? (
         <HeroSection {...heroProps} />
       ) : (
-        <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-6 py-20 md:px-12">
+        <div className="mx-auto flex w-full max-w-site flex-1 flex-col gap-6 px-6 py-20 md:px-12">
           <p className="text-muted-foreground">Home page hero is missing a heading.</p>
         </div>
       )}

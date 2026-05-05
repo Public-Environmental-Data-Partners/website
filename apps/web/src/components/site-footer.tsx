@@ -19,7 +19,7 @@ export function SiteFooter() {
       data-site-footer
       className="bg-footer text-footer-foreground mt-auto w-full shrink-0"
     >
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+      <div className="mx-auto max-w-site px-4 py-12 sm:px-6">
         <h2 className="sr-only">Footer</h2>
         <div className="flex flex-col gap-10 lg:grid lg:grid-cols-3 lg:items-start lg:gap-x-10">
           <div className="flex flex-col gap-6">

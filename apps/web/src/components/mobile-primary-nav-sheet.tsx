@@ -18,12 +18,12 @@ import {donateNav, mainNav} from '@/config/nav'
 import {isActiveNavPath} from '@/lib/nav-active'
 import {cn} from '@/lib/utils'
 
-const navRowTextClass = 'text-foreground block rounded-md px-3 py-2.5 text-base font-medium'
+const navRowTextClass = 'text-foreground block rounded-md px-3 py-2.5 text-[1.375rem] font-semibold'
 
 const linkClass = cn(navRowTextClass, 'transition-colors hover:text-foreground/90 hover:bg-muted')
 
 const subLinkInactive =
-  'text-muted-foreground hover:text-foreground block rounded-md py-2 pr-3 pl-6 text-sm font-medium transition-colors hover:bg-muted'
+  'text-muted-foreground hover:text-foreground block rounded-md py-2 pr-3 pl-6 text-[1.375rem] font-semibold transition-colors hover:bg-muted'
 
 function TopLevelSheetLink({
   href,
@@ -58,7 +58,7 @@ function MobileDonateLink({pathname, onNavigate}: {pathname: string; onNavigate:
     <Link
       href={donateNav.href}
       className={cn(
-        'inline-flex min-h-11 w-full items-center justify-center rounded-[4px] px-5 py-3 text-sm font-semibold transition-colors',
+        'inline-flex min-h-11 w-full items-center justify-center rounded-[4px] px-5 py-3 text-[1.375rem] font-semibold transition-colors',
         active
           ? 'bg-pedp-green text-off-white ring-2 ring-off-white/40 ring-offset-2 ring-offset-light-beige'
           : 'bg-pedp-green text-off-white hover:bg-pedp-green/90',

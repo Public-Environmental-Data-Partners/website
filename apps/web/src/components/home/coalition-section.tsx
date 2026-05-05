@@ -126,7 +126,7 @@ export function CoalitionSection({heading, partners}: CoalitionSectionProps) {
 
   return (
     <section className="bg-background" aria-labelledby={headingId}>
-      <div className="mx-auto w-full max-w-6xl px-6 py-10 md:px-12 md:py-14">
+      <div className="mx-auto w-full max-w-site px-6 py-10 md:px-12 md:py-14">
         <h2 id={headingId} className="section-label-heading text-muted-foreground mb-5 md:mb-7">
           {heading}
         </h2>

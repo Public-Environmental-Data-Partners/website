@@ -6,7 +6,7 @@ import {usePathname} from 'next/navigation'
 import {isActiveNavPath} from '@/lib/nav-active'
 import {cn} from '@/lib/utils'
 
-const base = 'font-sans text-sm font-medium whitespace-nowrap transition-colors'
+const base = 'font-sans text-[1.375rem] font-semibold whitespace-nowrap transition-colors'
 
 export function HeaderNavLink({href, label}: {href: string; label: string}) {
   const pathname = usePathname()

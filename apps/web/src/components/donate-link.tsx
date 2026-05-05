@@ -6,8 +6,8 @@ import {usePathname} from 'next/navigation'
 import {isActiveNavPath} from '@/lib/nav-active'
 import {cn} from '@/lib/utils'
 
-const pill =
-  'inline-flex min-h-10 shrink-0 items-center justify-center rounded-[4px] px-5 py-2 text-sm font-semibold transition-colors focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none'
+const pillBase =
+  'inline-flex min-h-10 shrink-0 items-center justify-center rounded-[4px] px-5 py-2 font-semibold transition-colors focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none'
 
 export function DonateLink({
   href,
@@ -32,7 +32,8 @@ export function DonateLink({
     <Link
       href={href}
       className={cn(
-        pill,
+        pillBase,
+        variant === 'header' ? 'text-[1.375rem]' : 'text-sm',
         ringOffsetClass,
         'focus-visible:ring-ring focus-visible:ring-2',
         active

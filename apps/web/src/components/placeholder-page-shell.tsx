@@ -7,9 +7,9 @@ export function PlaceholderPageShell({
   description?: string
 }) {
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-4 px-6 py-16 md:px-12">
+    <div className="mx-auto flex w-full max-w-site flex-1 flex-col gap-4 px-6 py-16 md:px-12">
       <h1 className="text-foreground text-3xl font-semibold tracking-tight md:text-4xl">{title}</h1>
-      <p className="text-muted-foreground max-w-prose text-lg leading-relaxed">{description}</p>
+      <p className="text-muted-foreground max-w-prose leading-relaxed">{description}</p>
     </div>
   )
 }

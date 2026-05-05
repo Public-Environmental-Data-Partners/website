@@ -23,7 +23,7 @@ export function NavPrimaryGroup({id, label, items}: {id: string; label: string; 
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          'data-[state=open]:text-foreground inline-flex items-center gap-1 rounded-sm font-sans text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-light-beige',
+          'data-[state=open]:text-foreground inline-flex items-center gap-1 rounded-sm font-sans text-[1.375rem] font-semibold outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-light-beige',
           groupHasActive
             ? 'text-foreground font-semibold underline decoration-foreground/40 underline-offset-4'
             : 'text-muted-foreground hover:text-foreground',
@@ -36,10 +36,14 @@ export function NavPrimaryGroup({id, label, items}: {id: string; label: string; 
         {items.map((item) => {
           const active = isActiveNavPath(pathname, item.href)
           return (
-            <DropdownMenuItem key={`${id}-${item.href}`} asChild>
+            <DropdownMenuItem
+              key={`${id}-${item.href}`}
+              asChild
+              className="text-[1.375rem] font-semibold"
+            >
               <Link
                 href={item.href}
-                className={cn(active && 'bg-accent/50 font-semibold')}
+                className={cn(active && 'bg-accent/50')}
                 aria-current={active ? 'page' : undefined}
               >
                 {item.label}

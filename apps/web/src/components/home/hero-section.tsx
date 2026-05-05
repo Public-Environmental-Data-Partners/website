@@ -47,7 +47,7 @@ function HeroImageBlock({image, imageMobile, hideImageOnMobile}: HeroImageBlockP
     alt: altText,
     width: desktopWidth,
     height: desktopHeight,
-    sizes: '(max-width: 1023px) 100vw, 50vw',
+    sizes: '(max-width: 1023px) 100vw, 40vw',
     fetchPriority: 'high',
   }).props
   const {
@@ -92,18 +92,18 @@ export function HeroSection({
 }: HeroSectionProps) {
   return (
     <section className="bg-background">
-      <div className="mx-auto grid w-full max-w-6xl gap-8 px-6 py-12 md:px-12 lg:grid-cols-2 lg:gap-12 lg:py-16">
+      <div className="mx-auto grid w-full max-w-site gap-8 px-6 py-12 md:px-12 lg:grid-cols-[3fr_2fr] lg:gap-12 lg:py-16">
         <div className="flex flex-col gap-6">
           {eyebrow ? (
-            <p className="text-muted-foreground text-sm font-semibold uppercase tracking-wide">
+            <p className="text-muted-foreground font-semibold uppercase tracking-wide">
               {eyebrow}
             </p>
           ) : null}
-          <h1 className="text-foreground text-4xl font-medium leading-tight tracking-tight md:text-5xl">
+          <h1 className="hero-primary-heading text-foreground font-medium leading-tight tracking-tight">
             {title}
           </h1>
           {body ? (
-            <div className="text-foreground/90 max-w-none space-y-4 text-lg leading-relaxed">
+            <div className="text-foreground/90 max-w-none space-y-4 leading-relaxed">
               <PortableText value={body as never} />
             </div>
           ) : null}
