@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import {HeaderDonateLink, HeaderNavLink} from '@/components/header-nav-link'
+import {DonateLink} from '@/components/donate-link'
+import {HeaderNavLink} from '@/components/header-nav-link'
 import {MobilePrimaryNavSheet} from '@/components/mobile-primary-nav-sheet'
 import {NavPrimaryGroup} from '@/components/nav-primary-group'
 import {donateNav, mainNav} from '@/config/nav'
@@ -55,7 +56,7 @@ export function SiteHeader() {
               ),
             )}
 
-            <HeaderDonateLink href={donateNav.href} label={donateNav.label} />
+            <DonateLink href={donateNav.href} label={donateNav.label} variant="header" />
           </nav>
 
           <div className="lg:hidden">

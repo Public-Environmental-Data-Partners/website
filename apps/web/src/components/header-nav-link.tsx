@@ -28,22 +28,3 @@ export function HeaderNavLink({href, label}: {href: string; label: string}) {
   )
 }
 
-export function HeaderDonateLink({href, label}: {href: string; label: string}) {
-  const pathname = usePathname()
-  const active = isActiveNavPath(pathname, href)
-
-  return (
-    <Link
-      href={href}
-      className={cn(
-        'inline-flex shrink-0 items-center rounded-full px-4 py-2 text-sm font-semibold transition-colors',
-        active
-          ? 'bg-primary text-primary-foreground ring-2 ring-primary-foreground/35 ring-offset-2 ring-offset-background'
-          : 'bg-primary text-primary-foreground hover:bg-primary/90',
-      )}
-      aria-current={active ? 'page' : undefined}
-    >
-      {label}
-    </Link>
-  )
-}

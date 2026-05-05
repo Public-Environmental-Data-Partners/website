@@ -45,6 +45,22 @@
   --color-sky-foreground: var(--sky-foreground);
   --color-navy: var(--navy);
   --color-mint: var(--mint);
+  --color-footer: var(--footer);
+  --color-footer-foreground: var(--footer-foreground);
+  /* PEDP palette → bg-off-white, bg-cream, bg-pedp-green, etc. */
+  --color-off-black: var(--off-black);
+  --color-off-white: var(--off-white);
+  --color-cream: var(--cream);
+  --color-light-beige: var(--light-beige);
+  --color-beige: var(--beige);
+  --color-dark-beige: var(--dark-beige);
+  --color-light-green: var(--light-green);
+  --color-dark-green: var(--dark-green);
+  --color-light-blue: var(--light-blue);
+  --color-dark-blue: var(--dark-blue);
+  /* Mid accents: pedp-* avoids clashing with Tailwind default green/blue scales. */
+  --color-pedp-green: var(--green);
+  --color-pedp-blue: var(--blue);
   --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
   /* Serif stack also uses Figtree so `font-serif` stays on-brand until a second family ships. */
   --font-serif: var(--font-figtree), ui-serif, Georgia, serif;

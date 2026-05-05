@@ -54,6 +54,26 @@
   --sidebar-accent-foreground: #2c2c2c;
   --sidebar-border: #e0dbd4;
   --sidebar-ring: #4a7c59;
+  /* Footer band: fixed in light and dark (see matching values in dark blocks below). */
+  --off-black: #42413d;
+  /* Solid hex so background-color never depends on a nested var() chain. */
+  --footer: #42413d;
+  --footer-foreground: #faf8f5;
+
+  /* PEDP main palette (light); duplicated in dark blocks until dark comps exist. */
+  --off-white: #f4f1ec;
+  --cream: #fffcf8;
+  --light-beige: #ebe4db;
+  --beige: #d4cbbf;
+  --dark-beige: #6d6659;
+
+  /* PEDP accent palette; Tailwind uses bg-pedp-green / bg-pedp-blue (see globals @theme). */
+  --light-green: #c4edac;
+  --green: #7ac473;
+  --dark-green: #324a3d;
+  --light-blue: #c5e8ff;
+  --blue: #98c0f4;
+  --dark-blue: #2b3e6f;
 }
 
 /*
@@ -108,6 +128,20 @@
     --sidebar-accent-foreground: #f2f0ec;
     --sidebar-border: #45413b;
     --sidebar-ring: #6b9c78;
+    --off-black: #42413d;
+    --footer: #42413d;
+    --footer-foreground: #faf8f5;
+    --off-white: #f4f1ec;
+    --cream: #fffcf8;
+    --light-beige: #ebe4db;
+    --beige: #d4cbbf;
+    --dark-beige: #6d6659;
+    --light-green: #c4edac;
+    --green: #7ac473;
+    --dark-green: #324a3d;
+    --light-blue: #c5e8ff;
+    --blue: #98c0f4;
+    --dark-blue: #2b3e6f;
   }
 }
 
@@ -151,8 +185,50 @@
   --sidebar-accent-foreground: #f2f0ec;
   --sidebar-border: #45413b;
   --sidebar-ring: #6b9c78;
+  --off-black: #42413d;
+  --footer: #42413d;
+  --footer-foreground: #faf8f5;
+  --off-white: #f4f1ec;
+  --cream: #fffcf8;
+  --light-beige: #ebe4db;
+  --beige: #d4cbbf;
+  --dark-beige: #6d6659;
+  --light-green: #c4edac;
+  --green: #7ac473;
+  --dark-green: #324a3d;
+  --light-blue: #c5e8ff;
+  --blue: #98c0f4;
+  --dark-blue: #2b3e6f;
 }
 
 html {
   --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+}
+
+/*
+ * Site footer: unlayered so this always wins over Tailwind layers / stray resets.
+ * `data-site-footer` is set on `<footer>` in `site-footer.tsx`.
+ */
+[data-site-footer] {
+  background-color: var(--footer);
+  color: var(--footer-foreground);
+}
+
+/*
+ * Column titles + column 3 utility links: 22px below lg, 24px at lg+; unlayered so this
+ * beats globals.css `h3` and FooterNavLink `@layer` utilities.
+ */
+[data-site-footer] .footer-section-heading,
+[data-site-footer] .footer-utility-heading {
+  font-family: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+@media (min-width: 1024px) {
+  [data-site-footer] .footer-section-heading,
+  [data-site-footer] .footer-utility-heading {
+    font-size: 1.5rem;
+  }
 }
