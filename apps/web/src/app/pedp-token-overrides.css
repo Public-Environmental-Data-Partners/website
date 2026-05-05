@@ -14,7 +14,9 @@
  */
 
 :root {
-  --background: #faf8f5;
+  --cream: #fffcf8;
+  --off-white: #f4f1ec;
+  --background: var(--off-white);
   --foreground: #2c2c2c;
   --muted: #f0ebe4;
   --muted-foreground: #6b6560;
@@ -61,8 +63,6 @@
   --footer-foreground: #faf8f5;
 
   /* PEDP main palette (light); duplicated in dark blocks until dark comps exist. */
-  --off-white: #f4f1ec;
-  --cream: #fffcf8;
   --light-beige: #ebe4db;
   --beige: #d4cbbf;
   --dark-beige: #6d6659;
@@ -203,6 +203,8 @@
 
 html {
   --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  /* Paint the root so overscroll and the flex column show --background (e.g. cream in light). */
+  background-color: var(--background);
 }
 
 /*

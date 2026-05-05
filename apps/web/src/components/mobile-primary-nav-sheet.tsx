@@ -58,10 +58,10 @@ function MobileDonateLink({pathname, onNavigate}: {pathname: string; onNavigate:
     <Link
       href={donateNav.href}
       className={cn(
-        'inline-flex w-full items-center justify-center rounded-full px-4 py-3 text-sm font-semibold transition-colors',
+        'inline-flex min-h-11 w-full items-center justify-center rounded-[4px] px-5 py-3 text-sm font-semibold transition-colors',
         active
-          ? 'bg-primary text-primary-foreground ring-2 ring-primary-foreground/35 ring-offset-2 ring-offset-background'
-          : 'bg-primary text-primary-foreground hover:bg-primary/90',
+          ? 'bg-pedp-green text-off-white ring-2 ring-off-white/40 ring-offset-2 ring-offset-light-beige'
+          : 'bg-pedp-green text-off-white hover:bg-pedp-green/90',
       )}
       aria-current={active ? 'page' : undefined}
       onClick={onNavigate}
@@ -85,7 +85,7 @@ function MobilePrimaryNavSheetInner() {
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="flex w-full max-w-sm flex-col gap-6 overflow-y-auto p-6"
+        className="bg-light-beige flex w-full max-w-sm flex-col gap-6 overflow-y-auto p-6 [&_[data-slot=sheet-close-button]]:ring-offset-light-beige"
       >
         <SheetHeader>
           <SheetTitle>Menu</SheetTitle>

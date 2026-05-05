@@ -65,7 +65,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn('h-full antialiased font-sans', fontSans.variable, fontMono.variable)}
+      className={cn('h-full bg-background antialiased font-sans', fontSans.variable, fontMono.variable)}
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
         {/*
@@ -78,7 +78,7 @@ export default function RootLayout({
           {`(function(){try{var m=window.matchMedia('(prefers-color-scheme: dark)');function s(){document.documentElement.classList.toggle('dark',m.matches);}s();m.addEventListener('change',s);}catch(e){}})();`}
         </Script>
         <SiteHeader />
-        <main className="flex flex-1 flex-col">{children}</main>
+        <main className="bg-background flex flex-1 flex-col">{children}</main>
         <SiteFooter />
         <SanityLive />
       </body>

@@ -23,7 +23,7 @@ export function NavPrimaryGroup({id, label, items}: {id: string; label: string; 
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          'data-[state=open]:text-foreground inline-flex items-center gap-1 rounded-sm font-sans text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+          'data-[state=open]:text-foreground inline-flex items-center gap-1 rounded-sm font-sans text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-light-beige',
           groupHasActive
             ? 'text-foreground font-semibold underline decoration-foreground/40 underline-offset-4'
             : 'text-muted-foreground hover:text-foreground',

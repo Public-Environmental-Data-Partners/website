@@ -7,7 +7,7 @@ import {isActiveNavPath} from '@/lib/nav-active'
 import {cn} from '@/lib/utils'
 
 const pill =
-  'inline-flex shrink-0 items-center justify-center rounded-full px-4 py-2 text-sm font-semibold transition-colors focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none'
+  'inline-flex min-h-10 shrink-0 items-center justify-center rounded-[4px] px-5 py-2 text-sm font-semibold transition-colors focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none'
 
 export function DonateLink({
   href,
@@ -26,7 +26,7 @@ export function DonateLink({
   const ringOffsetClass =
     variant === 'footer'
       ? 'focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--footer)]'
-      : 'focus-visible:ring-offset-2 focus-visible:ring-offset-background'
+      : 'focus-visible:ring-offset-2 focus-visible:ring-offset-light-beige'
 
   return (
     <Link
@@ -36,8 +36,8 @@ export function DonateLink({
         ringOffsetClass,
         'focus-visible:ring-ring focus-visible:ring-2',
         active
-          ? 'bg-primary text-primary-foreground ring-2 ring-primary-foreground/35 ring-offset-2'
-          : 'bg-primary text-primary-foreground hover:bg-primary/90',
+          ? 'bg-pedp-green text-off-white ring-2 ring-off-white/40 ring-offset-2'
+          : 'bg-pedp-green text-off-white hover:bg-pedp-green/90',
         className,
       )}
       aria-current={active ? 'page' : undefined}

@@ -28,7 +28,7 @@ export function NewsUpdatesSection({heading, cards}: NewsUpdatesSectionProps) {
   }
 
   return (
-    <section className="bg-primary/35">
+    <section className="bg-light-green">
       <div className="mx-auto w-full max-w-6xl px-6 py-10 md:px-12 md:py-14">
         <h2 className="section-label-heading text-foreground mb-5 md:mb-7">{heading}</h2>
         <div className="-mx-6 overflow-x-auto px-6 md:mx-0 md:px-0">
