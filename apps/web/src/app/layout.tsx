@@ -5,11 +5,12 @@ import type {Metadata} from 'next'
 import {Figtree, Geist_Mono} from 'next/font/google'
 import Script from 'next/script'
 
+import {DraftPreviewBanner} from '@/components/draft-preview-banner'
+import {SanityLiveRoot} from '@/components/sanity-live-root'
 import {SiteFooter} from '@/components/site-footer'
 import {SiteHeader} from '@/components/site-header'
 import {siteDescription, siteName, siteUrl} from '@/config/site'
 import {cn} from '@/lib/utils'
-import {SanityLive} from '@/sanity/live'
 
 const fontSans = Figtree({
   subsets: ['latin'],
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
@@ -65,7 +66,11 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn('h-full bg-background antialiased font-sans', fontSans.variable, fontMono.variable)}
+      className={cn(
+        'h-full bg-background antialiased font-sans',
+        fontSans.variable,
+        fontMono.variable,
+      )}
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
         {/*
@@ -78,9 +83,10 @@ export default function RootLayout({
           {`(function(){try{var m=window.matchMedia('(prefers-color-scheme: dark)');function s(){document.documentElement.classList.toggle('dark',m.matches);}s();m.addEventListener('change',s);}catch(e){}})();`}
         </Script>
         <SiteHeader />
+        <DraftPreviewBanner />
         <main className="bg-background flex flex-1 flex-col">{children}</main>
         <SiteFooter />
-        <SanityLive />
+        <SanityLiveRoot />
       </body>
     </html>
   )

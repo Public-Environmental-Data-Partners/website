@@ -1,4 +1,9 @@
+'use client'
+
 import Image from 'next/image'
+import type {ReactNode} from 'react'
+
+import {usePrefersReducedMotion} from '@/lib/use-prefers-reduced-motion'
 
 type CoalitionPartner = {
   name: string
@@ -13,19 +18,15 @@ type CoalitionPartner = {
 export type CoalitionSectionProps = {
   heading: string
   partners: CoalitionPartner[]
+  /** CMS toggle; `prefers-reduced-motion` forces scroll fallback instead of marquee. */
+  useMarquee: boolean
 }
 
 function logoDimension(value: number | undefined, fallback: number) {
   return typeof value === 'number' && value > 0 ? value : fallback
 }
 
-function CoalitionLogo({
-  partner,
-  decorative,
-}: {
-  partner: CoalitionPartner
-  decorative?: boolean
-}) {
+function CoalitionLogo({partner, decorative}: {partner: CoalitionPartner; decorative?: boolean}) {
   const width = logoDimension(partner.logoWidth, 240)
   const height = logoDimension(partner.logoHeight, 120)
 
@@ -96,7 +97,30 @@ function MarqueeDuplicatePartnerRow({partners}: {partners: CoalitionPartner[]}) 
   )
 }
 
-/** Horizontal strip when prefers-reduced-motion (no infinite animation). */
+/** Static wrapping grid when marquee is off (CMS). */
+function CoalitionWrappedPanel({partners}: {partners: CoalitionPartner[]}) {
+  return (
+    <div className="pb-2">
+      <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-6 md:gap-x-10 md:gap-y-8">
+        {partners.map((partner) => (
+          <li key={partner.href}>
+            <a
+              href={partner.href}
+              aria-label={partner.ariaLabel}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center"
+            >
+              <CoalitionLogo partner={partner} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+/** Horizontal strip when marquee is on but motion is reduced (no infinite animation). */
 function CoalitionScrollPanel({partners}: {partners: CoalitionPartner[]}) {
   return (
     <div className="-mx-6 overflow-x-auto px-6 pb-2 md:mx-0 md:px-0">
@@ -105,7 +129,7 @@ function CoalitionScrollPanel({partners}: {partners: CoalitionPartner[]}) {
   )
 }
 
-/** CSS marquee when motion is OK; pauses on hover/focus-within via globals.css. */
+/** CSS marquee when CMS marquee is on and motion is OK; pause on hover/focus via globals.css. */
 function CoalitionMarqueePanel({partners}: {partners: CoalitionPartner[]}) {
   return (
     <div className="coalition-marquee-root -mx-6 overflow-hidden px-6 pb-2 md:mx-0 md:px-0">
@@ -117,29 +141,31 @@ function CoalitionMarqueePanel({partners}: {partners: CoalitionPartner[]}) {
   )
 }
 
-export function CoalitionSection({heading, partners}: CoalitionSectionProps) {
+export function CoalitionSection({heading, partners, useMarquee}: CoalitionSectionProps) {
+  const prefersReducedMotion = usePrefersReducedMotion()
+
   if (partners.length === 0) {
     return null
   }
 
   const headingId = 'coalition-partners-heading'
 
+  let strip: ReactNode
+  if (useMarquee && !prefersReducedMotion) {
+    strip = <CoalitionMarqueePanel partners={partners} />
+  } else if (useMarquee && prefersReducedMotion) {
+    strip = <CoalitionScrollPanel partners={partners} />
+  } else {
+    strip = <CoalitionWrappedPanel partners={partners} />
+  }
+
   return (
-    <section className="bg-background" aria-labelledby={headingId}>
+    <section className="bg-white dark:bg-background" aria-labelledby={headingId}>
       <div className="mx-auto w-full max-w-site px-6 py-10 md:px-12 md:py-14">
         <h2 id={headingId} className="section-label-heading text-muted-foreground mb-5 md:mb-7">
           {heading}
         </h2>
-
-        {/* Visible only when user prefers reduced motion */}
-        <div className="coalition-strip-scroll-wrap">
-          <CoalitionScrollPanel partners={partners} />
-        </div>
-
-        {/* Hidden from reduced-motion users via CSS */}
-        <div className="coalition-strip-marquee-wrap">
-          <CoalitionMarqueePanel partners={partners} />
-        </div>
+        {strip}
       </div>
     </section>
   )

@@ -1,24 +1,51 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import {Fragment} from 'react'
 
 import {DonateLink} from '@/components/donate-link'
 import {FooterNavLink} from '@/components/footer-nav-link'
 import {FooterSocialLinks} from '@/components/footer-social-links'
-import {donateNav, footerUtilityNavLinks, mainNavGroupById} from '@/config/nav'
+import {donateNav, footerUtilityLinksFrom, pickNavGroup} from '@/config/nav'
 import {siteName} from '@/config/site'
+import {getMainNav} from '@/lib/main-nav'
+import {type FooterItem, getSiteFooter} from '@/lib/site-footer'
 
 const sectionTitleClass = 'footer-section-heading m-0 text-footer-foreground'
 
-export function SiteFooter() {
-  const whatWeDo = mainNavGroupById('what-we-do')
-  const whatsHappening = mainNavGroupById('whats-happening')
-  const utilityLinks = footerUtilityNavLinks()
+function renderCmsFooterEntry(item: FooterItem, index: number) {
+  if (item.kind === 'group') {
+    return (
+      <div key={`footer-group-${item.label}-${index}`} className="flex flex-col gap-3">
+        <h3 className={sectionTitleClass}>{item.label}</h3>
+        <ul className="flex flex-col gap-2">
+          {item.items.map((sub) => (
+            <li key={sub.href}>
+              <FooterNavLink href={sub.href} label={sub.label} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+  return (
+    <div key={`footer-link-${item.href}-${index}`}>
+      <FooterNavLink href={item.href} label={item.label} />
+    </div>
+  )
+}
+
+export async function SiteFooter() {
+  const cmsFooter = await getSiteFooter()
+  const hasCmsColumns =
+    cmsFooter !== null && (cmsFooter.column1Items.length > 0 || cmsFooter.column2Items.length > 0)
+
+  const primaryNav = hasCmsColumns ? null : await getMainNav()
+  const whatWeDo = primaryNav ? pickNavGroup(primaryNav, 'what-we-do') : null
+  const whatsHappening = primaryNav ? pickNavGroup(primaryNav, 'whats-happening') : null
+  const utilityLinks = primaryNav ? footerUtilityLinksFrom(primaryNav) : []
 
   return (
-    <footer
-      data-site-footer
-      className="bg-footer text-footer-foreground mt-auto w-full shrink-0"
-    >
+    <footer data-site-footer className="bg-footer text-footer-foreground mt-auto w-full shrink-0">
       <div className="mx-auto max-w-site px-4 py-12 sm:px-6">
         <h2 className="sr-only">Footer</h2>
         <div className="flex flex-col gap-10 lg:grid lg:grid-cols-3 lg:items-start lg:gap-x-10">
@@ -38,45 +65,71 @@ export function SiteFooter() {
               />
             </Link>
             <FooterSocialLinks />
-            <DonateLink href={donateNav.href} label={donateNav.label} variant="footer" className="w-fit" />
+            <DonateLink
+              href={donateNav.href}
+              label={donateNav.label}
+              variant="footer"
+              className="w-fit"
+            />
           </div>
 
-          <nav aria-label="Programs and news" className="flex flex-col gap-8">
-            {whatWeDo ? (
-              <div className="flex flex-col gap-3">
-                <h3 className={sectionTitleClass}>What We Do</h3>
-                <ul className="flex flex-col gap-2">
-                  {whatWeDo.items.map((item) => (
-                    <li key={item.href}>
-                      <FooterNavLink href={item.href} label={item.label} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-            {whatsHappening ? (
-              <div className="flex flex-col gap-3">
-                <h3 className={sectionTitleClass}>What&apos;s Happening</h3>
-                <ul className="flex flex-col gap-2">
-                  {whatsHappening.items.map((item) => (
-                    <li key={item.href}>
-                      <FooterNavLink href={item.href} label={item.label} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-          </nav>
+          {hasCmsColumns && cmsFooter ? (
+            <>
+              <nav aria-label="Footer links" className="flex flex-col gap-8">
+                {cmsFooter.column1Items.map((item, index) => (
+                  <Fragment key={`cms-col1-${index}`}>{renderCmsFooterEntry(item, index)}</Fragment>
+                ))}
+              </nav>
+              <nav aria-label="Footer secondary links" className="flex flex-col gap-8">
+                {cmsFooter.column2Items.map((item, index) => (
+                  <Fragment key={`cms-col2-${index}`}>{renderCmsFooterEntry(item, index)}</Fragment>
+                ))}
+              </nav>
+            </>
+          ) : (
+            <>
+              <nav aria-label="Programs and news" className="flex flex-col gap-8">
+                {whatWeDo ? (
+                  <div className="flex flex-col gap-3">
+                    <h3 className={sectionTitleClass}>What We Do</h3>
+                    <ul className="flex flex-col gap-2">
+                      {whatWeDo.items.map((item) => (
+                        <li key={item.href}>
+                          <FooterNavLink href={item.href} label={item.label} />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+                {whatsHappening ? (
+                  <div className="flex flex-col gap-3">
+                    <h3 className={sectionTitleClass}>What&apos;s Happening</h3>
+                    <ul className="flex flex-col gap-2">
+                      {whatsHappening.items.map((item) => (
+                        <li key={item.href}>
+                          <FooterNavLink href={item.href} label={item.label} />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </nav>
 
-          <nav aria-label="Site sections" className="flex flex-col gap-3">
-            <ul className="flex flex-col gap-2">
-              {utilityLinks.map((item) => (
-                <li key={item.href}>
-                  <FooterNavLink href={item.href} label={item.label} className="footer-utility-heading" />
-                </li>
-              ))}
-            </ul>
-          </nav>
+              <nav aria-label="Site sections" className="flex flex-col gap-3">
+                <ul className="flex flex-col gap-2">
+                  {utilityLinks.map((item) => (
+                    <li key={item.href}>
+                      <FooterNavLink
+                        href={item.href}
+                        label={item.label}
+                        className="footer-utility-heading"
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </>
+          )}
         </div>
       </div>
     </footer>

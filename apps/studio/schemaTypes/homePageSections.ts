@@ -1,0 +1,586 @@
+import {defineField, defineType} from 'sanity'
+
+const heroPortableText = {
+  type: 'block',
+  marks: {
+    annotations: [
+      {
+        name: 'link',
+        type: 'object',
+        fields: [defineField({name: 'href', type: 'url'})],
+      },
+    ],
+  },
+} as const
+
+/** Homepage hero block; maps to HomeHeroSection / existing hero mapper fields. */
+export const homeHero = defineType({
+  name: 'homeHero',
+  title: 'Homepage hero',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'heroKicker',
+      title: 'Hero kicker',
+      type: 'string',
+      validation: (Rule) => Rule.required().max(40).warning('Keep this short (≤ 40 chars).'),
+    }),
+    defineField({
+      name: 'heroHeading',
+      title: 'Hero heading',
+      type: 'string',
+      validation: (Rule) => Rule.required().max(160).warning('Consider ≤ 160 chars.'),
+    }),
+    defineField({
+      name: 'heroParagraph1',
+      title: 'Hero paragraph 1',
+      type: 'array',
+      of: [heroPortableText],
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'heroParagraph2',
+      title: 'Hero paragraph 2',
+      type: 'array',
+      of: [heroPortableText],
+    }),
+    defineField({
+      name: 'heroImage',
+      title: 'Hero image (desktop/default)',
+      type: 'image',
+      description:
+        'Preferred format: JPG (WebP also OK); use PNG only when transparency is required.\nUse images roughly 2000-2800px wide for desktop hero; avoid files under 1600px or over 5000px wide.',
+      options: {hotspot: true},
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative text',
+          type: 'string',
+          validation: (Rule) =>
+            Rule.max(160).warning('Keep alt text concise and descriptive (≤ 160 chars).'),
+        }),
+      ],
+    }),
+    defineField({
+      name: 'heroImageMobile',
+      title: 'Hero image (mobile override)',
+      type: 'image',
+      description:
+        'Preferred format: JPG (WebP also OK); use PNG only when transparency is required.\nUse images roughly 1080-1600px wide for mobile hero; avoid files under 900px or over 3000px wide.',
+      options: {hotspot: true},
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative text (mobile override)',
+          type: 'string',
+          validation: (Rule) =>
+            Rule.max(160).warning('Keep alt text concise and descriptive (≤ 160 chars).'),
+        }),
+      ],
+    }),
+    defineField({
+      name: 'hideHeroImageOnMobile',
+      title: 'Hide hero image on mobile',
+      type: 'boolean',
+      initialValue: false,
+    }),
+  ],
+  preview: {
+    select: {
+      kicker: 'heroKicker',
+    },
+    prepare({kicker}) {
+      return {
+        title: 'Homepage hero',
+        subtitle: kicker?.trim() || undefined,
+      }
+    },
+  },
+})
+
+const partnerObject = defineField({
+  name: 'partner',
+  title: 'Partner',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'name',
+      title: 'Partner name',
+      type: 'string',
+      validation: (Rule) => Rule.required().max(120),
+    }),
+    defineField({
+      name: 'url',
+      title: 'Partner website URL',
+      type: 'url',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'ariaLabel',
+      title: 'Accessible label (optional)',
+      type: 'string',
+      description: 'Optional. Defaults to partner name when left blank.',
+      validation: (Rule) => Rule.max(160),
+    }),
+    defineField({
+      name: 'logo',
+      title: 'Partner logo',
+      type: 'image',
+      description:
+        'Preferred format: SVG (JPG also OK); use PNG only when transparency is required.\nAim for logos at least 400px wide to avoid blur on larger screens.',
+      options: {hotspot: true},
+      validation: (Rule) => Rule.required(),
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Logo alternative text (optional)',
+          type: 'string',
+          description: 'Optional. Defaults to partner name when left blank.',
+          validation: (Rule) => Rule.max(160),
+        }),
+      ],
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'name',
+      media: 'logo',
+      subtitle: 'url',
+    },
+  },
+})
+
+export const coalitionSection = defineType({
+  name: 'coalitionSection',
+  title: 'Coalition',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'coalitionHeading',
+      title: 'Coalition heading',
+      type: 'string',
+      initialValue: 'Our coalition',
+      validation: (Rule) => Rule.required().max(60),
+    }),
+    defineField({
+      name: 'coalitionPartners',
+      title: 'Coalition partners',
+      type: 'array',
+      description:
+        'Add partner logos and links. Drag to reorder items in the desired display order.',
+      of: [partnerObject],
+      validation: (Rule) => Rule.required().min(1),
+    }),
+    defineField({
+      name: 'useMarquee',
+      title: 'Marquee animation',
+      type: 'boolean',
+      description:
+        'On: infinite marquee when motion is allowed; visitors who prefer reduced motion get a horizontal scroll strip instead. Off: logos wrap in a centered static grid.',
+      initialValue: false,
+    }),
+  ],
+  preview: {
+    select: {
+      heading: 'coalitionHeading',
+    },
+    prepare({heading}) {
+      return {
+        title: 'Coalition',
+        subtitle: heading?.trim() || undefined,
+      }
+    },
+  },
+})
+
+export const byTheNumbersStat = defineType({
+  name: 'byTheNumbersStat',
+  title: 'Stat',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'value',
+      title: 'Number',
+      type: 'string',
+      description: 'e.g. 350+, 173, 20+',
+      validation: (Rule) => Rule.required().max(24),
+    }),
+    defineField({
+      name: 'label',
+      title: 'Phrase',
+      type: 'string',
+      validation: (Rule) => Rule.required().max(120),
+    }),
+  ],
+  preview: {
+    select: {
+      value: 'value',
+      label: 'label',
+    },
+    prepare({value, label}) {
+      return {
+        title: value || 'Stat',
+        subtitle: label,
+      }
+    },
+  },
+})
+
+export const byTheNumbersSection = defineType({
+  name: 'byTheNumbersSection',
+  title: 'By the numbers',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'kicker',
+      title: 'Eyebrow / kicker',
+      type: 'string',
+      initialValue: 'BY THE NUMBERS',
+      validation: (Rule) => Rule.required().max(60),
+    }),
+    defineField({
+      name: 'stats',
+      title: 'Number cards',
+      type: 'array',
+      of: [{type: 'byTheNumbersStat'}],
+      validation: (Rule) => Rule.required().min(1),
+    }),
+  ],
+  preview: {
+    select: {
+      kicker: 'kicker',
+      stats: 'stats',
+    },
+    prepare({kicker, stats}) {
+      const n = Array.isArray(stats) ? stats.length : 0
+      return {
+        title: kicker || 'By the numbers',
+        subtitle: n ? `${n} card${n === 1 ? '' : 's'}` : 'Add stats',
+      }
+    },
+  },
+})
+
+export const highlightBannerSection = defineType({
+  name: 'highlightBannerSection',
+  title: 'Highlight banner',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'image',
+      title: 'Banner image',
+      type: 'image',
+      options: {hotspot: true},
+      validation: (Rule) => Rule.required(),
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative text',
+          type: 'string',
+          validation: (Rule) =>
+            Rule.max(160).warning('Keep alt text concise and descriptive (≤ 160 chars).'),
+        }),
+      ],
+    }),
+    defineField({
+      name: 'kicker',
+      title: 'Kicker',
+      type: 'string',
+      initialValue: 'HIGHLIGHT BANNER',
+      validation: (Rule) => Rule.required().max(80),
+    }),
+    defineField({
+      name: 'titleLine',
+      title: 'Title line',
+      type: 'string',
+      description: 'Short supporting line above the main heading (optional).',
+      validation: (Rule) => Rule.max(120),
+    }),
+    defineField({
+      name: 'heading',
+      title: 'Heading',
+      type: 'string',
+      validation: (Rule) => Rule.required().max(200),
+    }),
+    defineField({
+      name: 'body',
+      title: 'Body',
+      type: 'array',
+      of: [heroPortableText],
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'ctaLabel',
+      title: 'Button label',
+      type: 'string',
+      initialValue: 'Explore',
+      validation: (Rule) => Rule.required().max(80),
+    }),
+    defineField({
+      name: 'ctaLink',
+      title: 'Button link',
+      type: 'homepageLinkTarget',
+      validation: (Rule) => Rule.required(),
+    }),
+  ],
+  preview: {
+    select: {
+      kicker: 'kicker',
+    },
+    prepare({kicker}) {
+      return {
+        title: 'Highlight banner',
+        subtitle: kicker?.trim() || undefined,
+      }
+    },
+  },
+})
+
+const storyCardChipList = [
+  {title: 'Story', value: 'Story'},
+  {title: 'News', value: 'News'},
+  {title: 'Blog', value: 'Blog'},
+  {title: 'Project', value: 'Project'},
+] as const
+
+const toolCardChipList = [
+  {title: 'Tool', value: 'Tool'},
+  {title: 'Resource', value: 'Resource'},
+  {title: 'Guide', value: 'Guide'},
+  {title: 'Dataset', value: 'Dataset'},
+] as const
+
+/** Story card object; stored `_type` is `storyCard`. */
+export const storyCard = defineType({
+  name: 'storyCard',
+  title: 'Story card',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'image',
+      title: 'Card image',
+      type: 'image',
+      options: {hotspot: true},
+      validation: (Rule) => Rule.required(),
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative text (optional)',
+          type: 'string',
+          validation: (Rule) => Rule.max(160),
+        }),
+      ],
+    }),
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      validation: (Rule) => Rule.required().max(120),
+    }),
+    defineField({
+      name: 'authors',
+      title: 'Authors / byline',
+      type: 'string',
+      description: 'e.g. by Alex Smith and Jordan Lee',
+      validation: (Rule) => Rule.max(160),
+    }),
+    defineField({
+      name: 'chip',
+      title: 'Tag / pill',
+      type: 'string',
+      options: {list: [...storyCardChipList], layout: 'dropdown'},
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'link',
+      title: 'Card link',
+      type: 'homepageLinkTarget',
+      validation: (Rule) => Rule.required(),
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'title',
+      chip: 'chip',
+      media: 'image',
+    },
+    prepare({title, chip}) {
+      return {
+        title: title || 'Story card',
+        subtitle: chip,
+      }
+    },
+  },
+})
+
+/** Tool card object; stored `_type` is `toolCard`. */
+export const toolCard = defineType({
+  name: 'toolCard',
+  title: 'Tool card',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'image',
+      title: 'Card image (optional)',
+      type: 'image',
+      options: {hotspot: true},
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative text (optional)',
+          type: 'string',
+          validation: (Rule) => Rule.max(160),
+        }),
+      ],
+    }),
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      validation: (Rule) => Rule.required().max(120),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      rows: 3,
+      validation: (Rule) => Rule.max(240),
+    }),
+    defineField({
+      name: 'chip',
+      title: 'Tag / pill',
+      type: 'string',
+      options: {list: [...toolCardChipList], layout: 'dropdown'},
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'link',
+      title: 'Card link',
+      type: 'homepageLinkTarget',
+      validation: (Rule) => Rule.required(),
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'title',
+      chip: 'chip',
+    },
+    prepare({title, chip}) {
+      return {
+        title: title || 'Tool card',
+        subtitle: chip,
+      }
+    },
+  },
+})
+
+export const cardCarouselSection = defineType({
+  name: 'cardCarouselSection',
+  title: 'Card carousel',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'sectionHeading',
+      title: 'Section heading',
+      type: 'string',
+      initialValue: 'Latest news',
+      validation: (Rule) => Rule.required().max(80),
+    }),
+    defineField({
+      name: 'cards',
+      title: 'Cards',
+      type: 'array',
+      description:
+        'Mix story and tool cards. Order is preserved; the site shows navigation when there are more than three.',
+      of: [{type: 'storyCard'}, {type: 'toolCard'}],
+      validation: (Rule) => Rule.required().min(1),
+    }),
+  ],
+  preview: {
+    select: {
+      sectionHeading: 'sectionHeading',
+    },
+    prepare({sectionHeading}) {
+      return {
+        title: 'Card carousel',
+        subtitle: sectionHeading?.trim() || undefined,
+      }
+    },
+  },
+})
+
+export const newsletterSection = defineType({
+  name: 'newsletterSection',
+  title: 'Newsletter',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'heading',
+      title: 'Heading',
+      type: 'string',
+      initialValue: 'Sign up for our newsletter',
+      validation: (Rule) => Rule.required().max(160),
+    }),
+    defineField({
+      name: 'body',
+      title: 'Supporting text (optional)',
+      type: 'text',
+      rows: 2,
+      validation: (Rule) => Rule.max(240),
+    }),
+    defineField({
+      name: 'emailPlaceholder',
+      title: 'Email field placeholder',
+      type: 'string',
+      initialValue: 'Email address…',
+      validation: (Rule) => Rule.required().max(80),
+    }),
+    defineField({
+      name: 'submitLabel',
+      title: 'Submit button label',
+      type: 'string',
+      initialValue: 'Subscribe',
+      validation: (Rule) => Rule.required().max(40),
+    }),
+  ],
+  preview: {
+    select: {
+      heading: 'heading',
+    },
+    prepare({heading}) {
+      return {
+        title: 'Newsletter',
+        subtitle: heading?.trim() || undefined,
+      }
+    },
+  },
+})
+
+/** Vertical rhythm between homepage slices; height only (pixels). */
+export const sectionSpacer = defineType({
+  name: 'sectionSpacer',
+  title: 'Section spacer',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'heightPx',
+      title: 'Height (px)',
+      type: 'number',
+      description: 'Empty vertical space between sections.',
+      initialValue: 40,
+      validation: (Rule) => Rule.required().integer().min(0).max(600),
+    }),
+  ],
+  preview: {
+    select: {
+      heightPx: 'heightPx',
+    },
+    prepare({heightPx}) {
+      const h = typeof heightPx === 'number' ? heightPx : 0
+      return {
+        title: 'Section spacer',
+        subtitle: `${h}px`,
+      }
+    },
+  },
+})

@@ -14,7 +14,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import {donateNav, mainNav} from '@/config/nav'
+import {donateNav, type MainNavEntry} from '@/config/nav'
 import {isActiveNavPath} from '@/lib/nav-active'
 import {cn} from '@/lib/utils'
 
@@ -71,7 +71,7 @@ function MobileDonateLink({pathname, onNavigate}: {pathname: string; onNavigate:
   )
 }
 
-function MobilePrimaryNavSheetInner() {
+function MobilePrimaryNavSheetInner({mainNav}: {mainNav: MainNavEntry[]}) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
 
@@ -92,7 +92,7 @@ function MobilePrimaryNavSheetInner() {
           <SheetDescription className="sr-only">Primary navigation for the site.</SheetDescription>
         </SheetHeader>
         <nav aria-label="Primary navigation" className="flex flex-1 flex-col gap-5">
-          {mainNav.map((entry) =>
+          {mainNav.map((entry, index) =>
             entry.kind === 'group' ? (
               <div key={entry.id} className="flex flex-col gap-2">
                 <p
@@ -127,7 +127,7 @@ function MobilePrimaryNavSheetInner() {
               </div>
             ) : (
               <TopLevelSheetLink
-                key={entry.href}
+                key={`sheet-link-${index}-${entry.href}`}
                 href={entry.href}
                 label={entry.label}
                 pathname={pathname}
@@ -145,7 +145,7 @@ function MobilePrimaryNavSheetInner() {
 }
 
 /** Remount on route change so the sheet closes without syncing state in an effect. */
-export function MobilePrimaryNavSheet() {
+export function MobilePrimaryNavSheet({mainNav}: {mainNav: MainNavEntry[]}) {
   const pathname = usePathname()
-  return <MobilePrimaryNavSheetInner key={pathname} />
+  return <MobilePrimaryNavSheetInner key={pathname} mainNav={mainNav} />
 }

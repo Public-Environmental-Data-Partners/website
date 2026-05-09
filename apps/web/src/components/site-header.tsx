@@ -5,11 +5,14 @@ import {DonateLink} from '@/components/donate-link'
 import {HeaderNavLink} from '@/components/header-nav-link'
 import {MobilePrimaryNavSheet} from '@/components/mobile-primary-nav-sheet'
 import {NavPrimaryGroup} from '@/components/nav-primary-group'
-import {donateNav, mainNav} from '@/config/nav'
+import {donateNav} from '@/config/nav'
 import {siteName} from '@/config/site'
+import {getMainNav} from '@/lib/main-nav'
 
-/** Global header; nav data from `config/nav`. Desktop: inline nav + dropdown; mobile: sheet. */
-export function SiteHeader() {
+/** Global header; primary nav from CMS (`getMainNav`). Desktop: dropdown; mobile: sheet. */
+export async function SiteHeader() {
+  const primaryNav = await getMainNav()
+
   return (
     <header className="border-border bg-light-beige border-b">
       <div className="mx-auto flex max-w-site items-center justify-between gap-3 px-4 py-3 sm:px-6">
@@ -43,7 +46,7 @@ export function SiteHeader() {
             aria-label="Primary"
             className="hidden flex-wrap items-center justify-end gap-x-4 gap-y-2 lg:flex lg:gap-x-6"
           >
-            {mainNav.map((entry) =>
+            {primaryNav.map((entry, index) =>
               entry.kind === 'group' ? (
                 <NavPrimaryGroup
                   key={entry.id}
@@ -52,7 +55,11 @@ export function SiteHeader() {
                   items={entry.items}
                 />
               ) : (
-                <HeaderNavLink key={entry.href} label={entry.label} href={entry.href} />
+                <HeaderNavLink
+                  key={`nav-link-${index}-${entry.href}`}
+                  label={entry.label}
+                  href={entry.href}
+                />
               ),
             )}
 
@@ -60,7 +67,7 @@ export function SiteHeader() {
           </nav>
 
           <div className="lg:hidden">
-            <MobilePrimaryNavSheet />
+            <MobilePrimaryNavSheet mainNav={primaryNav} />
           </div>
         </div>
       </div>

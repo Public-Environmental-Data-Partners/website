@@ -27,4 +27,3 @@ export function HeaderNavLink({href, label}: {href: string; label: string}) {
     </Link>
   )
 }
-

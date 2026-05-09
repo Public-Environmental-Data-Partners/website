@@ -95,9 +95,7 @@ export function HeroSection({
       <div className="mx-auto grid w-full max-w-site gap-8 px-6 py-12 md:px-12 lg:grid-cols-[3fr_2fr] lg:gap-12 lg:py-16">
         <div className="flex flex-col gap-6">
           {eyebrow ? (
-            <p className="text-muted-foreground font-semibold uppercase tracking-wide">
-              {eyebrow}
-            </p>
+            <p className="text-muted-foreground font-semibold uppercase tracking-wide">{eyebrow}</p>
           ) : null}
           <h1 className="hero-primary-heading text-foreground font-medium leading-tight tracking-tight">
             {title}

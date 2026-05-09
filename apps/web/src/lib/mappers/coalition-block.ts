@@ -20,12 +20,15 @@ type SanityPartner = {
   logo?: SanityLogo | null
 }
 
-type CoalitionSource = {
+export type CoalitionFields = {
   coalitionHeading?: string | null
   coalitionPartners?: SanityPartner[] | null
-} | null
+  useMarquee?: boolean | null
+}
 
-export function mapCoalitionBlockToProps(data: CoalitionSource): CoalitionSectionProps | null {
+export function mapCoalitionBlockToProps(
+  data: CoalitionFields | null | undefined,
+): CoalitionSectionProps | null {
   const partners = (data?.coalitionPartners ?? [])
     .map((partner) => {
       const name = partner?.name?.trim()
@@ -56,5 +59,6 @@ export function mapCoalitionBlockToProps(data: CoalitionSource): CoalitionSectio
   return {
     heading: data?.coalitionHeading?.trim() || 'Our coalition',
     partners,
+    useMarquee: data?.useMarquee === true,
   }
 }

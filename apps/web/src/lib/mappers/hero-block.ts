@@ -13,7 +13,8 @@ type SanityImageData = {
   } | null
 } | null
 
-type HomeHeroSource = {
+/** Sanity fragment shape for homepage hero (flat doc or `homeHero` section block). */
+export type HomeHeroFields = {
   heroKicker?: string | null
   heroHeading?: string | null
   heroParagraph1?: unknown
@@ -21,7 +22,7 @@ type HomeHeroSource = {
   heroImage?: SanityImageData
   heroImageMobile?: SanityImageData
   hideHeroImageOnMobile?: boolean | null
-} | null
+}
 
 function mapHeroImage(image: SanityImageData, fallbackAlt = ''): HeroSectionProps['image'] {
   const src = image?.asset?.url
@@ -42,7 +43,9 @@ function toPortableTextArray(value: unknown) {
   return Array.isArray(value) ? value : []
 }
 
-export function mapHeroBlockToProps(data: HomeHeroSource): HeroSectionProps | null {
+export function mapHeroBlockToProps(
+  data: HomeHeroFields | null | undefined,
+): HeroSectionProps | null {
   const title = data?.heroHeading?.trim()
   if (!title) {
     return null
