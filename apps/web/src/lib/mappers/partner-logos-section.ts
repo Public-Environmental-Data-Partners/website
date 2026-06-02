@@ -1,4 +1,4 @@
-import type {CoalitionSectionProps} from '@/components/home/coalition-section'
+import type {PartnerLogosSectionProps} from '@/components/sections/partner-logos-section'
 
 type SanityLogo = {
   alt?: string | null
@@ -20,16 +20,16 @@ type SanityPartner = {
   logo?: SanityLogo | null
 }
 
-export type CoalitionFields = {
-  coalitionHeading?: string | null
-  coalitionPartners?: SanityPartner[] | null
+export type PartnerLogosSectionFields = {
+  heading?: string | null
+  partners?: SanityPartner[] | null
   useMarquee?: boolean | null
 }
 
-export function mapCoalitionBlockToProps(
-  data: CoalitionFields | null | undefined,
-): CoalitionSectionProps | null {
-  const partners = (data?.coalitionPartners ?? [])
+export function mapPartnerLogosSectionToProps(
+  data: PartnerLogosSectionFields | null | undefined,
+): PartnerLogosSectionProps | null {
+  const partners = (data?.partners ?? [])
     .map((partner) => {
       const name = partner?.name?.trim()
       const href = partner?.url?.trim()
@@ -57,7 +57,7 @@ export function mapCoalitionBlockToProps(
   }
 
   return {
-    heading: data?.coalitionHeading?.trim() || 'Our coalition',
+    heading: data?.heading?.trim() || 'Our partners',
     partners,
     useMarquee: data?.useMarquee === true,
   }

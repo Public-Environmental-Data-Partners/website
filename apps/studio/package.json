@@ -20,15 +20,15 @@
   ],
   "dependencies": {
     "@sanity/ui": "^3.1.14",
-    "@sanity/vision": "^5.23.0",
+    "@sanity/vision": "^5.25.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "sanity": "^5.23.0",
+    "sanity": "^5.25.1",
     "styled-components": "^6.1.18"
   },
   "devDependencies": {
-    "@sanity/types": "5.23.0",
     "@sanity/eslint-config-studio": "^6.0.0",
+    "@sanity/types": "5.25.1",
     "@types/react": "^19.2.14",
     "eslint": "^9.28",
     "eslint-plugin-simple-import-sort": "^13.0.0",

@@ -1,14 +1,14 @@
-import {ByTheNumbersSection} from '@/components/home/by-the-numbers-section'
-import {CardCarouselSection} from '@/components/home/card-carousel-section'
-import {CoalitionSection} from '@/components/home/coalition-section'
+import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
+import {CardCarouselSection} from '@/components/sections/card-carousel-section'
+import {PartnerLogosSection} from '@/components/sections/partner-logos-section'
 import {HeroSection} from '@/components/home/hero-section'
 import {HighlightBannerSection} from '@/components/home/highlight-banner-section'
 import {NewsletterSection} from '@/components/home/newsletter-section'
 import {SectionSpacer} from '@/components/home/section-spacer'
 import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
 import {mapCardCarouselSectionToProps} from '@/lib/mappers/card-carousel-section'
-import type {CoalitionFields} from '@/lib/mappers/coalition-block'
-import {mapCoalitionBlockToProps} from '@/lib/mappers/coalition-block'
+import type {PartnerLogosSectionFields} from '@/lib/mappers/partner-logos-section'
+import {mapPartnerLogosSectionToProps} from '@/lib/mappers/partner-logos-section'
 import type {HomeHeroFields} from '@/lib/mappers/hero-block'
 import {mapHeroBlockToProps} from '@/lib/mappers/hero-block'
 import {mapHighlightBannerSectionToProps} from '@/lib/mappers/highlight-banner-section'
@@ -84,7 +84,7 @@ type SectionSpacerGroq = {
 
 export type HomeSectionGroq =
   | ({_type: 'homeHero'; _key: string} & HomeHeroFields)
-  | ({_type: 'coalitionSection'; _key: string} & CoalitionFields)
+  | ({_type: 'partnerLogosSection'; _key: string} & PartnerLogosSectionFields)
   | ByTheNumbersSectionGroq
   | HighlightBannerSectionGroq
   | CardCarouselSectionGroq
@@ -106,9 +106,9 @@ export function HomeSectionRow({section}: {section: HomeSectionGroq}) {
       return typeof section.heightPx === 'number' ? (
         <SectionSpacer heightPx={section.heightPx} />
       ) : null
-    case 'coalitionSection': {
-      const props = mapCoalitionBlockToProps(section)
-      return props ? <CoalitionSection {...props} /> : null
+    case 'partnerLogosSection': {
+      const props = mapPartnerLogosSectionToProps(section)
+      return props ? <PartnerLogosSection {...props} /> : null
     }
     case 'byTheNumbersSection': {
       const props = mapByTheNumbersSectionToProps(section)

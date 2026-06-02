@@ -10,7 +10,7 @@ export const page = defineType({
       title: 'Homepage sections',
       type: 'array',
       description:
-        'Ordered blocks for /. Add Hero, Section spacer, By the numbers, Highlight banner, Card carousel, Newsletter, Coalition, etc. Drag to reorder.',
+        'Ordered blocks for /. Add Hero, Section spacer, By the numbers, Highlight banner, Card carousel, Newsletter, Partner logos, etc. Drag to reorder.',
       of: [
         {type: 'homeHero'},
         {type: 'sectionSpacer'},
@@ -18,7 +18,7 @@ export const page = defineType({
         {type: 'highlightBannerSection'},
         {type: 'cardCarouselSection'},
         {type: 'newsletterSection'},
-        {type: 'coalitionSection'},
+        {type: 'partnerLogosSection'},
       ],
       validation: (Rule) => Rule.required().min(1),
     }),

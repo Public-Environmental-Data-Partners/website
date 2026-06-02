@@ -22,6 +22,7 @@ export type HomeHeroFields = {
   heroImage?: SanityImageData
   heroImageMobile?: SanityImageData
   hideHeroImageOnMobile?: boolean | null
+  homePageStyle?: boolean | null
 }
 
 function mapHeroImage(image: SanityImageData, fallbackAlt = ''): HeroSectionProps['image'] {
@@ -56,7 +57,10 @@ export function mapHeroBlockToProps(
   const body = [...paragraph1, ...paragraph2]
 
   const image = mapHeroImage(data?.heroImage ?? null, title)
-  const imageMobile = mapHeroImage(data?.heroImageMobile ?? null, image?.alt || title)
+  if (!image) {
+    return null
+  }
+  const imageMobile = mapHeroImage(data?.heroImageMobile ?? null, image.alt || title)
 
   return {
     eyebrow: data?.heroKicker?.trim() || undefined,
@@ -65,5 +69,7 @@ export function mapHeroBlockToProps(
     image,
     imageMobile,
     hideImageOnMobile: Boolean(data?.hideHeroImageOnMobile),
+    // Undefined = legacy blocks (homepage) before the field existed; treat as home layout until migrated.
+    homePageStyle: data?.homePageStyle !== false,
   }
 }

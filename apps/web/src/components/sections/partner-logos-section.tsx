@@ -3,9 +3,10 @@
 import Image from 'next/image'
 import type {ReactNode} from 'react'
 
+import {ContentStack, SectionBand, SiteShell} from '@/components/layout'
 import {usePrefersReducedMotion} from '@/lib/use-prefers-reduced-motion'
 
-type CoalitionPartner = {
+type PartnerLogo = {
   name: string
   href: string
   ariaLabel: string
@@ -15,9 +16,9 @@ type CoalitionPartner = {
   logoHeight?: number
 }
 
-export type CoalitionSectionProps = {
+export type PartnerLogosSectionProps = {
   heading: string
-  partners: CoalitionPartner[]
+  partners: PartnerLogo[]
   /** CMS toggle; `prefers-reduced-motion` forces scroll fallback instead of marquee. */
   useMarquee: boolean
 }
@@ -26,7 +27,7 @@ function logoDimension(value: number | undefined, fallback: number) {
   return typeof value === 'number' && value > 0 ? value : fallback
 }
 
-function CoalitionLogo({partner, decorative}: {partner: CoalitionPartner; decorative?: boolean}) {
+function PartnerLogoImage({partner, decorative}: {partner: PartnerLogo; decorative?: boolean}) {
   const width = logoDimension(partner.logoWidth, 240)
   const height = logoDimension(partner.logoHeight, 120)
 
@@ -46,7 +47,7 @@ function InteractivePartnerRow({
   partners,
   layout,
 }: {
-  partners: CoalitionPartner[]
+  partners: PartnerLogo[]
   layout: 'scroll' | 'marquee'
 }) {
   const rowClass =
@@ -65,7 +66,7 @@ function InteractivePartnerRow({
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center"
           >
-            <CoalitionLogo partner={partner} />
+            <PartnerLogoImage partner={partner} />
           </a>
         </li>
       ))}
@@ -77,7 +78,7 @@ function InteractivePartnerRow({
  * Second marquee loop: real links so pointer users always hit a target; `tabIndex={-1}` skips
  * duplicates in tab order; `aria-hidden` hides the strip from SR (names live on the first row).
  */
-function MarqueeDuplicatePartnerRow({partners}: {partners: CoalitionPartner[]}) {
+function MarqueeDuplicatePartnerRow({partners}: {partners: PartnerLogo[]}) {
   return (
     <ul aria-hidden className="flex shrink-0 items-center gap-6 md:gap-8">
       {partners.map((partner) => (
@@ -89,7 +90,7 @@ function MarqueeDuplicatePartnerRow({partners}: {partners: CoalitionPartner[]}) 
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center"
           >
-            <CoalitionLogo partner={partner} decorative />
+            <PartnerLogoImage partner={partner} decorative />
           </a>
         </li>
       ))}
@@ -98,7 +99,7 @@ function MarqueeDuplicatePartnerRow({partners}: {partners: CoalitionPartner[]}) 
 }
 
 /** Static wrapping grid when marquee is off (CMS). */
-function CoalitionWrappedPanel({partners}: {partners: CoalitionPartner[]}) {
+function PartnerLogosWrappedPanel({partners}: {partners: PartnerLogo[]}) {
   return (
     <div className="pb-2">
       <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-6 md:gap-x-10 md:gap-y-8">
@@ -111,7 +112,7 @@ function CoalitionWrappedPanel({partners}: {partners: CoalitionPartner[]}) {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center"
             >
-              <CoalitionLogo partner={partner} />
+              <PartnerLogoImage partner={partner} />
             </a>
           </li>
         ))}
@@ -121,7 +122,7 @@ function CoalitionWrappedPanel({partners}: {partners: CoalitionPartner[]}) {
 }
 
 /** Horizontal strip when marquee is on but motion is reduced (no infinite animation). */
-function CoalitionScrollPanel({partners}: {partners: CoalitionPartner[]}) {
+function PartnerLogosScrollPanel({partners}: {partners: PartnerLogo[]}) {
   return (
     <div className="-mx-6 overflow-x-auto px-6 pb-2 md:mx-0 md:px-0">
       <InteractivePartnerRow layout="scroll" partners={partners} />
@@ -130,10 +131,10 @@ function CoalitionScrollPanel({partners}: {partners: CoalitionPartner[]}) {
 }
 
 /** CSS marquee when CMS marquee is on and motion is OK; pause on hover/focus via globals.css. */
-function CoalitionMarqueePanel({partners}: {partners: CoalitionPartner[]}) {
+function PartnerLogosMarqueePanel({partners}: {partners: PartnerLogo[]}) {
   return (
-    <div className="coalition-marquee-root -mx-6 overflow-hidden px-6 pb-2 md:mx-0 md:px-0">
-      <div className="coalition-marquee-track flex w-max gap-6 md:gap-8">
+    <div className="partner-logos-marquee-root -mx-6 overflow-hidden px-6 pb-2 md:mx-0 md:px-0">
+      <div className="partner-logos-marquee-track flex w-max gap-6 md:gap-8">
         <InteractivePartnerRow layout="marquee" partners={partners} />
         <MarqueeDuplicatePartnerRow partners={partners} />
       </div>
@@ -141,32 +142,35 @@ function CoalitionMarqueePanel({partners}: {partners: CoalitionPartner[]}) {
   )
 }
 
-export function CoalitionSection({heading, partners, useMarquee}: CoalitionSectionProps) {
+/** `partnerLogosSection` CMS block: partner org logos (grid, scroll, or marquee). */
+export function PartnerLogosSection({heading, partners, useMarquee}: PartnerLogosSectionProps) {
   const prefersReducedMotion = usePrefersReducedMotion()
 
   if (partners.length === 0) {
     return null
   }
 
-  const headingId = 'coalition-partners-heading'
+  const headingId = 'partner-logos-heading'
 
   let strip: ReactNode
   if (useMarquee && !prefersReducedMotion) {
-    strip = <CoalitionMarqueePanel partners={partners} />
+    strip = <PartnerLogosMarqueePanel partners={partners} />
   } else if (useMarquee && prefersReducedMotion) {
-    strip = <CoalitionScrollPanel partners={partners} />
+    strip = <PartnerLogosScrollPanel partners={partners} />
   } else {
-    strip = <CoalitionWrappedPanel partners={partners} />
+    strip = <PartnerLogosWrappedPanel partners={partners} />
   }
 
   return (
-    <section className="bg-white dark:bg-background" aria-labelledby={headingId}>
-      <div className="mx-auto w-full max-w-site px-6 py-10 md:px-12 md:py-14">
-        <h2 id={headingId} className="section-label-heading text-muted-foreground mb-5 md:mb-7">
-          {heading}
-        </h2>
-        {strip}
-      </div>
-    </section>
+    <SectionBand className="bg-white dark:bg-background" aria-labelledby={headingId}>
+      <SiteShell>
+        <ContentStack>
+          <h2 id={headingId} className="section-label-heading text-muted-foreground">
+            {heading}
+          </h2>
+          {strip}
+        </ContentStack>
+      </SiteShell>
+    </SectionBand>
   )
 }

@@ -48,6 +48,7 @@ export const homeHero = defineType({
       name: 'heroImage',
       title: 'Hero image (desktop/default)',
       type: 'image',
+      validation: (Rule) => Rule.required(),
       description:
         'Preferred format: JPG (WebP also OK); use PNG only when transparency is required.\nUse images roughly 2000-2800px wide for desktop hero; avoid files under 1600px or over 5000px wide.',
       options: {hotspot: true},
@@ -84,15 +85,25 @@ export const homeHero = defineType({
       type: 'boolean',
       initialValue: false,
     }),
+    defineField({
+      name: 'homePageStyle',
+      title: 'Home page style',
+      type: 'boolean',
+      description:
+        'When enabled, uses the embedded image layout for the homepage. When off, uses the default inner-page hero (full image column, left accent bar).',
+      initialValue: false,
+    }),
   ],
   preview: {
     select: {
       kicker: 'heroKicker',
+      homePageStyle: 'homePageStyle',
     },
-    prepare({kicker}) {
+    prepare({kicker, homePageStyle}) {
+      const styleLabel = homePageStyle ? 'Home page style' : 'Default style'
       return {
         title: 'Homepage hero',
-        subtitle: kicker?.trim() || undefined,
+        subtitle: kicker?.trim() ? `${kicker.trim()} · ${styleLabel}` : styleLabel,
       }
     },
   },
@@ -150,21 +161,21 @@ const partnerObject = defineField({
   },
 })
 
-export const coalitionSection = defineType({
-  name: 'coalitionSection',
-  title: 'Coalition',
+export const partnerLogosSection = defineType({
+  name: 'partnerLogosSection',
+  title: 'Partner logos',
   type: 'object',
   fields: [
     defineField({
-      name: 'coalitionHeading',
-      title: 'Coalition heading',
+      name: 'heading',
+      title: 'Section heading',
       type: 'string',
-      initialValue: 'Our coalition',
+      initialValue: 'Our partners',
       validation: (Rule) => Rule.required().max(60),
     }),
     defineField({
-      name: 'coalitionPartners',
-      title: 'Coalition partners',
+      name: 'partners',
+      title: 'Partner logos',
       type: 'array',
       description:
         'Add partner logos and links. Drag to reorder items in the desired display order.',
@@ -182,11 +193,11 @@ export const coalitionSection = defineType({
   ],
   preview: {
     select: {
-      heading: 'coalitionHeading',
+      heading: 'heading',
     },
     prepare({heading}) {
       return {
-        title: 'Coalition',
+        title: 'Partner logos',
         subtitle: heading?.trim() || undefined,
       }
     },

@@ -99,6 +99,39 @@
   --radius-4xl: calc(var(--radius) * 2.6);
   /* Main layout column: 1440px incl. horizontal padding (90rem @ 16px root). */
   --max-width-site: 90rem;
+  /* Layout-system geometry (see docs/layout-system.md) — use via var(), not duplicated calcs */
+  --spacing-site-padding-x: var(--site-padding-x);
+  --spacing-section-padding-y: var(--section-padding-y);
+  --width-site-gutter: var(--site-gutter);
+}
+
+/*
+ * Layout-system geometry tokens (Phase A1 — docs/layout-integration-plan.md).
+ * Prototype reference: docs/layout-prototype.html
+ */
+:root {
+  --site-padding-x: 1.5rem;
+  --site-padding-x-md: 3rem;
+  --section-padding-y: 2.5rem;
+  --section-padding-y-md: 3.5rem;
+  --site-gutter-offset: 7px;
+  --site-gutter-inset: 1.5rem;
+  --edge-strip-height: 40px;
+  --image-shelf-height: 50px;
+  --site-gutter: max(
+    0px,
+    calc(
+      (100vw - min(100vw, var(--max-width-site))) / 2 + var(--site-gutter-inset) -
+        var(--site-gutter-offset)
+    )
+  );
+}
+
+@media (min-width: 768px) {
+  :root {
+    --site-padding-x: var(--site-padding-x-md);
+    --site-gutter-inset: 3rem;
+  }
 }
 
 html {
@@ -226,32 +259,20 @@ blockquote,
 }
 
 /*
- * Highlight banner: extend green-4 strip by the same inset as `max-w-site` horizontal padding
- * (`px-6` / `md:px-12`), minus 7px, so its inner edge aligns near the image edge.
+ * Highlight banner: viewport-aligned left gutter (layout-system --site-gutter).
+ * Inner edge aligns near image/content; see docs/layout-system.md.
  */
 .highlight-banner-green4-gutter {
-  width: max(0px, calc((100vw - min(100vw, var(--max-width-site))) / 2 + 1.5rem - 7px));
-}
-
-@media (min-width: 768px) {
-  .highlight-banner-green4-gutter {
-    width: max(0px, calc((100vw - min(100vw, var(--max-width-site))) / 2 + 3rem - 7px));
-  }
+  width: var(--site-gutter);
 }
 
 /*
- * Highlight banner mobile/tablet (<lg): vertical green-4 bar flush with image left, same height
- * as image only (paired in a flex row). Width mirrors `.highlight-banner-green4-gutter`.
+ * Highlight banner mobile/tablet (<lg): vertical green-4 bar beside image row.
+ * Same width as desktop SiteBleed (--site-gutter).
  */
 .highlight-banner-mobile-image-strip {
-  width: max(0px, calc((100vw - min(100vw, var(--max-width-site))) / 2 + 1.5rem - 7px));
+  width: var(--site-gutter);
   align-self: stretch;
-}
-
-@media (min-width: 768px) and (max-width: 1023px) {
-  .highlight-banner-mobile-image-strip {
-    width: max(0px, calc((100vw - min(100vw, var(--max-width-site))) / 2 + 3rem - 7px));
-  }
 }
 
 @layer base {
@@ -264,23 +285,23 @@ blockquote,
 }
 
 /*
- * Coalition marquee CSS: only applies when `CoalitionMarqueePanel` is mounted
+ * Partner logos marquee CSS: only applies when `PartnerLogosMarqueePanel` is mounted
  * (CMS useMarquee on and user allows motion). Hover/focus pauses the strip.
  */
-@keyframes coalition-marquee-translate {
+@keyframes partner-logos-marquee-translate {
   to {
     transform: translateX(-50%);
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .coalition-marquee-track {
-    animation: coalition-marquee-translate 55s linear infinite;
+  .partner-logos-marquee-track {
+    animation: partner-logos-marquee-translate 55s linear infinite;
     will-change: transform;
   }
 
-  .coalition-marquee-root:hover .coalition-marquee-track,
-  .coalition-marquee-root:focus-within .coalition-marquee-track {
+  .partner-logos-marquee-root:hover .partner-logos-marquee-track,
+  .partner-logos-marquee-root:focus-within .partner-logos-marquee-track {
     animation-play-state: paused;
   }
 }
