@@ -1,17 +1,6 @@
 import type {HeroSectionProps} from '@/components/home/hero-section'
 
-type SanityImageData = {
-  alt?: string | null
-  asset?: {
-    url?: string | null
-    metadata?: {
-      dimensions?: {
-        width?: number | null
-        height?: number | null
-      } | null
-    } | null
-  } | null
-} | null
+import {mapSanityImage, type SanityImageData} from './sanity-image'
 
 /** Sanity fragment shape for homepage hero (flat doc or `homeHero` section block). */
 export type HomeHeroFields = {
@@ -23,21 +12,6 @@ export type HomeHeroFields = {
   heroImageMobile?: SanityImageData
   hideHeroImageOnMobile?: boolean | null
   homePageStyle?: boolean | null
-}
-
-function mapHeroImage(image: SanityImageData, fallbackAlt = ''): HeroSectionProps['image'] {
-  const src = image?.asset?.url
-  if (!src) {
-    return undefined
-  }
-
-  const dimensions = image.asset?.metadata?.dimensions
-  return {
-    src,
-    alt: image.alt?.trim() || fallbackAlt,
-    width: dimensions?.width ?? undefined,
-    height: dimensions?.height ?? undefined,
-  }
 }
 
 function toPortableTextArray(value: unknown) {
@@ -56,11 +30,11 @@ export function mapHeroBlockToProps(
   const paragraph2 = toPortableTextArray(data?.heroParagraph2)
   const body = [...paragraph1, ...paragraph2]
 
-  const image = mapHeroImage(data?.heroImage ?? null, title)
+  const image = mapSanityImage(data?.heroImage ?? null, title)
   if (!image) {
     return null
   }
-  const imageMobile = mapHeroImage(data?.heroImageMobile ?? null, image.alt || title)
+  const imageMobile = mapSanityImage(data?.heroImageMobile ?? null, image.alt || title)
 
   return {
     eyebrow: data?.heroKicker?.trim() || undefined,

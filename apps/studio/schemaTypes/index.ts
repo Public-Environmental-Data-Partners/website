@@ -12,10 +12,12 @@ import {
   toolCard,
 } from './homePageSections'
 import {newsletterSignup} from './newsletterSignup'
+import {newsHubPage} from './newsHubPage'
 import {page} from './page'
 import {siteFooter} from './siteFooter'
 import {siteNavGroup, siteNavigation, siteNavLink} from './siteNavigation'
 import {simpleSection, sitePage} from './sitePage'
+import {splitHeroBleedFields} from './splitHeroBleedFields'
 
 export const schemaTypes = [
   byTheNumbersStat,
@@ -37,4 +39,6 @@ export const schemaTypes = [
   siteNavigation,
   siteFooter,
   newsletterSignup,
+  splitHeroBleedFields,
+  newsHubPage,
 ]

@@ -118,6 +118,9 @@
   --site-gutter-inset: 1.5rem;
   --edge-strip-height: 40px;
   --image-shelf-height: 50px;
+  /* Shared viewport ↔ site column math (layout-system; used by bleed archetypes). */
+  --site-column-width: min(100vw, var(--max-width-site));
+  --site-column-start: calc((100vw - var(--site-column-width)) / 2);
   --site-gutter: max(
     0px,
     calc(

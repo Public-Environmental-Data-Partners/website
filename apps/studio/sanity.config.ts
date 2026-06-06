@@ -66,6 +66,24 @@ const structure: StructureResolver = (S) =>
                 .child(S.component(NewsletterCsvExportPane).title('Newsletter CSV export')),
             ]),
         ),
+      S.listItem()
+        .title('News & updates')
+        .id('news-and-updates')
+        .child(
+          S.list()
+            .title('News & updates')
+            .items([
+              S.listItem()
+                .title('Hub page')
+                .id('news-hub-page')
+                .child(
+                  S.document()
+                    .schemaType('newsHubPage')
+                    .documentId('page.newsHub')
+                    .title('News & updates — Hub'),
+                ),
+            ]),
+        ),
       S.divider(),
       S.listItem()
         .title('Pages')

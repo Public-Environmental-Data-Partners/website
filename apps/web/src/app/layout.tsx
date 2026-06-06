@@ -1,4 +1,5 @@
 import './globals.css'
+import './hero-split-grid.css'
 import './pedp-token-overrides.css'
 
 import type {Metadata} from 'next'
@@ -84,7 +85,7 @@ export default async function RootLayout({
         </Script>
         <SiteHeader />
         <DraftPreviewBanner />
-        <main className="bg-background flex flex-1 flex-col">{children}</main>
+        <main className="bg-white flex flex-1 flex-col">{children}</main>
         <SiteFooter />
         <SanityLiveRoot />
       </body>
