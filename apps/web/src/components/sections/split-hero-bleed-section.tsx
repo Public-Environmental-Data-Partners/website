@@ -58,15 +58,9 @@ export function SplitHeroBleedSection({
             ) : null}
           </HeroSplitContentColumn>
           <HeroSplitWhiteBand />
-          <HeroSplitImageColumn
-            className={cn(hideImageOnMobile && 'max-md:hidden')}
-          >
+          <HeroSplitImageColumn className={cn(hideImageOnMobile && 'max-md:hidden')}>
             <HeroSplitImageFrame className="relative overflow-hidden bg-surface">
-              <HeroImageBlock
-                variant="split"
-                image={image}
-                imageMobile={imageMobile}
-              />
+              <HeroImageBlock variant="split" image={image} imageMobile={imageMobile} />
             </HeroSplitImageFrame>
           </HeroSplitImageColumn>
           <HeroSplitShelfRow>

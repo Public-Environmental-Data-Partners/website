@@ -44,31 +44,31 @@ function DefaultHeroSection({
             className="absolute top-0 bottom-0 left-[calc(50%-50vw)] z-10 hidden w-[calc(50vw-50%+1.25rem)] bg-beige lg:block"
           />
           <div className="relative px-6 py-12 md:px-12 lg:py-16 lg:pr-0">
-          <div className="flex flex-col gap-6 lg:max-w-[calc(50%-1.5rem)] lg:pl-2">
-            {eyebrow ? (
-              <p className="text-muted-foreground font-semibold uppercase tracking-wide">
-                {eyebrow}
-              </p>
-            ) : null}
-            <h1 className="hero-primary-heading text-foreground font-medium leading-tight tracking-tight">
-              {title}
-            </h1>
-            {body ? (
-              <div className="text-foreground/90 max-w-none space-y-4 leading-relaxed">
-                <PortableText value={body as never} />
-              </div>
-            ) : null}
-          </div>
+            <div className="flex flex-col gap-6 lg:max-w-[calc(50%-1.5rem)] lg:pl-2">
+              {eyebrow ? (
+                <p className="text-muted-foreground font-semibold uppercase tracking-wide">
+                  {eyebrow}
+                </p>
+              ) : null}
+              <h1 className="hero-primary-heading text-foreground font-medium leading-tight tracking-tight">
+                {title}
+              </h1>
+              {body ? (
+                <div className="text-foreground/90 max-w-none space-y-4 leading-relaxed">
+                  <PortableText value={body as never} />
+                </div>
+              ) : null}
+            </div>
 
-          <div
-            className={cn(
-              'relative mt-8 min-h-[16rem] w-full lg:mt-0',
-              hideImageOnMobile ? 'hidden' : 'lg:hidden',
-            )}
-          >
-            <HeroImageBlock variant="default" image={image} imageMobile={imageMobile} />
+            <div
+              className={cn(
+                'relative mt-8 min-h-[16rem] w-full lg:mt-0',
+                hideImageOnMobile ? 'hidden' : 'lg:hidden',
+              )}
+            >
+              <HeroImageBlock variant="default" image={image} imageMobile={imageMobile} />
+            </div>
           </div>
-        </div>
 
           <HeroImageBlock
             variant="default"

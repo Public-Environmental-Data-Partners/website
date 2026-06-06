@@ -13,10 +13,7 @@ export type SanityImageData = {
   } | null
 } | null
 
-export function mapSanityImage(
-  image: SanityImageData,
-  fallbackAlt = '',
-): HeroImage | undefined {
+export function mapSanityImage(image: SanityImageData, fallbackAlt = ''): HeroImage | undefined {
   const src = image?.asset?.url
   if (!src) {
     return undefined

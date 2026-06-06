@@ -15,10 +15,7 @@ export function ByTheNumbersSection({kicker, stats}: ByTheNumbersSectionProps) {
     <SectionBand className="bg-background" aria-labelledby="by-the-numbers-heading">
       <SiteShell>
         <ContentStack>
-          <h2
-            id="by-the-numbers-heading"
-            className="section-label-heading text-muted-foreground"
-          >
+          <h2 id="by-the-numbers-heading" className="section-label-heading text-muted-foreground">
             {kicker}
           </h2>
           <ul className="flex flex-col items-start gap-10 pl-6 pb-6 md:w-full md:flex-row md:items-start md:justify-between md:gap-0 md:pl-0 md:pb-8">

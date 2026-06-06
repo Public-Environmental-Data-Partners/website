@@ -3,16 +3,16 @@ import {
   byTheNumbersSection,
   byTheNumbersStat,
   cardCarouselSection,
-  partnerLogosSection,
   highlightBannerSection,
   homeHero,
   newsletterSection,
+  partnerLogosSection,
   sectionSpacer,
   storyCard,
   toolCard,
 } from './homePageSections'
-import {newsletterSignup} from './newsletterSignup'
 import {newsHubPage} from './newsHubPage'
+import {newsletterSignup} from './newsletterSignup'
 import {page} from './page'
 import {siteFooter} from './siteFooter'
 import {siteNavGroup, siteNavigation, siteNavLink} from './siteNavigation'

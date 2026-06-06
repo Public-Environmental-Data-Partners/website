@@ -51,7 +51,9 @@ export const splitHeroBleedFields = defineType({
           title: 'Alternative text',
           type: 'string',
           validation: (Rule) =>
-            Rule.required().max(160).warning('Keep alt text concise and descriptive (≤ 160 chars).'),
+            Rule.required()
+              .max(160)
+              .warning('Keep alt text concise and descriptive (≤ 160 chars).'),
         }),
       ],
     }),

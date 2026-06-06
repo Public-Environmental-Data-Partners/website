@@ -49,14 +49,8 @@ function HeroImagePicture({
   altText: string
   variant: HeroImageVariant
 }) {
-  const desktopWidth = getDimension(
-    desktopImage.width,
-    variant === 'split' ? 700 : 1600,
-  )
-  const desktopHeight = getDimension(
-    desktopImage.height,
-    variant === 'split' ? 650 : 900,
-  )
+  const desktopWidth = getDimension(desktopImage.width, variant === 'split' ? 700 : 1600)
+  const desktopHeight = getDimension(desktopImage.height, variant === 'split' ? 650 : 900)
   const mobileWidth = getDimension(mobileSource.width, 1080)
   const mobileHeight = getDimension(mobileSource.height, 1350)
 
@@ -146,7 +140,9 @@ function HeroImageBlock({
     return frame
   }
 
-  return <div className={cn(fillContainer && 'h-full w-full', visibilityClass, className)}>{frame}</div>
+  return (
+    <div className={cn(fillContainer && 'h-full w-full', visibilityClass, className)}>{frame}</div>
+  )
 }
 
 export {HeroImageBlock}

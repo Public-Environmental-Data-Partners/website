@@ -11,11 +11,7 @@ type SectionBandProps = React.ComponentProps<'section'> & {
  * Full-viewport section wrapper (layout-system SectionBand).
  * Background and typography live in className / children — not layout geometry.
  */
-function SectionBand({
-  className,
-  overflowHidden = true,
-  ...props
-}: SectionBandProps) {
+function SectionBand({className, overflowHidden = true, ...props}: SectionBandProps) {
   return (
     <section
       data-slot="section-band"
