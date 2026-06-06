@@ -28,23 +28,3 @@ export const donateNav: NavLeaf = {
   label: 'Donate',
   href: '/donate',
 }
-
-export const privacyPolicyNav: NavLeaf = {
-  label: 'Privacy Policy',
-  href: '/privacy-policy',
-}
-
-export function pickNavGroup(entries: MainNavEntry[], id: string): NavGroup | undefined {
-  for (const entry of entries) {
-    if (entry.kind === 'group' && entry.id === id) {
-      return entry
-    }
-  }
-  return undefined
-}
-
-/** Footer column 3: same order as primary `link` entries, then privacy (not in header). */
-export function footerUtilityLinksFrom(entries: MainNavEntry[]): NavLeaf[] {
-  const links = entries.filter((e): e is NavLink => e.kind === 'link')
-  return [...links, privacyPolicyNav]
-}

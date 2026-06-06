@@ -46,7 +46,7 @@ export const siteNavLink = defineType({
       title: 'Internal path',
       type: 'string',
       description:
-        'Use when the target is not a Site page document (e.g. /donate, /whats-happening/blog). Must start with /.',
+        'Use when the target is not a Site page document (e.g. /donate, /news-and-updates). Must start with /.',
     }),
   ],
   preview: {

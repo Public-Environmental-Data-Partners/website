@@ -45,7 +45,7 @@ export const homepageLinkTarget = defineType({
       name: 'path',
       title: 'Internal path',
       type: 'string',
-      description: 'Must start with / (e.g. /donate, /whats-happening/blog).',
+      description: 'Must start with / (e.g. /donate, /news-and-updates/my-post).',
     }),
     defineField({
       name: 'externalUrl',
