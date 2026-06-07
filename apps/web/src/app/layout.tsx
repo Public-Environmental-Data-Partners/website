@@ -5,7 +5,7 @@ import './news-post-teaser.css'
 import './pedp-token-overrides.css'
 
 import type {Metadata} from 'next'
-import {Figtree, Geist_Mono} from 'next/font/google'
+import {Figtree, Geist_Mono, Source_Serif_4} from 'next/font/google'
 import Script from 'next/script'
 
 import {DraftPreviewBanner} from '@/components/draft-preview-banner'
@@ -25,6 +25,13 @@ const fontSans = Figtree({
 const fontMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+})
+
+const fontSerif = Source_Serif_4({
+  subsets: ['latin'],
+  variable: '--font-source-serif-4',
+  style: ['normal', 'italic'],
+  weight: ['500', '600'],
 })
 
 export const metadata: Metadata = {
@@ -73,6 +80,7 @@ export default async function RootLayout({
         'h-full bg-background antialiased font-sans',
         fontSans.variable,
         fontMono.variable,
+        fontSerif.variable,
       )}
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">

@@ -16,6 +16,7 @@ import {newsletterSignup} from './newsletterSignup'
 import {newsPost} from './newsPost'
 import {newsPostTeaserFields} from './newsPostTeaserFields'
 import {page} from './page'
+import {quoteBlock} from './quoteBlock'
 import {siteFooter} from './siteFooter'
 import {siteNavGroup, siteNavigation, siteNavLink} from './siteNavigation'
 import {simpleSection, sitePage} from './sitePage'
@@ -44,5 +45,6 @@ export const schemaTypes = [
   splitHeroBleedFields,
   newsHubPage,
   newsPostTeaserFields,
+  quoteBlock,
   newsPost,
 ]

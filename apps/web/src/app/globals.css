@@ -63,8 +63,7 @@
   --color-pedp-green: var(--green);
   --color-pedp-blue: var(--blue);
   --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
-  /* Serif stack also uses Figtree so `font-serif` stays on-brand until a second family ships. */
-  --font-serif: var(--font-figtree), ui-serif, Georgia, serif;
+  --font-serif: var(--font-source-serif-4), ui-serif, Georgia, serif;
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-figtree);
   --color-sidebar-ring: var(--sidebar-ring);

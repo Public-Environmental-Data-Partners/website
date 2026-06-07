@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 
 /** Match Sanity client / Vision; used only for validation queries. */
 const STUDIO_API_VERSION = '2024-01-01'
@@ -135,7 +135,7 @@ export const newsPost = defineType({
       name: 'body',
       title: 'Body',
       type: 'array',
-      of: [newsPostBodyBlock],
+      of: [newsPostBodyBlock, defineArrayMember({type: 'quoteBlock'})],
       description: 'Article content below the detail hero.',
     }),
   ],
