@@ -16,23 +16,3 @@ export function NewsHubListingSection({children, className}: NewsHubListingSecti
     </SectionBand>
   )
 }
-
-/** Visual pagination stub — wired in PR B. */
-export function NewsHubPaginationStub({className}: {className?: string}) {
-  return (
-    <nav
-      className={cn('mt-2 flex justify-center gap-2', className)}
-      aria-label="Pagination preview"
-    >
-      <span className="border-navy bg-navy inline-flex min-h-8 min-w-8 items-center justify-center rounded border text-xs font-semibold text-white">
-        1
-      </span>
-      <span className="border-border text-navy inline-flex min-h-8 min-w-8 items-center justify-center rounded border text-xs font-semibold">
-        2
-      </span>
-      <span className="border-border text-navy inline-flex min-h-8 min-w-8 items-center justify-center rounded border text-xs font-semibold">
-        3
-      </span>
-    </nav>
-  )
-}

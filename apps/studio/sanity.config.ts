@@ -82,6 +82,14 @@ const structure: StructureResolver = (S) =>
                     .documentId('page.newsHub')
                     .title('News & updates — Hub'),
                 ),
+              S.listItem()
+                .title('Posts')
+                .id('news-posts')
+                .child(
+                  S.documentTypeList('newsPost')
+                    .title('News posts')
+                    .defaultOrdering([{field: 'publishedAt', direction: 'desc'}]),
+                ),
             ]),
         ),
       S.divider(),

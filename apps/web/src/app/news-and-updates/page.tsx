@@ -1,18 +1,21 @@
 import type {Metadata} from 'next'
 
-import {
-  NewsHubListingSection,
-  NewsHubPaginationStub,
-} from '@/components/news/news-hub-listing-section'
+import {NewsHubListingSection} from '@/components/news/news-hub-listing-section'
+import {NewsHubPagination} from '@/components/news/news-hub-pagination'
 import {NewsPostTeaser} from '@/components/news/news-post-teaser'
 import {SplitHeroBleedSection} from '@/components/sections/split-hero-bleed-section'
-import {NEWS_POST_TEASER_FIXTURES} from '@/lib/fixtures/news-post-teasers'
+import {mapNewsPostToTeaserProps} from '@/lib/mappers/news-post'
 import {mapSplitHeroBleed} from '@/lib/mappers/split-hero-bleed'
 import {getNewsHubPage} from '@/lib/queries/news-hub-page'
+import {getNewsPostsPage} from '@/lib/queries/news-posts'
 
 export const dynamic = 'force-dynamic'
 
 const DEFAULT_TITLE = 'News & updates'
+
+type NewsAndUpdatesPageProps = {
+  searchParams: Promise<{page?: string}>
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const hub = await getNewsHubPage()
@@ -25,18 +28,23 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function NewsAndUpdatesPage() {
-  const hub = await getNewsHubPage()
+export default async function NewsAndUpdatesPage({searchParams}: NewsAndUpdatesPageProps) {
+  const {page: pageParam} = await searchParams
+  const [hub, listing] = await Promise.all([getNewsHubPage(), getNewsPostsPage(pageParam)])
   const heroProps = mapSplitHeroBleed(hub?.hero)
+
+  const teasers = listing.posts
+    .map((post) => mapNewsPostToTeaserProps(post))
+    .filter((props): props is NonNullable<typeof props> => props !== null)
 
   return (
     <>
       {heroProps ? <SplitHeroBleedSection {...heroProps} /> : null}
       <NewsHubListingSection>
-        {NEWS_POST_TEASER_FIXTURES.map((teaser) => (
+        {teasers.map((teaser) => (
           <NewsPostTeaser key={teaser.titleId ?? teaser.href} {...teaser} />
         ))}
-        <NewsHubPaginationStub />
+        <NewsHubPagination currentPage={listing.page} totalPages={listing.totalPages} />
       </NewsHubListingSection>
     </>
   )

@@ -13,6 +13,8 @@ import {
 } from './homePageSections'
 import {newsHubPage} from './newsHubPage'
 import {newsletterSignup} from './newsletterSignup'
+import {newsPost} from './newsPost'
+import {newsPostTeaserFields} from './newsPostTeaserFields'
 import {page} from './page'
 import {siteFooter} from './siteFooter'
 import {siteNavGroup, siteNavigation, siteNavLink} from './siteNavigation'
@@ -41,4 +43,6 @@ export const schemaTypes = [
   newsletterSignup,
   splitHeroBleedFields,
   newsHubPage,
+  newsPostTeaserFields,
+  newsPost,
 ]
