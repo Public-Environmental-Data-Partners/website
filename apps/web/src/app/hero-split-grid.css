@@ -7,7 +7,6 @@
 
 [data-slot='site-shell'][data-padding='splitHero'] {
   --hero-shell-padding-x: 1rem;
-  --hero-accent-col-width: 1.25rem;
   --hero-content-col-padding-start: 1.25rem;
   --hero-white-band-min-height: 5rem;
   --hero-content-image-gap: 2.5rem;

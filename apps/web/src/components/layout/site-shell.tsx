@@ -30,6 +30,14 @@ const siteShellVariants = cva('mx-auto w-full max-w-site', {
         'py-0',
         'md:pe-0',
       ],
+      /** §06 hub listing: equal inset @ < md; leading flush + trailing inset @ md+ */
+      hubListing: [
+        'px-[var(--site-padding-x)]',
+        'py-[var(--section-padding-y)]',
+        'md:px-0',
+        'md:py-[var(--section-padding-y-md)]',
+        'md:pe-[var(--site-padding-x)]',
+      ],
     },
   },
   defaultVariants: {

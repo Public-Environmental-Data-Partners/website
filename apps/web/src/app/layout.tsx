@@ -1,5 +1,6 @@
 import './globals.css'
 import './hero-split-grid.css'
+import './news-post-teaser.css'
 import './pedp-token-overrides.css'
 
 import type {Metadata} from 'next'

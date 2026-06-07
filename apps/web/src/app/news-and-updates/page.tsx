@@ -1,6 +1,12 @@
 import type {Metadata} from 'next'
 
+import {
+  NewsHubListingSection,
+  NewsHubPaginationStub,
+} from '@/components/news/news-hub-listing-section'
+import {NewsPostTeaser} from '@/components/news/news-post-teaser'
 import {SplitHeroBleedSection} from '@/components/sections/split-hero-bleed-section'
+import {NEWS_POST_TEASER_FIXTURES} from '@/lib/fixtures/news-post-teasers'
 import {mapSplitHeroBleed} from '@/lib/mappers/split-hero-bleed'
 import {getNewsHubPage} from '@/lib/queries/news-hub-page'
 
@@ -26,7 +32,12 @@ export default async function NewsAndUpdatesPage() {
   return (
     <>
       {heroProps ? <SplitHeroBleedSection {...heroProps} /> : null}
-      {/* Listing stub — Phase 1 cards in news-and-updates-plan.md */}
+      <NewsHubListingSection>
+        {NEWS_POST_TEASER_FIXTURES.map((teaser) => (
+          <NewsPostTeaser key={teaser.titleId ?? teaser.href} {...teaser} />
+        ))}
+        <NewsHubPaginationStub />
+      </NewsHubListingSection>
     </>
   )
 }
