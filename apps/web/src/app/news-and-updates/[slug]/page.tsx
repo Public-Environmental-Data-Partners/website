@@ -1,7 +1,7 @@
 import type {Metadata} from 'next'
 import {notFound} from 'next/navigation'
 
-import {ArticleBodyStub} from '@/components/news/article-body-stub'
+import {ArticleBody} from '@/components/content/article-body'
 import {ArticleDetailHeroSection} from '@/components/sections/article-detail-hero-section'
 import {mapNewsPostToDetailHeroProps} from '@/lib/mappers/news-post'
 import {getNewsPostBySlug} from '@/lib/queries/news-post-by-slug'
@@ -40,7 +40,7 @@ export default async function NewsPostPage({params}: NewsPostPageProps) {
   return (
     <>
       <ArticleDetailHeroSection {...heroProps} />
-      <ArticleBodyStub body={post.body as never} />
+      <ArticleBody body={post.body} />
     </>
   )
 }
