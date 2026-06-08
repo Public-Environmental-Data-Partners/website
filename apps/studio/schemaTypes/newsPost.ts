@@ -139,6 +139,7 @@ export const newsPost = defineType({
         newsPostBodyBlock,
         defineArrayMember({type: 'quoteBlock'}),
         defineArrayMember({type: 'imageBlock'}),
+        defineArrayMember({type: 'embedBlock'}),
       ],
       description: 'Article content below the detail hero.',
     }),

@@ -1,3 +1,4 @@
+import {embedBlock} from './embedBlock'
 import {homepageLinkTarget} from './homepageLinkTarget'
 import {
   byTheNumbersSection,
@@ -48,5 +49,6 @@ export const schemaTypes = [
   newsPostTeaserFields,
   quoteBlock,
   imageBlock,
+  embedBlock,
   newsPost,
 ]
