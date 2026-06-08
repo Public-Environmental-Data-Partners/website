@@ -11,6 +11,7 @@ import {
   storyCard,
   toolCard,
 } from './homePageSections'
+import {imageBlock} from './imageBlock'
 import {newsHubPage} from './newsHubPage'
 import {newsletterSignup} from './newsletterSignup'
 import {newsPost} from './newsPost'
@@ -46,5 +47,6 @@ export const schemaTypes = [
   newsHubPage,
   newsPostTeaserFields,
   quoteBlock,
+  imageBlock,
   newsPost,
 ]

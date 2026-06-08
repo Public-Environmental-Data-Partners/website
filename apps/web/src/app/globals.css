@@ -98,6 +98,7 @@
   --radius-4xl: calc(var(--radius) * 2.6);
   /* Main layout column: 1440px incl. horizontal padding (90rem @ 16px root). */
   --max-width-site: 90rem;
+  --max-width-article-prose: var(--article-prose-max-width);
   /* Layout-system geometry (see docs/layout-system.md) — use via var(), not duplicated calcs */
   --spacing-site-padding-x: var(--site-padding-x);
   --spacing-section-padding-y: var(--section-padding-y);
@@ -123,6 +124,11 @@
   --hero-accent-col-width: 1.25rem;
   --text-body-lg-size: 1.375rem;
   --text-body-lg-leading: 1;
+  /* Article detail body column — tunable; default matches Tailwind prose (~12 words/line). */
+  --article-prose-max-width: 65ch;
+  --article-image-aspect: 3 / 2;
+  --article-image-band-leading-fraction: 90%;
+  --article-image-band-trailing-fraction: 10%;
   /* Shared viewport ↔ site column math (layout-system; used by bleed archetypes). */
   --site-column-width: min(100vw, var(--max-width-site));
   --site-column-start: calc((100vw - var(--site-column-width)) / 2);

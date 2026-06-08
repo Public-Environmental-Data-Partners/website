@@ -33,7 +33,13 @@ const NEWS_POST_BY_SLUG_QUERY = `*[
     excerpt,
     tags
   },
-  body
+  body[]{
+    ...,
+    _type == "imageBlock" => {
+      ...,
+      image ${SANITY_IMAGE_PROJECTION}
+    }
+  }
 }`
 
 export const getNewsPostBySlug = cache(async function getNewsPostBySlug(

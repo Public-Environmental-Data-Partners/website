@@ -1,9 +1,11 @@
 import type {PortableTextBlock} from '@portabletext/react'
 
+import {ImageBlock} from '@/components/content/image-block'
 import {QuoteBlock} from '@/components/content/quote-block'
 import {RichTextBlock} from '@/components/content/rich-text-block'
+import {mapSanityImage, type SanityImageData} from '@/lib/mappers/sanity-image'
 
-/** Typed body entries — extend in Phases 4–5 (image, youtube, audio). */
+/** Typed body entries — extend in Phase 5 (youtube, audio). */
 export type RichTextBlockEntry = {
   _type: 'richTextBlock'
   _key?: string
@@ -17,7 +19,19 @@ export type QuoteBlockEntry = {
   attribution?: string | null
 }
 
-export type ArticleBodyBlockEntry = PortableTextBlock | RichTextBlockEntry | QuoteBlockEntry
+export type ImageBlockEntry = {
+  _type: 'imageBlock'
+  _key?: string
+  image?: SanityImageData
+  caption?: string | null
+  source?: string | null
+}
+
+export type ArticleBodyBlockEntry =
+  | PortableTextBlock
+  | RichTextBlockEntry
+  | QuoteBlockEntry
+  | ImageBlockEntry
 
 export function isPortableTextBlockEntry(block: ArticleBodyBlockEntry): block is PortableTextBlock {
   return block._type === 'block'
@@ -29,6 +43,10 @@ export function isRichTextBlockEntry(block: ArticleBodyBlockEntry): block is Ric
 
 export function isQuoteBlockEntry(block: ArticleBodyBlockEntry): block is QuoteBlockEntry {
   return block._type === 'quoteBlock'
+}
+
+export function isImageBlockEntry(block: ArticleBodyBlockEntry): block is ImageBlockEntry {
+  return block._type === 'imageBlock'
 }
 
 type ArticleBodyBlockProps = {
@@ -51,6 +69,14 @@ export function ArticleBodyBlock({block}: ArticleBodyBlockProps) {
       return null
     }
     return <QuoteBlock attribution={block.attribution} quote={quote} />
+  }
+
+  if (isImageBlockEntry(block)) {
+    const mapped = mapSanityImage(block.image ?? null, '')
+    if (!mapped) {
+      return null
+    }
+    return <ImageBlock caption={block.caption} image={mapped} source={block.source} />
   }
 
   return null

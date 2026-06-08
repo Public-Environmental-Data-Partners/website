@@ -26,9 +26,14 @@ function isPortableTextBody(blocks: ArticleBodyBlockEntry[]): blocks is Portable
 
 function ArticleBodyShell({children}: {children: ReactNode}) {
   return (
-    <SectionBand className="bg-white">
+    <SectionBand className="overflow-x-clip bg-white">
       <SiteShell>
-        <div className="mx-auto w-full max-w-prose text-left">{children}</div>
+        <div
+          className="mx-auto w-full max-w-article-prose text-left"
+          data-slot="article-body-prose"
+        >
+          {children}
+        </div>
       </SiteShell>
     </SectionBand>
   )
