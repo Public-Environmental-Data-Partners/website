@@ -43,7 +43,7 @@ function allowNewsletterPost(ip: string): boolean {
   return true
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   if (request.method !== 'POST') {
     return NextResponse.next()
   }

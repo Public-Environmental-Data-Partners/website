@@ -10,7 +10,7 @@ Same as the monorepo: use **Node** from the root [`.nvmrc`](../../.nvmrc) and **
 
 Copy [`apps/web/.env.example`](.env.example) to `.env.local` in this directory and fill in values. For shared or production values (tokens, secrets, deployment env), contact [dev@publicenvirodata.org](mailto:dev@publicenvirodata.org).
 
-Newsletter signup on the homepage writes `newsletterSignup` documents via `SANITY_API_WRITE_TOKEN` (see [.env.example](.env.example)). Without it, the form shows an error after submit. Once a real email newsletter provider is integrated, plan to remove the post-submit “thank you” / sign-up success animation, the newsletter-related **middleware** (rate limiting), and in Studio the subscriber list plus CSV export tied to `newsletterSignup`.
+Newsletter signup on the homepage writes `newsletterSignup` documents via `SANITY_API_WRITE_TOKEN` (see [.env.example](.env.example)). Without it, the form shows an error after submit. Once a real email newsletter provider is integrated, plan to remove the post-submit “thank you” / sign-up success animation, the newsletter-related **proxy** (rate limiting), and in Studio the subscriber list plus CSV export tied to `newsletterSignup`.
 
 Primary navigation comes from the Sanity **`siteNavigation`** singleton (`getMainNav` in [`src/lib/main-nav.ts`](src/lib/main-nav.ts)). [`src/config/nav.ts`](src/config/nav.ts) holds shared types plus donate and privacy links only.
 
