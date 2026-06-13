@@ -13,6 +13,7 @@ import {
   toolCard,
 } from './homePageSections'
 import {imageBlock} from './imageBlock'
+import {listBlock} from './listBlock'
 import {newsHubPage} from './newsHubPage'
 import {newsletterSignup} from './newsletterSignup'
 import {newsPost} from './newsPost'
@@ -50,5 +51,6 @@ export const schemaTypes = [
   quoteBlock,
   imageBlock,
   embedBlock,
+  listBlock,
   newsPost,
 ]

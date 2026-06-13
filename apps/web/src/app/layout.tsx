@@ -1,6 +1,7 @@
 import './globals.css'
 import './hero-split-grid.css'
 import './article-image-block.css'
+import './article-list-block.css'
 import './article-detail-hero-grid.css'
 import './news-post-teaser.css'
 import './pedp-token-overrides.css'

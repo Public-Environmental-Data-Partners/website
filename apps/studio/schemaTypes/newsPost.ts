@@ -1,5 +1,7 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
+import {articleBodyPortableTextBlock} from './articlePortableText'
+
 /** Match Sanity client / Vision; used only for validation queries. */
 const STUDIO_API_VERSION = '2024-01-01'
 
@@ -10,19 +12,6 @@ function siblingDocumentIds(documentId: string | undefined): string[] {
   const base = documentId.startsWith('drafts.') ? documentId.slice(7) : documentId
   return Array.from(new Set([documentId, `drafts.${base}`, base]))
 }
-
-const newsPostBodyBlock = {
-  type: 'block',
-  marks: {
-    annotations: [
-      {
-        name: 'link',
-        type: 'object',
-        fields: [defineField({name: 'href', type: 'url'})],
-      },
-    ],
-  },
-} as const
 
 export const newsPost = defineType({
   name: 'newsPost',
@@ -136,10 +125,11 @@ export const newsPost = defineType({
       title: 'Body',
       type: 'array',
       of: [
-        newsPostBodyBlock,
+        articleBodyPortableTextBlock,
         defineArrayMember({type: 'quoteBlock'}),
         defineArrayMember({type: 'imageBlock'}),
         defineArrayMember({type: 'embedBlock'}),
+        defineArrayMember({type: 'listBlock'}),
       ],
       description: 'Article content below the detail hero.',
     }),

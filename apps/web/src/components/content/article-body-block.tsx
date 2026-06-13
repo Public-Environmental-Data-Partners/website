@@ -2,6 +2,13 @@ import type {PortableTextBlock} from '@portabletext/react'
 
 import {EmbedBlock} from '@/components/content/embed-block'
 import {ImageBlock} from '@/components/content/image-block'
+import {
+  ListBlock,
+  type ListBlockBackground,
+  type ListBlockBulletedSection,
+  type ListBlockRow,
+  type ListBlockVariant,
+} from '@/components/content/list-block'
 import {QuoteBlock} from '@/components/content/quote-block'
 import {RichTextBlock} from '@/components/content/rich-text-block'
 import {resolveEmbedUrl} from '@/lib/embed-providers'
@@ -36,12 +43,24 @@ export type EmbedBlockEntry = {
   caption?: string | null
 }
 
+export type ListBlockEntry = {
+  _type: 'listBlock'
+  _key?: string
+  variant?: string | null
+  background?: string | null
+  title?: string | null
+  lines?: string[] | null
+  rows?: ListBlockRow[] | null
+  sections?: ListBlockBulletedSection[] | null
+}
+
 export type ArticleBodyBlockEntry =
   | PortableTextBlock
   | RichTextBlockEntry
   | QuoteBlockEntry
   | ImageBlockEntry
   | EmbedBlockEntry
+  | ListBlockEntry
 
 export function isPortableTextBlockEntry(block: ArticleBodyBlockEntry): block is PortableTextBlock {
   return block._type === 'block'
@@ -61,6 +80,33 @@ export function isImageBlockEntry(block: ArticleBodyBlockEntry): block is ImageB
 
 export function isEmbedBlockEntry(block: ArticleBodyBlockEntry): block is EmbedBlockEntry {
   return block._type === 'embedBlock'
+}
+
+export function isListBlockEntry(block: ArticleBodyBlockEntry): block is ListBlockEntry {
+  return block._type === 'listBlock'
+}
+
+const LIST_BLOCK_VARIANTS = new Set<ListBlockVariant>([
+  'unstyled',
+  'dividedParagraph',
+  'dividedIcon',
+  'dividedOrdered',
+  'dividedBulleted',
+])
+
+const LIST_BLOCK_BACKGROUNDS = new Set<ListBlockBackground>(['lightGreen', 'lightBlue'])
+
+function parseListBlockVariant(value: unknown): ListBlockVariant | null {
+  return typeof value === 'string' && LIST_BLOCK_VARIANTS.has(value as ListBlockVariant)
+    ? (value as ListBlockVariant)
+    : null
+}
+
+function parseListBlockBackground(value: unknown): ListBlockBackground {
+  return typeof value === 'string' &&
+    LIST_BLOCK_BACKGROUNDS.has(value as ListBlockBackground)
+    ? (value as ListBlockBackground)
+    : 'lightGreen'
 }
 
 type ArticleBodyBlockProps = {
@@ -100,6 +146,23 @@ export function ArticleBodyBlock({block}: ArticleBodyBlockProps) {
       return null
     }
     return <EmbedBlock caption={block.caption} embed={embed} />
+  }
+
+  if (isListBlockEntry(block)) {
+    const variant = parseListBlockVariant(block.variant)
+    if (!variant) {
+      return null
+    }
+    return (
+      <ListBlock
+        background={parseListBlockBackground(block.background)}
+        lines={block.lines}
+        rows={block.rows}
+        sections={block.sections}
+        title={block.title}
+        variant={variant}
+      />
+    )
   }
 
   return null
