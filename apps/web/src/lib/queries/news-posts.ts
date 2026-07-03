@@ -2,20 +2,8 @@ import {draftMode} from 'next/headers'
 import {cache} from 'react'
 
 import type {NewsPostListItem} from '@/lib/mappers/news-post'
+import {SANITY_IMAGE_PROJECTION} from '@/lib/queries/sanity-image-projection'
 import {sanityFetch} from '@/sanity/live'
-
-const SANITY_IMAGE_PROJECTION = `{
-  alt,
-  asset->{
-    url,
-    metadata{
-      dimensions{
-        width,
-        height
-      }
-    }
-  }
-}`
 
 export const NEWS_POSTS_PAGE_SIZE = 3
 

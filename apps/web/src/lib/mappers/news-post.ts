@@ -1,7 +1,7 @@
 import type {NewsPostTeaserProps} from '@/components/news/news-post-teaser'
 import type {ArticleDetailHeroSectionProps} from '@/components/sections/article-detail-hero-section'
 import type {BlogHeroSectionProps} from '@/components/sections/blog-hero-section'
-import {mapSanityImage, type SanityImageData} from '@/lib/mappers/sanity-image'
+import {mapSanityHeroImage, mapSanityImage, type SanityImageData} from '@/lib/mappers/sanity-image'
 
 export type NewsPostTeaserFields = {
   excerpt?: string | null
@@ -118,7 +118,7 @@ export function mapNewsPostToBlogHeroProps(
     return null
   }
 
-  const image = mapSanityImage(post.image ?? null, title)
+  const image = mapSanityHeroImage(post.image ?? null, title)
   if (!image) {
     return null
   }

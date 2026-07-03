@@ -2,7 +2,11 @@ import Image from 'next/image'
 
 import type {HeroImage} from '@/components/hero/hero-image'
 import {Grid12, SectionBand, SiteShell} from '@/components/layout'
-import {TEASER_IMAGE_HEIGHT, TEASER_IMAGE_WIDTH} from '@/components/news/news-post-teaser'
+import {
+  BLOG_HERO_IMAGE_HEIGHT,
+  BLOG_HERO_IMAGE_SIZES,
+  BLOG_HERO_IMAGE_WIDTH,
+} from '@/lib/mappers/sanity-image'
 import {cn} from '@/lib/utils'
 
 export type BlogHeroSectionProps = {
@@ -19,7 +23,7 @@ function imageDimension(value: number | undefined, fallback: number) {
 }
 
 /**
- * Blog article detail hero (v2). Step 3: responsive typography; desktop layout geometry.
+ * Blog article detail hero (v2). Step 6: hotspot-aware Sanity CDN images.
  * @see docs/blog-components.md
  */
 const heroMainCol = 'col-span-10 col-start-2 lg:col-span-8 lg:col-start-3'
@@ -78,10 +82,10 @@ export function BlogHeroSection({
               <Image
                 src={image.src}
                 alt={image.alt}
-                width={imageDimension(image.width, TEASER_IMAGE_WIDTH)}
-                height={imageDimension(image.height, TEASER_IMAGE_HEIGHT)}
+                width={imageDimension(image.width, BLOG_HERO_IMAGE_WIDTH)}
+                height={imageDimension(image.height, BLOG_HERO_IMAGE_HEIGHT)}
                 className="h-full w-full object-cover"
-                sizes="(max-width: 1023px) 83vw, 925px"
+                sizes={BLOG_HERO_IMAGE_SIZES}
                 priority
               />
             </figure>

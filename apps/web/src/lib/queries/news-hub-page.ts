@@ -2,20 +2,8 @@ import {draftMode} from 'next/headers'
 import {cache} from 'react'
 
 import type {SplitHeroBleedFields} from '@/lib/mappers/split-hero-bleed'
+import {SANITY_IMAGE_PROJECTION} from '@/lib/queries/sanity-image-projection'
 import {sanityFetch} from '@/sanity/live'
-
-const SANITY_IMAGE_PROJECTION = `{
-  alt,
-  asset->{
-    url,
-    metadata{
-      dimensions{
-        width,
-        height
-      }
-    }
-  }
-}`
 
 const NEWS_HUB_QUERY = `*[_type == "newsHubPage" && _id == "page.newsHub"][0]{
   hero {

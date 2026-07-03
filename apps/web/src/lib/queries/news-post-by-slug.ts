@@ -2,20 +2,8 @@ import {draftMode} from 'next/headers'
 import {cache} from 'react'
 
 import type {NewsPostDetail} from '@/lib/mappers/news-post'
+import {SANITY_IMAGE_PROJECTION} from '@/lib/queries/sanity-image-projection'
 import {sanityFetch} from '@/sanity/live'
-
-const SANITY_IMAGE_PROJECTION = `{
-  alt,
-  asset->{
-    url,
-    metadata{
-      dimensions{
-        width,
-        height
-      }
-    }
-  }
-}`
 
 const NEWS_POST_BY_SLUG_QUERY = `*[
   _type == "newsPost" &&
