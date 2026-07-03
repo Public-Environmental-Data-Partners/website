@@ -1,6 +1,7 @@
 /*
  * Blog article hero — layered overlap (docs/blog-components.md).
- * Step 2: desktop-first geometry; tune vars from comps in Step 4.
+ * Step 2: desktop-first geometry. Step 3: responsive typography @ lg (1024px).
+ * Step 4: tune layout vars from comps.
  */
 
 [data-slot='blog-hero'] {
@@ -8,14 +9,36 @@
     0px,
     calc((100vw - min(100vw, var(--max-width-site))) / 2)
   );
+  /* Below 1400px: fill SiteShell grid inset; @ 1400+ use viewport side margins */
+  --blog-hero-beige-width: var(--site-padding-x);
+  --blog-hero-beige-height: 33%;
   --blog-hero-image-overlap: 5rem;
-  --blog-hero-text-panel-pt: 3rem;
+  --blog-hero-text-panel-pt: 1.5rem;
   --blog-hero-image-aspect: 3 / 2;
   position: relative;
   width: 100%;
 }
 
-/* Full-bleed beige in viewport margins; height tracks off-white text row */
+@media (min-width: 768px) {
+  [data-slot='blog-hero'] {
+    --blog-hero-beige-width: var(--site-padding-x-md);
+    --blog-hero-beige-height: 47%;
+  }
+}
+
+@media (min-width: 1024px) {
+  [data-slot='blog-hero'] {
+    --blog-hero-beige-height: 86%;
+  }
+}
+
+@media (min-width: 87.5rem) {
+  [data-slot='blog-hero'] {
+    --blog-hero-beige-width: var(--blog-hero-shell-margin-x);
+  }
+}
+
+/* Full-bleed beige in viewport margins @ 1400+; shell inset below (docs/layout-system.md) */
 [data-slot='blog-hero-text-row'] {
   position: relative;
   width: 100%;
@@ -26,8 +49,8 @@
   position: absolute;
   top: 0;
   z-index: 0;
-  height: 86%;
-  width: var(--blog-hero-shell-margin-x);
+  height: var(--blog-hero-beige-height);
+  width: var(--blog-hero-beige-width);
   background: var(--beige);
 }
 
@@ -58,8 +81,70 @@
   background: #c8c8c8;
 }
 
+[data-slot='blog-hero-image-grid'] {
+  row-gap: 0;
+}
+
 [data-slot='blog-hero-image-placeholder'] {
   height: 100%;
   width: 100%;
   background: #c8c8c8;
+}
+
+/* Typography — mobile & tablet share sizes; desktop @ lg (docs/blog-components.md) */
+[data-slot='blog-hero-series'],
+[data-slot='blog-hero-date'] {
+  font-size: 0.875rem;
+  line-height: 1;
+  font-weight: 400;
+}
+
+[data-slot='blog-hero-date'] {
+  margin-inline: 0;
+  margin-block: 1.5rem;
+}
+
+[data-slot='blog-hero-title'] {
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+}
+
+[data-slot='blog-hero-credit'] {
+  margin-inline: 0;
+  margin-top: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  line-height: 1;
+  font-weight: 400;
+}
+
+@media (min-width: 1024px) {
+  [data-slot='blog-hero'] {
+    --blog-hero-text-panel-pt: 3rem;
+  }
+
+  [data-slot='blog-hero-date'] {
+    margin-block: 3rem;
+  }
+
+  [data-slot='blog-hero-series'],
+  [data-slot='blog-hero-date'] {
+    font-size: 1.5rem;
+  }
+
+  [data-slot='blog-hero-title'] {
+    font-size: 3rem;
+    line-height: 3.4375rem; /* 55px */
+  }
+
+  [data-slot='blog-hero-credit'] {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+  }
+
+  [data-slot='blog-hero-image-grid'] {
+    row-gap: var(--grid-gutter);
+  }
 }

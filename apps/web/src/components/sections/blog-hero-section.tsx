@@ -10,9 +10,11 @@ export type BlogHeroSectionProps = {
 }
 
 /**
- * Blog article detail hero (v2). Step 2: static props, desktop-first layout.
+ * Blog article detail hero (v2). Step 3: responsive typography; desktop layout geometry.
  * @see docs/blog-components.md
  */
+const heroMainCol = 'col-span-10 col-start-2 lg:col-span-8 lg:col-start-3'
+
 export function BlogHeroSection({
   seriesName,
   title,
@@ -28,27 +30,38 @@ export function BlogHeroSection({
             <div data-slot="blog-hero-beige-left" aria-hidden="true" />
             <div data-slot="blog-hero-beige-right" aria-hidden="true" />
             <div data-slot="blog-hero-text-panel">
-            <Grid12>
-              <div className="col-span-8 col-start-3 flex flex-col items-center text-center">
-                <div className="flex flex-col items-center gap-8">
-                  <p className="text-foreground m-0 text-2xl leading-none font-normal uppercase">
-                    {seriesName}
+              <Grid12>
+                <div className={cn(heroMainCol, 'flex flex-col items-center text-center')}>
+                  <div className="flex flex-col items-center gap-8">
+                    <p
+                      data-slot="blog-hero-series"
+                      className="text-foreground m-0 font-normal uppercase"
+                    >
+                      {seriesName}
+                    </p>
+                    <h1
+                      data-slot="blog-hero-title"
+                      className="text-foreground font-serif m-0 font-medium"
+                    >
+                      {title}
+                    </h1>
+                  </div>
+                  <p data-slot="blog-hero-date" className="text-foreground font-normal">
+                    {date}
                   </p>
-                  <h1 className="text-foreground font-serif m-0 text-[3rem] leading-[55px] font-medium">
-                    {title}
-                  </h1>
                 </div>
-                <p className="text-foreground m-0 my-12 text-2xl leading-none font-normal">{date}</p>
-              </div>
-            </Grid12>
-          </div>
+              </Grid12>
+            </div>
           </div>
 
-          <Grid12>
-            <figure data-slot="blog-hero-figure" className="col-span-8 col-start-3 m-0">
+          <Grid12 data-slot="blog-hero-image-grid">
+            <figure data-slot="blog-hero-figure" className={cn(heroMainCol, 'm-0')}>
               <div data-slot="blog-hero-image-placeholder" aria-hidden="true" />
             </figure>
-            <figcaption className="text-foreground col-span-8 col-start-3 mt-4 mb-8 text-center text-2xl leading-none font-normal uppercase">
+            <figcaption
+              data-slot="blog-hero-credit"
+              className={cn(heroMainCol, 'text-foreground text-center font-normal uppercase')}
+            >
               {photoCredit}
             </figcaption>
           </Grid12>
