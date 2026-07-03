@@ -96,12 +96,13 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-  /* Main layout column: 1440px incl. horizontal padding (90rem @ 16px root). */
-  --max-width-site: 90rem;
+  /* Main layout column: 1400px (87.5rem @ 16px root) — layout-system v2. */
+  --max-width-site: 87.5rem;
   --max-width-article-prose: var(--article-prose-max-width);
   /* Layout-system geometry (see docs/layout-system.md) — use via var(), not duplicated calcs */
   --spacing-site-padding-x: var(--site-padding-x);
   --spacing-section-padding-y: var(--section-padding-y);
+  --spacing-grid-gutter: var(--grid-gutter);
   --width-site-gutter: var(--site-gutter);
   /* Body large — Figma 22px / 100% line-height (teaser excerpt, etc.) */
   --text-body-lg: 1.375rem;
@@ -109,16 +110,16 @@
 }
 
 /*
- * Layout-system geometry tokens (Phase A1 — docs/layout-integration-plan.md).
- * Prototype reference: docs/layout-prototype.html
+ * Layout-system geometry tokens (v2 — docs/layout-system.md).
  */
 :root {
-  --site-padding-x: 1.5rem;
-  --site-padding-x-md: 3rem;
+  --site-padding-x: 1rem;
+  --site-padding-x-md: 2rem;
+  --grid-gutter: 1.5rem;
   --section-padding-y: 2.5rem;
   --section-padding-y-md: 3.5rem;
   --site-gutter-offset: 7px;
-  --site-gutter-inset: 1.5rem;
+  --site-gutter-inset: 1rem;
   --edge-strip-height: 40px;
   --image-shelf-height: 50px;
   --hero-accent-col-width: 1.25rem;
@@ -144,7 +145,7 @@
 @media (min-width: 768px) {
   :root {
     --site-padding-x: var(--site-padding-x-md);
-    --site-gutter-inset: 3rem;
+    --site-gutter-inset: 2rem;
   }
 }
 

@@ -16,6 +16,16 @@ const siteShellVariants = cva('mx-auto w-full max-w-site', {
         'md:py-[var(--section-padding-y-md)]',
       ],
       none: 'p-0',
+      /**
+       * Grid / blog hero: viewport inset below 1400px; full 1400 grid when shell is maxed.
+       * See docs/layout-system.md — Grid box vs viewport inset.
+       */
+      grid: [
+        'px-[var(--site-padding-x)]',
+        'md:px-[var(--site-padding-x-md)]',
+        'min-[87.5rem]:px-0',
+        'py-0',
+      ],
       /** §04 simple-grid-hero: leading inset; trailing flush @ md+ */
       heroTrailingFlush: [
         'px-[var(--site-padding-x)]',
