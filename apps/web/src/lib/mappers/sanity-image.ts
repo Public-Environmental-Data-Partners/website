@@ -19,6 +19,7 @@ export type SanityImageCrop = {
 
 export type SanityImageData = {
   alt?: string | null
+  credit?: string | null
   hotspot?: SanityImageHotspot | null
   crop?: SanityImageCrop | null
   asset?: {

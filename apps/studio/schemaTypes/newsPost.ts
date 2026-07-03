@@ -111,6 +111,14 @@ export const newsPost = defineType({
               .max(160)
               .warning('Keep alt text concise and descriptive (≤ 160 chars).'),
         }),
+        defineField({
+          name: 'credit',
+          title: 'Photo credit',
+          type: 'string',
+          description:
+            'Optional. Article detail hero only — shown as “PHOTO CREDIT: …” below the image.',
+          validation: (Rule) => Rule.max(120).warning('Consider ≤ 120 chars.'),
+        }),
       ],
     }),
     defineField({

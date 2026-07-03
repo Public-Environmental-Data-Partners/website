@@ -79,6 +79,17 @@ function formatArticleHeroDate(iso: string): string | null {
   return `${month}.${day}.${year}`
 }
 
+function formatPhotoCredit(credit: string | null | undefined): string | undefined {
+  const name = credit?.trim()
+  if (!name) {
+    return undefined
+  }
+  if (/^photo credit:/i.test(name)) {
+    return name
+  }
+  return `PHOTO CREDIT: ${name}`
+}
+
 /** v2 article hero — eyebrow → series, publishedAt → MM.DD.YY (docs/blog-components.md). */
 export function mapNewsPostToArticleHeroProps(
   post: NewsPostDetail | null | undefined,
@@ -104,5 +115,6 @@ export function mapNewsPostToArticleHeroProps(
     date,
     image,
     seriesName: post.eyebrow?.trim() || undefined,
+    photoCredit: formatPhotoCredit(post.image?.credit),
   }
 }

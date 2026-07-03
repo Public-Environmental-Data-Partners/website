@@ -1,6 +1,7 @@
 /** GROQ fragment for Sanity image fields — includes hotspot/crop for @sanity/image-url. */
 export const SANITY_IMAGE_PROJECTION = `{
   alt,
+  credit,
   hotspot,
   crop,
   asset->{
