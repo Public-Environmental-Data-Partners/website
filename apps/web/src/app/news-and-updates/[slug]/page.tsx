@@ -2,8 +2,8 @@ import type {Metadata} from 'next'
 import {notFound} from 'next/navigation'
 
 import {ArticleBody} from '@/components/content/article-body'
-import {ArticleDetailHeroSection} from '@/components/sections/article-detail-hero-section'
-import {mapNewsPostToDetailHeroProps} from '@/lib/mappers/news-post'
+import {BlogHeroSection} from '@/components/sections/blog-hero-section'
+import {mapNewsPostToBlogHeroProps} from '@/lib/mappers/news-post'
 import {getNewsPostBySlug} from '@/lib/queries/news-post-by-slug'
 
 export const dynamic = 'force-dynamic'
@@ -32,14 +32,14 @@ export default async function NewsPostPage({params}: NewsPostPageProps) {
     notFound()
   }
 
-  const heroProps = mapNewsPostToDetailHeroProps(post)
+  const heroProps = mapNewsPostToBlogHeroProps(post)
   if (!heroProps) {
     notFound()
   }
 
   return (
     <>
-      <ArticleDetailHeroSection {...heroProps} />
+      <BlogHeroSection {...heroProps} />
       <ArticleBody body={post.body} />
     </>
   )

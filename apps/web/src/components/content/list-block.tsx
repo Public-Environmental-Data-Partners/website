@@ -80,8 +80,7 @@ function normalizeSections(
     if (bullets.length === 0) {
       return []
     }
-    const sectionTitle =
-      typeof section.sectionTitle === 'string' ? section.sectionTitle.trim() : ''
+    const sectionTitle = typeof section.sectionTitle === 'string' ? section.sectionTitle.trim() : ''
     return [
       {
         ...(sectionTitle.length > 0 ? {sectionTitle} : {}),
@@ -120,9 +119,7 @@ function DividedIconRows({rows}: {rows: ListBlockRow[]}) {
       }
       return {Icon, content}
     })
-    .filter(
-      (row): row is {Icon: LucideIcon | null; content: PortableTextBlock[]} => row !== null,
-    )
+    .filter((row): row is {Icon: LucideIcon | null; content: PortableTextBlock[]} => row !== null)
 
   if (visibleRows.length === 0) {
     return null
@@ -206,14 +203,7 @@ function DividedBulletedSections({
   )
 }
 
-export function ListBlock({
-  variant,
-  background,
-  title,
-  lines,
-  rows,
-  sections,
-}: ListBlockProps) {
+export function ListBlock({variant, background, title, lines, rows, sections}: ListBlockProps) {
   const trimmedTitle = typeof title === 'string' ? title.trim() : ''
   const normalizedLines = normalizeLines(lines)
   const normalizedRows = normalizeRows(rows)

@@ -5,10 +5,7 @@
  */
 
 [data-slot='blog-hero'] {
-  --blog-hero-shell-margin-x: max(
-    0px,
-    calc((100vw - min(100vw, var(--max-width-site))) / 2)
-  );
+  --blog-hero-shell-margin-x: max(0px, calc((100vw - min(100vw, var(--max-width-site))) / 2));
   /* Below 1400px: fill SiteShell grid inset; @ 1400+ use viewport side margins */
   --blog-hero-beige-width: var(--site-padding-x);
   --blog-hero-beige-height: 33%;

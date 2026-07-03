@@ -1,5 +1,6 @@
 import type {NewsPostTeaserProps} from '@/components/news/news-post-teaser'
 import type {ArticleDetailHeroSectionProps} from '@/components/sections/article-detail-hero-section'
+import type {BlogHeroSectionProps} from '@/components/sections/blog-hero-section'
 import {mapSanityImage, type SanityImageData} from '@/lib/mappers/sanity-image'
 
 export type NewsPostTeaserFields = {
@@ -87,5 +88,45 @@ export function mapNewsPostToDetailHeroProps(
     image,
     eyebrow: post.eyebrow?.trim() || undefined,
     author: post.author?.trim() || undefined,
+  }
+}
+
+function formatBlogHeroDate(iso: string): string | null {
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) {
+    return null
+  }
+
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const year = String(date.getFullYear()).slice(-2)
+  return `${month}.${day}.${year}`
+}
+
+/** v2 blog hero — eyebrow → series, publishedAt → MM.DD.YY (docs/blog-components.md). */
+export function mapNewsPostToBlogHeroProps(
+  post: NewsPostDetail | null | undefined,
+): BlogHeroSectionProps | null {
+  if (!post) {
+    return null
+  }
+
+  const title = post.title?.trim()
+  const publishedAt = post.publishedAt?.trim()
+  const date = publishedAt ? formatBlogHeroDate(publishedAt) : null
+  if (!title || !date) {
+    return null
+  }
+
+  const image = mapSanityImage(post.image ?? null, title)
+  if (!image) {
+    return null
+  }
+
+  return {
+    title,
+    date,
+    image,
+    seriesName: post.eyebrow?.trim() || undefined,
   }
 }

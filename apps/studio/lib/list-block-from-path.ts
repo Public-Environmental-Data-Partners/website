@@ -48,11 +48,7 @@ export function listBlockFromPath(
     )
   }
 
-  if (
-    block &&
-    typeof block === 'object' &&
-    (block as {_type?: string})._type === 'listBlock'
-  ) {
+  if (block && typeof block === 'object' && (block as {_type?: string})._type === 'listBlock') {
     return block as {variant?: string}
   }
 

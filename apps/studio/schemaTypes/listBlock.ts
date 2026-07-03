@@ -1,7 +1,7 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
-import {isValidLucideIconName, lucideIconFieldDescription} from '../lib/lucide-icon-name'
 import {listBlockVariantFromPath} from '../lib/list-block-from-path'
+import {isValidLucideIconName, lucideIconFieldDescription} from '../lib/lucide-icon-name'
 import {listRowPortableTextBlock} from './articlePortableText'
 
 const LIST_BLOCK_VARIANTS = [

@@ -103,8 +103,7 @@ function parseListBlockVariant(value: unknown): ListBlockVariant | null {
 }
 
 function parseListBlockBackground(value: unknown): ListBlockBackground {
-  return typeof value === 'string' &&
-    LIST_BLOCK_BACKGROUNDS.has(value as ListBlockBackground)
+  return typeof value === 'string' && LIST_BLOCK_BACKGROUNDS.has(value as ListBlockBackground)
     ? (value as ListBlockBackground)
     : 'lightGreen'
 }
