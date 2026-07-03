@@ -34,10 +34,10 @@ export type SanityImageData = {
 } | null
 
 /** Hero upload spec: 3:2 @ min 1900px wide (docs/blog-components.md). */
-export const BLOG_HERO_IMAGE_WIDTH = 1900
-export const BLOG_HERO_IMAGE_HEIGHT = 1267
+export const ARTICLE_HERO_IMAGE_WIDTH = 1900
+export const ARTICLE_HERO_IMAGE_HEIGHT = 1267
 
-export const BLOG_HERO_IMAGE_SIZES =
+export const ARTICLE_HERO_IMAGE_SIZES =
   '(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) calc(100vw - 64px), 925px'
 
 function hasImageAsset(image: SanityImageData): image is NonNullable<SanityImageData> {
@@ -62,8 +62,8 @@ export function mapSanityImage(image: SanityImageData, fallbackAlt = ''): HeroIm
   }
 }
 
-/** Hotspot-aware hero crop via Sanity CDN (Step 6 — docs/blog-components.md). */
-export function mapSanityHeroImage(
+/** Hotspot-aware article hero crop via Sanity CDN (docs/blog-components.md). */
+export function mapSanityArticleHeroImage(
   image: SanityImageData,
   fallbackAlt = '',
 ): HeroImage | undefined {
@@ -74,8 +74,8 @@ export function mapSanityHeroImage(
   const alt = image.alt?.trim() || fallbackAlt
   const src =
     buildSanityImageUrl(toImageSource(image), {
-      width: BLOG_HERO_IMAGE_WIDTH,
-      height: BLOG_HERO_IMAGE_HEIGHT,
+      width: ARTICLE_HERO_IMAGE_WIDTH,
+      height: ARTICLE_HERO_IMAGE_HEIGHT,
     }) ?? image.asset?.url
 
   if (!src) {
@@ -85,7 +85,7 @@ export function mapSanityHeroImage(
   return {
     src,
     alt,
-    width: BLOG_HERO_IMAGE_WIDTH,
-    height: BLOG_HERO_IMAGE_HEIGHT,
+    width: ARTICLE_HERO_IMAGE_WIDTH,
+    height: ARTICLE_HERO_IMAGE_HEIGHT,
   }
 }

@@ -17,7 +17,7 @@ const siteShellVariants = cva('mx-auto w-full max-w-site', {
       ],
       none: 'p-0',
       /**
-       * Grid / blog hero: viewport inset below 1400px; full 1400 grid when shell is maxed.
+       * Grid / article hero: viewport inset below 1400px; full 1400 grid when shell is maxed.
        * See docs/layout-system.md — Grid box vs viewport inset.
        */
       grid: [
@@ -35,13 +35,6 @@ const siteShellVariants = cva('mx-auto w-full max-w-site', {
       ],
       /** §05 split-hero-bleed: hero-scoped leading inset; trailing flush @ md+ */
       splitHero: [
-        'ps-[var(--hero-shell-padding-x,var(--site-padding-x))]',
-        'pe-[var(--hero-shell-padding-x,var(--site-padding-x))]',
-        'py-0',
-        'md:pe-0',
-      ],
-      /** §07 article-detail-hero: same shell geometry as splitHero */
-      detailHero: [
         'ps-[var(--hero-shell-padding-x,var(--site-padding-x))]',
         'pe-[var(--hero-shell-padding-x,var(--site-padding-x))]',
         'py-0',

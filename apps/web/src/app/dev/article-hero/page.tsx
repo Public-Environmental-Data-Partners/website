@@ -1,13 +1,13 @@
 import type {Metadata} from 'next'
 
-import {BlogHeroSection} from '@/components/sections/blog-hero-section'
+import {ArticleHeroSection} from '@/components/sections/article-hero-section'
 
 export const metadata: Metadata = {
-  title: 'Blog hero dev',
+  title: 'Article hero dev',
   robots: {index: false, follow: false},
 }
 
-/** Static blog hero for layout QA. Article route uses Sanity via mapNewsPostToBlogHeroProps. */
+/** Static article hero for layout QA. Article route uses Sanity via mapNewsPostToArticleHeroProps. */
 const STATIC_HERO = {
   seriesName: 'SERIES NAME',
   title: 'Lorem ipsum dolar sit amet consectetur adipiscing elit.',
@@ -21,6 +21,6 @@ const STATIC_HERO = {
   },
 } as const
 
-export default function BlogHeroDevPage() {
-  return <BlogHeroSection {...STATIC_HERO} />
+export default function ArticleHeroDevPage() {
+  return <ArticleHeroSection {...STATIC_HERO} />
 }

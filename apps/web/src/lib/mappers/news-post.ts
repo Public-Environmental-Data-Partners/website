@@ -1,7 +1,10 @@
 import type {NewsPostTeaserProps} from '@/components/news/news-post-teaser'
-import type {ArticleDetailHeroSectionProps} from '@/components/sections/article-detail-hero-section'
-import type {BlogHeroSectionProps} from '@/components/sections/blog-hero-section'
-import {mapSanityHeroImage, mapSanityImage, type SanityImageData} from '@/lib/mappers/sanity-image'
+import type {ArticleHeroSectionProps} from '@/components/sections/article-hero-section'
+import {
+  mapSanityArticleHeroImage,
+  mapSanityImage,
+  type SanityImageData,
+} from '@/lib/mappers/sanity-image'
 
 export type NewsPostTeaserFields = {
   excerpt?: string | null
@@ -64,34 +67,7 @@ export function mapNewsPostToTeaserProps(
   }
 }
 
-export function mapNewsPostToDetailHeroProps(
-  post: NewsPostDetail | null | undefined,
-): ArticleDetailHeroSectionProps | null {
-  if (!post) {
-    return null
-  }
-
-  const title = post.title?.trim()
-  const publishedAt = post.publishedAt?.trim()
-  if (!title || !publishedAt) {
-    return null
-  }
-
-  const image = mapSanityImage(post.image ?? null, title)
-  if (!image) {
-    return null
-  }
-
-  return {
-    title,
-    publishedAt,
-    image,
-    eyebrow: post.eyebrow?.trim() || undefined,
-    author: post.author?.trim() || undefined,
-  }
-}
-
-function formatBlogHeroDate(iso: string): string | null {
+function formatArticleHeroDate(iso: string): string | null {
   const date = new Date(iso)
   if (Number.isNaN(date.getTime())) {
     return null
@@ -103,22 +79,22 @@ function formatBlogHeroDate(iso: string): string | null {
   return `${month}.${day}.${year}`
 }
 
-/** v2 blog hero — eyebrow → series, publishedAt → MM.DD.YY (docs/blog-components.md). */
-export function mapNewsPostToBlogHeroProps(
+/** v2 article hero — eyebrow → series, publishedAt → MM.DD.YY (docs/blog-components.md). */
+export function mapNewsPostToArticleHeroProps(
   post: NewsPostDetail | null | undefined,
-): BlogHeroSectionProps | null {
+): ArticleHeroSectionProps | null {
   if (!post) {
     return null
   }
 
   const title = post.title?.trim()
   const publishedAt = post.publishedAt?.trim()
-  const date = publishedAt ? formatBlogHeroDate(publishedAt) : null
+  const date = publishedAt ? formatArticleHeroDate(publishedAt) : null
   if (!title || !date) {
     return null
   }
 
-  const image = mapSanityHeroImage(post.image ?? null, title)
+  const image = mapSanityArticleHeroImage(post.image ?? null, title)
   if (!image) {
     return null
   }

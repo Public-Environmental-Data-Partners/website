@@ -1,13 +1,3 @@
-export {
-  ArticleDetailAccentColumn,
-  ArticleDetailBottomBand,
-  ArticleDetailContentColumn,
-  ArticleDetailHeroGrid,
-  ArticleDetailImageColumn,
-  ArticleDetailImageFrame,
-  ArticleDetailMobileBleed,
-  ArticleDetailTopBeigeBand,
-} from './article-detail-hero-grid'
 export {ContentStack} from './content-stack'
 export {Grid12} from './grid-12'
 export {HeroShelf} from './hero-shelf'
