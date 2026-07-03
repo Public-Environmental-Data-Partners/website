@@ -1,0 +1,65 @@
+/*
+ * Blog article hero — layered overlap (docs/blog-components.md).
+ * Step 2: desktop-first geometry; tune vars from comps in Step 4.
+ */
+
+[data-slot='blog-hero'] {
+  --blog-hero-shell-margin-x: max(
+    0px,
+    calc((100vw - min(100vw, var(--max-width-site))) / 2)
+  );
+  --blog-hero-image-overlap: 5rem;
+  --blog-hero-text-panel-pt: 3rem;
+  --blog-hero-image-aspect: 3 / 2;
+  position: relative;
+  width: 100%;
+}
+
+/* Full-bleed beige in viewport margins; height tracks off-white text row */
+[data-slot='blog-hero-text-row'] {
+  position: relative;
+  width: 100%;
+}
+
+[data-slot='blog-hero-beige-left'],
+[data-slot='blog-hero-beige-right'] {
+  position: absolute;
+  top: 0;
+  z-index: 0;
+  height: 86%;
+  width: var(--blog-hero-shell-margin-x);
+  background: var(--beige);
+}
+
+[data-slot='blog-hero-beige-left'] {
+  right: 100%;
+}
+
+[data-slot='blog-hero-beige-right'] {
+  left: 100%;
+}
+
+[data-slot='blog-hero-text-panel'] {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background: var(--off-white);
+  padding-top: var(--blog-hero-text-panel-pt);
+  padding-bottom: var(--blog-hero-image-overlap);
+}
+
+[data-slot='blog-hero-figure'] {
+  position: relative;
+  z-index: 2;
+  margin-top: calc(-1 * var(--blog-hero-image-overlap));
+  width: 100%;
+  aspect-ratio: var(--blog-hero-image-aspect);
+  overflow: hidden;
+  background: #c8c8c8;
+}
+
+[data-slot='blog-hero-image-placeholder'] {
+  height: 100%;
+  width: 100%;
+  background: #c8c8c8;
+}

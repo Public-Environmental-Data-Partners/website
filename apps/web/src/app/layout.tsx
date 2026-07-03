@@ -1,4 +1,5 @@
 import './globals.css'
+import './blog-hero.css'
 import './hero-split-grid.css'
 import './article-image-block.css'
 import './article-list-block.css'
