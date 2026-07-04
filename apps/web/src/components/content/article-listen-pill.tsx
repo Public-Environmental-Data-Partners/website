@@ -56,7 +56,11 @@ export function ArticleListenPill({audioSrc, durationMinutes, className}: Articl
         onClick={() => void togglePlayback()}
       >
         {isPlaying ? (
-          <Pause data-slot="article-audio-pill-icon" aria-hidden="true" className="article-audio-pill-icon" />
+          <Pause
+            data-slot="article-audio-pill-icon"
+            aria-hidden="true"
+            className="article-audio-pill-icon"
+          />
         ) : (
           <PlaySquare
             data-slot="article-audio-pill-icon"
@@ -64,7 +68,11 @@ export function ArticleListenPill({audioSrc, durationMinutes, className}: Articl
             className="article-audio-pill-icon"
           />
         )}
-        <span id={labelId} data-slot="article-audio-pill-label" className="article-audio-pill-label">
+        <span
+          id={labelId}
+          data-slot="article-audio-pill-label"
+          className="article-audio-pill-label"
+        >
           <span className="hidden lg:inline">{`LISTEN: ${durationMinutes} MINS`}</span>
           <span className="lg:hidden">{`${durationMinutes} MINS`}</span>
         </span>

@@ -159,7 +159,7 @@ export const newsPost = defineType({
       title: 'Article audio',
       type: 'newsPostAudio',
       description:
-        'Optional listen row below the hero on the article page. Leave the file empty to hide it.',
+        'Optional listen row below the hero on the article page. Leave the file empty to hide it. Requires SEO & sharing (meta description) or hub excerpt so the share control can render.',
     }),
     defineField({
       name: 'body',

@@ -15,7 +15,7 @@ export const newsPostAudio = defineType({
   type: 'object',
   options: {collapsible: true, collapsed: true},
   description:
-    'Optional “Listen” row below the hero photo credit. Omit the file to hide the row on the site.',
+    'Optional “Listen” row below the hero photo credit. Omit the file to hide the row on the site. The row only renders when SEO & sharing (meta description) or the hub excerpt is filled in — needed for the share link.',
   fields: [
     defineField({
       name: 'file',

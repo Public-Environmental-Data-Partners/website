@@ -3,20 +3,24 @@
  * Typography @ lg (1024px) for LISTEN: prefix on pill label.
  */
 
-[data-slot='article-audio-row'] {
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
+[data-slot='article-audio-section'] {
+  padding-block-end: 2rem;
+}
+
+/* Mobile stack: breathing room below hero photo credit (tablet+ reads OK without extra inset). */
+@media (max-width: 767px) {
+  [data-slot='article-audio-section'] {
+    padding-block-start: 1.5rem;
+  }
+}
+
+[data-slot='article-audio-grid'] {
+  row-gap: 1rem;
 }
 
 @media (min-width: 1024px) {
-  [data-slot='article-audio-row'] {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+  [data-slot='article-audio-grid'] {
+    row-gap: 0;
   }
 }
 
@@ -30,15 +34,11 @@
   text-transform: uppercase;
   color: var(--foreground);
   text-align: center;
-  width: 100%;
 }
 
 @media (min-width: 1024px) {
   [data-slot='article-audio-heading'] {
     text-align: left;
-    width: auto;
-    flex: 1 1 auto;
-    min-width: 0;
   }
 }
 

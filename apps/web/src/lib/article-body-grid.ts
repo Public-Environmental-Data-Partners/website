@@ -7,6 +7,9 @@ export const ARTICLE_COL_PROSE_CLASS = 'col-span-12 lg:col-span-6 lg:col-start-4
 /** Single image, embed: 10 cols centered @ desktop, full width @ tablet/mobile */
 export const ARTICLE_COL_10_CENTERED_CLASS = 'col-span-12 lg:col-span-10 lg:col-start-2'
 
+/** Article audio intro: 7 cols centered @ desktop (col 4–10), full width @ tablet/mobile */
+export const ARTICLE_COL_7_CENTERED_CLASS = 'col-span-12 lg:col-span-7 lg:col-start-4'
+
 /** Two-image row: 6+6 @ md+, full width stack @ mobile */
 export const ARTICLE_COL_6_PAIR_CLASS = 'col-span-12 md:col-span-6'
 

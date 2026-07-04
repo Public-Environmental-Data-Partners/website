@@ -21,7 +21,7 @@ import type {SanityImageData} from '@/lib/mappers/sanity-image'
 import type {ArticleFigureItemData} from '@/lib/mappers/two-image-block'
 import {mapTwoImageBlockItems} from '@/lib/mappers/two-image-block'
 
-/** Typed body entries — extend in Phase 5 (audio). */
+/** Typed body entries for `newsPost.body[]`. */
 export type RichTextBlockEntry = {
   _type: 'richTextBlock'
   _key?: string
