@@ -19,6 +19,7 @@ import {listBlock} from './listBlock'
 import {newsHubPage} from './newsHubPage'
 import {newsletterSignup} from './newsletterSignup'
 import {newsPost} from './newsPost'
+import {newsPostAudio} from './newsPostAudio'
 import {newsPostTeaserFields} from './newsPostTeaserFields'
 import {page} from './page'
 import {quoteBlock} from './quoteBlock'
@@ -51,6 +52,7 @@ export const schemaTypes = [
   splitHeroBleedFields,
   newsHubPage,
   newsPostTeaserFields,
+  newsPostAudio,
   quoteBlock,
   articleFigureItem,
   imageBlock,

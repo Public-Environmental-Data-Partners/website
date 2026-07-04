@@ -155,6 +155,13 @@ export const newsPost = defineType({
       ],
     }),
     defineField({
+      name: 'audio',
+      title: 'Article audio',
+      type: 'newsPostAudio',
+      description:
+        'Optional listen row below the hero on the article page. Leave the file empty to hide it.',
+    }),
+    defineField({
       name: 'body',
       title: 'Body',
       type: 'array',
