@@ -25,6 +25,15 @@ const NEWS_POST_BY_SLUG_QUERY = `*[
     title,
     description
   },
+  audio {
+    durationMinutes,
+    introSectionHeading,
+    file {
+      asset-> {
+        url
+      }
+    }
+  },
   body[]{
     ...,
     _type == "imageBlock" => {

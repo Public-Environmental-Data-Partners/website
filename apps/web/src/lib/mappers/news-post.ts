@@ -17,6 +17,16 @@ export type NewsPostSeoFields = {
   description?: string | null
 }
 
+export type NewsPostAudioFields = {
+  durationMinutes?: number | null
+  introSectionHeading?: string | null
+  file?: {
+    asset?: {
+      url?: string | null
+    } | null
+  } | null
+} | null
+
 export type NewsPostListItem = {
   _id: string
   title?: string | null
@@ -30,6 +40,7 @@ export type NewsPostListItem = {
 }
 
 export type NewsPostDetail = NewsPostListItem & {
+  audio?: NewsPostAudioFields
   body?: unknown
 }
 
