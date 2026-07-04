@@ -7,7 +7,9 @@ import {
   isPortableTextBlockEntry,
 } from '@/components/content/article-body-block'
 import {RichTextBlock} from '@/components/content/rich-text-block'
-import {SectionBand, SiteShell} from '@/components/layout'
+import {Grid12, SectionBand, SiteShell} from '@/components/layout'
+import {ARTICLE_BODY_BLOCK_CLASS} from '@/lib/article-body-grid'
+import {cn} from '@/lib/utils'
 
 type ArticleBodyProps = {
   body: unknown
@@ -24,16 +26,28 @@ function isPortableTextBody(blocks: ArticleBodyBlockEntry[]): blocks is Portable
   return blocks.length > 0 && blocks.every((block) => isPortableTextBlockEntry(block))
 }
 
+function ArticleBodyBlockRow({
+  children,
+  className,
+}: {
+  children: ReactNode
+  className?: string
+}) {
+  return (
+    <div
+      data-slot="article-body-block"
+      className={cn(ARTICLE_BODY_BLOCK_CLASS, 'text-left', className)}
+    >
+      {children}
+    </div>
+  )
+}
+
 function ArticleBodyShell({children}: {children: ReactNode}) {
   return (
     <SectionBand className="overflow-x-clip bg-white">
       <SiteShell>
-        <div
-          className="mx-auto w-full max-w-article-prose text-left"
-          data-slot="article-body-prose"
-        >
-          {children}
-        </div>
+        <Grid12 data-slot="article-body-grid">{children}</Grid12>
       </SiteShell>
     </SectionBand>
   )
@@ -48,7 +62,9 @@ export function ArticleBody({body}: ArticleBodyProps) {
   if (isPortableTextBody(blocks)) {
     return (
       <ArticleBodyShell>
-        <RichTextBlock value={blocks} />
+        <ArticleBodyBlockRow>
+          <RichTextBlock value={blocks} />
+        </ArticleBodyBlockRow>
       </ArticleBodyShell>
     )
   }
@@ -56,7 +72,9 @@ export function ArticleBody({body}: ArticleBodyProps) {
   return (
     <ArticleBodyShell>
       {blocks.map((block, index) => (
-        <ArticleBodyBlock key={block._key ?? `body-block-${index}`} block={block} />
+        <ArticleBodyBlockRow key={block._key ?? `body-block-${index}`}>
+          <ArticleBodyBlock block={block} />
+        </ArticleBodyBlockRow>
       ))}
     </ArticleBodyShell>
   )

@@ -1,11 +1,7 @@
 /*
- * §08 article-image-block — news post body embed (breakout from prose column).
+ * §08 article-image-block — news post body embed (legacy; replaced in Phase 3).
  * Prototype: docs/layout-prototype.html §08
  */
-
-[data-slot='article-body-prose'] {
-  max-width: var(--article-prose-max-width);
-}
 
 [data-slot='article-image-block'] {
   --article-image-band-bg: var(--light-blue);
@@ -15,7 +11,6 @@
   min-width: 0;
 }
 
-[data-slot='article-body-prose'],
 [data-slot='article-image-block'],
 [data-slot='article-image-row'],
 [data-slot='article-image-caption-band'] {

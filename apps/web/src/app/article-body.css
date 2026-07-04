@@ -1,0 +1,16 @@
+/*
+ * Article body — Grid12 shell, block spacing, column span utilities.
+ * Plan: docs/article-body-images-implementation-plan.md (Phase 1+)
+ */
+
+[data-slot='article-body-block'] {
+  margin-block: 2rem;
+}
+
+[data-slot='article-body-block']:first-child {
+  margin-block-start: 0;
+}
+
+[data-slot='article-body-block']:last-child {
+  margin-block-end: 0;
+}
