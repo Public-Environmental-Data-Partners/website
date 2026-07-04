@@ -38,6 +38,10 @@ export type SanityImageData = {
 export const ARTICLE_HERO_IMAGE_WIDTH = 1900
 export const ARTICLE_HERO_IMAGE_HEIGHT = 1267
 
+/** Open Graph / social share crop (~1.91:1). Derived from hero via Sanity CDN. */
+export const SHARE_IMAGE_WIDTH = 1200
+export const SHARE_IMAGE_HEIGHT = 630
+
 export const ARTICLE_HERO_IMAGE_SIZES =
   '(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) calc(100vw - 64px), 925px'
 
@@ -88,5 +92,33 @@ export function mapSanityArticleHeroImage(
     alt,
     width: ARTICLE_HERO_IMAGE_WIDTH,
     height: ARTICLE_HERO_IMAGE_HEIGHT,
+  }
+}
+
+/** Hotspot-aware OG / link-preview crop from the article hero image. */
+export function mapSanityShareImage(
+  image: SanityImageData,
+  fallbackAlt = '',
+): {src: string; alt: string; width: number; height: number} | undefined {
+  if (!hasImageAsset(image)) {
+    return undefined
+  }
+
+  const alt = image.alt?.trim() || fallbackAlt
+  const src =
+    buildSanityImageUrl(toImageSource(image), {
+      width: SHARE_IMAGE_WIDTH,
+      height: SHARE_IMAGE_HEIGHT,
+    }) ?? image.asset?.url
+
+  if (!src) {
+    return undefined
+  }
+
+  return {
+    src,
+    alt,
+    width: SHARE_IMAGE_WIDTH,
+    height: SHARE_IMAGE_HEIGHT,
   }
 }

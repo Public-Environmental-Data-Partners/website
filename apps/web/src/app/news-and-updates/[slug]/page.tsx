@@ -3,7 +3,13 @@ import {notFound} from 'next/navigation'
 
 import {ArticleBody} from '@/components/content/article-body'
 import {ArticleHeroSection} from '@/components/sections/article-hero-section'
+import {ArticleJsonLd} from '@/components/seo/article-json-ld'
 import {mapNewsPostToArticleHeroProps} from '@/lib/mappers/news-post'
+import {
+  buildNewsPostArticleJsonLd,
+  buildNewsPostMetadata,
+  resolveNewsPostSeoContent,
+} from '@/lib/metadata/news-post'
 import {getNewsPostBySlug} from '@/lib/queries/news-post-by-slug'
 
 export const dynamic = 'force-dynamic'
@@ -15,13 +21,13 @@ type NewsPostPageProps = {
 export async function generateMetadata({params}: NewsPostPageProps): Promise<Metadata> {
   const {slug} = await params
   const post = await getNewsPostBySlug(slug)
-  const title = post?.title?.trim()
+  const seo = resolveNewsPostSeoContent(post)
 
-  if (!title) {
+  if (!seo) {
     return {title: 'Article not found'}
   }
 
-  return {title}
+  return buildNewsPostMetadata(seo)
 }
 
 export default async function NewsPostPage({params}: NewsPostPageProps) {
@@ -37,8 +43,12 @@ export default async function NewsPostPage({params}: NewsPostPageProps) {
     notFound()
   }
 
+  const seo = resolveNewsPostSeoContent(post)
+  const jsonLd = seo ? buildNewsPostArticleJsonLd(seo) : null
+
   return (
     <>
+      {jsonLd ? <ArticleJsonLd data={jsonLd} /> : null}
       <ArticleHeroSection {...heroProps} />
       <ArticleBody body={post.body} />
     </>

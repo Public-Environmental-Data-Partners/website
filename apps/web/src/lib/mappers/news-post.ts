@@ -11,6 +11,11 @@ export type NewsPostTeaserFields = {
   tags?: (string | null)[] | null
 }
 
+export type NewsPostSeoFields = {
+  title?: string | null
+  description?: string | null
+}
+
 export type NewsPostListItem = {
   _id: string
   title?: string | null
@@ -20,6 +25,7 @@ export type NewsPostListItem = {
   author?: string | null
   image?: SanityImageData
   teaser?: NewsPostTeaserFields | null
+  seo?: NewsPostSeoFields | null
 }
 
 export type NewsPostDetail = NewsPostListItem & {

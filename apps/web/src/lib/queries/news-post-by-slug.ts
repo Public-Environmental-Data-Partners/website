@@ -21,6 +21,10 @@ const NEWS_POST_BY_SLUG_QUERY = `*[
     excerpt,
     tags
   },
+  seo {
+    title,
+    description
+  },
   body[]{
     ...,
     _type == "imageBlock" => {
