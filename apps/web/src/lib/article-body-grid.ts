@@ -6,3 +6,6 @@ export const ARTICLE_COL_PROSE_CLASS = 'col-span-12 lg:col-span-6 lg:col-start-4
 
 /** Single image, embed: 10 cols centered @ desktop, full width @ tablet/mobile */
 export const ARTICLE_COL_10_CENTERED_CLASS = 'col-span-12 lg:col-span-10 lg:col-start-2'
+
+/** Single image block caption: 4 cols centered @ desktop, full width @ tablet/mobile */
+export const ARTICLE_COL_4_CENTERED_CLASS = 'col-span-12 lg:col-span-4 lg:col-start-5'

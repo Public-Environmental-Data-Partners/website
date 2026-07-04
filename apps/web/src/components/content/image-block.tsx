@@ -1,41 +1,38 @@
-import Image from 'next/image'
+import type {PortableTextBlock} from '@portabletext/react'
 
+import {ArticleFigure} from '@/components/content/article-figure'
+import {ArticleFigureCaption} from '@/components/content/article-figure-caption'
 import type {HeroImage} from '@/components/hero/hero-image'
+import {Grid12} from '@/components/layout'
+import {ARTICLE_COL_4_CENTERED_CLASS, ARTICLE_COL_10_CENTERED_CLASS} from '@/lib/article-body-grid'
+import {cn} from '@/lib/utils'
 
 type ImageBlockProps = {
   image: HeroImage
-  caption?: string | null
-  source?: string | null
+  photoCredit?: string | null
+  caption?: PortableTextBlock[]
 }
 
-export function ImageBlock({image, caption, source}: ImageBlockProps) {
-  const trimmedCaption = caption?.trim()
-  const trimmedSource = source?.trim()
-  const hasCaptionBand = Boolean(trimmedCaption || trimmedSource)
+/** Single in-body image — 10-col figure, optional 4-col centered caption @ desktop. */
+export function ImageBlock({image, photoCredit, caption}: ImageBlockProps) {
+  const captionBlocks = caption ?? []
+  const hasCaption = captionBlocks.length > 0
 
   return (
-    <figure data-slot="article-image-block">
-      <div data-slot="article-image-row">
-        <div data-slot="article-image-bleed-slot" aria-hidden="true" />
-        <div data-slot="article-image-frame">
-          <Image
-            alt={image.alt}
-            className="object-cover"
-            fill
-            sizes="(max-width: 767px) 100vw, 65ch"
-            src={image.src}
-          />
-        </div>
+    <Grid12 data-slot="article-image-block" className="min-w-0">
+      <div className={cn(ARTICLE_COL_10_CENTERED_CLASS, 'min-w-0')}>
+        <ArticleFigure
+          creditClassName="text-left md:text-center"
+          image={image}
+          imageSize="single10"
+          photoCredit={photoCredit}
+        />
       </div>
-      {hasCaptionBand ? (
-        <figcaption data-slot="article-image-caption-band">
-          <div data-slot="article-image-caption-leading">
-            {trimmedCaption ? <p data-slot="article-image-caption">{trimmedCaption}</p> : null}
-            {trimmedSource ? <p data-slot="article-image-source">Source: {trimmedSource}</p> : null}
-          </div>
-          <div data-slot="article-image-caption-trailing" aria-hidden="true" />
-        </figcaption>
+      {hasCaption ? (
+        <div className={cn(ARTICLE_COL_4_CENTERED_CLASS, 'min-w-0')}>
+          <ArticleFigureCaption value={captionBlocks} />
+        </div>
       ) : null}
-    </figure>
+    </Grid12>
   )
 }

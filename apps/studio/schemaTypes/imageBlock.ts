@@ -1,5 +1,7 @@
 import {defineField, defineType} from 'sanity'
 
+import {articleCaptionPortableTextBlock} from './articlePortableText'
+
 export const imageBlock = defineType({
   name: 'imageBlock',
   title: 'Image',
@@ -11,6 +13,7 @@ export const imageBlock = defineType({
       type: 'image',
       options: {hotspot: true},
       validation: (Rule) => Rule.required(),
+      description: 'Upload 4:3 at min 1400px wide; use hotspot to adjust crop.',
       fields: [
         defineField({
           name: 'alt',
@@ -24,33 +27,43 @@ export const imageBlock = defineType({
       ],
     }),
     defineField({
+      name: 'photoCredit',
+      title: 'Photo credit',
+      type: 'string',
+      description: 'Optional — shown as “PHOTO CREDIT: …” below the image.',
+      validation: (Rule) => Rule.max(120).warning('Consider ≤ 120 chars.'),
+    }),
+    defineField({
       name: 'caption',
       title: 'Caption',
-      type: 'text',
-      rows: 3,
-      validation: (Rule) => Rule.max(500).warning('Consider ≤ 500 chars.'),
+      type: 'array',
+      of: [articleCaptionPortableTextBlock],
+      description: 'Optional copy below the photo credit.',
     }),
     defineField({
       name: 'source',
-      title: 'Source',
+      title: 'Source (legacy)',
       type: 'string',
-      description: 'Credit line — shown as “Source: …” in serif italic.',
-      validation: (Rule) => Rule.max(120).warning('Consider ≤ 120 chars.'),
+      hidden: true,
+      readOnly: true,
     }),
   ],
   preview: {
     select: {
-      caption: 'caption',
       media: 'image',
+      photoCredit: 'photoCredit',
       source: 'source',
     },
-    prepare({caption, media, source}) {
-      const excerpt = typeof caption === 'string' ? caption.trim().slice(0, 60) : ''
+    prepare({media, photoCredit, source}) {
       const credit =
-        typeof source === 'string' && source.trim().length > 0 ? `Source: ${source.trim()}` : ''
+        typeof photoCredit === 'string' && photoCredit.trim().length > 0
+          ? photoCredit.trim()
+          : typeof source === 'string' && source.trim().length > 0
+            ? source.trim()
+            : ''
       return {
-        title: excerpt || 'Image block',
-        subtitle: credit || 'Article image',
+        title: 'Image block',
+        subtitle: credit ? `PHOTO CREDIT: ${credit}` : 'Article image',
         media,
       }
     },

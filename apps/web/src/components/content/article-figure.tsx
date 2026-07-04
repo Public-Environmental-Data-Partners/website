@@ -19,6 +19,7 @@ export type ArticleFigureProps = {
   image: HeroImage
   photoCredit?: string | null
   creditAlign?: ArticlePhotoCreditAlign
+  creditClassName?: string
   caption?: PortableTextBlock[] | null
   imageSize?: ArticleFigureImageSize
   priority?: boolean
@@ -29,6 +30,7 @@ export function ArticleFigure({
   image,
   photoCredit,
   creditAlign = 'left',
+  creditClassName,
   caption,
   imageSize = 'single10',
   priority = false,
@@ -50,7 +52,9 @@ export function ArticleFigure({
           priority={priority}
         />
       </div>
-      {credit ? <ArticlePhotoCredit credit={credit} align={creditAlign} /> : null}
+      {credit ? (
+        <ArticlePhotoCredit credit={credit} align={creditAlign} className={creditClassName} />
+      ) : null}
       {hasCaption ? <ArticleFigureCaption value={captionBlocks} /> : null}
     </figure>
   )

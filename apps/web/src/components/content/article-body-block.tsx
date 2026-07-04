@@ -12,7 +12,9 @@ import {
 import {QuoteBlock} from '@/components/content/quote-block'
 import {RichTextBlock} from '@/components/content/rich-text-block'
 import {resolveEmbedUrl} from '@/lib/embed-providers'
-import {mapSanityImage, type SanityImageData} from '@/lib/mappers/sanity-image'
+import {mapSanityArticleFigureImage} from '@/lib/mappers/article-figure'
+import {normalizeImageBlockCaption, resolveImageBlockPhotoCredit} from '@/lib/mappers/image-block'
+import type {SanityImageData} from '@/lib/mappers/sanity-image'
 
 /** Typed body entries — extend in Phase 5 (audio). */
 export type RichTextBlockEntry = {
@@ -32,7 +34,9 @@ export type ImageBlockEntry = {
   _type: 'imageBlock'
   _key?: string
   image?: SanityImageData
-  caption?: string | null
+  caption?: PortableTextBlock[] | string | null
+  photoCredit?: string | null
+  /** @deprecated — use photoCredit; kept for legacy documents */
   source?: string | null
 }
 
@@ -131,11 +135,18 @@ export function ArticleBodyBlock({block}: ArticleBodyBlockProps) {
   }
 
   if (isImageBlockEntry(block)) {
-    const mapped = mapSanityImage(block.image ?? null, '')
+    const alt = block.image?.alt?.trim() ?? ''
+    const mapped = mapSanityArticleFigureImage(block.image ?? null, 'single10', alt)
     if (!mapped) {
       return null
     }
-    return <ImageBlock caption={block.caption} image={mapped} source={block.source} />
+    return (
+      <ImageBlock
+        caption={normalizeImageBlockCaption(block.caption)}
+        image={mapped}
+        photoCredit={resolveImageBlockPhotoCredit(block)}
+      />
+    )
   }
 
   if (isEmbedBlockEntry(block)) {
