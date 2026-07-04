@@ -7,10 +7,16 @@
   margin-block: 2rem;
 }
 
-[data-slot='article-body-block']:first-child {
+[data-slot='article-body-prose'] {
+  margin-block: 2rem;
+}
+
+[data-slot='article-body-block']:first-child,
+[data-slot='article-body-prose']:first-child {
   margin-block-start: 0;
 }
 
-[data-slot='article-body-block']:last-child {
+[data-slot='article-body-block']:last-child,
+[data-slot='article-body-prose']:last-child {
   margin-block-end: 0;
 }

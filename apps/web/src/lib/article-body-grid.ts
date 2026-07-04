@@ -12,3 +12,15 @@ export const ARTICLE_COL_6_PAIR_CLASS = 'col-span-12 md:col-span-6'
 
 /** Single image block caption: 4 cols centered @ desktop, full width @ tablet/mobile */
 export const ARTICLE_COL_4_CENTERED_CLASS = 'col-span-12 lg:col-span-4 lg:col-start-5'
+
+export type ArticleBodyBlockColumnKind = 'default' | 'prose' | 'embed'
+
+const COLUMN_CLASS_BY_KIND: Record<ArticleBodyBlockColumnKind, string> = {
+  default: ARTICLE_BODY_BLOCK_CLASS,
+  prose: ARTICLE_COL_PROSE_CLASS,
+  embed: ARTICLE_COL_10_CENTERED_CLASS,
+}
+
+export function getArticleBodyBlockColumnClass(kind: ArticleBodyBlockColumnKind): string {
+  return COLUMN_CLASS_BY_KIND[kind]
+}

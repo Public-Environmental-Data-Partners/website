@@ -4,11 +4,16 @@ import type {ReactNode} from 'react'
 import {
   ArticleBodyBlock,
   type ArticleBodyBlockEntry,
+  isEmbedBlockEntry,
   isPortableTextBlockEntry,
+  isRichTextBlockEntry,
 } from '@/components/content/article-body-block'
 import {RichTextBlock} from '@/components/content/rich-text-block'
 import {Grid12, SectionBand, SiteShell} from '@/components/layout'
-import {ARTICLE_BODY_BLOCK_CLASS} from '@/lib/article-body-grid'
+import {
+  type ArticleBodyBlockColumnKind,
+  getArticleBodyBlockColumnClass,
+} from '@/lib/article-body-grid'
 import {cn} from '@/lib/utils'
 
 type ArticleBodyProps = {
@@ -26,11 +31,29 @@ function isPortableTextBody(blocks: ArticleBodyBlockEntry[]): blocks is Portable
   return blocks.length > 0 && blocks.every((block) => isPortableTextBlockEntry(block))
 }
 
-function ArticleBodyBlockRow({children, className}: {children: ReactNode; className?: string}) {
+function getBodyBlockColumnKind(block: ArticleBodyBlockEntry): ArticleBodyBlockColumnKind {
+  if (isPortableTextBlockEntry(block) || isRichTextBlockEntry(block)) {
+    return 'prose'
+  }
+  if (isEmbedBlockEntry(block)) {
+    return 'embed'
+  }
+  return 'default'
+}
+
+function ArticleBodyBlockRow({
+  children,
+  columnKind = 'default',
+}: {
+  children: ReactNode
+  columnKind?: ArticleBodyBlockColumnKind
+}) {
+  const isProse = columnKind === 'prose'
+
   return (
     <div
-      data-slot="article-body-block"
-      className={cn(ARTICLE_BODY_BLOCK_CLASS, 'text-left', className)}
+      data-slot={isProse ? 'article-body-prose' : 'article-body-block'}
+      className={cn(getArticleBodyBlockColumnClass(columnKind), 'min-w-0 text-left')}
     >
       {children}
     </div>
@@ -56,7 +79,7 @@ export function ArticleBody({body}: ArticleBodyProps) {
   if (isPortableTextBody(blocks)) {
     return (
       <ArticleBodyShell>
-        <ArticleBodyBlockRow>
+        <ArticleBodyBlockRow columnKind="prose">
           <RichTextBlock value={blocks} />
         </ArticleBodyBlockRow>
       </ArticleBodyShell>
@@ -66,7 +89,10 @@ export function ArticleBody({body}: ArticleBodyProps) {
   return (
     <ArticleBodyShell>
       {blocks.map((block, index) => (
-        <ArticleBodyBlockRow key={block._key ?? `body-block-${index}`}>
+        <ArticleBodyBlockRow
+          columnKind={getBodyBlockColumnKind(block)}
+          key={block._key ?? `body-block-${index}`}
+        >
           <ArticleBodyBlock block={block} />
         </ArticleBodyBlockRow>
       ))}

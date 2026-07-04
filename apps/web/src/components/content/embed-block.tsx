@@ -10,7 +10,7 @@ export function EmbedBlock({embed, caption}: EmbedBlockProps) {
   const title = trimmedCaption || embed.title
 
   return (
-    <figure className="my-8">
+    <figure className="m-0 min-w-0" data-slot="article-embed-block">
       <div
         className={
           embed.aspect === 'video'
