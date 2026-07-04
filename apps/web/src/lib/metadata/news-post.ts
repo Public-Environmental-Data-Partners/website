@@ -90,7 +90,7 @@ export function buildNewsPostMetadata(seo: NewsPostSeoContent): Metadata {
   }
 }
 
-function formatJsonLdAuthor(name: string): { '@type': 'Person'; name: string } {
+function formatJsonLdAuthor(name: string): {'@type': 'Person'; name: string} {
   const trimmed = name.trim()
   const normalized = /^by\s+/i.test(trimmed) ? trimmed.replace(/^by\s+/i, '').trim() : trimmed
   return {

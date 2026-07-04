@@ -1,5 +1,6 @@
 import type {NewsPostTeaserProps} from '@/components/news/news-post-teaser'
 import type {ArticleHeroSectionProps} from '@/components/sections/article-hero-section'
+import {formatPhotoCredit} from '@/lib/format-photo-credit'
 import {
   mapSanityArticleHeroImage,
   mapSanityImage,
@@ -83,17 +84,6 @@ function formatArticleHeroDate(iso: string): string | null {
   const day = String(date.getDate()).padStart(2, '0')
   const year = String(date.getFullYear()).slice(-2)
   return `${month}.${day}.${year}`
-}
-
-function formatPhotoCredit(credit: string | null | undefined): string | undefined {
-  const name = credit?.trim()
-  if (!name) {
-    return undefined
-  }
-  if (/^photo credit:/i.test(name)) {
-    return name
-  }
-  return `PHOTO CREDIT: ${name}`
 }
 
 /** v2 article hero — eyebrow → series, publishedAt → MM.DD.YY (docs/blog-components.md). */

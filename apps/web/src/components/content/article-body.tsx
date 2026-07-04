@@ -26,13 +26,7 @@ function isPortableTextBody(blocks: ArticleBodyBlockEntry[]): blocks is Portable
   return blocks.length > 0 && blocks.every((block) => isPortableTextBlockEntry(block))
 }
 
-function ArticleBodyBlockRow({
-  children,
-  className,
-}: {
-  children: ReactNode
-  className?: string
-}) {
+function ArticleBodyBlockRow({children, className}: {children: ReactNode; className?: string}) {
   return (
     <div
       data-slot="article-body-block"

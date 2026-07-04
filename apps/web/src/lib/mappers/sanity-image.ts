@@ -49,8 +49,18 @@ function hasImageAsset(image: SanityImageData): image is NonNullable<SanityImage
   return Boolean(image?.asset?._id || image?.asset?.url)
 }
 
+/** @public — article figure mappers */
+export function hasSanityImageAsset(image: SanityImageData): image is NonNullable<SanityImageData> {
+  return hasImageAsset(image)
+}
+
 function toImageSource(image: NonNullable<SanityImageData>): SanityImageSource {
   return image as SanityImageSource
+}
+
+/** @public — article figure mappers */
+export function toSanityImageSource(image: NonNullable<SanityImageData>): SanityImageSource {
+  return toImageSource(image)
 }
 
 export function mapSanityImage(image: SanityImageData, fallbackAlt = ''): HeroImage | undefined {
