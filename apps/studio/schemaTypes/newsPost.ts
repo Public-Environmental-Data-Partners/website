@@ -163,6 +163,7 @@ export const newsPost = defineType({
         defineArrayMember({type: 'quoteBlock'}),
         defineArrayMember({type: 'imageBlock'}),
         defineArrayMember({type: 'twoImageBlock'}),
+        defineArrayMember({type: 'imageTextBlock'}),
         defineArrayMember({type: 'embedBlock'}),
         defineArrayMember({type: 'listBlock'}),
       ],

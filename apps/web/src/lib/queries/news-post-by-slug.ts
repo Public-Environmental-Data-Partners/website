@@ -41,6 +41,11 @@ const NEWS_POST_BY_SLUG_QUERY = `*[
         caption[]{...},
         image ${SANITY_IMAGE_PROJECTION}
       }
+    },
+    _type == "imageTextBlock" => {
+      ...,
+      body[]{...},
+      image ${SANITY_IMAGE_PROJECTION}
     }
   }
 }`

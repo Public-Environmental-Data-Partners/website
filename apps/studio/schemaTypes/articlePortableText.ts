@@ -31,6 +31,23 @@ export const articleCaptionPortableTextBlock = {
   },
 } as const
 
+/** imageTextBlock body — paragraphs, bold, links. */
+export const articleImageTextBodyPortableTextBlock = {
+  type: 'block',
+  styles: [{title: 'Normal', value: 'normal'}],
+  lists: [],
+  marks: {
+    decorators: [{title: 'Strong', value: 'strong'}],
+    annotations: [
+      {
+        name: 'link',
+        type: 'object',
+        fields: [defineField({name: 'href', type: 'url'})],
+      },
+    ],
+  },
+} as const
+
 /** Row / paragraph content inside listBlock divided variants. */
 export const listRowPortableTextBlock = {
   type: 'block',

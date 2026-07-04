@@ -2,6 +2,7 @@ import type {PortableTextBlock} from '@portabletext/react'
 
 import {EmbedBlock} from '@/components/content/embed-block'
 import {ImageBlock} from '@/components/content/image-block'
+import {ImageTextBlock} from '@/components/content/image-text-block'
 import {
   ListBlock,
   type ListBlockBackground,
@@ -15,6 +16,7 @@ import {TwoImageBlock} from '@/components/content/two-image-block'
 import {resolveEmbedUrl} from '@/lib/embed-providers'
 import {mapSanityArticleFigureImage} from '@/lib/mappers/article-figure'
 import {normalizeImageBlockCaption, resolveImageBlockPhotoCredit} from '@/lib/mappers/image-block'
+import {mapImageTextBlockProps} from '@/lib/mappers/image-text-block'
 import type {SanityImageData} from '@/lib/mappers/sanity-image'
 import type {ArticleFigureItemData} from '@/lib/mappers/two-image-block'
 import {mapTwoImageBlockItems} from '@/lib/mappers/two-image-block'
@@ -49,6 +51,15 @@ export type TwoImageBlockEntry = {
   items?: ArticleFigureItemData[] | null
 }
 
+export type ImageTextBlockEntry = {
+  _type: 'imageTextBlock'
+  _key?: string
+  imagePosition?: string | null
+  image?: SanityImageData
+  photoCredit?: string | null
+  body?: PortableTextBlock[] | null
+}
+
 export type EmbedBlockEntry = {
   _type: 'embedBlock'
   _key?: string
@@ -73,6 +84,7 @@ export type ArticleBodyBlockEntry =
   | QuoteBlockEntry
   | ImageBlockEntry
   | TwoImageBlockEntry
+  | ImageTextBlockEntry
   | EmbedBlockEntry
   | ListBlockEntry
 
@@ -94,6 +106,10 @@ export function isImageBlockEntry(block: ArticleBodyBlockEntry): block is ImageB
 
 export function isTwoImageBlockEntry(block: ArticleBodyBlockEntry): block is TwoImageBlockEntry {
   return block._type === 'twoImageBlock'
+}
+
+export function isImageTextBlockEntry(block: ArticleBodyBlockEntry): block is ImageTextBlockEntry {
+  return block._type === 'imageTextBlock'
 }
 
 export function isEmbedBlockEntry(block: ArticleBodyBlockEntry): block is EmbedBlockEntry {
@@ -169,6 +185,14 @@ export function ArticleBodyBlock({block}: ArticleBodyBlockProps) {
       return null
     }
     return <TwoImageBlock items={items} />
+  }
+
+  if (isImageTextBlockEntry(block)) {
+    const props = mapImageTextBlockProps(block)
+    if (!props) {
+      return null
+    }
+    return <ImageTextBlock {...props} />
   }
 
   if (isEmbedBlockEntry(block)) {

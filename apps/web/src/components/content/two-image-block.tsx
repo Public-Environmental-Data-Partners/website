@@ -25,10 +25,7 @@ export function TwoImageBlock({items}: TwoImageBlockProps) {
   return (
     <Grid12 data-slot="article-two-image-block" className="min-w-0">
       {items.map((item, index) => (
-        <div
-          key={`two-image-${index}`}
-          className={cn(ARTICLE_COL_6_PAIR_CLASS, 'min-w-0')}
-        >
+        <div key={`two-image-${index}`} className={cn(ARTICLE_COL_6_PAIR_CLASS, 'min-w-0')}>
           <ArticleFigure
             caption={item.caption}
             creditAlign="left"
