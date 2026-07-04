@@ -1,0 +1,119 @@
+/*
+ * Article audio intro — listen pill + share (docs/article-audio-implementation-plan.md).
+ * Typography @ lg (1024px) for LISTEN: prefix on pill label.
+ */
+
+[data-slot='article-audio-row'] {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  [data-slot='article-audio-row'] {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+}
+
+[data-slot='article-audio-heading'] {
+  margin: 0;
+  font-family: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--text-body-lg-size, 1.375rem);
+  font-weight: 600;
+  line-height: var(--text-body-lg-leading, 1);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--foreground);
+  text-align: center;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  [data-slot='article-audio-heading'] {
+    text-align: left;
+    width: auto;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+
+[data-slot='article-audio-controls'] {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.article-audio-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 9999px;
+  background-color: var(--light-blue);
+  color: var(--dark-blue);
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.article-audio-pill:hover {
+  background-color: color-mix(in srgb, var(--light-blue) 85%, var(--dark-blue));
+}
+
+.article-audio-pill:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px var(--dark-blue);
+}
+
+.article-audio-pill-icon {
+  width: 1.375rem;
+  height: 1.375rem;
+  flex-shrink: 0;
+}
+
+[data-slot='article-audio-pill-label'],
+.article-audio-pill-label {
+  font-family: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--text-body-lg-size, 1.375rem);
+  font-weight: 600;
+  line-height: var(--text-body-lg-leading, 1);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+.article-audio-share {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--dark-blue);
+  padding: 0.375rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+
+.article-audio-share:hover {
+  color: color-mix(in srgb, var(--dark-blue) 80%, black);
+}
+
+.article-audio-share:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px var(--dark-blue);
+}
+
+.article-audio-share-icon {
+  width: 1.375rem;
+  height: 1.375rem;
+}
