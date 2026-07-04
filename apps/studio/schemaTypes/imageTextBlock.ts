@@ -27,7 +27,8 @@ export const imageTextBlock = defineType({
       type: 'image',
       options: {hotspot: true},
       validation: (Rule) => Rule.required(),
-      description: 'Upload 4:3 at min 900px wide; use hotspot to adjust crop.',
+      description:
+        'Upload 4:3 at min 900px wide. Set hotspot in Studio to control the crop in the 4:3 frame.',
       fields: [
         defineField({
           name: 'alt',

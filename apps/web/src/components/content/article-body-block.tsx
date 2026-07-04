@@ -15,7 +15,7 @@ import {RichTextBlock} from '@/components/content/rich-text-block'
 import {TwoImageBlock} from '@/components/content/two-image-block'
 import {resolveEmbedUrl} from '@/lib/embed-providers'
 import {mapSanityArticleFigureImage} from '@/lib/mappers/article-figure'
-import {normalizeImageBlockCaption, resolveImageBlockPhotoCredit} from '@/lib/mappers/image-block'
+import {normalizeFigureCaption, resolvePhotoCredit} from '@/lib/mappers/image-block'
 import {mapImageTextBlockProps} from '@/lib/mappers/image-text-block'
 import type {SanityImageData} from '@/lib/mappers/sanity-image'
 import type {ArticleFigureItemData} from '@/lib/mappers/two-image-block'
@@ -41,8 +41,6 @@ export type ImageBlockEntry = {
   image?: SanityImageData
   caption?: PortableTextBlock[] | string | null
   photoCredit?: string | null
-  /** @deprecated — use photoCredit; kept for legacy documents */
-  source?: string | null
 }
 
 export type TwoImageBlockEntry = {
@@ -172,9 +170,9 @@ export function ArticleBodyBlock({block}: ArticleBodyBlockProps) {
     }
     return (
       <ImageBlock
-        caption={normalizeImageBlockCaption(block.caption)}
+        caption={normalizeFigureCaption(block.caption)}
         image={mapped}
-        photoCredit={resolveImageBlockPhotoCredit(block)}
+        photoCredit={resolvePhotoCredit(block.photoCredit)}
       />
     )
   }

@@ -34,14 +34,7 @@ export function normalizeFigureCaption(
   return []
 }
 
-/** Prefer `photoCredit`; fall back to legacy `source` until CMS entries are migrated. */
-export function resolveImageBlockPhotoCredit(block: {
-  photoCredit?: string | null
-  source?: string | null
-}): string | undefined {
-  const credit = block.photoCredit?.trim() || block.source?.trim()
-  return credit || undefined
+export function resolvePhotoCredit(credit: string | null | undefined): string | undefined {
+  const trimmed = credit?.trim()
+  return trimmed || undefined
 }
-
-/** @deprecated — use normalizeFigureCaption */
-export const normalizeImageBlockCaption = normalizeFigureCaption

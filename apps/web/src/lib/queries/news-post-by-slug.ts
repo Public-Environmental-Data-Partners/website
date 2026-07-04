@@ -30,7 +30,6 @@ const NEWS_POST_BY_SLUG_QUERY = `*[
     _type == "imageBlock" => {
       ...,
       photoCredit,
-      source,
       caption[]{...},
       image ${SANITY_IMAGE_PROJECTION}
     },

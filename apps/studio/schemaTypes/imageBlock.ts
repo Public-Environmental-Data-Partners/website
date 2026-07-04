@@ -13,7 +13,8 @@ export const imageBlock = defineType({
       type: 'image',
       options: {hotspot: true},
       validation: (Rule) => Rule.required(),
-      description: 'Upload 4:3 at min 1400px wide; use hotspot to adjust crop.',
+      description:
+        'Upload 4:3 at min 1400px wide. Set hotspot in Studio to control the crop in the 4:3 frame.',
       fields: [
         defineField({
           name: 'alt',
@@ -40,27 +41,14 @@ export const imageBlock = defineType({
       of: [articleCaptionPortableTextBlock],
       description: 'Optional copy below the photo credit.',
     }),
-    defineField({
-      name: 'source',
-      title: 'Source (legacy)',
-      type: 'string',
-      hidden: true,
-      readOnly: true,
-    }),
   ],
   preview: {
     select: {
       media: 'image',
       photoCredit: 'photoCredit',
-      source: 'source',
     },
-    prepare({media, photoCredit, source}) {
-      const credit =
-        typeof photoCredit === 'string' && photoCredit.trim().length > 0
-          ? photoCredit.trim()
-          : typeof source === 'string' && source.trim().length > 0
-            ? source.trim()
-            : ''
+    prepare({media, photoCredit}) {
+      const credit = typeof photoCredit === 'string' ? photoCredit.trim() : ''
       return {
         title: 'Image block',
         subtitle: credit ? `PHOTO CREDIT: ${credit}` : 'Article image',
