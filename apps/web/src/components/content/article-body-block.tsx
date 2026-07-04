@@ -11,10 +11,13 @@ import {
 } from '@/components/content/list-block'
 import {QuoteBlock} from '@/components/content/quote-block'
 import {RichTextBlock} from '@/components/content/rich-text-block'
+import {TwoImageBlock} from '@/components/content/two-image-block'
 import {resolveEmbedUrl} from '@/lib/embed-providers'
 import {mapSanityArticleFigureImage} from '@/lib/mappers/article-figure'
 import {normalizeImageBlockCaption, resolveImageBlockPhotoCredit} from '@/lib/mappers/image-block'
 import type {SanityImageData} from '@/lib/mappers/sanity-image'
+import type {ArticleFigureItemData} from '@/lib/mappers/two-image-block'
+import {mapTwoImageBlockItems} from '@/lib/mappers/two-image-block'
 
 /** Typed body entries — extend in Phase 5 (audio). */
 export type RichTextBlockEntry = {
@@ -40,6 +43,12 @@ export type ImageBlockEntry = {
   source?: string | null
 }
 
+export type TwoImageBlockEntry = {
+  _type: 'twoImageBlock'
+  _key?: string
+  items?: ArticleFigureItemData[] | null
+}
+
 export type EmbedBlockEntry = {
   _type: 'embedBlock'
   _key?: string
@@ -63,6 +72,7 @@ export type ArticleBodyBlockEntry =
   | RichTextBlockEntry
   | QuoteBlockEntry
   | ImageBlockEntry
+  | TwoImageBlockEntry
   | EmbedBlockEntry
   | ListBlockEntry
 
@@ -80,6 +90,10 @@ export function isQuoteBlockEntry(block: ArticleBodyBlockEntry): block is QuoteB
 
 export function isImageBlockEntry(block: ArticleBodyBlockEntry): block is ImageBlockEntry {
   return block._type === 'imageBlock'
+}
+
+export function isTwoImageBlockEntry(block: ArticleBodyBlockEntry): block is TwoImageBlockEntry {
+  return block._type === 'twoImageBlock'
 }
 
 export function isEmbedBlockEntry(block: ArticleBodyBlockEntry): block is EmbedBlockEntry {
@@ -147,6 +161,14 @@ export function ArticleBodyBlock({block}: ArticleBodyBlockProps) {
         photoCredit={resolveImageBlockPhotoCredit(block)}
       />
     )
+  }
+
+  if (isTwoImageBlockEntry(block)) {
+    const items = mapTwoImageBlockItems(block.items)
+    if (items.length < 2) {
+      return null
+    }
+    return <TwoImageBlock items={items} />
   }
 
   if (isEmbedBlockEntry(block)) {

@@ -1,16 +1,8 @@
 import type {PortableTextBlock} from '@portabletext/react'
 
-import type {ImageBlockEntry} from '@/components/content/article-body-block'
-
-/** Prefer `photoCredit`; fall back to legacy `source` until CMS entries are migrated. */
-export function resolveImageBlockPhotoCredit(block: ImageBlockEntry): string | undefined {
-  const credit = block.photoCredit?.trim() || block.source?.trim()
-  return credit || undefined
-}
-
 /** Normalize PT caption or legacy plain-text caption from older documents. */
-export function normalizeImageBlockCaption(
-  caption: ImageBlockEntry['caption'],
+export function normalizeFigureCaption(
+  caption: PortableTextBlock[] | string | null | undefined,
 ): PortableTextBlock[] {
   if (Array.isArray(caption) && caption.length > 0) {
     return caption as PortableTextBlock[]
@@ -41,3 +33,15 @@ export function normalizeImageBlockCaption(
 
   return []
 }
+
+/** Prefer `photoCredit`; fall back to legacy `source` until CMS entries are migrated. */
+export function resolveImageBlockPhotoCredit(block: {
+  photoCredit?: string | null
+  source?: string | null
+}): string | undefined {
+  const credit = block.photoCredit?.trim() || block.source?.trim()
+  return credit || undefined
+}
+
+/** @deprecated — use normalizeFigureCaption */
+export const normalizeImageBlockCaption = normalizeFigureCaption

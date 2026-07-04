@@ -1,3 +1,4 @@
+import {articleFigureItem} from './articleFigureItem'
 import {embedBlock} from './embedBlock'
 import {homepageLinkTarget} from './homepageLinkTarget'
 import {
@@ -24,6 +25,7 @@ import {siteFooter} from './siteFooter'
 import {siteNavGroup, siteNavigation, siteNavLink} from './siteNavigation'
 import {simpleSection, sitePage} from './sitePage'
 import {splitHeroBleedFields} from './splitHeroBleedFields'
+import {twoImageBlock} from './twoImageBlock'
 
 export const schemaTypes = [
   byTheNumbersStat,
@@ -49,7 +51,9 @@ export const schemaTypes = [
   newsHubPage,
   newsPostTeaserFields,
   quoteBlock,
+  articleFigureItem,
   imageBlock,
+  twoImageBlock,
   embedBlock,
   listBlock,
   newsPost,
