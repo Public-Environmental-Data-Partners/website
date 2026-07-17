@@ -60,8 +60,8 @@ function MobileDonateLink({pathname, onNavigate}: {pathname: string; onNavigate:
       className={cn(
         'inline-flex min-h-11 w-full items-center justify-center rounded-[4px] px-5 py-3 text-[1.375rem] font-semibold transition-colors',
         active
-          ? 'bg-pedp-green text-off-white ring-2 ring-off-white/40 ring-offset-2 ring-offset-light-beige'
-          : 'bg-pedp-green text-off-white hover:bg-pedp-green/90',
+          ? 'bg-light-green text-dark-green ring-2 ring-dark-green/40 ring-offset-2 ring-offset-light-beige'
+          : 'bg-light-green text-dark-green hover:bg-light-green/90',
       )}
       aria-current={active ? 'page' : undefined}
       onClick={onNavigate}

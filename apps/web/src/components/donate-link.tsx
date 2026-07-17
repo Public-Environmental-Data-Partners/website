@@ -37,8 +37,8 @@ export function DonateLink({
         ringOffsetClass,
         'focus-visible:ring-ring focus-visible:ring-2',
         active
-          ? 'bg-pedp-green text-off-white ring-2 ring-off-white/40 ring-offset-2'
-          : 'bg-pedp-green text-off-white hover:bg-pedp-green/90',
+          ? 'bg-light-green text-dark-green ring-2 ring-dark-green/40 ring-offset-2'
+          : 'bg-light-green text-dark-green hover:bg-light-green/90',
         className,
       )}
       aria-current={active ? 'page' : undefined}
