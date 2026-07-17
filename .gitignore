@@ -5,3 +5,7 @@ node_modules
 .env.*
 !.env.example
 !**/.env.example
+/apps/web/playwright-report/
+/apps/web/test-results/
+/apps/web/blob-report/
+/apps/web/playwright/.cache/
