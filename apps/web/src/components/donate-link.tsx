@@ -6,8 +6,14 @@ import {usePathname} from 'next/navigation'
 import {isActiveNavPath} from '@/lib/nav-active'
 import {cn} from '@/lib/utils'
 
-const pillBase =
-  'inline-flex min-h-10 shrink-0 items-center justify-center rounded-[4px] px-5 py-2 font-semibold transition-colors focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none'
+const base =
+  'inline-flex shrink-0 items-center justify-center font-semibold transition-colors focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none'
+
+/** Header Donate — Figma: 121×65, radius 10, pad 16/8, light-green. */
+const headerClass =
+  'h-[65px] w-[121px] rounded-[10px] px-2 py-4 text-center align-middle text-[1.375rem] leading-5'
+
+const footerClass = 'min-h-10 rounded-[4px] px-5 py-2 text-sm'
 
 export function DonateLink({
   href,
@@ -32,8 +38,8 @@ export function DonateLink({
     <Link
       href={href}
       className={cn(
-        pillBase,
-        variant === 'header' ? 'text-[1.375rem]' : 'text-sm',
+        base,
+        variant === 'header' ? headerClass : footerClass,
         ringOffsetClass,
         'focus-visible:ring-ring focus-visible:ring-2',
         active

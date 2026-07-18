@@ -6,7 +6,8 @@ import {usePathname} from 'next/navigation'
 import {isActiveNavPath} from '@/lib/nav-active'
 import {cn} from '@/lib/utils'
 
-const base = 'font-sans text-[1.375rem] font-semibold whitespace-nowrap transition-colors'
+const base =
+  'font-sans text-[1.375rem] leading-none whitespace-nowrap underline-offset-4 transition-colors hover:underline'
 
 export function HeaderNavLink({href, label}: {href: string; label: string}) {
   const pathname = usePathname()
@@ -18,8 +19,8 @@ export function HeaderNavLink({href, label}: {href: string; label: string}) {
       className={cn(
         base,
         active
-          ? 'text-foreground font-semibold underline decoration-foreground/40 underline-offset-4'
-          : 'text-muted-foreground hover:text-foreground',
+          ? 'text-foreground font-semibold underline decoration-foreground'
+          : 'text-muted-foreground font-normal hover:text-foreground',
       )}
       aria-current={active ? 'page' : undefined}
     >

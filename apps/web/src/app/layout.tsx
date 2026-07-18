@@ -23,7 +23,7 @@ const fontSans = Figtree({
   subsets: ['latin'],
   variable: '--font-figtree',
   style: ['normal', 'italic'],
-  weight: ['400', '500', '600'],
+  weight: ['400', '500', '600', '800'],
 })
 
 const fontMono = Geist_Mono({

@@ -78,8 +78,13 @@ function MobilePrimaryNavSheetInner({mainNav}: {mainNav: MainNavEntry[]}) {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button type="button" variant="outline" size="icon-sm" className="shrink-0">
-          <Menu aria-hidden className="size-4" />
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="text-foreground hover:bg-transparent hover:text-foreground shrink-0 border-0 shadow-none"
+        >
+          <Menu aria-hidden className="size-6" strokeWidth={2} />
           <span className="sr-only">Open menu</span>
         </Button>
       </SheetTrigger>

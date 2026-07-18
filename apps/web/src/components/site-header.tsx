@@ -14,37 +14,44 @@ export async function SiteHeader() {
   const primaryNav = await getMainNav()
 
   return (
-    <header className="border-border bg-light-beige border-b">
-      <div className="mx-auto flex max-w-site items-center justify-between gap-3 px-4 py-3 sm:px-6">
+    <header className="bg-light-beige">
+      <div className="mx-auto flex min-h-[93px] max-w-site items-center justify-between gap-3 px-[var(--site-padding-x)] xl:min-h-[170px]">
         <Link
           href="/"
           aria-label={siteName}
-          className="text-foreground focus-visible:ring-ring shrink-0 rounded-sm transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-light-beige focus-visible:outline-none"
+          className="text-foreground focus-visible:ring-ring shrink-0 rounded-sm no-underline transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-light-beige focus-visible:outline-none"
         >
-          <Image
-            src="/brand/logo.webp"
-            alt=""
-            width={1500}
-            height={458}
-            priority
-            className="hidden h-10 w-auto lg:block"
-            sizes="(min-width: 1024px) 280px, 0px"
-          />
-          <Image
-            src="/brand/icon.webp"
-            alt=""
-            width={60}
-            height={50}
-            priority
-            className="h-9 w-auto lg:hidden"
-            sizes="(max-width: 1023px) 36px, 0px"
-          />
+          {/* Desktop: icon + 3-line wordmark */}
+          <span className="hidden items-center gap-3 xl:inline-flex">
+            <Image
+              src="/brand/icon.webp"
+              alt=""
+              width={56}
+              height={46}
+              priority
+              className="h-[46px] w-[56px] shrink-0"
+            />
+            <span className="font-sans text-2xl font-medium leading-none">
+              Public
+              <br />
+              Environmental
+              <br />
+              Data Partners
+            </span>
+          </span>
+
+          {/* Mobile / tablet: 2-line wordmark, no icon */}
+          <span className="inline-block font-sans text-xl font-extrabold leading-none align-middle xl:hidden">
+            Public Environmental
+            <br />
+            Data Partners
+          </span>
         </Link>
 
-        <div className="flex min-w-0 items-center justify-end gap-3 lg:flex-1">
+        <div className="flex min-w-0 items-center justify-end gap-3 xl:flex-1">
           <nav
             aria-label="Primary"
-            className="hidden flex-wrap items-center justify-end gap-x-4 gap-y-2 lg:flex lg:gap-x-6"
+            className="hidden flex-wrap items-center justify-end gap-x-6 gap-y-2 xl:flex"
           >
             {primaryNav.map((entry, index) =>
               entry.kind === 'group' ? (
@@ -66,7 +73,7 @@ export async function SiteHeader() {
             <DonateLink href={donateNav.href} label={donateNav.label} variant="header" />
           </nav>
 
-          <div className="lg:hidden">
+          <div className="xl:hidden">
             <MobilePrimaryNavSheet mainNav={primaryNav} />
           </div>
         </div>
