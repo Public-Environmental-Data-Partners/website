@@ -1,5 +1,5 @@
 /*
- * Brand SVG paths for Bluesky, Facebook, and Threads match Simple Icons v11.4.0 (CC0).
+ * Brand SVG paths for Bluesky match Simple Icons v11.4.0 (CC0).
  * https://github.com/simple-icons/simple-icons
  */
 import Link from 'next/link'
@@ -11,12 +11,13 @@ type SocialEntry = {
   href: string
   label: string
   Icon: ComponentType<{className?: string}>
+  external?: boolean
 }
 
 function IconBox({className, children}: {className?: string; children: ReactNode}) {
   return (
     <span
-      className={cn('inline-flex size-9 items-center justify-center text-current', className)}
+      className={cn('inline-flex size-[30px] items-center justify-center text-current', className)}
       aria-hidden
     >
       {children}
@@ -30,7 +31,7 @@ function BlueskyIcon({className}: {className?: string}) {
     <IconBox className={className}>
       <svg
         viewBox="0 0 24 24"
-        className="size-6"
+        className="size-5"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -45,7 +46,7 @@ function LinkedInIcon({className}: {className?: string}) {
     <IconBox className={className}>
       <svg
         viewBox="0 0 24 24"
-        className="size-6"
+        className="size-5"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -60,7 +61,7 @@ function GitHubIcon({className}: {className?: string}) {
     <IconBox className={className}>
       <svg
         viewBox="0 0 24 24"
-        className="size-6"
+        className="size-5"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -70,73 +71,58 @@ function GitHubIcon({className}: {className?: string}) {
   )
 }
 
-/** Facebook mark, path from Simple Icons (CC0), fill `currentColor`. */
-function FacebookIcon({className}: {className?: string}) {
+function MailIcon({className}: {className?: string}) {
   return (
     <IconBox className={className}>
       <svg
         viewBox="0 0 24 24"
-        className="size-6"
-        fill="currentColor"
+        className="size-5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z" />
-      </svg>
-    </IconBox>
-  )
-}
-
-/** Threads mark, path from Simple Icons (CC0), fill `currentColor`. */
-function ThreadsIcon({className}: {className?: string}) {
-  return (
-    <IconBox className={className}>
-      <svg
-        viewBox="0 0 24 24"
-        className="size-6"
-        fill="currentColor"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221z" />
-      </svg>
-    </IconBox>
-  )
-}
-
-function YouTubeIcon({className}: {className?: string}) {
-  return (
-    <IconBox className={className}>
-      <svg
-        viewBox="0 0 24 24"
-        className="size-6"
-        fill="currentColor"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+        <rect width="20" height="16" x="2" y="4" rx="2" />
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
       </svg>
     </IconBox>
   )
 }
 
 const socialLinks: SocialEntry[] = [
-  {href: 'https://bsky.app', label: 'PEDP on Bluesky', Icon: BlueskyIcon},
-  {href: 'https://www.linkedin.com', label: 'PEDP on LinkedIn', Icon: LinkedInIcon},
-  {href: 'https://github.com', label: 'PEDP on GitHub', Icon: GitHubIcon},
-  {href: 'https://www.facebook.com', label: 'PEDP on Facebook', Icon: FacebookIcon},
-  {href: 'https://www.threads.com', label: 'PEDP on Threads', Icon: ThreadsIcon},
-  {href: 'https://www.youtube.com', label: 'PEDP on YouTube', Icon: YouTubeIcon},
+  {href: 'https://bsky.app', label: 'PEDP on Bluesky', Icon: BlueskyIcon, external: true},
+  {
+    href: 'https://www.linkedin.com',
+    label: 'PEDP on LinkedIn',
+    Icon: LinkedInIcon,
+    external: true,
+  },
+  {href: 'https://github.com', label: 'PEDP on GitHub', Icon: GitHubIcon, external: true},
+  {
+    href: 'mailto:kameron@policyinnovation.org',
+    label: 'Email Kameron Kerger',
+    Icon: MailIcon,
+  },
 ]
 
+/** Social / contact icons — Figma row 180×30. */
 export function FooterSocialLinks({className}: {className?: string}) {
   return (
-    <ul className={cn('flex flex-wrap items-center gap-2', className)}>
-      {socialLinks.map(({href, label, Icon}) => (
+    <ul
+      className={cn(
+        'flex h-[30px] w-[180px] items-center justify-between text-footer-foreground',
+        className,
+      )}
+    >
+      {socialLinks.map(({href, label, Icon, external}) => (
         <li key={label}>
           <Link
             href={href}
-            target="_blank"
-            rel="noopener noreferrer"
+            {...(external ? {target: '_blank', rel: 'noopener noreferrer'} : {})}
             aria-label={label}
-            className="text-footer-foreground/90 hover:text-footer-foreground focus-visible:ring-ring rounded-md focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--footer)]"
+            className="text-footer-foreground hover:opacity-80 focus-visible:ring-ring rounded-md focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--footer)]"
           >
             <Icon />
           </Link>
