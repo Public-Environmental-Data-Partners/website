@@ -6,6 +6,7 @@ import './article-audio.css'
 import './hero-split-grid.css'
 import './article-list-block.css'
 import './news-post-teaser.css'
+import './similar-posts.css'
 import './pedp-token-overrides.css'
 
 import type {Metadata} from 'next'
@@ -87,7 +88,7 @@ export default async function RootLayout({
         fontSerif.variable,
       )}
     >
-      <body className="flex min-h-full flex-col bg-background text-foreground">
+      <body id="top" className="flex min-h-full flex-col bg-background text-foreground">
         {/*
           beforeInteractive: runs early so the first paint can use the right theme.
           Syncs the `dark` class on document.documentElement with prefers-color-scheme and

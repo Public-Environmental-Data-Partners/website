@@ -1,5 +1,6 @@
 import type {NewsPostTeaserProps} from '@/components/news/news-post-teaser'
 import type {ArticleHeroSectionProps} from '@/components/sections/article-hero-section'
+import type {SimilarPostCardProps} from '@/components/sections/similar-posts-section'
 import {formatPhotoCredit} from '@/lib/format-photo-credit'
 import {
   mapSanityArticleHeroImage,
@@ -42,6 +43,7 @@ export type NewsPostListItem = {
 export type NewsPostDetail = NewsPostListItem & {
   audio?: NewsPostAudioFields
   body?: unknown
+  similarPosts?: (NewsPostListItem | null)[] | null
 }
 
 function normalizeTags(tags: NewsPostTeaserFields['tags']): string[] | undefined {
@@ -124,4 +126,38 @@ export function mapNewsPostToArticleHeroProps(
     seriesName: post.eyebrow?.trim() || undefined,
     photoCredit: formatPhotoCredit(post.image?.credit),
   }
+}
+
+/** Manually ordered related-post references for the article-bottom Similar Posts section. */
+export function mapNewsPostToSimilarPosts(
+  post: NewsPostDetail | null | undefined,
+): SimilarPostCardProps[] {
+  if (!Array.isArray(post?.similarPosts)) {
+    return []
+  }
+
+  return post.similarPosts.flatMap((similarPost) => {
+    const title = similarPost?.title?.trim()
+    const slug = similarPost?.slug?.current?.trim()
+    const publishedAt = similarPost?.publishedAt?.trim()
+    const date = publishedAt ? formatArticleHeroDate(publishedAt) : null
+    if (!title || !slug || !date) {
+      return []
+    }
+
+    const image = mapSanityImage(similarPost?.image ?? null, title)
+    if (!image) {
+      return []
+    }
+
+    return [
+      {
+        href: `/news-and-updates/${slug}`,
+        title,
+        date,
+        image,
+        seriesName: similarPost?.eyebrow?.trim() || undefined,
+      },
+    ]
+  })
 }

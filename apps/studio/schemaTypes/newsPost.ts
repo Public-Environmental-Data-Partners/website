@@ -84,7 +84,8 @@ export const newsPost = defineType({
       title: 'Eyebrow',
       type: 'string',
       validation: (Rule) => Rule.max(40).warning('Keep this short (≤ 40 chars).'),
-      description: 'Shared on hub listing row and article detail hero.',
+      description:
+        'Shared on the hub listing and article hero. This is also displayed as the Series Name when this post appears in Similar Posts.',
     }),
     defineField({
       name: 'author',
@@ -175,6 +176,35 @@ export const newsPost = defineType({
         defineArrayMember({type: 'listBlock'}),
       ],
       description: 'Article content below the detail hero.',
+    }),
+    defineField({
+      name: 'similarPosts',
+      title: 'Similar posts',
+      type: 'array',
+      description:
+        'Optional posts shown at the bottom of this article. Add as many as needed and drag to set their display order. Each selected post’s Eyebrow is displayed as its Series Name.',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          to: [{type: 'newsPost'}],
+          options: {
+            filter: ({document}) => {
+              const currentId = document?._id?.replace(/^drafts\./, '')
+              if (!currentId) {
+                return {}
+              }
+              return {
+                filter: '_id != $publishedId && _id != $draftId',
+                params: {
+                  publishedId: currentId,
+                  draftId: `drafts.${currentId}`,
+                },
+              }
+            },
+          },
+        }),
+      ],
+      validation: (Rule) => Rule.unique(),
     }),
   ],
   orderings: [

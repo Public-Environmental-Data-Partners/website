@@ -4,10 +4,11 @@ import {notFound} from 'next/navigation'
 import {ArticleBody} from '@/components/content/article-body'
 import {ArticleAudioSection} from '@/components/sections/article-audio-section'
 import {ArticleHeroSection} from '@/components/sections/article-hero-section'
+import {SimilarPostsSection} from '@/components/sections/similar-posts-section'
 import {ArticleJsonLd} from '@/components/seo/article-json-ld'
 import {siteUrl} from '@/config/site'
 import {mapArticleAudioSectionProps} from '@/lib/mappers/article-audio'
-import {mapNewsPostToArticleHeroProps} from '@/lib/mappers/news-post'
+import {mapNewsPostToArticleHeroProps, mapNewsPostToSimilarPosts} from '@/lib/mappers/news-post'
 import {
   buildNewsPostArticleJsonLd,
   buildNewsPostMetadata,
@@ -49,6 +50,7 @@ export default async function NewsPostPage({params}: NewsPostPageProps) {
   const seo = resolveNewsPostSeoContent(post)
   const jsonLd = seo ? buildNewsPostArticleJsonLd(seo) : null
   const audioProps = mapArticleAudioSectionProps(post.audio)
+  const similarPosts = mapNewsPostToSimilarPosts(post)
 
   return (
     <>
@@ -62,6 +64,7 @@ export default async function NewsPostPage({params}: NewsPostPageProps) {
         />
       ) : null}
       <ArticleBody body={post.body} />
+      <SimilarPostsSection posts={similarPosts} />
     </>
   )
 }

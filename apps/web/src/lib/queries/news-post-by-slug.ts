@@ -34,6 +34,14 @@ const NEWS_POST_BY_SLUG_QUERY = `*[
       }
     }
   },
+  similarPosts[]->{
+    _id,
+    title,
+    slug,
+    publishedAt,
+    eyebrow,
+    image ${SANITY_IMAGE_PROJECTION}
+  },
   body[]{
     ...,
     _type == "imageBlock" => {
