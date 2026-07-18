@@ -1,51 +1,49 @@
 import type {Metadata} from 'next'
 
-import {NewsHubListingSection} from '@/components/news/news-hub-listing-section'
-import {NewsHubPagination} from '@/components/news/news-hub-pagination'
-import {NewsPostTeaser} from '@/components/news/news-post-teaser'
-import {SplitHeroBleedSection} from '@/components/sections/split-hero-bleed-section'
-import {mapNewsPostToTeaserProps} from '@/lib/mappers/news-post'
-import {mapSplitHeroBleed} from '@/lib/mappers/split-hero-bleed'
-import {getNewsHubPage} from '@/lib/queries/news-hub-page'
-import {getNewsPostsPage} from '@/lib/queries/news-posts'
+import {NewsHubSection} from '@/components/news/news-hub-section'
+import {mapNewsPostToHubCardProps} from '@/lib/mappers/news-post'
+import {getNewsHubPage, resolveNewsHubLoadConfig} from '@/lib/queries/news-hub-page'
+import {getNewsPostsSlice} from '@/lib/queries/news-posts'
 
 export const dynamic = 'force-dynamic'
 
-const DEFAULT_TITLE = 'News & updates'
-
-type NewsAndUpdatesPageProps = {
-  searchParams: Promise<{page?: string}>
-}
+const DEFAULT_TITLE = 'News & Updates'
 
 export async function generateMetadata(): Promise<Metadata> {
   const hub = await getNewsHubPage()
   const seoTitle = hub?.seo?.title?.trim()
   const description = hub?.seo?.description?.trim()
+  const title = seoTitle || hub?.title?.trim() || DEFAULT_TITLE
 
   return {
-    title: seoTitle || DEFAULT_TITLE,
+    title,
     ...(description ? {description} : {}),
   }
 }
 
-export default async function NewsAndUpdatesPage({searchParams}: NewsAndUpdatesPageProps) {
-  const {page: pageParam} = await searchParams
-  const [hub, listing] = await Promise.all([getNewsHubPage(), getNewsPostsPage(pageParam)])
-  const heroProps = mapSplitHeroBleed(hub?.hero)
+export default async function NewsAndUpdatesPage() {
+  const hub = await getNewsHubPage()
+  const {initialLoad, loadMore} = resolveNewsHubLoadConfig(hub)
+  const initialLimit = Math.max(initialLoad.desktop, initialLoad.tablet, initialLoad.mobile)
+  const listing = await getNewsPostsSlice(0, initialLimit)
 
-  const teasers = listing.posts
-    .map((post) => mapNewsPostToTeaserProps(post))
+  const cards = listing.posts
+    .map((post) => mapNewsPostToHubCardProps(post))
     .filter((props): props is NonNullable<typeof props> => props !== null)
 
+  const title = hub?.title?.trim() || DEFAULT_TITLE
+  const intro =
+    hub?.intro?.trim() ||
+    'Catch up on PEDP’s latest blog posts, reports, happenings, and more on how we are protecting and rebuilding our public environmental data infrastructure and tools.'
+
   return (
-    <>
-      {heroProps ? <SplitHeroBleedSection {...heroProps} /> : null}
-      <NewsHubListingSection>
-        {teasers.map((teaser) => (
-          <NewsPostTeaser key={teaser.titleId ?? teaser.href} {...teaser} />
-        ))}
-        <NewsHubPagination currentPage={listing.page} totalPages={listing.totalPages} />
-      </NewsHubListingSection>
-    </>
+    <NewsHubSection
+      title={title}
+      intro={intro}
+      initialPosts={cards}
+      total={listing.total}
+      initialLoad={initialLoad}
+      loadMore={loadMore}
+    />
   )
 }

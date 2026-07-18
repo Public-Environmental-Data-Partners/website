@@ -3,10 +3,10 @@ import './article-hero.css'
 import './article-body.css'
 import './article-figure.css'
 import './article-audio.css'
-import './hero-split-grid.css'
 import './article-list-block.css'
-import './news-post-teaser.css'
+import './news-hub.css'
 import './similar-posts.css'
+import './return-to-top-strip.css'
 import './pedp-token-overrides.css'
 
 import type {Metadata} from 'next'
@@ -14,6 +14,7 @@ import {Figtree, Geist_Mono, Source_Serif_4} from 'next/font/google'
 import Script from 'next/script'
 
 import {DraftPreviewBanner} from '@/components/draft-preview-banner'
+import {ReturnToTopStrip} from '@/components/return-to-top-strip'
 import {SanityLiveRoot} from '@/components/sanity-live-root'
 import {SiteFooter} from '@/components/site-footer'
 import {SiteHeader} from '@/components/site-header'
@@ -81,6 +82,7 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
       className={cn(
         'h-full bg-background antialiased font-sans',
         fontSans.variable,
@@ -101,6 +103,7 @@ export default async function RootLayout({
         <SiteHeader />
         <DraftPreviewBanner />
         <main className="bg-white flex flex-1 flex-col">{children}</main>
+        <ReturnToTopStrip />
         <SiteFooter />
         <SanityLiveRoot />
       </body>

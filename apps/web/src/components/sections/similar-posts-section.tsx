@@ -1,4 +1,3 @@
-import {ArrowUp} from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -56,7 +55,7 @@ export function SimilarPostsSection({posts}: SimilarPostsSectionProps) {
   }
 
   return (
-    <section data-slot="similar-posts" aria-labelledby="similar-posts-heading" className="bg-white">
+    <section data-slot="similar-posts" aria-labelledby="similar-posts-heading" className="bg-cream">
       <SiteShell padding="grid">
         <div data-slot="similar-posts-grid">
           <h2 id="similar-posts-heading" data-slot="similar-posts-heading">
@@ -68,11 +67,6 @@ export function SimilarPostsSection({posts}: SimilarPostsSectionProps) {
               <SimilarPostCard key={`${post.href}-${index}`} post={post} index={index} />
             ))}
           </div>
-
-          <a href="#top" data-slot="return-to-top">
-            <ArrowUp aria-hidden />
-            <span>Return to top</span>
-          </a>
         </div>
       </SiteShell>
     </section>

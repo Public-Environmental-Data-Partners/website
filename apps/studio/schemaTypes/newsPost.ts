@@ -74,10 +74,17 @@ export const newsPost = defineType({
       title: 'Post type',
       type: 'string',
       options: {
-        list: [{title: 'Article', value: 'article'}],
+        list: [
+          {title: 'Article', value: 'article'},
+          {title: 'News', value: 'news'},
+          {title: 'Blog', value: 'blog'},
+          {title: 'Story', value: 'story'},
+        ],
         layout: 'radio',
       },
       initialValue: 'article',
+      validation: (Rule) => Rule.required(),
+      description: 'Shown as the category label on News & Updates hub cards (e.g. ARTICLE, BLOG).',
     }),
     defineField({
       name: 'eyebrow',
@@ -85,7 +92,7 @@ export const newsPost = defineType({
       type: 'string',
       validation: (Rule) => Rule.max(40).warning('Keep this short (≤ 40 chars).'),
       description:
-        'Shared on the hub listing and article hero. This is also displayed as the Series Name when this post appears in Similar Posts.',
+        'Shared on the article hero. This is also displayed as the Series Name when this post appears in Similar Posts.',
     }),
     defineField({
       name: 'author',

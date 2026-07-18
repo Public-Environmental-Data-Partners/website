@@ -1,4 +1,4 @@
-import type {NewsPostTeaserProps} from '@/components/news/news-post-teaser'
+import type {NewsHubCardProps} from '@/components/news/news-hub-card'
 import type {ArticleHeroSectionProps} from '@/components/sections/article-hero-section'
 import type {SimilarPostCardProps} from '@/components/sections/similar-posts-section'
 import {formatPhotoCredit} from '@/lib/format-photo-credit'
@@ -28,11 +28,14 @@ export type NewsPostAudioFields = {
   } | null
 } | null
 
+export type NewsPostType = 'article' | 'news' | 'blog' | 'story'
+
 export type NewsPostListItem = {
   _id: string
   title?: string | null
   slug?: {current?: string | null} | null
   publishedAt?: string | null
+  postType?: string | null
   eyebrow?: string | null
   author?: string | null
   image?: SanityImageData
@@ -46,27 +49,31 @@ export type NewsPostDetail = NewsPostListItem & {
   similarPosts?: (NewsPostListItem | null)[] | null
 }
 
-function normalizeTags(tags: NewsPostTeaserFields['tags']): string[] | undefined {
-  if (!Array.isArray(tags)) {
-    return undefined
-  }
-  const values = tags.map((tag) => tag?.trim()).filter((tag): tag is string => Boolean(tag))
-  return values.length > 0 ? values : undefined
+const POST_TYPE_LABELS: Record<NewsPostType, string> = {
+  article: 'Article',
+  news: 'News',
+  blog: 'Blog',
+  story: 'Story',
 }
 
-export function mapNewsPostToTeaserProps(
+export function formatNewsPostTypeLabel(postType: string | null | undefined): string {
+  const key = (postType?.trim().toLowerCase() || 'article') as NewsPostType
+  return (POST_TYPE_LABELS[key] ?? POST_TYPE_LABELS.article).toUpperCase()
+}
+
+/** Hub card props for News & Updates listing. */
+export function mapNewsPostToHubCardProps(
   post: NewsPostListItem | null | undefined,
-): NewsPostTeaserProps | null {
+): NewsHubCardProps | null {
   if (!post) {
     return null
   }
 
   const title = post.title?.trim()
   const slug = post.slug?.current?.trim()
-  const publishedAt = post.publishedAt?.trim()
   const excerpt = post.teaser?.excerpt?.trim()
 
-  if (!title || !slug || !publishedAt || !excerpt) {
+  if (!title || !slug || !excerpt) {
     return null
   }
 
@@ -80,10 +87,8 @@ export function mapNewsPostToTeaserProps(
     title,
     excerpt,
     image,
-    publishedAt,
-    eyebrow: post.eyebrow?.trim() || undefined,
-    tags: normalizeTags(post.teaser?.tags),
-    titleId: `news-post-${slug}`,
+    postTypeLabel: formatNewsPostTypeLabel(post.postType),
+    titleId: `news-hub-card-${slug}`,
   }
 }
 

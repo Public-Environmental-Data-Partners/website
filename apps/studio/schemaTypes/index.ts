@@ -26,7 +26,6 @@ import {quoteBlock} from './quoteBlock'
 import {siteFooter} from './siteFooter'
 import {siteNavGroup, siteNavigation, siteNavLink} from './siteNavigation'
 import {simpleSection, sitePage} from './sitePage'
-import {splitHeroBleedFields} from './splitHeroBleedFields'
 import {twoImageBlock} from './twoImageBlock'
 
 export const schemaTypes = [
@@ -49,7 +48,6 @@ export const schemaTypes = [
   siteNavigation,
   siteFooter,
   newsletterSignup,
-  splitHeroBleedFields,
   newsHubPage,
   newsPostTeaserFields,
   newsPostAudio,

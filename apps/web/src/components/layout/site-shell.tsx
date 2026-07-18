@@ -33,21 +33,6 @@ const siteShellVariants = cva('mx-auto w-full max-w-site', {
         'md:py-[var(--section-padding-y-md)]',
         'md:pe-0',
       ],
-      /** §05 split-hero-bleed: hero-scoped leading inset; trailing flush @ md+ */
-      splitHero: [
-        'ps-[var(--hero-shell-padding-x,var(--site-padding-x))]',
-        'pe-[var(--hero-shell-padding-x,var(--site-padding-x))]',
-        'py-0',
-        'md:pe-0',
-      ],
-      /** §06 hub listing: equal inset @ < md; leading flush + trailing inset @ md+ */
-      hubListing: [
-        'px-[var(--site-padding-x)]',
-        'py-[var(--section-padding-y)]',
-        'md:px-0',
-        'md:py-[var(--section-padding-y-md)]',
-        'md:pe-[var(--site-padding-x)]',
-      ],
     },
   },
   defaultVariants: {

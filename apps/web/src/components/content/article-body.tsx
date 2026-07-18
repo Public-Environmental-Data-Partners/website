@@ -62,7 +62,7 @@ function ArticleBodyBlockRow({
 
 function ArticleBodyShell({children}: {children: ReactNode}) {
   return (
-    <SectionBand className="overflow-x-clip bg-white">
+    <SectionBand className="overflow-x-clip bg-cream">
       <SiteShell>
         <Grid12 data-slot="article-body-grid">{children}</Grid12>
       </SiteShell>

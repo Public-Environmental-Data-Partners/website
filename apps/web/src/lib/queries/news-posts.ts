@@ -5,14 +5,13 @@ import type {NewsPostListItem} from '@/lib/mappers/news-post'
 import {SANITY_IMAGE_PROJECTION} from '@/lib/queries/sanity-image-projection'
 import {sanityFetch} from '@/sanity/live'
 
-export const NEWS_POSTS_PAGE_SIZE = 3
-
-const NEWS_POSTS_PAGE_QUERY = `{
+const NEWS_POSTS_SLICE_QUERY = `{
   "posts": *[_type == "newsPost" && defined(publishedAt)] | order(publishedAt desc) [$start...$end]{
     _id,
     title,
     slug,
     publishedAt,
+    postType,
     eyebrow,
     image ${SANITY_IMAGE_PROJECTION},
     teaser {
@@ -23,64 +22,49 @@ const NEWS_POSTS_PAGE_QUERY = `{
   "total": count(*[_type == "newsPost" && defined(publishedAt)])
 }`
 
-export type NewsPostsPageResult = {
+export type NewsPostsSliceResult = {
   posts: NewsPostListItem[]
   total: number
-  page: number
-  pageSize: number
-  totalPages: number
+  offset: number
+  limit: number
 }
 
-function parsePageParam(value: string | undefined): number {
-  const parsed = Number(value)
-  if (!Number.isFinite(parsed) || parsed < 1) {
-    return 1
+function clampNonNegativeInt(value: number, fallback: number) {
+  if (!Number.isFinite(value) || value < 0) {
+    return fallback
   }
-  return Math.floor(parsed)
+  return Math.floor(value)
 }
 
-export const getNewsPostsPage = cache(async function getNewsPostsPage(
-  pageParam?: string,
-): Promise<NewsPostsPageResult> {
+function clampPositiveInt(value: number, fallback: number, max = 48) {
+  if (!Number.isFinite(value) || value < 1) {
+    return fallback
+  }
+  return Math.min(max, Math.floor(value))
+}
+
+/** Fetch a slice of published news posts for the hub listing / Load More API. */
+export const getNewsPostsSlice = cache(async function getNewsPostsSlice(
+  offset = 0,
+  limit = 9,
+): Promise<NewsPostsSliceResult> {
   const {isEnabled: isDraftMode} = await draftMode()
-  const page = parsePageParam(pageParam)
-  const start = (page - 1) * NEWS_POSTS_PAGE_SIZE
-  const end = start + NEWS_POSTS_PAGE_SIZE
+  const safeOffset = clampNonNegativeInt(offset, 0)
+  const safeLimit = clampPositiveInt(limit, 9)
+  const start = safeOffset
+  const end = safeOffset + safeLimit
 
   const {data} = await sanityFetch({
-    query: NEWS_POSTS_PAGE_QUERY,
+    query: NEWS_POSTS_SLICE_QUERY,
     params: {start, end},
     perspective: isDraftMode ? 'drafts' : 'published',
   })
 
   const result = data as {posts?: NewsPostListItem[]; total?: number} | null
-  const total = result?.total ?? 0
-  const totalPages = total > 0 ? Math.ceil(total / NEWS_POSTS_PAGE_SIZE) : 1
-  const safePage = totalPages > 0 ? Math.min(page, totalPages) : 1
-
-  if (safePage !== page && total > 0) {
-    const retryStart = (safePage - 1) * NEWS_POSTS_PAGE_SIZE
-    const retryEnd = retryStart + NEWS_POSTS_PAGE_SIZE
-    const {data: retryData} = await sanityFetch({
-      query: NEWS_POSTS_PAGE_QUERY,
-      params: {start: retryStart, end: retryEnd},
-      perspective: isDraftMode ? 'drafts' : 'published',
-    })
-    const retryResult = retryData as {posts?: NewsPostListItem[]; total?: number} | null
-    return {
-      posts: retryResult?.posts ?? [],
-      total,
-      page: safePage,
-      pageSize: NEWS_POSTS_PAGE_SIZE,
-      totalPages,
-    }
-  }
-
   return {
     posts: result?.posts ?? [],
-    total,
-    page: safePage,
-    pageSize: NEWS_POSTS_PAGE_SIZE,
-    totalPages,
+    total: result?.total ?? 0,
+    offset: safeOffset,
+    limit: safeLimit,
   }
 })
