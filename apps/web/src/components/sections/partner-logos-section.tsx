@@ -162,7 +162,7 @@ export function PartnerLogosSection({heading, partners, useMarquee}: PartnerLogo
   }
 
   return (
-    <SectionBand className="bg-white dark:bg-background" aria-labelledby={headingId}>
+    <SectionBand className="bg-cream" aria-labelledby={headingId}>
       <SiteShell>
         <ContentStack>
           <h2 id={headingId} className="section-label-heading text-muted-foreground">

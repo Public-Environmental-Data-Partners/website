@@ -258,12 +258,12 @@ body {
     }
   }
 
-  /* Match hero kicker: 1.375rem, semibold, uppercase, tracking-wide; color via utility (muted). */
+  /* Section labels (e.g. OUR COALITION): Figtree Bold 22 / 100%, tracking 0. Color via utility. */
   h2.section-label-heading {
     font-size: 1.375rem;
-    font-weight: 600;
-    line-height: 1.625;
-    letter-spacing: 0.025em;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0;
     text-transform: uppercase;
   }
 
