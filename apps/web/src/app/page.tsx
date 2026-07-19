@@ -10,10 +10,10 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
   sections[]{
     _type,
     _key,
-    heroKicker,
     heroHeading,
     heroParagraph1,
     heroParagraph2,
+    heroParagraph3,
     heroImage{
       alt,
       asset->{
@@ -26,20 +26,12 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
         }
       }
     },
-    heroImageMobile{
-      alt,
-      asset->{
-        url,
-        metadata{
-          dimensions{
-            width,
-            height
-          }
-        }
-      }
+    imageShelf{
+      color,
+      mobile{indentPercent, heightPx},
+      tablet{indentPercent, heightPx},
+      desktop{indentPercent, heightPx}
     },
-    hideHeroImageOnMobile,
-    homePageStyle,
     useMarquee,
     partners[]{
       name,

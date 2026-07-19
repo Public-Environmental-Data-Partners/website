@@ -194,10 +194,14 @@ body {
     line-height: 1.15;
   }
 
-  /* Home hero title: 3rem (48px at 16px root) / weight 500; beats the generic h1 scale above. */
+  /*
+   * Home Hero Section title — Source Serif 4 / weight 500.
+   * Mobile + tablet: 24/30; desktop (lg+): 48/55.
+   */
   h1.hero-primary-heading {
-    font-size: 3rem;
-    line-height: 1.15;
+    font-family: var(--font-source-serif-4), ui-serif, Georgia, serif;
+    font-size: 1.5rem;
+    line-height: 1.875rem;
     font-weight: 500;
   }
 
@@ -230,6 +234,11 @@ body {
   @media (min-width: 1024px) {
     h1 {
       font-size: 4rem;
+    }
+
+    h1.hero-primary-heading {
+      font-size: 3rem;
+      line-height: 3.4375rem;
     }
 
     h2 {

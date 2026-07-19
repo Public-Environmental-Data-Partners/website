@@ -1,4 +1,4 @@
-import {HeroSection} from '@/components/home/hero-section'
+import {HomeHeroSection} from '@/components/home/hero-section'
 import {HighlightBannerSection} from '@/components/home/highlight-banner-section'
 import {NewsletterSection} from '@/components/home/newsletter-section'
 import {SectionSpacer} from '@/components/home/section-spacer'
@@ -100,7 +100,7 @@ export function HomeSectionRow({section}: {section: HomeSectionGroq}) {
   switch (section._type) {
     case 'homeHero': {
       const props = mapHeroBlockToProps(section)
-      return props ? <HeroSection {...props} /> : null
+      return props ? <HomeHeroSection {...props} /> : null
     }
     case 'sectionSpacer':
       return typeof section.heightPx === 'number' ? (

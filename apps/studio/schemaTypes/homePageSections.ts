@@ -2,7 +2,10 @@ import {defineField, defineType} from 'sanity'
 
 const heroPortableText = {
   type: 'block',
+  styles: [{title: 'Normal', value: 'normal'}],
+  lists: [],
   marks: {
+    decorators: [{title: 'Strong', value: 'strong'}],
     annotations: [
       {
         name: 'link',
@@ -13,44 +16,46 @@ const heroPortableText = {
   },
 } as const
 
-/** Homepage hero block; maps to HomeHeroSection / existing hero mapper fields. */
+/** Homepage-only hero; maps to HomeHeroSection. */
 export const homeHero = defineType({
   name: 'homeHero',
-  title: 'Homepage hero',
+  title: 'Home Hero Section',
   type: 'object',
   fields: [
     defineField({
-      name: 'heroKicker',
-      title: 'Hero kicker',
-      type: 'string',
-      validation: (Rule) => Rule.required().max(40).warning('Keep this short (≤ 40 chars).'),
-    }),
-    defineField({
       name: 'heroHeading',
-      title: 'Hero heading',
+      title: 'Headline',
       type: 'string',
       validation: (Rule) => Rule.required().max(160).warning('Consider ≤ 160 chars.'),
     }),
     defineField({
       name: 'heroParagraph1',
-      title: 'Hero paragraph 1',
+      title: 'Paragraph 1',
       type: 'array',
       of: [heroPortableText],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'heroParagraph2',
-      title: 'Hero paragraph 2',
+      title: 'Paragraph 2',
       type: 'array',
       of: [heroPortableText],
+      description: 'Optional. On mobile, appears below the image.',
+    }),
+    defineField({
+      name: 'heroParagraph3',
+      title: 'Paragraph 3',
+      type: 'array',
+      of: [heroPortableText],
+      description: 'Optional. On mobile, appears after paragraph 2.',
     }),
     defineField({
       name: 'heroImage',
-      title: 'Hero image (desktop/default)',
+      title: 'Image',
       type: 'image',
       validation: (Rule) => Rule.required(),
       description:
-        'Preferred format: JPG (WebP also OK); use PNG only when transparency is required.\nUse images roughly 2000-2800px wide for desktop hero; avoid files under 1600px or over 5000px wide.',
+        'Preferred format: JPG (WebP also OK); use PNG only when transparency is required. Crop freely with the hotspot tool.',
       options: {hotspot: true},
       fields: [
         defineField({
@@ -58,52 +63,36 @@ export const homeHero = defineType({
           title: 'Alternative text',
           type: 'string',
           validation: (Rule) =>
-            Rule.max(160).warning('Keep alt text concise and descriptive (≤ 160 chars).'),
+            Rule.required()
+              .max(160)
+              .warning('Keep alt text concise and descriptive (≤ 160 chars).'),
         }),
       ],
     }),
     defineField({
-      name: 'heroImageMobile',
-      title: 'Hero image (mobile override)',
-      type: 'image',
+      name: 'imageShelf',
+      title: 'Image shelf',
+      type: 'imageShelfSettings',
       description:
-        'Preferred format: JPG (WebP also OK); use PNG only when transparency is required.\nUse images roughly 1080-1600px wide for mobile hero; avoid files under 900px or over 3000px wide.',
-      options: {hotspot: true},
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alternative text (mobile override)',
-          type: 'string',
-          validation: (Rule) =>
-            Rule.max(160).warning('Keep alt text concise and descriptive (≤ 160 chars).'),
-        }),
-      ],
-    }),
-    defineField({
-      name: 'hideHeroImageOnMobile',
-      title: 'Hide hero image on mobile',
-      type: 'boolean',
-      initialValue: false,
-    }),
-    defineField({
-      name: 'homePageStyle',
-      title: 'Home page style',
-      type: 'boolean',
-      description:
-        'When enabled, uses the embedded image layout for the homepage. When off, uses the default inner-page hero (full image column, left accent bar).',
-      initialValue: false,
+        'Indented strip under the image. Defaults: off white, 25% indent, and 50px height.',
+      initialValue: {
+        color: 'offWhite',
+        mobile: {indentPercent: 25, heightPx: 50},
+        tablet: {indentPercent: 25, heightPx: 50},
+        desktop: {indentPercent: 25, heightPx: 50},
+      },
     }),
   ],
   preview: {
     select: {
-      kicker: 'heroKicker',
-      homePageStyle: 'homePageStyle',
+      title: 'heroHeading',
+      media: 'heroImage',
     },
-    prepare({kicker, homePageStyle}) {
-      const styleLabel = homePageStyle ? 'Home page style' : 'Default style'
+    prepare({title, media}) {
       return {
-        title: 'Homepage hero',
-        subtitle: kicker?.trim() ? `${kicker.trim()} · ${styleLabel}` : styleLabel,
+        title: 'Home Hero Section',
+        subtitle: typeof title === 'string' ? title.trim() || undefined : undefined,
+        media,
       }
     },
   },

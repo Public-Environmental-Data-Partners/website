@@ -14,6 +14,7 @@ import {
   toolCard,
 } from './homePageSections'
 import {imageBlock} from './imageBlock'
+import {imageShelfBreakpoint, imageShelfSettings} from './imageShelf'
 import {imageTextBlock} from './imageTextBlock'
 import {listBlock} from './listBlock'
 import {newsHubPage} from './newsHubPage'
@@ -54,6 +55,8 @@ export const schemaTypes = [
   quoteBlock,
   articleFigureItem,
   imageBlock,
+  imageShelfBreakpoint,
+  imageShelfSettings,
   twoImageBlock,
   imageTextBlock,
   embedBlock,
