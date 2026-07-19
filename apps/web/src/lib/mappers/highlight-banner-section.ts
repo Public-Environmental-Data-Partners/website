@@ -13,11 +13,11 @@ type SanityImageData = {
 
 export type HighlightBannerSectionProps = {
   kicker: string
-  titleLine?: string
   heading: string
   body: unknown[]
-  ctaLabel: string
-  ctaHref: string
+  /** Omit when no destination — button hidden. */
+  ctaLabel?: string
+  ctaHref?: string
   image: {
     src: string
     alt: string
@@ -58,12 +58,7 @@ export function mapHighlightBannerSectionToProps(
 ): HighlightBannerSectionProps | null {
   const kicker = data?.kicker?.trim()
   const heading = data?.heading?.trim()
-  const ctaLabel = data?.ctaLabel?.trim()
-  if (!kicker || !heading || !ctaLabel) {
-    return null
-  }
-  const ctaHref = resolveHomepageLinkHref(data?.ctaLink)
-  if (!ctaHref) {
+  if (!kicker || !heading) {
     return null
   }
   const body = Array.isArray(data?.body) ? data.body : []
@@ -74,14 +69,15 @@ export function mapHighlightBannerSectionToProps(
   if (!image) {
     return null
   }
-  const titleLine = data?.titleLine?.trim()
+
+  const ctaHref = resolveHomepageLinkHref(data?.ctaLink) ?? undefined
+  const ctaLabel = ctaHref ? data?.ctaLabel?.trim() || 'Explore' : undefined
+
   return {
     kicker,
     heading,
     body,
-    ctaLabel,
-    ctaHref,
     image,
-    ...(titleLine ? {titleLine} : {}),
+    ...(ctaHref && ctaLabel ? {ctaLabel, ctaHref} : {}),
   }
 }

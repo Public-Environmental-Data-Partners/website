@@ -266,18 +266,6 @@ body {
     letter-spacing: 0;
     text-transform: uppercase;
   }
-
-  /* Homepage highlight banner main title: fixed 40px (2.5rem); beats generic h2 scale at lg. */
-  h2.highlight-banner-title {
-    font-size: 2.5rem;
-    line-height: 1.2;
-  }
-
-  @media (min-width: 1024px) {
-    h2.highlight-banner-title {
-      font-size: 2.5rem;
-    }
-  }
 }
 
 blockquote,
@@ -286,23 +274,6 @@ blockquote,
   font-style: italic;
   font-weight: 600;
   line-height: 1.45;
-}
-
-/*
- * Highlight banner: viewport-aligned left gutter (layout-system --site-gutter).
- * Inner edge aligns near image/content; see docs/layout-system.md.
- */
-.highlight-banner-green4-gutter {
-  width: var(--site-gutter);
-}
-
-/*
- * Highlight banner mobile/tablet (<lg): vertical green-4 bar beside image row.
- * Same width as desktop SiteBleed (--site-gutter).
- */
-.highlight-banner-mobile-image-strip {
-  width: var(--site-gutter);
-  align-self: stretch;
 }
 
 @layer base {

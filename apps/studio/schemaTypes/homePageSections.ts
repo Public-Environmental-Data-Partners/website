@@ -359,8 +359,9 @@ export const highlightBannerSection = defineType({
     }),
     defineField({
       name: 'heading',
-      title: 'Heading',
+      title: 'Heading / title',
       type: 'string',
+      description: 'Required. Shown on mobile and tablet; hidden on desktop.',
       validation: (Rule) => Rule.required().max(200),
     }),
     defineField({
@@ -375,13 +376,14 @@ export const highlightBannerSection = defineType({
       title: 'Button label',
       type: 'string',
       initialValue: 'Explore',
-      validation: (Rule) => Rule.required().max(80),
+      validation: (Rule) => Rule.max(80),
+      description: 'Optional. Button is hidden when the link below is empty.',
     }),
     defineField({
       name: 'ctaLink',
       title: 'Button link',
       type: 'homepageLinkTarget',
-      validation: (Rule) => Rule.required(),
+      description: 'Optional. Button is hidden if left empty.',
     }),
   ],
   preview: {
