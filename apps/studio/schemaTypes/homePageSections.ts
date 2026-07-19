@@ -399,13 +399,6 @@ export const highlightBannerSection = defineType({
   },
 })
 
-const storyCardChipList = [
-  {title: 'Story', value: 'Story'},
-  {title: 'News', value: 'News'},
-  {title: 'Blog', value: 'Blog'},
-  {title: 'Project', value: 'Project'},
-] as const
-
 const toolCardChipList = [
   {title: 'Tool', value: 'Tool'},
   {title: 'Resource', value: 'Resource'},
@@ -435,42 +428,36 @@ export const storyCard = defineType({
       ],
     }),
     defineField({
+      name: 'photoCredit',
+      title: 'Photo credit',
+      type: 'string',
+      description: 'Optional. e.g. PHOTO CREDIT: Jane Doe',
+      validation: (Rule) => Rule.max(120),
+    }),
+    defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
       validation: (Rule) => Rule.required().max(120),
     }),
     defineField({
-      name: 'authors',
-      title: 'Authors / byline',
-      type: 'string',
-      description: 'e.g. by Alex Smith and Jordan Lee',
-      validation: (Rule) => Rule.max(160),
-    }),
-    defineField({
-      name: 'chip',
-      title: 'Tag / pill',
-      type: 'string',
-      options: {list: [...storyCardChipList], layout: 'dropdown'},
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'link',
-      title: 'Card link',
+      title: 'Button link',
       type: 'homepageLinkTarget',
+      description: 'Destination for the View Post button.',
       validation: (Rule) => Rule.required(),
     }),
   ],
   preview: {
     select: {
       title: 'title',
-      chip: 'chip',
+      photoCredit: 'photoCredit',
       media: 'image',
     },
-    prepare({title, chip}) {
+    prepare({title, photoCredit}) {
       return {
         title: title || 'Story card',
-        subtitle: chip,
+        subtitle: photoCredit?.trim() || undefined,
       }
     },
   },
@@ -546,7 +533,7 @@ export const cardCarouselSection = defineType({
       name: 'sectionHeading',
       title: 'Section heading',
       type: 'string',
-      initialValue: 'Latest news',
+      initialValue: 'LATEST NEWS',
       validation: (Rule) => Rule.required().max(80),
     }),
     defineField({

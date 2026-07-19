@@ -14,8 +14,7 @@ type SanityImageData = {
 export type StoryCardProps = {
   _type: 'storyCard'
   title: string
-  authors?: string
-  chip: string
+  photoCredit?: string
   href: string
   image: {
     src: string
@@ -50,6 +49,7 @@ type StoryCardGroq = {
   _type: 'storyCard'
   _key: string
   title?: string | null
+  photoCredit?: string | null
   authors?: string | null
   chip?: string | null
   link?: HomepageLinkTargetGroq | null
@@ -101,9 +101,8 @@ export function mapCardCarouselSectionToProps(
       continue
     }
     const title = card.title?.trim()
-    const chip = card.chip?.trim()
     const href = resolveHomepageLinkHref(card.link)
-    if (!title || !chip || !href) {
+    if (!title || !href) {
       continue
     }
     if (card._type === 'storyCard') {
@@ -111,16 +110,19 @@ export function mapCardCarouselSectionToProps(
       if (!image) {
         continue
       }
-      const authors = card.authors?.trim()
+      const photoCredit = card.photoCredit?.trim()
       cards.push({
         _type: 'storyCard',
         title,
-        chip,
         href,
         image,
-        ...(authors ? {authors} : {}),
+        ...(photoCredit ? {photoCredit} : {}),
       })
     } else if (card._type === 'toolCard') {
+      const chip = card.chip?.trim()
+      if (!chip) {
+        continue
+      }
       const image = mapCardImage(card.image ?? null, title)
       const description = card.description?.trim()
       cards.push({

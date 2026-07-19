@@ -44,8 +44,7 @@ type StoryCardGroq = {
   _type: 'storyCard'
   _key: string
   title?: string | null
-  authors?: string | null
-  chip?: string | null
+  photoCredit?: string | null
   link?: HomepageLinkTargetGroq | null
   image?: HighlightBannerSectionGroq['image']
 }

@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import {Button} from '@/components/ui/button'
 import type {CardCarouselCardProps} from '@/lib/mappers/card-carousel-section'
 import {cn} from '@/lib/utils'
 
@@ -14,9 +15,12 @@ function isExternalHref(href: string) {
   return /^https?:\/\//i.test(href)
 }
 
-const cardShell = cn(
+const storyCardShell = cn(
+  'bg-off-white border-border flex h-full w-full flex-col overflow-hidden border',
+)
+
+const toolCardShell = cn(
   'group bg-off-white border-border dark:bg-surface flex h-full w-[min(100%,22.5rem)] min-h-[35rem] shrink-0 flex-col overflow-hidden border',
-  /* Below md: cap height to likely free viewport under header + section + carousel chrome (`calc` uses `_` for spaces). */
   'max-md:min-h-[min(35rem,calc(100dvh_-_30rem))]',
   'max-md:max-h-[min(35rem,calc(100dvh_-_30rem))]',
   'transition-shadow hover:shadow-md',
@@ -39,63 +43,82 @@ const carouselBodyBand = (opts?: {fillWhenNoImage?: boolean}) =>
 
 /**
  * Shared carousel item: `storyCard` vs `toolCard` (mapper props, page-agnostic).
- * Entire surface is one link; tool “Explore” is presentational inside the anchor.
+ * Story: button-only link. Tool: entire surface is one link.
  */
 export function CarouselCard(props: CarouselCardProps) {
+  if (props._type === 'storyCard') {
+    return <StoryCard {...props} />
+  }
+  return <ToolCard {...props} />
+}
+
+function StoryCard({title, photoCredit, href, image}: Extract<CarouselCardProps, {_type: 'storyCard'}>) {
+  const external = isExternalHref(href)
+
+  return (
+    <article className={storyCardShell}>
+      <div className="relative aspect-[3/2] w-full overflow-hidden bg-muted">
+        <Image
+          src={image.src}
+          alt={image.alt}
+          width={imageDimension(image.width, 1200)}
+          height={imageDimension(image.height, 900)}
+          className="h-full w-full object-cover"
+          sizes="(max-width: 1023px) 90vw, 360px"
+        />
+      </div>
+      <div className="flex flex-1 flex-col px-6 pt-4 pb-8">
+        {photoCredit ? (
+          <p className="mt-5 mb-8 font-sans text-[1.25rem] leading-none font-normal tracking-normal text-foreground uppercase">
+            {photoCredit}
+          </p>
+        ) : null}
+        <h3
+          className={cn(
+            'font-serif text-[1.875rem] leading-[2.1875rem] font-semibold italic text-foreground',
+            photoCredit ? 'mt-0' : 'mt-2',
+          )}
+        >
+          {title}
+        </h3>
+        <div className="mt-auto flex justify-center pt-8">
+          <Button
+            asChild
+            size="cta"
+            variant="surface"
+            className="border-border"
+          >
+            {external ? (
+              <a href={href} target="_blank" rel="noopener noreferrer">
+                View Post
+              </a>
+            ) : (
+              <Link href={href}>View Post</Link>
+            )}
+          </Button>
+        </div>
+      </div>
+    </article>
+  )
+}
+
+function ToolCard(props: Extract<CarouselCardProps, {_type: 'toolCard'}>) {
   const {href} = props
   const external = isExternalHref(href)
-  const content =
-    props._type === 'storyCard' ? <StoryCardInner {...props} /> : <ToolCardInner {...props} />
+  const content = <ToolCardInner {...props} />
 
   if (external) {
     return (
-      <a href={href} className={cardShell} rel="noopener noreferrer" target="_blank">
+      <a href={href} className={toolCardShell} rel="noopener noreferrer" target="_blank">
         {content}
       </a>
     )
   }
 
   return (
-    <Link href={href} className={cardShell}>
+    <Link href={href} className={toolCardShell}>
       {content}
     </Link>
-  )
-}
-
-function StoryCardInner({
-  title,
-  authors,
-  chip,
-  image,
-}: Extract<CarouselCardProps, {_type: 'storyCard'}>) {
-  return (
-    <>
-      <div className={carouselImageBand}>
-        <Image
-          src={image.src}
-          alt={image.alt}
-          width={imageDimension(image.width, 1200)}
-          height={imageDimension(image.height, 900)}
-          className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]"
-          sizes="(max-width: 1023px) 90vw, 360px"
-        />
-      </div>
-      <div className={cn(carouselBodyBand(), 'pt-8 pl-6', carouselCompactBodyScroll)}>
-        <h3 className="font-serif text-foreground text-[1.875rem] font-semibold italic leading-[2.1875rem]">
-          {title}
-        </h3>
-        {authors ? (
-          <p className="text-muted-foreground mt-5 font-normal text-[1.25rem] leading-[100%]">
-            {authors}
-          </p>
-        ) : null}
-        <div className="mt-auto flex justify-end pt-4">
-          <span className="text-muted-foreground border-border rounded-full border bg-background px-3 py-1 text-xs font-medium">
-            {chip}
-          </span>
-        </div>
-      </div>
-    </>
   )
 }
 

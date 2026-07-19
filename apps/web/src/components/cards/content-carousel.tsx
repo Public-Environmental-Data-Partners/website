@@ -25,18 +25,20 @@ function carouselKey(card: CardCarouselCardProps, index: number) {
 }
 
 /**
- * Card carousel: shadcn/ui Carousel (Embla) when cards.length >= 2; single card is static.
+ * Desktop card carousel: shows ~3 cards at a time; navigates through the rest.
+ * Single card is static (no chrome).
  */
 export function ContentCarousel({cards, labelledBy}: ContentCarouselProps) {
   const reduceMotion = usePrefersReducedMotion()
   const [api, setApi] = useState<CarouselApi>()
   const [activeIndex, setActiveIndex] = useState(0)
   const regionId = useId()
-  const showNav = cards.length >= 2
+  const showNav = cards.length > 3
 
   const opts = useMemo(
     () => ({
       align: 'start' as const,
+      slidesToScroll: 1,
       duration: reduceMotion ? 0 : 25,
     }),
     [reduceMotion],
@@ -66,7 +68,7 @@ export function ContentCarousel({cards, labelledBy}: ContentCarouselProps) {
     }
     if (e.key === 'End') {
       e.preventDefault()
-      api.scrollTo(cards.length - 1)
+      api.scrollTo(Math.max(0, cards.length - 1))
     }
   }
 
@@ -74,11 +76,22 @@ export function ContentCarousel({cards, labelledBy}: ContentCarouselProps) {
     return null
   }
 
-  if (!showNav) {
+  if (cards.length <= 3) {
     return (
-      <div className="flex justify-start">
-        <CarouselCard {...cards[0]} />
-      </div>
+      <ul className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+        {cards.map((card, i) => (
+          <li
+            key={carouselKey(card, i)}
+            className={cn(
+              i === 2 && cards.length === 3
+                ? 'md:col-span-2 md:mx-auto md:w-full md:max-w-[calc((100%-2rem)/2)] lg:col-span-1 lg:max-w-none'
+                : undefined,
+            )}
+          >
+            <CarouselCard {...card} />
+          </li>
+        ))}
+      </ul>
     )
   }
 
@@ -109,15 +122,12 @@ export function ContentCarousel({cards, labelledBy}: ContentCarouselProps) {
             className={cn(controlBtnClass, navBtnLayout)}
           />
           <div className="min-w-0 flex-1 pb-2">
-            <CarouselContent className="-ml-0 md:-ml-5">
+            <CarouselContent className="-ml-0 lg:-ml-6">
               {cards.map((card, i) => (
                 <CarouselItem
                   key={carouselKey(card, i)}
                   aria-label={`Slide ${i + 1} of ${cards.length}`}
-                  className={cn(
-                    'basis-full pl-0 md:basis-[min(22.5rem,calc(100vw-5.5rem))] md:max-w-[22.5rem] md:pl-5',
-                    'flex justify-start',
-                  )}
+                  className="basis-full pl-0 lg:basis-1/3 lg:pl-6"
                 >
                   <CarouselCard {...card} />
                 </CarouselItem>
