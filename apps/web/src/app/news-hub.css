@@ -124,7 +124,9 @@
   letter-spacing: 0;
   text-align: center;
   text-decoration: none;
-  transition: background-color 150ms ease, border-color 150ms ease;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
 }
 
 [data-slot='news-hub-card-cta'] {

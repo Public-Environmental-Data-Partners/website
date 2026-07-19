@@ -1,10 +1,7 @@
 import type {PortableTextBlock} from '@portabletext/react'
 
 import type {HomeHeroSectionProps} from '@/components/home/hero-section'
-import {
-  mapImageShelfSettings,
-  type ImageShelfSettingsFields,
-} from '@/lib/mappers/image-shelf'
+import {type ImageShelfSettingsFields, mapImageShelfSettings} from '@/lib/mappers/image-shelf'
 
 import {mapSanityImage, type SanityImageData} from './sanity-image'
 

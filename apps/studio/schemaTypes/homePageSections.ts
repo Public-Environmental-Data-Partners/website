@@ -731,9 +731,7 @@ export const whatWeDoSection = defineType({
       const n = Array.isArray(items) ? items.length : 0
       return {
         title: 'What We Do',
-        subtitle: heading?.trim()
-          ? `${heading.trim()} · ${n}/3 items`
-          : `${n}/3 items`,
+        subtitle: heading?.trim() ? `${heading.trim()} · ${n}/3 items` : `${n}/3 items`,
       }
     },
   },

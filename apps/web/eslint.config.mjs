@@ -23,6 +23,10 @@ const eslintConfig = defineConfig([
     'build/**',
     'next-env.d.ts',
     '**/node_modules/**',
+    // Playwright artifacts (gitignored, but still on disk after local e2e runs):
+    'playwright-report/**',
+    'test-results/**',
+    'playwright/.cache/**',
   ]),
 ])
 

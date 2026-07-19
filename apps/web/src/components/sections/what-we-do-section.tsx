@@ -58,12 +58,7 @@ function WhatWeDoItemCard({item, index}: {item: WhatWeDoItemProps; index: number
       : undefined
 
   return (
-    <article
-      className={cn(
-        'flex flex-col items-center text-center',
-        centerThirdOnTablet,
-      )}
-    >
+    <article className={cn('flex flex-col items-center text-center', centerThirdOnTablet)}>
       <div className="relative mb-12 flex h-[10.8125rem] w-[10.8125rem] items-center justify-center">
         <Image
           src={iconSrc}

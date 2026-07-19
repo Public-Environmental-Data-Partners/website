@@ -1,10 +1,6 @@
 import type {PortableTextBlock} from '@portabletext/react'
 
-export const WHAT_WE_DO_ICONS = [
-  'dataPreservation',
-  'toolsDevelopment',
-  'advocacy',
-] as const
+export const WHAT_WE_DO_ICONS = ['dataPreservation', 'toolsDevelopment', 'advocacy'] as const
 
 export type WhatWeDoIconId = (typeof WHAT_WE_DO_ICONS)[number]
 

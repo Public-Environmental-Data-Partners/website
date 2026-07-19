@@ -145,7 +145,10 @@ export function NewsletterSection({
                       {submitting ? 'Sending...' : submitLabel}
                     </Button>
                     {error ? (
-                      <p className="text-light-green w-full text-center text-sm lg:text-left" role="alert">
+                      <p
+                        className="text-light-green w-full text-center text-sm lg:text-left"
+                        role="alert"
+                      >
                         {error}
                       </p>
                     ) : null}

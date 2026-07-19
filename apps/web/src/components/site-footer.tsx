@@ -25,7 +25,10 @@ function FooterCopyright({className}: {className?: string}) {
 }
 
 function FooterBrandMark({size}: {size: 'compact' | 'desktop'}) {
-  const dim = size === 'compact' ? {width: 60, height: 50, className: 'h-[50px] w-[60px]'} : {width: 56, height: 46, className: 'h-[46px] w-[56px]'}
+  const dim =
+    size === 'compact'
+      ? {width: 60, height: 50, className: 'h-[50px] w-[60px]'}
+      : {width: 56, height: 46, className: 'h-[46px] w-[56px]'}
 
   return (
     <Image
@@ -106,10 +109,7 @@ export async function SiteFooter() {
             <FooterCopyright />
           </div>
 
-          <nav
-            aria-label="Footer links"
-            className="col-span-2 col-start-7 flex flex-col gap-8"
-          >
+          <nav aria-label="Footer links" className="col-span-2 col-start-7 flex flex-col gap-8">
             {column1Items.map((item, index) => (
               <Fragment key={`cms-col1-${index}`}>{renderCmsFooterEntry(item, index)}</Fragment>
             ))}

@@ -51,7 +51,10 @@ export type SimpleSectionGroq = {
   body?: PortableTextBlock[] | null
 }
 
-type ByTheNumbersSectionGroq = {_type: 'byTheNumbersSection'; _key: string} & ByTheNumbersSectionFields
+type ByTheNumbersSectionGroq = {
+  _type: 'byTheNumbersSection'
+  _key: string
+} & ByTheNumbersSectionFields
 type TestimonialSectionGroq = {_type: 'testimonialSection'; _key: string} & TestimonialSectionFields
 
 export type SitePageSectionGroq =

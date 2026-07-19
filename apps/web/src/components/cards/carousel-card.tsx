@@ -52,7 +52,12 @@ export function CarouselCard(props: CarouselCardProps) {
   return <ToolCard {...props} />
 }
 
-function StoryCard({title, photoCredit, href, image}: Extract<CarouselCardProps, {_type: 'storyCard'}>) {
+function StoryCard({
+  title,
+  photoCredit,
+  href,
+  image,
+}: Extract<CarouselCardProps, {_type: 'storyCard'}>) {
   const external = isExternalHref(href)
 
   return (
@@ -82,12 +87,7 @@ function StoryCard({title, photoCredit, href, image}: Extract<CarouselCardProps,
           {title}
         </h3>
         <div className="mt-auto flex justify-center pt-8">
-          <Button
-            asChild
-            size="cta"
-            variant="surface"
-            className="border-border"
-          >
+          <Button asChild size="cta" variant="surface" className="border-border">
             {external ? (
               <a href={href} target="_blank" rel="noopener noreferrer">
                 View Post

@@ -81,9 +81,7 @@ function isBrandColor(value: string): value is ImageShelfBrandColor {
   return (IMAGE_SHELF_BRAND_COLORS as readonly string[]).includes(value)
 }
 
-function mapBreakpoint(
-  data: ImageShelfBreakpointFields | null | undefined,
-): ImageShelfBreakpoint {
+function mapBreakpoint(data: ImageShelfBreakpointFields | null | undefined): ImageShelfBreakpoint {
   const indent =
     typeof data?.indentPercent === 'number' && Number.isFinite(data.indentPercent)
       ? data.indentPercent

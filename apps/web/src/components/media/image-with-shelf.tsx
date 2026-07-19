@@ -1,5 +1,5 @@
-import type {CSSProperties} from 'react'
 import {getImageProps} from 'next/image'
+import type {CSSProperties} from 'react'
 
 import type {HeroImage} from '@/components/hero/hero-image'
 import type {ImageShelfSettings} from '@/lib/mappers/image-shelf'

@@ -77,12 +77,7 @@ function StatColumn({stat, index}: {stat: ByTheNumbersStatProps; index: number})
     ) : null
 
   return (
-    <article
-      className={cn(
-        'flex flex-col items-center text-center',
-        centerThirdOnTablet,
-      )}
-    >
+    <article className={cn('flex flex-col items-center text-center', centerThirdOnTablet)}>
       <div className="mb-2 flex h-[6.5rem] w-full max-w-[13.5rem] items-center justify-center md:mb-2.5 md:h-[10.5rem]">
         <Image
           src={iconSrc}
