@@ -42,6 +42,11 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
         slug
       }
     },
+    quote,
+    attribution,
+    ctaPage->{
+      slug
+    },
     useMarquee,
     partners[]{
       name,

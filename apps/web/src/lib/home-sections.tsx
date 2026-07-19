@@ -5,6 +5,7 @@ import {SectionSpacer} from '@/components/home/section-spacer'
 import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
 import {CardCarouselSection} from '@/components/sections/card-carousel-section'
 import {PartnerLogosSection} from '@/components/sections/partner-logos-section'
+import {TestimonialSection} from '@/components/sections/testimonial-section'
 import {WhatWeDoSection} from '@/components/sections/what-we-do-section'
 import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
 import {mapCardCarouselSectionToProps} from '@/lib/mappers/card-carousel-section'
@@ -15,6 +16,8 @@ import type {HomepageLinkTargetGroq} from '@/lib/mappers/homepage-link-target'
 import {mapNewsletterSectionToProps} from '@/lib/mappers/newsletter-section'
 import type {PartnerLogosSectionFields} from '@/lib/mappers/partner-logos-section'
 import {mapPartnerLogosSectionToProps} from '@/lib/mappers/partner-logos-section'
+import type {TestimonialSectionFields} from '@/lib/mappers/testimonial-section'
+import {mapTestimonialSectionToProps} from '@/lib/mappers/testimonial-section'
 import type {WhatWeDoSectionFields} from '@/lib/mappers/what-we-do-section'
 import {mapWhatWeDoSectionToProps} from '@/lib/mappers/what-we-do-section'
 
@@ -88,6 +91,7 @@ type SectionSpacerGroq = {
 export type HomeSectionGroq =
   | ({_type: 'homeHero'; _key: string} & HomeHeroFields)
   | ({_type: 'whatWeDoSection'; _key: string} & WhatWeDoSectionFields)
+  | ({_type: 'testimonialSection'; _key: string} & TestimonialSectionFields)
   | ({_type: 'partnerLogosSection'; _key: string} & PartnerLogosSectionFields)
   | ByTheNumbersSectionGroq
   | HighlightBannerSectionGroq
@@ -109,6 +113,10 @@ export function HomeSectionRow({section}: {section: HomeSectionGroq}) {
     case 'whatWeDoSection': {
       const props = mapWhatWeDoSectionToProps(section)
       return props ? <WhatWeDoSection {...props} /> : null
+    }
+    case 'testimonialSection': {
+      const props = mapTestimonialSectionToProps(section)
+      return props ? <TestimonialSection {...props} /> : null
     }
     case 'sectionSpacer':
       return typeof section.heightPx === 'number' ? (

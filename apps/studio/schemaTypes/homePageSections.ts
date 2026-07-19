@@ -687,3 +687,62 @@ export const whatWeDoSection = defineType({
     },
   },
 })
+
+/** Member testimonial band — reusable (homepage now; other pages later). */
+export const testimonialSection = defineType({
+  name: 'testimonialSection',
+  title: 'Testimonial',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'kicker',
+      title: 'Kicker',
+      type: 'string',
+      initialValue: 'MEMBER TESTIMONIAL',
+      validation: (Rule) => Rule.required().max(60),
+    }),
+    defineField({
+      name: 'quote',
+      title: 'Quote',
+      type: 'array',
+      of: [heroPortableText],
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'attribution',
+      title: 'Attribution (name)',
+      type: 'string',
+      description: 'Optional. Displayed below the quote when set.',
+      validation: (Rule) => Rule.max(80),
+    }),
+    defineField({
+      name: 'ctaLabel',
+      title: 'Button label',
+      type: 'string',
+      initialValue: 'Get Involved',
+      validation: (Rule) => Rule.required().max(40),
+    }),
+    defineField({
+      name: 'ctaPage',
+      title: 'Button link (site page)',
+      type: 'reference',
+      to: [{type: 'sitePage'}],
+      description: 'Internal page opened by the button. Button is hidden if left empty.',
+    }),
+  ],
+  preview: {
+    select: {
+      kicker: 'kicker',
+      attribution: 'attribution',
+    },
+    prepare({kicker, attribution}) {
+      const kick = typeof kicker === 'string' && kicker.trim() ? kicker.trim() : 'Testimonial'
+      const name =
+        typeof attribution === 'string' && attribution.trim() ? attribution.trim() : undefined
+      return {
+        title: 'Testimonial',
+        subtitle: name ? `${kick} · ${name}` : kick,
+      }
+    },
+  },
+})

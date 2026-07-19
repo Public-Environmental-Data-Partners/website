@@ -15,6 +15,9 @@ const buttonVariants = cva(
         /** Soft white CTA on warm bands (e.g. What We Do “Learn More”). */
         surface:
           'border-border bg-white text-foreground hover:bg-white/90 aria-expanded:bg-white dark:bg-surface dark:hover:bg-surface/90',
+        /** Light-blue CTA on dark bands (e.g. Testimonial “Get Involved”). */
+        lightBlue:
+          'border-transparent bg-light-blue text-dark-blue hover:bg-light-blue/90 aria-expanded:bg-light-blue',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
         ghost:
@@ -29,8 +32,8 @@ const buttonVariants = cva(
         xs: "h-6 gap-1 rounded-[4px] px-2 text-xs in-data-[slot=button-group]:rounded-[4px] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
         sm: "h-7 gap-1 rounded-[4px] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-[4px] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
         lg: 'h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2',
-        /** Homepage / marketing CTA size (~Figma Learn More). */
-        cta: 'h-[65px] min-w-[13.3125rem] px-8 text-[1.375rem] font-medium leading-none',
+        /** Homepage / marketing CTA (~Figma donate / Get Involved). */
+        cta: 'h-[65px] min-w-[13.3125rem] rounded-[10px] px-2 py-4 text-center text-[1.375rem] font-semibold leading-5',
         icon: 'size-8 rounded-[4px]',
         'icon-xs':
           "size-6 rounded-[4px] in-data-[slot=button-group]:rounded-[4px] [&_svg:not([class*='size-'])]:size-3",
