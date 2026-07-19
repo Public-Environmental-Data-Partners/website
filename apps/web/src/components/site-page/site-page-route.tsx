@@ -4,7 +4,13 @@ import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
 import {cache} from 'react'
 
+import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
+import {TestimonialSection} from '@/components/sections/testimonial-section'
 import {SimpleSectionBlock} from '@/components/site-page/simple-section-block'
+import type {ByTheNumbersSectionFields} from '@/lib/mappers/by-the-numbers-section'
+import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
+import type {TestimonialSectionFields} from '@/lib/mappers/testimonial-section'
+import {mapTestimonialSectionToProps} from '@/lib/mappers/testimonial-section'
 import {sanityFetch} from '@/sanity/live'
 
 export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][0]{
@@ -14,7 +20,27 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     _type,
     _key,
     heading,
-    body
+    body,
+    kicker,
+    quote,
+    attribution,
+    ctaLabel,
+    ctaPage->{
+      slug
+    },
+    stats[]{
+      _key,
+      icon,
+      value,
+      label,
+      body,
+      ctaLabel,
+      ctaLinkType,
+      ctaPage->{
+        slug
+      },
+      ctaExternalUrl
+    }
   }
 }`
 
@@ -25,9 +51,17 @@ export type SimpleSectionGroq = {
   body?: PortableTextBlock[] | null
 }
 
+type ByTheNumbersSectionGroq = {_type: 'byTheNumbersSection'; _key: string} & ByTheNumbersSectionFields
+type TestimonialSectionGroq = {_type: 'testimonialSection'; _key: string} & TestimonialSectionFields
+
+export type SitePageSectionGroq =
+  | SimpleSectionGroq
+  | ByTheNumbersSectionGroq
+  | TestimonialSectionGroq
+
 export type SitePageData = {
   title: string | null
-  sections?: SimpleSectionGroq[] | null
+  sections?: SitePageSectionGroq[] | null
 }
 
 /**
@@ -59,20 +93,29 @@ export async function sitePageMetadata(slugSegment: string): Promise<Metadata> {
   }
 }
 
-function renderSection(section: SimpleSectionGroq) {
-  if (section._type === 'simpleSection') {
-    if (!section.heading) {
-      return null
+function renderSection(section: SitePageSectionGroq) {
+  switch (section._type) {
+    case 'simpleSection': {
+      if (!section.heading) {
+        return null
+      }
+      return (
+        <div key={section._key} className="mx-auto w-full max-w-site px-6 md:px-12">
+          <SimpleSectionBlock heading={section.heading} body={section.body ?? undefined} />
+        </div>
+      )
     }
-    return (
-      <SimpleSectionBlock
-        key={section._key}
-        heading={section.heading}
-        body={section.body ?? undefined}
-      />
-    )
+    case 'byTheNumbersSection': {
+      const props = mapByTheNumbersSectionToProps(section)
+      return props ? <ByTheNumbersSection key={section._key} {...props} /> : null
+    }
+    case 'testimonialSection': {
+      const props = mapTestimonialSectionToProps(section)
+      return props ? <TestimonialSection key={section._key} {...props} /> : null
+    }
+    default:
+      return null
   }
-  return null
 }
 
 export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
@@ -91,13 +134,13 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
 
   return (
     <div className="flex flex-1 flex-col font-sans">
-      <div className="mx-auto flex w-full max-w-site flex-1 flex-col gap-12 px-6 py-16 md:px-12 md:py-20">
+      <div className="mx-auto w-full max-w-site px-6 pt-16 md:px-12 md:pt-20">
         <h1 className="text-foreground text-3xl font-semibold tracking-tight md:text-4xl">
           {title}
         </h1>
-        <div className="flex flex-col gap-16 md:gap-20">
-          {sections.map((section) => renderSection(section))}
-        </div>
+      </div>
+      <div className="mt-12 flex flex-col gap-16 pb-16 md:mt-16 md:gap-20 md:pb-20">
+        {sections.map((section) => renderSection(section))}
       </div>
     </div>
   )

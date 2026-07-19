@@ -199,28 +199,86 @@ export const byTheNumbersStat = defineType({
   type: 'object',
   fields: [
     defineField({
+      name: 'icon',
+      title: 'Icon',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Datasets', value: 'dataDb'},
+          {title: 'Members', value: 'members'},
+          {title: 'Projects', value: 'projects'},
+        ],
+        layout: 'dropdown',
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'value',
       title: 'Number',
       type: 'string',
-      description: 'e.g. 350+, 173, 20+',
+      description: 'e.g. 350+, 100s, 20+',
       validation: (Rule) => Rule.required().max(24),
     }),
     defineField({
       name: 'label',
-      title: 'Phrase',
+      title: 'Short label',
       type: 'string',
+      description: 'e.g. archived datasets',
       validation: (Rule) => Rule.required().max(120),
+    }),
+    defineField({
+      name: 'body',
+      title: 'Description',
+      type: 'array',
+      of: [heroPortableText],
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'ctaLabel',
+      title: 'Button label',
+      type: 'string',
+      validation: (Rule) => Rule.max(40),
+      description: 'Optional. Button is hidden when the link below is empty.',
+    }),
+    defineField({
+      name: 'ctaLinkType',
+      title: 'Button link type',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Internal (site page)', value: 'internal'},
+          {title: 'External URL', value: 'external'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'internal',
+    }),
+    defineField({
+      name: 'ctaPage',
+      title: 'Button link (site page)',
+      type: 'reference',
+      to: [{type: 'sitePage'}],
+      hidden: ({parent}) => parent?.ctaLinkType === 'external',
+      description: 'Internal page. Button is hidden if left empty.',
+    }),
+    defineField({
+      name: 'ctaExternalUrl',
+      title: 'Button link (external URL)',
+      type: 'url',
+      hidden: ({parent}) => parent?.ctaLinkType !== 'external',
+      description: 'Opens in a new tab with an external-link icon. Button is hidden if left empty.',
     }),
   ],
   preview: {
     select: {
       value: 'value',
       label: 'label',
+      icon: 'icon',
     },
-    prepare({value, label}) {
+    prepare({value, label, icon}) {
       return {
         title: value || 'Stat',
-        subtitle: label,
+        subtitle: [label, icon].filter(Boolean).join(' · ') || undefined,
       }
     },
   },
@@ -233,17 +291,20 @@ export const byTheNumbersSection = defineType({
   fields: [
     defineField({
       name: 'kicker',
-      title: 'Eyebrow / kicker',
+      title: 'Section heading',
       type: 'string',
-      initialValue: 'BY THE NUMBERS',
+      initialValue: 'PEDP BY THE NUMBERS',
       validation: (Rule) => Rule.required().max(60),
     }),
     defineField({
       name: 'stats',
-      title: 'Number cards',
+      title: 'Stats',
       type: 'array',
       of: [{type: 'byTheNumbersStat'}],
-      validation: (Rule) => Rule.required().min(1),
+      validation: (Rule) =>
+        Rule.required()
+          .length(3)
+          .error('Add exactly three stats (e.g. datasets, members, projects).'),
     }),
   ],
   preview: {
@@ -254,8 +315,8 @@ export const byTheNumbersSection = defineType({
     prepare({kicker, stats}) {
       const n = Array.isArray(stats) ? stats.length : 0
       return {
-        title: kicker || 'By the numbers',
-        subtitle: n ? `${n} card${n === 1 ? '' : 's'}` : 'Add stats',
+        title: 'By the numbers',
+        subtitle: kicker?.trim() ? `${kicker.trim()} · ${n}/3` : `${n}/3 stats`,
       }
     },
   },

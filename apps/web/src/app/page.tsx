@@ -68,8 +68,16 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
     kicker,
     stats[]{
       _key,
+      icon,
       value,
-      label
+      label,
+      body,
+      ctaLabel,
+      ctaLinkType,
+      ctaPage->{
+        slug
+      },
+      ctaExternalUrl
     },
     image{
       alt,

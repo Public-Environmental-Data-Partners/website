@@ -7,6 +7,7 @@ import {CardCarouselSection} from '@/components/sections/card-carousel-section'
 import {PartnerLogosSection} from '@/components/sections/partner-logos-section'
 import {TestimonialSection} from '@/components/sections/testimonial-section'
 import {WhatWeDoSection} from '@/components/sections/what-we-do-section'
+import type {ByTheNumbersSectionFields} from '@/lib/mappers/by-the-numbers-section'
 import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
 import {mapCardCarouselSectionToProps} from '@/lib/mappers/card-carousel-section'
 import type {HomeHeroFields} from '@/lib/mappers/hero-block'
@@ -20,13 +21,6 @@ import type {TestimonialSectionFields} from '@/lib/mappers/testimonial-section'
 import {mapTestimonialSectionToProps} from '@/lib/mappers/testimonial-section'
 import type {WhatWeDoSectionFields} from '@/lib/mappers/what-we-do-section'
 import {mapWhatWeDoSectionToProps} from '@/lib/mappers/what-we-do-section'
-
-type ByTheNumbersSectionGroq = {
-  _type: 'byTheNumbersSection'
-  _key: string
-  kicker?: string | null
-  stats?: Array<{_key?: string | null; value?: string | null; label?: string | null}> | null
-}
 
 type HighlightBannerSectionGroq = {
   _type: 'highlightBannerSection'
@@ -93,7 +87,7 @@ export type HomeSectionGroq =
   | ({_type: 'whatWeDoSection'; _key: string} & WhatWeDoSectionFields)
   | ({_type: 'testimonialSection'; _key: string} & TestimonialSectionFields)
   | ({_type: 'partnerLogosSection'; _key: string} & PartnerLogosSectionFields)
-  | ByTheNumbersSectionGroq
+  | ({_type: 'byTheNumbersSection'; _key: string} & ByTheNumbersSectionFields)
   | HighlightBannerSectionGroq
   | CardCarouselSectionGroq
   | NewsletterSectionGroq

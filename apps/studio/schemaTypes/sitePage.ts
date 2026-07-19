@@ -91,7 +91,7 @@ export const sitePage = defineType({
       name: 'sections',
       title: 'Sections',
       type: 'array',
-      of: [{type: 'simpleSection'}],
+      of: [{type: 'simpleSection'}, {type: 'byTheNumbersSection'}, {type: 'testimonialSection'}],
       description:
         'Ordered sections that make up this page. Start with one section; you can add and reorder more over time.',
       validation: (Rule) => Rule.required().min(1),
