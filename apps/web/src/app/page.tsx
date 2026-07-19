@@ -32,6 +32,16 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
       tablet{indentPercent, heightPx},
       desktop{indentPercent, heightPx}
     },
+    items[]{
+      _key,
+      icon,
+      title,
+      body,
+      ctaLabel,
+      ctaPage->{
+        slug
+      }
+    },
     useMarquee,
     partners[]{
       name,

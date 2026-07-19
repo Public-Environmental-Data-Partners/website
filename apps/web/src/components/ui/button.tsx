@@ -12,6 +12,9 @@ const buttonVariants = cva(
         default: 'bg-primary text-primary-foreground [a]:hover:bg-primary/80',
         outline:
           'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
+        /** Soft white CTA on warm bands (e.g. What We Do “Learn More”). */
+        surface:
+          'border-border bg-white text-foreground hover:bg-white/90 aria-expanded:bg-white dark:bg-surface dark:hover:bg-surface/90',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
         ghost:
@@ -26,6 +29,8 @@ const buttonVariants = cva(
         xs: "h-6 gap-1 rounded-[4px] px-2 text-xs in-data-[slot=button-group]:rounded-[4px] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
         sm: "h-7 gap-1 rounded-[4px] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-[4px] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
         lg: 'h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2',
+        /** Homepage / marketing CTA size (~Figma Learn More). */
+        cta: 'h-[65px] min-w-[13.3125rem] px-8 text-[1.375rem] font-medium leading-none',
         icon: 'size-8 rounded-[4px]',
         'icon-xs':
           "size-6 rounded-[4px] in-data-[slot=button-group]:rounded-[4px] [&_svg:not([class*='size-'])]:size-3",

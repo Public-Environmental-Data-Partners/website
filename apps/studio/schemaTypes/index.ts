@@ -12,6 +12,8 @@ import {
   sectionSpacer,
   storyCard,
   toolCard,
+  whatWeDoItem,
+  whatWeDoSection,
 } from './homePageSections'
 import {imageBlock} from './imageBlock'
 import {imageShelfBreakpoint, imageShelfSettings} from './imageShelf'
@@ -33,6 +35,8 @@ export const schemaTypes = [
   byTheNumbersStat,
   homepageLinkTarget,
   homeHero,
+  whatWeDoItem,
+  whatWeDoSection,
   byTheNumbersSection,
   highlightBannerSection,
   storyCard,

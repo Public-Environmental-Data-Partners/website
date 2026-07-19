@@ -584,3 +584,106 @@ export const sectionSpacer = defineType({
     },
   },
 })
+
+const whatWeDoIconList = [
+  {title: 'Data Preservation', value: 'dataPreservation'},
+  {title: 'Tools Development', value: 'toolsDevelopment'},
+  {title: 'Advocacy', value: 'advocacy'},
+] as const
+
+export const whatWeDoItem = defineType({
+  name: 'whatWeDoItem',
+  title: 'What we do item',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'icon',
+      title: 'Icon',
+      type: 'string',
+      options: {list: [...whatWeDoIconList], layout: 'dropdown'},
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      validation: (Rule) => Rule.required().max(80),
+    }),
+    defineField({
+      name: 'body',
+      title: 'Body',
+      type: 'array',
+      of: [heroPortableText],
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'ctaLabel',
+      title: 'Button label',
+      type: 'string',
+      initialValue: 'Learn More',
+      validation: (Rule) => Rule.required().max(40),
+    }),
+    defineField({
+      name: 'ctaPage',
+      title: 'Button link (site page)',
+      type: 'reference',
+      to: [{type: 'sitePage'}],
+      description: 'Internal page opened by the button. Button is hidden if left empty.',
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'title',
+      icon: 'icon',
+    },
+    prepare({title, icon}) {
+      const iconLabel =
+        whatWeDoIconList.find((entry) => entry.value === icon)?.title ?? 'Choose icon'
+      return {
+        title: typeof title === 'string' && title.trim() ? title.trim() : 'What we do item',
+        subtitle: iconLabel,
+      }
+    },
+  },
+})
+
+/** Homepage “What we do” — three fixed pillars with icons and CTAs. */
+export const whatWeDoSection = defineType({
+  name: 'whatWeDoSection',
+  title: 'What We Do',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'heading',
+      title: 'Section heading',
+      type: 'string',
+      initialValue: 'WHAT WE DO',
+      validation: (Rule) => Rule.required().max(60),
+    }),
+    defineField({
+      name: 'items',
+      title: 'Items',
+      type: 'array',
+      of: [{type: 'whatWeDoItem'}],
+      validation: (Rule) =>
+        Rule.required()
+          .length(3)
+          .error('Add exactly three items (e.g. Data Preservation, Tools Development, Advocacy).'),
+    }),
+  ],
+  preview: {
+    select: {
+      heading: 'heading',
+      items: 'items',
+    },
+    prepare({heading, items}) {
+      const n = Array.isArray(items) ? items.length : 0
+      return {
+        title: 'What We Do',
+        subtitle: heading?.trim()
+          ? `${heading.trim()} · ${n}/3 items`
+          : `${n}/3 items`,
+      }
+    },
+  },
+})

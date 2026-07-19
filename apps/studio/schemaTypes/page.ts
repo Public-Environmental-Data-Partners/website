@@ -10,9 +10,10 @@ export const page = defineType({
       title: 'Homepage sections',
       type: 'array',
       description:
-        'Ordered blocks for /. Add Hero, Section spacer, By the numbers, Highlight banner, Card carousel, Newsletter, Partner logos, etc. Drag to reorder.',
+        'Ordered blocks for /. Add Hero, What We Do, Section spacer, By the numbers, Highlight banner, Card carousel, Newsletter, Partner logos, etc. Drag to reorder.',
       of: [
         {type: 'homeHero'},
+        {type: 'whatWeDoSection'},
         {type: 'sectionSpacer'},
         {type: 'byTheNumbersSection'},
         {type: 'highlightBannerSection'},
