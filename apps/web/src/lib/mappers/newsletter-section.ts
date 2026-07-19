@@ -1,13 +1,13 @@
 export type NewsletterSectionProps = {
+  kicker: string
   heading: string
-  body?: string
   emailPlaceholder: string
   submitLabel: string
 }
 
 export type NewsletterSectionFields = {
+  kicker?: string | null
   heading?: string | null
-  body?: string | null
   emailPlaceholder?: string | null
   submitLabel?: string | null
 }
@@ -15,17 +15,17 @@ export type NewsletterSectionFields = {
 export function mapNewsletterSectionToProps(
   data: NewsletterSectionFields | null | undefined,
 ): NewsletterSectionProps | null {
+  const kicker = data?.kicker?.trim() || 'STAY IN TOUCH'
   const heading = data?.heading?.trim()
-  const emailPlaceholder = data?.emailPlaceholder?.trim()
-  const submitLabel = data?.submitLabel?.trim()
-  if (!heading || !emailPlaceholder || !submitLabel) {
+  const emailPlaceholder = data?.emailPlaceholder?.trim() || 'YourEmail@example.com'
+  const submitLabel = data?.submitLabel?.trim() || 'Subscribe'
+  if (!heading) {
     return null
   }
-  const body = data?.body?.trim()
   return {
+    kicker,
     heading,
     emailPlaceholder,
     submitLabel,
-    ...(body ? {body} : {}),
   }
 }

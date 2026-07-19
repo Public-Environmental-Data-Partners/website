@@ -1,24 +1,16 @@
 'use client'
 
-import {Mail} from 'lucide-react'
+import Image from 'next/image'
 import {useId, useState} from 'react'
 
+import {SectionBand, SiteShell} from '@/components/layout'
+import {Button} from '@/components/ui/button'
 import type {NewsletterSectionProps} from '@/lib/mappers/newsletter-section'
 import {cn} from '@/lib/utils'
 
 export type {NewsletterSectionProps}
 
-/*
- * Layout note: the newsletter section’s visual design relies on fairly intricate CSS (full-bleed
- * breakout, `max-lg` vs `lg` width rules, viewport-based `calc()` for the side gutter, absolute
- * positioning, stacked flex bands on the bottom strip, etc.). That complexity is somewhat
- * fragile—small layout or token changes can misalign edges or heights—so treat edits here as
- * higher risk and prefer documenting any non-obvious geometry when changing this file.
- */
-
-/** Newsletter prompt line: serif stack reads closer to the reference mock than Figtree-alone `font-serif`. */
-const newsletterPromptSerif =
-  "font-[Georgia,Cambria,'Times_New_Roman',Times,serif] font-normal tracking-tight text-navy"
+const ENVELOPE_SRC = '/brand/newsletter/envelope.svg'
 
 function fadeSlot(active: boolean) {
   return cn(
@@ -27,9 +19,13 @@ function fadeSlot(active: boolean) {
   )
 }
 
+/**
+ * Simple forest newsletter band.
+ * Mobile/tablet: stacked. Desktop (`lg+`): icon | copy | input + Subscribe.
+ */
 export function NewsletterSection({
+  kicker,
   heading,
-  body,
   emailPlaceholder,
   submitLabel,
 }: NewsletterSectionProps) {
@@ -64,141 +60,113 @@ export function NewsletterSection({
   }
 
   return (
-    <section
-      className="bg-off-white dark:bg-background"
+    <SectionBand
+      className="bg-forest"
       {...(success ? {'aria-label': 'Newsletter'} : {'aria-labelledby': headingId})}
     >
-      <div
-        className={cn(
-          'relative z-10 pb-0 pt-10 md:pb-0 md:pt-14',
-          'max-lg:left-1/2 max-lg:w-screen max-lg:max-w-none max-lg:-translate-x-1/2 max-lg:px-0',
-          'lg:mx-auto lg:w-full lg:max-w-[min(100%,calc(var(--max-width-site)*0.75))] lg:translate-x-0 lg:px-[2.625rem] lg:pb-0 lg:pl-[5.25rem] lg:pr-0',
-        )}
-      >
-        <div className="bg-light-blue shadow-sm dark:bg-light-blue dark:shadow-none max-lg:rounded-none">
-          <div className="flex flex-col gap-8 px-[2.625rem] py-8 md:flex-row md:items-center md:gap-10 md:px-[4.375rem] md:py-10 lg:gap-12 lg:px-[5.25rem] lg:py-12">
-            <div className="flex shrink-0 justify-center md:justify-start">
-              <Mail
-                strokeWidth={1.35}
-                className="text-navy size-20 md:size-[5.5rem] lg:size-24"
-                aria-hidden
-              />
-            </div>
+      <SiteShell>
+        <div className="grid [&>*]:col-start-1 [&>*]:row-start-1 [&>*]:min-w-0">
+          <div className={fadeSlot(!success)} aria-hidden={success}>
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
+              {/* Mobile/tablet: kicker + small icon. Desktop: large icon. */}
+              <div className="flex items-center justify-between gap-4 lg:contents">
+                <p className="font-sans text-2xl leading-none font-semibold tracking-normal text-light-green uppercase lg:hidden">
+                  {kicker}
+                </p>
+                <Image
+                  src={ENVELOPE_SRC}
+                  alt=""
+                  width={200}
+                  height={136}
+                  className="h-7 w-10 shrink-0 object-contain lg:h-auto lg:w-[200px]"
+                  unoptimized
+                />
+              </div>
 
-            <div className="min-w-0 flex-1">
-              <div className="grid [&>*]:col-start-1 [&>*]:row-start-1 [&>*]:min-w-0">
-                <div className={fadeSlot(!success)} aria-hidden={success}>
+              <div className="flex min-w-0 flex-1 flex-col gap-8 lg:gap-3">
+                <p className="hidden font-sans text-2xl leading-none font-bold tracking-normal text-light-green uppercase lg:block">
+                  {kicker}
+                </p>
+
+                <form
+                  className="flex flex-col items-center gap-6 lg:flex-row lg:items-start lg:gap-6"
+                  onSubmit={(event) => {
+                    event.preventDefault()
+                    void submitNewsletter()
+                  }}
+                  noValidate
+                >
                   <h2
                     id={headingId}
-                    className={cn(
-                      newsletterPromptSerif,
-                      'text-xl leading-snug md:text-2xl lg:text-[1.65rem]',
-                    )}
+                    className="text-center font-serif text-[2rem] leading-[1.875rem] font-semibold text-light-green lg:shrink-0 lg:pt-3 lg:text-left"
                   >
                     {heading}
                   </h2>
-                  {body ? (
-                    <p className="font-sans text-navy/85 mt-2 max-w-2xl text-sm leading-relaxed md:text-base">
-                      {body}
-                    </p>
-                  ) : null}
-
-                  <form
-                    className={body ? 'mt-4 md:mt-5' : 'mt-5 md:mt-6'}
-                    onSubmit={(event) => {
-                      event.preventDefault()
-                      void submitNewsletter()
-                    }}
-                    noValidate
-                  >
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch sm:gap-2">
-                      <label htmlFor={emailId} className="sr-only">
-                        Email
-                      </label>
-                      <input
-                        id={emailId}
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        required
-                        value={email}
-                        disabled={submitting}
-                        placeholder={emailPlaceholder}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className={cn(
-                          'border-sky-foreground/15 bg-white text-foreground placeholder:text-muted-foreground',
-                          'focus-visible:ring-navy min-h-11 min-w-0 flex-1 rounded-[4px] border px-3 py-2 text-base',
-                          'focus-visible:ring-2 focus-visible:outline-none',
-                          'disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/20 dark:bg-card dark:text-card-foreground',
-                        )}
-                      />
-                      <label className="sr-only" htmlFor={`${emailId}-website`}>
-                        Leave blank
-                      </label>
-                      <input
-                        id={`${emailId}-website`}
-                        name="website"
-                        tabIndex={-1}
-                        autoComplete="off"
-                        value={honeypot}
-                        onChange={(e) => setHoneypot(e.target.value)}
-                        className="absolute h-px w-px -translate-x-[9999px] opacity-0"
-                        aria-hidden
-                      />
-                      <button
-                        type="submit"
-                        disabled={submitting}
-                        className={cn(
-                          'bg-navy text-white hover:bg-navy/90',
-                          'focus-visible:ring-navy min-h-11 shrink-0 rounded-[4px] px-6 font-sans text-base font-semibold',
-                          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-                          'focus-visible:ring-offset-light-blue dark:focus-visible:ring-offset-light-blue',
-                          'disabled:pointer-events-none disabled:opacity-50',
-                          'sm:min-w-[9.5rem]',
-                        )}
-                      >
-                        {submitting ? 'Sending...' : submitLabel}
-                      </button>
-                    </div>
+                  <div className="flex w-full max-w-[29.375rem] flex-col items-center gap-4 lg:min-w-0 lg:flex-1 lg:items-stretch">
+                    <label htmlFor={emailId} className="sr-only">
+                      Email
+                    </label>
+                    <input
+                      id={emailId}
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      value={email}
+                      disabled={submitting}
+                      placeholder={emailPlaceholder}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className={cn(
+                        'h-[60px] w-full rounded-[4px] border-0 bg-off-white px-4',
+                        'font-sans text-base text-foreground placeholder:text-muted-foreground',
+                        'focus-visible:ring-light-green focus-visible:ring-2 focus-visible:outline-none',
+                        'disabled:cursor-not-allowed disabled:opacity-60',
+                      )}
+                    />
+                    <label className="sr-only" htmlFor={`${emailId}-website`}>
+                      Leave blank
+                    </label>
+                    <input
+                      id={`${emailId}-website`}
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                      className="absolute h-px w-px -translate-x-[9999px] opacity-0"
+                      aria-hidden
+                    />
+                    <Button
+                      type="submit"
+                      size="cta"
+                      disabled={submitting}
+                      className="shrink-0 border-transparent bg-light-green text-forest hover:bg-light-green/90 lg:self-center"
+                    >
+                      {submitting ? 'Sending...' : submitLabel}
+                    </Button>
                     {error ? (
-                      <p className="text-destructive mt-2 text-sm" role="alert">
+                      <p className="text-light-green w-full text-center text-sm lg:text-left" role="alert">
                         {error}
                       </p>
                     ) : null}
-                  </form>
-                </div>
-
-                <div
-                  className={fadeSlot(success)}
-                  role="status"
-                  aria-live="polite"
-                  aria-hidden={!success}
-                >
-                  <p className={cn(newsletterPromptSerif, 'text-lg md:text-xl')}>
-                    Thank you for signing up.
-                  </p>
-                </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
-        </div>
 
-        <div
-          className="pointer-events-none absolute top-12 bottom-0 left-full z-0 hidden w-[calc((100vw-min(100vw,calc(var(--max-width-site)*0.75)))/2)] flex-col lg:top-14 lg:flex"
-          aria-hidden
-        >
-          <div className="min-h-0 flex-[1] bg-off-white dark:bg-background" />
-          <div className="min-h-0 flex-[3] bg-dark-blue" />
+          <div
+            className={fadeSlot(success)}
+            role="status"
+            aria-live="polite"
+            aria-hidden={!success}
+          >
+            <p className="text-center font-serif text-[2rem] leading-[1.875rem] font-semibold text-light-green lg:text-left">
+              Thank you for signing up.
+            </p>
+          </div>
         </div>
-      </div>
-
-      <div
-        className="pointer-events-none relative left-1/2 mb-10 flex min-h-7 w-screen max-w-none -translate-x-1/2 md:mb-14 md:min-h-8 lg:min-h-16"
-        aria-hidden
-      >
-        <div className="min-h-0 min-w-0 max-lg:flex-[1] bg-off-white dark:bg-background lg:flex-1" />
-        <div className="min-h-0 min-w-0 max-lg:flex-[3] bg-dark-blue lg:flex-1" />
-      </div>
-    </section>
+      </SiteShell>
+    </SectionBand>
   )
 }

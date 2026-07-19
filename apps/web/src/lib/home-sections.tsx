@@ -69,8 +69,8 @@ type CardCarouselSectionGroq = {
 type NewsletterSectionGroq = {
   _type: 'newsletterSection'
   _key: string
+  kicker?: string | null
   heading?: string | null
-  body?: string | null
   emailPlaceholder?: string | null
   submitLabel?: string | null
 }

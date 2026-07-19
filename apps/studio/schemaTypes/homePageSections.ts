@@ -565,24 +565,24 @@ export const newsletterSection = defineType({
   type: 'object',
   fields: [
     defineField({
-      name: 'heading',
-      title: 'Heading',
+      name: 'kicker',
+      title: 'Kicker',
       type: 'string',
-      initialValue: 'Sign up for our newsletter',
-      validation: (Rule) => Rule.required().max(160),
+      initialValue: 'STAY IN TOUCH',
+      validation: (Rule) => Rule.required().max(60),
     }),
     defineField({
-      name: 'body',
-      title: 'Supporting text (optional)',
-      type: 'text',
-      rows: 2,
-      validation: (Rule) => Rule.max(240),
+      name: 'heading',
+      title: 'Prompt',
+      type: 'string',
+      initialValue: 'Sign-up for our newsletter:',
+      validation: (Rule) => Rule.required().max(160),
     }),
     defineField({
       name: 'emailPlaceholder',
       title: 'Email field placeholder',
       type: 'string',
-      initialValue: 'Email address…',
+      initialValue: 'YourEmail@example.com',
       validation: (Rule) => Rule.required().max(80),
     }),
     defineField({
@@ -595,12 +595,13 @@ export const newsletterSection = defineType({
   ],
   preview: {
     select: {
+      kicker: 'kicker',
       heading: 'heading',
     },
-    prepare({heading}) {
+    prepare({kicker, heading}) {
       return {
         title: 'Newsletter',
-        subtitle: heading?.trim() || undefined,
+        subtitle: [kicker, heading].filter(Boolean).join(' · ') || undefined,
       }
     },
   },
