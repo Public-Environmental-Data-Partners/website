@@ -7,6 +7,7 @@ import {cache} from 'react'
 import {Grid12, SiteShell} from '@/components/layout'
 import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
 import {TestimonialSection} from '@/components/sections/testimonial-section'
+import {LegalDocumentSection} from '@/components/site-page/legal-document-section'
 import {SimpleSectionBlock} from '@/components/site-page/simple-section-block'
 import {ARTICLE_COL_PROSE_CLASS} from '@/lib/article-body-grid'
 import {CONTENT_LINK_GROQ, PT_BLOCKS_GROQ} from '@/lib/content-link'
@@ -20,11 +21,11 @@ import {sanityFetch} from '@/sanity/live'
 export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][0]{
   title,
   slug,
-  lastUpdated,
   sections[]{
     _type,
     _key,
     heading,
+    lastUpdated,
     body[]${PT_BLOCKS_GROQ},
     kicker,
     quote[]${PT_BLOCKS_GROQ},
@@ -50,6 +51,13 @@ export type SimpleSectionGroq = {
   body?: PortableTextBlock[] | null
 }
 
+export type LegalDocumentSectionGroq = {
+  _type: 'legalDocumentSection'
+  _key: string
+  lastUpdated?: string | null
+  body?: PortableTextBlock[] | null
+}
+
 type ByTheNumbersSectionGroq = {
   _type: 'byTheNumbersSection'
   _key: string
@@ -58,12 +66,12 @@ type TestimonialSectionGroq = {_type: 'testimonialSection'; _key: string} & Test
 
 export type SitePageSectionGroq =
   | SimpleSectionGroq
+  | LegalDocumentSectionGroq
   | ByTheNumbersSectionGroq
   | TestimonialSectionGroq
 
 export type SitePageData = {
   title: string | null
-  lastUpdated?: string | null
   sections?: SitePageSectionGroq[] | null
 }
 
@@ -116,19 +124,26 @@ export function formatSitePageLastUpdated(dateStr: string): string | null {
   }).format(date)
 }
 
-function isDocumentStylePage(sections: SitePageSectionGroq[]): boolean {
-  return (
-    sections.length > 0 &&
-    sections.every((section) => section._type === 'simpleSection' && !section.heading?.trim())
-  )
+function getLegalDocumentSection(
+  sections: SitePageSectionGroq[],
+): LegalDocumentSectionGroq | null {
+  if (sections.length !== 1) {
+    return null
+  }
+  const [only] = sections
+  return only?._type === 'legalDocumentSection' ? only : null
 }
 
-function renderLegacySection(section: SitePageSectionGroq) {
+function renderMarketingSection(section: SitePageSectionGroq) {
   switch (section._type) {
     case 'simpleSection': {
+      const heading = section.heading?.trim()
+      if (!heading) {
+        return null
+      }
       return (
         <div key={section._key} className="mx-auto w-full max-w-site px-6 md:px-12">
-          <SimpleSectionBlock heading={section.heading} body={section.body ?? undefined} />
+          <SimpleSectionBlock heading={heading} body={section.body ?? undefined} />
         </div>
       )
     }
@@ -140,30 +155,26 @@ function renderLegacySection(section: SitePageSectionGroq) {
       const props = mapTestimonialSectionToProps(section)
       return props ? <TestimonialSection key={section._key} {...props} /> : null
     }
+    case 'legalDocumentSection':
+      // Schema validation keeps this as the sole section; defensive no-op if mixed.
+      return null
     default:
       return null
   }
 }
 
-function SitePageHeader({
+function LegalDocumentHeader({
   title,
   lastUpdated,
-  documentStyle,
 }: {
   title: string
   lastUpdated?: string | null
-  documentStyle: boolean
 }) {
   const lastUpdatedLabel = lastUpdated ? formatSitePageLastUpdated(lastUpdated) : null
 
   return (
-    <header className={cn('min-w-0', documentStyle ? 'text-center' : 'text-left')}>
-      <h1
-        className={cn(
-          'text-foreground text-3xl font-semibold tracking-tight md:text-4xl',
-          documentStyle && 'uppercase',
-        )}
-      >
+    <header className="min-w-0 text-center">
+      <h1 className="text-foreground font-sans text-[1.375rem] leading-none font-bold tracking-normal uppercase">
         {title}
       </h1>
       {lastUpdatedLabel ? (
@@ -191,30 +202,19 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
   }
 
   const sections = data.sections ?? []
-  const documentStyle = isDocumentStylePage(sections)
+  const legalSection = getLegalDocumentSection(sections)
 
-  if (documentStyle) {
+  if (legalSection) {
     return (
       <div className="flex flex-1 flex-col font-sans">
         <SiteShell padding="grid" className="pt-16 pb-16 md:pt-20 md:pb-20">
           <Grid12 className="gap-y-12 md:gap-y-16">
             <div className={cn(ARTICLE_COL_PROSE_CLASS, 'min-w-0')}>
-              <SitePageHeader
-                title={title}
-                lastUpdated={data.lastUpdated}
-                documentStyle
-              />
+              <LegalDocumentHeader title={title} lastUpdated={legalSection.lastUpdated} />
             </div>
-            {sections.map((section) =>
-              section._type === 'simpleSection' ? (
-                <div
-                  key={section._key}
-                  className={cn(ARTICLE_COL_PROSE_CLASS, 'min-w-0 text-left')}
-                >
-                  <SimpleSectionBlock body={section.body ?? undefined} />
-                </div>
-              ) : null,
-            )}
+            <div className={cn(ARTICLE_COL_PROSE_CLASS, 'min-w-0 text-left')}>
+              <LegalDocumentSection body={legalSection.body ?? undefined} />
+            </div>
           </Grid12>
         </SiteShell>
       </div>
@@ -224,10 +224,10 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
   return (
     <div className="flex flex-1 flex-col font-sans">
       <div className="mx-auto w-full max-w-site px-6 pt-16 md:px-12 md:pt-20">
-        <SitePageHeader title={title} lastUpdated={data.lastUpdated} documentStyle={false} />
+        <h1 className="text-foreground text-3xl font-semibold tracking-tight md:text-4xl">{title}</h1>
       </div>
       <div className="mt-12 flex flex-col gap-16 pb-16 md:mt-16 md:gap-20 md:pb-20">
-        {sections.map((section) => renderLegacySection(section))}
+        {sections.map((section) => renderMarketingSection(section))}
       </div>
     </div>
   )

@@ -29,7 +29,7 @@ import {page} from './page'
 import {quoteBlock} from './quoteBlock'
 import {siteFooter} from './siteFooter'
 import {siteNavGroup, siteNavigation, siteNavLink} from './siteNavigation'
-import {simpleSection, sitePage} from './sitePage'
+import {legalDocumentSection, simpleSection, sitePage} from './sitePage'
 import {twoImageBlock} from './twoImageBlock'
 
 export const schemaTypes = [
@@ -49,6 +49,7 @@ export const schemaTypes = [
   sectionSpacer,
   page,
   simpleSection,
+  legalDocumentSection,
   sitePage,
   siteNavLink,
   siteNavGroup,

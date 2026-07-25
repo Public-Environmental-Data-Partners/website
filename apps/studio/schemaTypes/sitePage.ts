@@ -14,7 +14,7 @@ function siblingDocumentIds(documentId: string | undefined): string[] {
   return Array.from(new Set([documentId, `drafts.${base}`, base]))
 }
 
-const simpleSectionPortableTextBlock = {
+const sectionPortableTextBlock = {
   type: 'block',
   marks: {
     annotations: [contentLinkAnnotation],
@@ -30,17 +30,57 @@ export const simpleSection = defineType({
       name: 'heading',
       title: 'Heading',
       type: 'string',
-      description: 'Optional. Leave blank for document-style pages (e.g. Privacy Policy) that use only the page title.',
-      validation: (Rule) => Rule.max(120),
+      validation: (Rule) => Rule.required().max(120),
     }),
     defineField({
       name: 'body',
       title: 'Body',
       type: 'array',
-      of: [simpleSectionPortableTextBlock],
+      of: [sectionPortableTextBlock],
       validation: (Rule) => Rule.required(),
     }),
   ],
+})
+
+/**
+ * Legal / policy document body (Privacy Policy, Terms, etc.).
+ * Page title is the only heading — Figtree Bold 22, centered, uppercase on the site.
+ */
+export const legalDocumentSection = defineType({
+  name: 'legalDocumentSection',
+  title: 'Legal document section',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'lastUpdated',
+      title: 'Last updated',
+      type: 'date',
+      description: 'Shown under the page title (e.g. “LAST UPDATED: March 17, 2025”).',
+    }),
+    defineField({
+      name: 'body',
+      title: 'Body',
+      type: 'array',
+      of: [sectionPortableTextBlock],
+      description: 'Policy copy. Use Email / External / Internal links as needed.',
+      validation: (Rule) => Rule.required(),
+    }),
+  ],
+  preview: {
+    select: {
+      lastUpdated: 'lastUpdated',
+      body: 'body',
+    },
+    prepare({lastUpdated, body}) {
+      const blockCount = Array.isArray(body) ? body.length : 0
+      return {
+        title: 'Legal document',
+        subtitle: lastUpdated
+          ? `Updated ${lastUpdated} · ${blockCount} block${blockCount === 1 ? '' : 's'}`
+          : `${blockCount} block${blockCount === 1 ? '' : 's'}`,
+      }
+    },
+  },
 })
 
 export const sitePage = defineType({
@@ -52,6 +92,8 @@ export const sitePage = defineType({
       name: 'title',
       title: 'Page title',
       type: 'string',
+      description:
+        'Browser tab title and on-page heading. For legal document pages, rendered centered in all caps (e.g. PRIVACY POLICY).',
       validation: (Rule) =>
         Rule.required()
           .max(160)
@@ -98,19 +140,39 @@ export const sitePage = defineType({
         }),
     }),
     defineField({
-      name: 'lastUpdated',
-      title: 'Last updated',
-      type: 'date',
-      description: 'Optional. Shown under the page title on document-style pages (e.g. Privacy Policy).',
-    }),
-    defineField({
       name: 'sections',
       title: 'Sections',
       type: 'array',
-      of: [{type: 'simpleSection'}, {type: 'byTheNumbersSection'}, {type: 'testimonialSection'}],
+      of: [
+        {type: 'simpleSection'},
+        {type: 'legalDocumentSection'},
+        {type: 'byTheNumbersSection'},
+        {type: 'testimonialSection'},
+      ],
       description:
-        'Ordered sections that make up this page. Start with one section; you can add and reorder more over time.',
-      validation: (Rule) => Rule.required().min(1),
+        'Ordered sections that make up this page. Use Legal document section for Privacy Policy, Terms, and similar pages.',
+      validation: (Rule) =>
+        Rule.required()
+          .min(1)
+          .custom((sections) => {
+            if (!Array.isArray(sections)) {
+              return true
+            }
+            const legalCount = sections.filter(
+              (section) =>
+                section &&
+                typeof section === 'object' &&
+                '_type' in section &&
+                section._type === 'legalDocumentSection',
+            ).length
+            if (legalCount > 1) {
+              return 'Use only one Legal document section per page.'
+            }
+            if (legalCount === 1 && sections.length > 1) {
+              return 'A Legal document section must be the only section on the page.'
+            }
+            return true
+          }),
     }),
   ],
 })
