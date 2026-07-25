@@ -1,6 +1,7 @@
 /*
  * Article body — Grid12 shell, block spacing, column span utilities.
- * Plan: docs/article-body-images-implementation-plan.md (Phase 1+)
+ * Plans: docs/article-body-images-implementation-plan.md
+ *         docs/article-body-heading-typography-plan.md
  */
 
 [data-slot='article-body-block'] {
@@ -19,4 +20,73 @@
 [data-slot='article-body-block']:last-child,
 [data-slot='article-body-prose']:last-child {
   margin-block-end: 0;
+}
+
+/*
+ * Editorial heading scale (scoped to article prose).
+ * Beats @layer base global marketing ramp. H1/H5 are Studio-omitted fallbacks.
+ */
+[data-slot='article-body-prose'] :is(h1, h2, h3, h4, h5) {
+  font-family: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--foreground);
+  letter-spacing: normal;
+}
+
+[data-slot='article-body-prose'] :is(h1, h2, h3, h4, h5):first-child {
+  margin-block-start: 0;
+}
+
+/* H1 — fallback only (not in Studio menu) */
+[data-slot='article-body-prose'] h1 {
+  margin-block: 2.5rem 1rem;
+  font-size: 2rem; /* 32px */
+}
+
+/* H2 — primary section break */
+[data-slot='article-body-prose'] h2 {
+  margin-block: 2rem 0.75rem;
+  font-size: 1.75rem; /* 28px */
+}
+
+/* H3 — subsection */
+[data-slot='article-body-prose'] h3 {
+  margin-block: 1.75rem 0.75rem;
+  font-size: 1.5rem; /* 24px */
+}
+
+/* H4 — nested / minor */
+[data-slot='article-body-prose'] h4 {
+  margin-block: 1.5rem 0.5rem;
+  font-size: 1.375rem; /* 22px */
+}
+
+/* H5 — fallback only (not in Studio menu) */
+[data-slot='article-body-prose'] h5 {
+  margin-block: 1.5rem 0.5rem;
+  font-size: 1.25rem; /* 20px */
+}
+
+@media (min-width: 768px) {
+  [data-slot='article-body-prose'] h1 {
+    font-size: 2.25rem; /* 36px */
+  }
+
+  [data-slot='article-body-prose'] h2 {
+    font-size: 2rem; /* 32px */
+  }
+
+  [data-slot='article-body-prose'] h3 {
+    font-size: 1.75rem; /* 28px */
+  }
+
+  [data-slot='article-body-prose'] h4 {
+    font-size: 1.5rem; /* 24px */
+  }
+
+  [data-slot='article-body-prose'] h5 {
+    font-size: 1.375rem; /* 22px */
+  }
 }

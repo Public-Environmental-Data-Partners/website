@@ -1,21 +1,19 @@
 import {defaultComponents, mergeComponents, type PortableTextComponents} from '@portabletext/react'
 
-/** Article detail body typography — keep in sync with detail page QA (Phase 3). */
+/**
+ * Article detail body typography.
+ * Heading sizes/weight live in `article-body.css` under `[data-slot='article-body-prose']`.
+ */
 export const articlePortableTextComponents: Partial<PortableTextComponents> = {
   block: {
     normal: ({children}: {children?: React.ReactNode}) => (
       <p className="text-muted-foreground mb-4 leading-relaxed last:mb-0">{children}</p>
     ),
-    h2: ({children}: {children?: React.ReactNode}) => (
-      <h2 className="text-foreground mb-4 mt-8 text-xl font-semibold tracking-tight first:mt-0 md:text-2xl">
-        {children}
-      </h2>
-    ),
-    h3: ({children}: {children?: React.ReactNode}) => (
-      <h3 className="text-foreground mb-3 mt-6 text-lg font-semibold first:mt-0 md:text-xl">
-        {children}
-      </h3>
-    ),
+    h1: ({children}: {children?: React.ReactNode}) => <h1>{children}</h1>,
+    h2: ({children}: {children?: React.ReactNode}) => <h2>{children}</h2>,
+    h3: ({children}: {children?: React.ReactNode}) => <h3>{children}</h3>,
+    h4: ({children}: {children?: React.ReactNode}) => <h4>{children}</h4>,
+    h5: ({children}: {children?: React.ReactNode}) => <h5>{children}</h5>,
   },
   list: {
     bullet: ({children}: {children?: React.ReactNode}) => (

@@ -1,8 +1,18 @@
 import {defineField} from 'sanity'
 
-/** Plain paragraph block for news post body and list row rich text. */
+/**
+ * Article body Portable Text — Option A styles.
+ * H1/H5 omitted (hero owns page H1; H5 ≤ body). Pull quotes use `quoteBlock`.
+ * Plan: docs/article-body-heading-typography-plan.md
+ */
 export const articleBodyPortableTextBlock = {
   type: 'block',
+  styles: [
+    {title: 'Normal', value: 'normal'},
+    {title: 'Heading 2', value: 'h2'},
+    {title: 'Heading 3', value: 'h3'},
+    {title: 'Heading 4', value: 'h4'},
+  ],
   marks: {
     annotations: [
       {
