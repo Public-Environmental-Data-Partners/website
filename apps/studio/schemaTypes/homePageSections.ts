@@ -152,7 +152,7 @@ export const partnerLogosSection = defineType({
   type: 'object',
   fields: [
     defineField({
-      name: 'heading',
+      name: 'sectionHeading',
       title: 'Section heading',
       type: 'string',
       initialValue: 'Our partners',
@@ -178,12 +178,12 @@ export const partnerLogosSection = defineType({
   ],
   preview: {
     select: {
-      heading: 'heading',
+      sectionHeading: 'sectionHeading',
     },
-    prepare({heading}) {
+    prepare({sectionHeading}) {
       return {
         title: 'Partner logos',
-        subtitle: heading?.trim() || undefined,
+        subtitle: sectionHeading?.trim() || undefined,
       }
     },
   },
@@ -265,7 +265,7 @@ export const byTheNumbersSection = defineType({
   type: 'object',
   fields: [
     defineField({
-      name: 'kicker',
+      name: 'sectionHeading',
       title: 'Section heading',
       type: 'string',
       initialValue: 'PEDP BY THE NUMBERS',
@@ -284,14 +284,14 @@ export const byTheNumbersSection = defineType({
   ],
   preview: {
     select: {
-      kicker: 'kicker',
+      sectionHeading: 'sectionHeading',
       stats: 'stats',
     },
-    prepare({kicker, stats}) {
+    prepare({sectionHeading, stats}) {
       const n = Array.isArray(stats) ? stats.length : 0
       return {
         title: 'By the numbers',
-        subtitle: kicker?.trim() ? `${kicker.trim()} · ${n}/3` : `${n}/3 stats`,
+        subtitle: sectionHeading?.trim() ? `${sectionHeading.trim()} · ${n}/3` : `${n}/3 stats`,
       }
     },
   },
@@ -319,7 +319,7 @@ export const highlightBannerSection = defineType({
       ],
     }),
     defineField({
-      name: 'kicker',
+      name: 'sectionHeading',
       title: 'Section heading',
       type: 'string',
       initialValue: 'HIGHLIGHT BANNER',
@@ -364,12 +364,12 @@ export const highlightBannerSection = defineType({
   ],
   preview: {
     select: {
-      kicker: 'kicker',
+      sectionHeading: 'sectionHeading',
     },
-    prepare({kicker}) {
+    prepare({sectionHeading}) {
       return {
         title: 'Highlight banner',
-        subtitle: kicker?.trim() || undefined,
+        subtitle: sectionHeading?.trim() || undefined,
       }
     },
   },
@@ -557,14 +557,14 @@ export const newsletterSection = defineType({
       description: 'Existing sections without a value continue to use the Homepage presentation.',
     }),
     defineField({
-      name: 'kicker',
+      name: 'sectionHeading',
       title: 'Section heading',
       type: 'string',
       initialValue: 'STAY IN TOUCH',
       validation: (Rule) => Rule.required().max(60),
     }),
     defineField({
-      name: 'heading',
+      name: 'prompt',
       title: 'Prompt',
       type: 'string',
       initialValue: 'Sign-up for our newsletter:',
@@ -588,18 +588,14 @@ export const newsletterSection = defineType({
   preview: {
     select: {
       presentation: 'presentation',
-      kicker: 'kicker',
-      heading: 'heading',
+      sectionHeading: 'sectionHeading',
+      prompt: 'prompt',
     },
-    prepare({presentation, kicker, heading}) {
+    prepare({presentation, sectionHeading, prompt}) {
       return {
         title: 'Newsletter',
         subtitle:
-          [
-            presentation === 'contact' ? 'Contact page' : 'Homepage',
-            kicker,
-            heading,
-          ]
+          [presentation === 'contact' ? 'Contact page' : 'Homepage', sectionHeading, prompt]
             .filter(Boolean)
             .join(' · ') || undefined,
       }
@@ -705,7 +701,7 @@ export const whatWeDoSection = defineType({
   type: 'object',
   fields: [
     defineField({
-      name: 'heading',
+      name: 'sectionHeading',
       title: 'Section heading',
       type: 'string',
       initialValue: 'WHAT WE DO',
@@ -724,14 +720,16 @@ export const whatWeDoSection = defineType({
   ],
   preview: {
     select: {
-      heading: 'heading',
+      sectionHeading: 'sectionHeading',
       items: 'items',
     },
-    prepare({heading, items}) {
+    prepare({sectionHeading, items}) {
       const n = Array.isArray(items) ? items.length : 0
       return {
         title: 'What We Do',
-        subtitle: heading?.trim() ? `${heading.trim()} · ${n}/3 items` : `${n}/3 items`,
+        subtitle: sectionHeading?.trim()
+          ? `${sectionHeading.trim()} · ${n}/3 items`
+          : `${n}/3 items`,
       }
     },
   },
@@ -744,7 +742,7 @@ export const testimonialSection = defineType({
   type: 'object',
   fields: [
     defineField({
-      name: 'kicker',
+      name: 'sectionHeading',
       title: 'Section heading',
       type: 'string',
       initialValue: 'MEMBER TESTIMONIAL',
@@ -781,16 +779,19 @@ export const testimonialSection = defineType({
   ],
   preview: {
     select: {
-      kicker: 'kicker',
+      sectionHeading: 'sectionHeading',
       attribution: 'attribution',
     },
-    prepare({kicker, attribution}) {
-      const kick = typeof kicker === 'string' && kicker.trim() ? kicker.trim() : 'Testimonial'
+    prepare({sectionHeading, attribution}) {
+      const label =
+        typeof sectionHeading === 'string' && sectionHeading.trim()
+          ? sectionHeading.trim()
+          : 'Testimonial'
       const name =
         typeof attribution === 'string' && attribution.trim() ? attribution.trim() : undefined
       return {
         title: 'Testimonial',
-        subtitle: name ? `${kick} · ${name}` : kick,
+        subtitle: name ? `${label} · ${name}` : label,
       }
     },
   },

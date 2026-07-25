@@ -90,7 +90,7 @@ export const contactSection = defineType({
   type: 'object',
   fields: [
     defineField({
-      name: 'kicker',
+      name: 'sectionHeading',
       title: 'Section heading',
       type: 'string',
       description: 'Short uppercase section label.',
@@ -106,11 +106,11 @@ export const contactSection = defineType({
     }),
   ],
   preview: {
-    select: {kicker: 'kicker', body: 'body'},
-    prepare({kicker, body}) {
+    select: {sectionHeading: 'sectionHeading', body: 'body'},
+    prepare({sectionHeading, body}) {
       const blockCount = Array.isArray(body) ? body.length : 0
       return {
-        title: kicker?.trim() || 'Contact section',
+        title: sectionHeading?.trim() || 'Contact section',
         subtitle: `${blockCount} block${blockCount === 1 ? '' : 's'}`,
       }
     },
