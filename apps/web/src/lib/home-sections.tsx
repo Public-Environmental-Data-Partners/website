@@ -25,6 +25,7 @@ import {mapWhatWeDoSectionToProps} from '@/lib/mappers/what-we-do-section'
 type HighlightBannerSectionGroq = {
   _type: 'highlightBannerSection'
   _key: string
+  sectionHeading?: string | null
   kicker?: string | null
   titleLine?: string | null
   heading?: string | null
@@ -69,7 +70,10 @@ type CardCarouselSectionGroq = {
 type NewsletterSectionGroq = {
   _type: 'newsletterSection'
   _key: string
+  presentation?: 'homepage' | 'contact' | null
+  sectionHeading?: string | null
   kicker?: string | null
+  prompt?: string | null
   heading?: string | null
   emailPlaceholder?: string | null
   submitLabel?: string | null

@@ -320,7 +320,7 @@ export const highlightBannerSection = defineType({
     }),
     defineField({
       name: 'kicker',
-      title: 'Kicker',
+      title: 'Section heading',
       type: 'string',
       initialValue: 'HIGHLIGHT BANNER',
       validation: (Rule) => Rule.required().max(80),
@@ -334,7 +334,7 @@ export const highlightBannerSection = defineType({
     }),
     defineField({
       name: 'heading',
-      title: 'Heading / title',
+      title: 'Heading',
       type: 'string',
       description: 'Required. Shown on mobile and tablet; hidden on desktop.',
       validation: (Rule) => Rule.required().max(200),
@@ -543,8 +543,22 @@ export const newsletterSection = defineType({
   type: 'object',
   fields: [
     defineField({
+      name: 'presentation',
+      title: 'Presentation',
+      type: 'string',
+      initialValue: 'homepage',
+      options: {
+        list: [
+          {title: 'Homepage (forest band)', value: 'homepage'},
+          {title: 'Contact page (off-white card)', value: 'contact'},
+        ],
+        layout: 'radio',
+      },
+      description: 'Existing sections without a value continue to use the Homepage presentation.',
+    }),
+    defineField({
       name: 'kicker',
-      title: 'Kicker',
+      title: 'Section heading',
       type: 'string',
       initialValue: 'STAY IN TOUCH',
       validation: (Rule) => Rule.required().max(60),
@@ -573,13 +587,21 @@ export const newsletterSection = defineType({
   ],
   preview: {
     select: {
+      presentation: 'presentation',
       kicker: 'kicker',
       heading: 'heading',
     },
-    prepare({kicker, heading}) {
+    prepare({presentation, kicker, heading}) {
       return {
         title: 'Newsletter',
-        subtitle: [kicker, heading].filter(Boolean).join(' · ') || undefined,
+        subtitle:
+          [
+            presentation === 'contact' ? 'Contact page' : 'Homepage',
+            kicker,
+            heading,
+          ]
+            .filter(Boolean)
+            .join(' · ') || undefined,
       }
     },
   },
@@ -723,7 +745,7 @@ export const testimonialSection = defineType({
   fields: [
     defineField({
       name: 'kicker',
-      title: 'Kicker',
+      title: 'Section heading',
       type: 'string',
       initialValue: 'MEMBER TESTIMONIAL',
       validation: (Rule) => Rule.required().max(60),

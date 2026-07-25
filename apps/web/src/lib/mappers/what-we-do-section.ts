@@ -1,6 +1,7 @@
 import type {PortableTextBlock} from '@portabletext/react'
 
 import {type ContentLinkGroq, resolveContentLink} from '@/lib/content-link'
+import {pickSectionHeadingFromHeading} from '@/lib/mappers/content-field-compat'
 
 export const WHAT_WE_DO_ICONS = ['dataPreservation', 'toolsDevelopment', 'advocacy'] as const
 
@@ -25,7 +26,7 @@ export type WhatWeDoItemProps = {
 }
 
 export type WhatWeDoSectionProps = {
-  heading: string
+  sectionHeading: string
   items: WhatWeDoItemProps[]
 }
 
@@ -39,6 +40,8 @@ export type WhatWeDoItemFields = {
 }
 
 export type WhatWeDoSectionFields = {
+  sectionHeading?: string | null
+  /** Legacy section label. */
   heading?: string | null
   items?: WhatWeDoItemFields[] | null
 }
@@ -75,8 +78,8 @@ function mapItem(item: WhatWeDoItemFields, index: number): WhatWeDoItemProps | n
 export function mapWhatWeDoSectionToProps(
   data: WhatWeDoSectionFields | null | undefined,
 ): WhatWeDoSectionProps | null {
-  const heading = data?.heading?.trim()
-  if (!heading) {
+  const sectionHeading = pickSectionHeadingFromHeading(data ?? {})
+  if (!sectionHeading) {
     return null
   }
 
@@ -89,5 +92,5 @@ export function mapWhatWeDoSectionToProps(
     return null
   }
 
-  return {heading, items}
+  return {sectionHeading, items}
 }

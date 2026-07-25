@@ -42,11 +42,11 @@ function QuoteBody({value}: {value: PortableTextBlock[]}) {
 
 /**
  * `testimonialSection` CMS block.
- * Mobile: kicker + small icon · quote · centered CTA.
- * Desktop (`lg+`): large icon | kicker + quote (+ optional name) | CTA.
+ * Mobile: section heading + small icon · quote · centered CTA.
+ * Desktop (`lg+`): large icon | section heading + quote (+ optional name) | CTA.
  */
 export function TestimonialSection({
-  kicker,
+  sectionHeading,
   quote,
   attribution,
   ctaLabel,
@@ -63,7 +63,7 @@ export function TestimonialSection({
             id={headingId}
             className="col-start-1 row-start-1 font-sans text-2xl leading-none font-semibold tracking-normal text-light-blue uppercase lg:col-start-2"
           >
-            {kicker}
+            {sectionHeading}
           </h2>
 
           <Image

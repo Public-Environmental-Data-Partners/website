@@ -75,11 +75,11 @@ function HighlightCta({label, href, external}: {label: string; href: string; ext
 }
 
 /**
- * Simple forest highlight band: inset image, kicker / title / body, CTA.
+ * Simple forest highlight band: inset image, section heading / title / body, CTA.
  * Mobile: stack. Tablet: image | copy, CTA under image. Desktop: image | copy, title hidden, CTA under copy.
  */
 export function HighlightBannerSection({
-  kicker,
+  sectionHeading,
   heading,
   body,
   ctaLabel,
@@ -110,7 +110,7 @@ export function HighlightBannerSection({
 
           <div className="flex min-w-0 flex-col">
             <p className="font-sans text-[1.375rem] leading-none font-semibold tracking-normal text-light-green uppercase lg:font-bold">
-              {kicker}
+              {sectionHeading}
             </p>
             <h2
               id={headingId}

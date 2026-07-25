@@ -80,7 +80,7 @@ function WhatWeDoItemCard({item, index}: {item: WhatWeDoItemProps; index: number
  * `whatWeDoSection` CMS block.
  * Mobile: 1 column. Tablet: 2 + 1 centered. Desktop: 3 columns.
  */
-export function WhatWeDoSection({heading, items}: WhatWeDoSectionProps) {
+export function WhatWeDoSection({sectionHeading, items}: WhatWeDoSectionProps) {
   const headingId = 'what-we-do-heading'
 
   return (
@@ -91,7 +91,7 @@ export function WhatWeDoSection({heading, items}: WhatWeDoSectionProps) {
             id={headingId}
             className="section-label-heading text-muted-foreground text-center md:text-left"
           >
-            {heading}
+            {sectionHeading}
           </h2>
           <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-x-12 md:gap-y-16 lg:grid-cols-3">
             {items.map((item, index) => (

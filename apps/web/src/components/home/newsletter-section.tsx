@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import {useId, useState} from 'react'
 
-import {SectionBand, SiteShell} from '@/components/layout'
+import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import {Button} from '@/components/ui/button'
 import type {NewsletterSectionProps} from '@/lib/mappers/newsletter-section'
 import {cn} from '@/lib/utils'
@@ -24,8 +24,9 @@ function fadeSlot(active: boolean) {
  * Mobile/tablet: stacked. Desktop (`lg+`): icon | copy | input + Subscribe.
  */
 export function NewsletterSection({
-  kicker,
-  heading,
+  presentation,
+  sectionHeading,
+  prompt,
   emailPlaceholder,
   submitLabel,
 }: NewsletterSectionProps) {
@@ -59,6 +60,103 @@ export function NewsletterSection({
     }
   }
 
+  if (presentation === 'contact') {
+    return (
+      <SectionBand
+        className="bg-cream pb-6"
+        {...(success ? {'aria-label': 'Newsletter'} : {'aria-labelledby': headingId})}
+      >
+        <SiteShell padding="grid">
+          <Grid12>
+            <div className="bg-off-white col-span-12 min-w-0 p-6 md:p-10 lg:p-12">
+              <div className="grid [&>*]:col-start-1 [&>*]:row-start-1 [&>*]:min-w-0">
+                <div className={fadeSlot(!success)} aria-hidden={success}>
+                  <h2
+                    id={headingId}
+                    className="text-off-black font-sans text-[1.375rem] leading-none font-semibold tracking-normal uppercase"
+                  >
+                    {sectionHeading}
+                  </h2>
+                  <p className="text-off-black mt-6 font-sans text-[1.375rem] leading-none font-semibold tracking-normal">
+                    {prompt}
+                  </p>
+                  <form
+                    className="mt-8 flex max-w-[42rem] flex-col gap-4 sm:flex-row sm:items-start"
+                    onSubmit={(event) => {
+                      event.preventDefault()
+                      void submitNewsletter()
+                    }}
+                    noValidate
+                  >
+                    <div className="min-w-0 flex-1">
+                      <label htmlFor={emailId} className="sr-only">
+                        Email
+                      </label>
+                      <input
+                        id={emailId}
+                        name="email"
+                        type="email"
+                        autoComplete="email"
+                        required
+                        value={email}
+                        disabled={submitting}
+                        placeholder={emailPlaceholder}
+                        onChange={(event) => setEmail(event.target.value)}
+                        className={cn(
+                          'h-[65px] w-full rounded-[4px] border border-border bg-white px-4',
+                          'font-sans text-base text-off-black placeholder:text-muted-foreground',
+                          'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
+                          'disabled:cursor-not-allowed disabled:opacity-60',
+                        )}
+                      />
+                      <label className="sr-only" htmlFor={`${emailId}-website`}>
+                        Leave blank
+                      </label>
+                      <input
+                        id={`${emailId}-website`}
+                        name="website"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={honeypot}
+                        onChange={(event) => setHoneypot(event.target.value)}
+                        className="absolute h-px w-px -translate-x-[9999px] opacity-0"
+                        aria-hidden
+                      />
+                      {error ? (
+                        <p className="mt-3 text-sm text-red-700" role="alert">
+                          {error}
+                        </p>
+                      ) : null}
+                    </div>
+                    <Button
+                      type="submit"
+                      variant="surface"
+                      size="cta"
+                      disabled={submitting}
+                      className="shrink-0"
+                    >
+                      {submitting ? 'Sending...' : submitLabel}
+                    </Button>
+                  </form>
+                </div>
+                <div
+                  className={fadeSlot(success)}
+                  role="status"
+                  aria-live="polite"
+                  aria-hidden={!success}
+                >
+                  <p className="text-off-black font-sans text-[1.375rem] leading-none font-semibold">
+                    Thank you for signing up.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Grid12>
+        </SiteShell>
+      </SectionBand>
+    )
+  }
+
   return (
     <SectionBand
       className="bg-forest"
@@ -68,10 +166,10 @@ export function NewsletterSection({
         <div className="grid [&>*]:col-start-1 [&>*]:row-start-1 [&>*]:min-w-0">
           <div className={fadeSlot(!success)} aria-hidden={success}>
             <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
-              {/* Mobile/tablet: kicker + small icon. Desktop: large icon. */}
+              {/* Mobile/tablet: section heading + small icon. Desktop: large icon. */}
               <div className="flex items-center justify-between gap-4 lg:contents">
                 <p className="font-sans text-2xl leading-none font-semibold tracking-normal text-light-green uppercase lg:hidden">
-                  {kicker}
+                  {sectionHeading}
                 </p>
                 <Image
                   src={ENVELOPE_SRC}
@@ -85,7 +183,7 @@ export function NewsletterSection({
 
               <div className="flex min-w-0 flex-1 flex-col gap-8 lg:gap-3">
                 <p className="hidden font-sans text-2xl leading-none font-bold tracking-normal text-light-green uppercase lg:block">
-                  {kicker}
+                  {sectionHeading}
                 </p>
 
                 <form
@@ -100,7 +198,7 @@ export function NewsletterSection({
                     id={headingId}
                     className="text-center font-serif text-[2rem] leading-[1.875rem] font-semibold text-light-green lg:shrink-0 lg:pt-3 lg:text-left"
                   >
-                    {heading}
+                    {prompt}
                   </h2>
                   <div className="flex w-full max-w-[29.375rem] flex-col items-center gap-4 lg:min-w-0 lg:flex-1 lg:items-stretch">
                     <label htmlFor={emailId} className="sr-only">

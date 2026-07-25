@@ -88,7 +88,7 @@ function StatColumn({stat, index}: {stat: ByTheNumbersStatProps; index: number})
  * `byTheNumbersSection` CMS block.
  * Mobile: 1 column. Tablet: 2 + 1 centered. Desktop: 3 columns.
  */
-export function ByTheNumbersSection({kicker, stats}: ByTheNumbersSectionProps) {
+export function ByTheNumbersSection({sectionHeading, stats}: ByTheNumbersSectionProps) {
   if (stats.length === 0) {
     return null
   }
@@ -103,7 +103,7 @@ export function ByTheNumbersSection({kicker, stats}: ByTheNumbersSectionProps) {
             id={headingId}
             className="section-label-heading text-muted-foreground text-center md:text-left"
           >
-            {kicker}
+            {sectionHeading}
           </h2>
           <div className="grid grid-cols-1 gap-14 md:grid-cols-2 md:gap-x-12 md:gap-y-16 lg:grid-cols-3">
             {stats.map((stat, index) => (

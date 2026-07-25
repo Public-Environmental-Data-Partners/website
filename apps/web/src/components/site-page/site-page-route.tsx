@@ -4,19 +4,43 @@ import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
 import {cache} from 'react'
 
+import {NewsletterSection} from '@/components/home/newsletter-section'
 import {Grid12, SiteShell} from '@/components/layout'
 import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
 import {TestimonialSection} from '@/components/sections/testimonial-section'
+import {ContactHeroSection} from '@/components/site-page/contact-hero-section'
+import {
+  type ContactCtaBlock,
+  ContactSection,
+} from '@/components/site-page/contact-section'
 import {LegalDocumentSection} from '@/components/site-page/legal-document-section'
 import {SimpleSectionBlock} from '@/components/site-page/simple-section-block'
 import {ARTICLE_COL_PROSE_CLASS} from '@/lib/article-body-grid'
-import {CONTENT_LINK_GROQ, PT_BLOCKS_GROQ} from '@/lib/content-link'
+import {
+  CONTENT_LINK_GROQ,
+  PT_BLOCKS_GROQ,
+  PT_MARK_DEFS_GROQ,
+} from '@/lib/content-link'
 import type {ByTheNumbersSectionFields} from '@/lib/mappers/by-the-numbers-section'
 import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
+import {pickContactSectionHeading} from '@/lib/mappers/content-field-compat'
+import type {NewsletterSectionFields} from '@/lib/mappers/newsletter-section'
+import {mapNewsletterSectionToProps} from '@/lib/mappers/newsletter-section'
+import {mapSanityImage, type SanityImageData} from '@/lib/mappers/sanity-image'
 import type {TestimonialSectionFields} from '@/lib/mappers/testimonial-section'
 import {mapTestimonialSectionToProps} from '@/lib/mappers/testimonial-section'
+import {SANITY_IMAGE_PROJECTION} from '@/lib/queries/sanity-image-projection'
 import {cn} from '@/lib/utils'
 import {sanityFetch} from '@/sanity/live'
+
+const SITE_PAGE_BODY_GROQ = `{
+  ...,
+  ${PT_MARK_DEFS_GROQ},
+  _type == "contactCta" => {
+    label,
+    link${CONTENT_LINK_GROQ}
+  }
+}`
 
 export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][0]{
   title,
@@ -26,8 +50,14 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     _key,
     heading,
     lastUpdated,
-    body[]${PT_BLOCKS_GROQ},
+    body[]${SITE_PAGE_BODY_GROQ},
+    image${SANITY_IMAGE_PROJECTION},
+    presentation,
+    emailPlaceholder,
+    submitLabel,
     kicker,
+    sectionHeading,
+    prompt,
     quote[]${PT_BLOCKS_GROQ},
     attribution,
     ctaLabel,
@@ -58,6 +88,26 @@ export type LegalDocumentSectionGroq = {
   body?: PortableTextBlock[] | null
 }
 
+export type ContactHeroGroq = {
+  _type: 'contactHero'
+  _key: string
+  image?: SanityImageData
+}
+
+export type ContactSectionGroq = {
+  _type: 'contactSection'
+  _key: string
+  sectionHeading?: string | null
+  kicker?: string | null
+  heading?: string | null
+  body?: Array<PortableTextBlock | ContactCtaBlock> | null
+}
+
+export type NewsletterSectionGroq = {
+  _type: 'newsletterSection'
+  _key: string
+} & NewsletterSectionFields
+
 type ByTheNumbersSectionGroq = {
   _type: 'byTheNumbersSection'
   _key: string
@@ -67,6 +117,9 @@ type TestimonialSectionGroq = {_type: 'testimonialSection'; _key: string} & Test
 export type SitePageSectionGroq =
   | SimpleSectionGroq
   | LegalDocumentSectionGroq
+  | ContactHeroGroq
+  | ContactSectionGroq
+  | NewsletterSectionGroq
   | ByTheNumbersSectionGroq
   | TestimonialSectionGroq
 
@@ -155,11 +208,49 @@ function renderMarketingSection(section: SitePageSectionGroq) {
       const props = mapTestimonialSectionToProps(section)
       return props ? <TestimonialSection key={section._key} {...props} /> : null
     }
+    case 'newsletterSection': {
+      const props = mapNewsletterSectionToProps(section)
+      return props ? <NewsletterSection key={section._key} {...props} /> : null
+    }
+    case 'contactSection': {
+      const sectionHeading = pickContactSectionHeading(section)
+      const body = section.body ?? []
+      return sectionHeading && body.length > 0 ? (
+        <ContactSection key={section._key} sectionHeading={sectionHeading} body={body} />
+      ) : null
+    }
+    case 'contactHero':
+      // Contact pages are handled as a composed page below.
+      return null
     case 'legalDocumentSection':
       // Schema validation keeps this as the sole section; defensive no-op if mixed.
       return null
     default:
       return null
+  }
+}
+
+function renderContactPageSection(section: SitePageSectionGroq, pageTitle: string) {
+  switch (section._type) {
+    case 'contactHero': {
+      const image = mapSanityImage(section.image ?? null, '')
+      return image ? (
+        <ContactHeroSection key={section._key} title={pageTitle} image={image} />
+      ) : null
+    }
+    case 'contactSection': {
+      const sectionHeading = pickContactSectionHeading(section)
+      const body = section.body ?? []
+      return sectionHeading && body.length > 0 ? (
+        <ContactSection key={section._key} sectionHeading={sectionHeading} body={body} />
+      ) : null
+    }
+    case 'newsletterSection': {
+      const props = mapNewsletterSectionToProps(section)
+      return props ? <NewsletterSection key={section._key} {...props} /> : null
+    }
+    default:
+      return renderMarketingSection(section)
   }
 }
 
@@ -217,6 +308,15 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
             </div>
           </Grid12>
         </SiteShell>
+      </div>
+    )
+  }
+
+  const isContactPage = sections[0]?._type === 'contactHero'
+  if (isContactPage) {
+    return (
+      <div className="flex flex-1 flex-col bg-cream font-sans">
+        {sections.map((section) => renderContactPageSection(section, title))}
       </div>
     )
   }

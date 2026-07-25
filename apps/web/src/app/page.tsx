@@ -62,6 +62,8 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
       }
     },
     kicker,
+    sectionHeading,
+    prompt,
     stats[]{
       _key,
       icon,
@@ -88,7 +90,6 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
     body[]${PT_BLOCKS_GROQ},
     ctaLabel,
     ctaLink${CONTENT_LINK_GROQ},
-    sectionHeading,
     cards[]{
       _type,
       _key,
@@ -111,6 +112,7 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
         }
       }
     },
+    presentation,
     emailPlaceholder,
     submitLabel,
     heightPx

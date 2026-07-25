@@ -29,7 +29,14 @@ import {page} from './page'
 import {quoteBlock} from './quoteBlock'
 import {siteFooter} from './siteFooter'
 import {siteNavGroup, siteNavigation, siteNavLink} from './siteNavigation'
-import {legalDocumentSection, simpleSection, sitePage} from './sitePage'
+import {
+  contactCta,
+  contactHero,
+  contactSection,
+  legalDocumentSection,
+  simpleSection,
+  sitePage,
+} from './sitePage'
 import {twoImageBlock} from './twoImageBlock'
 
 export const schemaTypes = [
@@ -48,6 +55,9 @@ export const schemaTypes = [
   partnerLogosSection,
   sectionSpacer,
   page,
+  contactCta,
+  contactHero,
+  contactSection,
   simpleSection,
   legalDocumentSection,
   sitePage,

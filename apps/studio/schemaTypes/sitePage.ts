@@ -21,6 +21,102 @@ const sectionPortableTextBlock = {
   },
 } as const
 
+export const contactCta = defineType({
+  name: 'contactCta',
+  title: 'CTA button',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'label',
+      title: 'Button label',
+      type: 'string',
+      validation: (Rule) => Rule.required().max(60),
+    }),
+    defineField({
+      name: 'link',
+      title: 'Button link',
+      type: 'contentLink',
+      validation: (Rule) => Rule.required(),
+    }),
+  ],
+  preview: {
+    select: {label: 'label'},
+    prepare({label}) {
+      return {title: label?.trim() || 'CTA button'}
+    },
+  },
+})
+
+/**
+ * Contact page hero. The page title is the only heading; this block owns the
+ * CMS-managed illustration.
+ */
+export const contactHero = defineType({
+  name: 'contactHero',
+  title: 'Contact hero',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'image',
+      title: 'Illustration',
+      type: 'image',
+      validation: (Rule) => Rule.required(),
+      options: {hotspot: true},
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative text',
+          type: 'string',
+          validation: (Rule) => Rule.required().max(160),
+        }),
+      ],
+    }),
+  ],
+  preview: {
+    select: {media: 'image'},
+    prepare({media}) {
+      return {title: 'Contact hero', media}
+    },
+  },
+})
+
+/**
+ * Full-width contact card. Editors can place CTA button blocks anywhere in
+ * the rich-text flow (for example, between support copy and a GitHub note).
+ */
+export const contactSection = defineType({
+  name: 'contactSection',
+  title: 'Contact section',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'kicker',
+      title: 'Section heading',
+      type: 'string',
+      description: 'Short uppercase section label.',
+      validation: (Rule) => Rule.required().max(120),
+    }),
+    defineField({
+      name: 'body',
+      title: 'Body',
+      type: 'array',
+      of: [sectionPortableTextBlock, {type: 'contactCta'}],
+      description: 'Add CTA button blocks wherever buttons should appear between paragraphs.',
+      validation: (Rule) => Rule.required().min(1),
+    }),
+  ],
+  preview: {
+    select: {kicker: 'kicker', body: 'body'},
+    prepare({kicker, body}) {
+      const blockCount = Array.isArray(body) ? body.length : 0
+      return {
+        title: kicker?.trim() || 'Contact section',
+        subtitle: `${blockCount} block${blockCount === 1 ? '' : 's'}`,
+      }
+    },
+  },
+})
+
 export const simpleSection = defineType({
   name: 'simpleSection',
   title: 'Simple section',
@@ -146,11 +242,14 @@ export const sitePage = defineType({
       of: [
         {type: 'simpleSection'},
         {type: 'legalDocumentSection'},
+        {type: 'contactHero'},
+        {type: 'contactSection'},
+        {type: 'newsletterSection'},
         {type: 'byTheNumbersSection'},
         {type: 'testimonialSection'},
       ],
       description:
-        'Ordered sections that make up this page. Use Legal document section for Privacy Policy, Terms, and similar pages.',
+        'Ordered sections that make up this page. Contact pages start with Contact hero, followed by Contact sections and an optional Contact-style Newsletter.',
       validation: (Rule) =>
         Rule.required()
           .min(1)
@@ -170,6 +269,30 @@ export const sitePage = defineType({
             }
             if (legalCount === 1 && sections.length > 1) {
               return 'A Legal document section must be the only section on the page.'
+            }
+            const contactHeroIndexes = sections.flatMap((section, index) =>
+              section &&
+              typeof section === 'object' &&
+              '_type' in section &&
+              section._type === 'contactHero'
+                ? [index]
+                : [],
+            )
+            if (contactHeroIndexes.length > 1) {
+              return 'Use only one Contact hero per page.'
+            }
+            if (contactHeroIndexes.length === 1 && contactHeroIndexes[0] !== 0) {
+              return 'Contact hero must be the first section on the page.'
+            }
+            const hasContactSections = sections.some(
+              (section) =>
+                section &&
+                typeof section === 'object' &&
+                '_type' in section &&
+                section._type === 'contactSection',
+            )
+            if (hasContactSections && contactHeroIndexes.length === 0) {
+              return 'Pages with Contact sections must start with a Contact hero.'
             }
             return true
           }),

@@ -17,7 +17,7 @@ type PartnerLogo = {
 }
 
 export type PartnerLogosSectionProps = {
-  heading: string
+  sectionHeading: string
   partners: PartnerLogo[]
   /** CMS toggle; `prefers-reduced-motion` forces scroll fallback instead of marquee. */
   useMarquee: boolean
@@ -143,7 +143,11 @@ function PartnerLogosMarqueePanel({partners}: {partners: PartnerLogo[]}) {
 }
 
 /** `partnerLogosSection` CMS block: partner org logos (grid, scroll, or marquee). */
-export function PartnerLogosSection({heading, partners, useMarquee}: PartnerLogosSectionProps) {
+export function PartnerLogosSection({
+  sectionHeading,
+  partners,
+  useMarquee,
+}: PartnerLogosSectionProps) {
   const prefersReducedMotion = usePrefersReducedMotion()
 
   if (partners.length === 0) {
@@ -166,7 +170,7 @@ export function PartnerLogosSection({heading, partners, useMarquee}: PartnerLogo
       <SiteShell>
         <ContentStack>
           <h2 id={headingId} className="section-label-heading text-muted-foreground">
-            {heading}
+            {sectionHeading}
           </h2>
           {strip}
         </ContentStack>

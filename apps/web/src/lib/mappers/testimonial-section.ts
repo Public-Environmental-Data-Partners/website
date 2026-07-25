@@ -1,12 +1,13 @@
 import type {PortableTextBlock} from '@portabletext/react'
 
 import {type ContentLinkGroq, resolveContentLink} from '@/lib/content-link'
+import {pickSectionHeadingFromKicker} from '@/lib/mappers/content-field-compat'
 
 /** Fixed quote mark icon for the Testimonial band. */
 export const TESTIMONIAL_QUOTE_ICON_SRC = '/brand/testimonial/quote.svg'
 
 export type TestimonialSectionProps = {
-  kicker: string
+  sectionHeading: string
   quote: PortableTextBlock[]
   attribution?: string
   ctaLabel: string
@@ -16,6 +17,8 @@ export type TestimonialSectionProps = {
 }
 
 export type TestimonialSectionFields = {
+  sectionHeading?: string | null
+  /** Legacy section label. */
   kicker?: string | null
   quote?: unknown
   attribution?: string | null
@@ -30,9 +33,9 @@ function toPortableTextBlocks(value: unknown): PortableTextBlock[] {
 export function mapTestimonialSectionToProps(
   data: TestimonialSectionFields | null | undefined,
 ): TestimonialSectionProps | null {
-  const kicker = data?.kicker?.trim()
+  const sectionHeading = pickSectionHeadingFromKicker(data ?? {})
   const quote = toPortableTextBlocks(data?.quote)
-  if (!kicker || quote.length === 0) {
+  if (!sectionHeading || quote.length === 0) {
     return null
   }
 
@@ -41,7 +44,7 @@ export function mapTestimonialSectionToProps(
   const resolved = resolveContentLink(data?.ctaLink)
 
   return {
-    kicker,
+    sectionHeading,
     quote,
     attribution,
     ctaLabel,
