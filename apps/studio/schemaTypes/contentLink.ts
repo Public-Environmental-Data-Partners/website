@@ -23,6 +23,7 @@ export const contentLink = defineType({
         list: [
           {title: 'Internal', value: 'internal'},
           {title: 'External', value: 'external'},
+          {title: 'Email', value: 'email'},
         ],
         layout: 'radio',
       },
@@ -61,19 +62,33 @@ export const contentLink = defineType({
       hidden: ({parent}) => parent?.linkType !== 'external',
       description: 'Full http(s) URL. Opens in a new tab with an external-link icon.',
     }),
+    defineField({
+      name: 'emailAddress',
+      title: 'Email address',
+      type: 'string',
+      hidden: ({parent}) => parent?.linkType !== 'email',
+      description: 'Opens the visitor’s default email app.',
+    }),
   ],
   preview: {
     select: {
       linkType: 'linkType',
       path: 'internalPath',
       externalUrl: 'externalUrl',
+      emailAddress: 'emailAddress',
       pageTitle: 'internalReference.title',
     },
-    prepare({linkType, path, externalUrl, pageTitle}) {
+    prepare({linkType, path, externalUrl, emailAddress, pageTitle}) {
       if (linkType === 'external') {
         return {
           title: externalUrl?.trim() || 'External link',
           subtitle: 'External · new tab',
+        }
+      }
+      if (linkType === 'email') {
+        return {
+          title: emailAddress?.trim() || 'Email link',
+          subtitle: 'Email · opens mail app',
         }
       }
       const internalLabel =

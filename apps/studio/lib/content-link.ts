@@ -5,7 +5,7 @@ export const CONTENT_LINK_API_VERSION = '2024-01-01'
 /** Canonical News & Updates hub path (not a `sitePage` document). */
 export const NEWS_HUB_PATH = '/news-and-updates'
 
-export type ContentLinkType = 'internal' | 'external'
+export type ContentLinkType = 'internal' | 'external' | 'email'
 
 export type ContentLinkReference = {
   _type: 'reference'
@@ -19,6 +19,7 @@ export type ContentLinkValue = {
   internalReference?: ContentLinkReference | null
   internalPath?: string | null
   externalUrl?: string | null
+  emailAddress?: string | null
 }
 
 export type NavLinkProjection = {
@@ -133,14 +134,21 @@ export function validateContentLinkValue(fields: unknown): true | string {
 
   const value = fields as ContentLinkValue
   const linkType =
-    value.linkType === 'external' ? 'external' : value.linkType === 'internal' ? 'internal' : null
+    value.linkType === 'external'
+      ? 'external'
+      : value.linkType === 'internal'
+        ? 'internal'
+        : value.linkType === 'email'
+          ? 'email'
+          : null
   const ref = value.internalReference?._ref?.trim() ?? ''
   const path =
     typeof value.internalPath === 'string' ? normalizeInternalPath(value.internalPath) : ''
   const external = typeof value.externalUrl === 'string' ? value.externalUrl.trim() : ''
+  const email = typeof value.emailAddress === 'string' ? value.emailAddress.trim() : ''
 
   // Optional CTA: fully empty object is valid (button hidden on the site).
-  if (!linkType && !ref && !path && !external) {
+  if (!linkType && !ref && !path && !external && !email) {
     return true
   }
 
@@ -161,17 +169,33 @@ export function validateContentLinkValue(fields: unknown): true | string {
     if (external) {
       return 'Clear the external URL when using an internal link'
     }
+    if (email) {
+      return 'Clear the email address when using an internal link'
+    }
     return true
   }
 
-  if (!external) {
-    return 'Enter a full external URL'
+  if (linkType === 'external') {
+    if (!external) {
+      return 'Enter a full external URL'
+    }
+    if (!/^https?:\/\//i.test(external)) {
+      return 'External URL must start with http:// or https://'
+    }
+    if (ref || path || email) {
+      return 'Clear the internal destination and email address when using an external link'
+    }
+    return true
   }
-  if (!/^https?:\/\//i.test(external)) {
-    return 'External URL must start with http:// or https://'
+
+  if (!email) {
+    return 'Enter an email address'
   }
-  if (ref || path) {
-    return 'Clear the internal destination when using an external link'
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return 'Enter a valid email address'
+  }
+  if (ref || path || external) {
+    return 'Clear the internal and external destinations when using an email link'
   }
   return true
 }

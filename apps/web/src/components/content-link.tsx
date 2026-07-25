@@ -31,6 +31,7 @@ export function ContentLinkExternalIcon() {
 /**
  * Shared CMS/app link renderer.
  * Internal → Next.js `Link` (same tab). External → `<a target="_blank">` + icon.
+ * Email → a same-tab `<a href="mailto:…">` with no external icon.
  */
 export function ContentLink({
   href,
@@ -46,6 +47,14 @@ export function ContentLink({
       {external && showExternalIcon ? <ContentLinkExternalIcon /> : null}
     </>
   )
+
+  if (/^mailto:/i.test(href)) {
+    return (
+      <a href={href} className={className} {...rest}>
+        {children}
+      </a>
+    )
+  }
 
   if (external) {
     return (

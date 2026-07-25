@@ -30,7 +30,8 @@ export const simpleSection = defineType({
       name: 'heading',
       title: 'Heading',
       type: 'string',
-      validation: (Rule) => Rule.required().max(120),
+      description: 'Optional. Leave blank for document-style pages (e.g. Privacy Policy) that use only the page title.',
+      validation: (Rule) => Rule.max(120),
     }),
     defineField({
       name: 'body',
@@ -95,6 +96,12 @@ export const sitePage = defineType({
           )
           return count === 0 || 'Another page already uses this slug (URLs must be unique).'
         }),
+    }),
+    defineField({
+      name: 'lastUpdated',
+      title: 'Last updated',
+      type: 'date',
+      description: 'Optional. Shown under the page title on document-style pages (e.g. Privacy Policy).',
     }),
     defineField({
       name: 'sections',

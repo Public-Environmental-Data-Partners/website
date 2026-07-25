@@ -51,7 +51,7 @@ function matchesQuery(label: string, href: string, query: string): boolean {
 }
 
 /**
- * Hierarchical Internal / External link picker.
+ * Hierarchical Internal / External / Email link picker.
  * Patches follow Sanity Studio real-time patch guidance (`set` / `unset` with paths).
  * @see https://www.sanity.io/docs/studio/from-input-components-to-real-time-safe-patches
  */
@@ -68,7 +68,8 @@ export function ContentLinkInput(props: ContentLinkInputProps) {
   const [browseMode, setBrowseMode] = useState<'nav' | 'pages' | 'posts'>('nav')
   const [search, setSearch] = useState('')
 
-  const linkType: ContentLinkType = value?.linkType === 'external' ? 'external' : 'internal'
+  const linkType: ContentLinkType =
+    value?.linkType === 'external' ? 'external' : value?.linkType === 'email' ? 'email' : 'internal'
 
   useEffect(() => {
     let cancelled = false
@@ -114,6 +115,7 @@ export function ContentLinkInput(props: ContentLinkInputProps) {
           set({_type: 'reference', _ref: selection.ref}, ['internalReference']),
           unset(['internalPath']),
           unset(['externalUrl']),
+          unset(['emailAddress']),
         ])
         return
       }
@@ -123,6 +125,7 @@ export function ContentLinkInput(props: ContentLinkInputProps) {
         set(selection.path, ['internalPath']),
         unset(['internalReference']),
         unset(['externalUrl']),
+        unset(['emailAddress']),
       ])
     },
     [objectTypeName, onChange, readOnly],
@@ -138,14 +141,26 @@ export function ContentLinkInput(props: ContentLinkInputProps) {
           set(objectTypeName, ['_type']),
           set('internal', ['linkType']),
           unset(['externalUrl']),
+          unset(['emailAddress']),
+        ])
+        return
+      }
+      if (next === 'external') {
+        onChange([
+          set(objectTypeName, ['_type']),
+          set('external', ['linkType']),
+          unset(['internalReference']),
+          unset(['internalPath']),
+          unset(['emailAddress']),
         ])
         return
       }
       onChange([
         set(objectTypeName, ['_type']),
-        set('external', ['linkType']),
+        set('email', ['linkType']),
         unset(['internalReference']),
         unset(['internalPath']),
+        unset(['externalUrl']),
       ])
     },
     [objectTypeName, onChange, readOnly],
@@ -163,6 +178,25 @@ export function ContentLinkInput(props: ContentLinkInputProps) {
         trimmed ? set(trimmed, ['externalUrl']) : unset(['externalUrl']),
         unset(['internalReference']),
         unset(['internalPath']),
+        unset(['emailAddress']),
+      ])
+    },
+    [objectTypeName, onChange, readOnly],
+  )
+
+  const applyEmailAddress = useCallback(
+    (nextEmail: string) => {
+      if (readOnly) {
+        return
+      }
+      const trimmed = nextEmail.trim()
+      onChange([
+        set(objectTypeName, ['_type']),
+        set('email', ['linkType']),
+        trimmed ? set(trimmed, ['emailAddress']) : unset(['emailAddress']),
+        unset(['internalReference']),
+        unset(['internalPath']),
+        unset(['externalUrl']),
       ])
     },
     [objectTypeName, onChange, readOnly],
@@ -172,13 +206,22 @@ export function ContentLinkInput(props: ContentLinkInputProps) {
     if (readOnly) {
       return
     }
-    onChange([unset(['internalReference']), unset(['internalPath']), unset(['externalUrl'])])
+    onChange([
+      unset(['internalReference']),
+      unset(['internalPath']),
+      unset(['externalUrl']),
+      unset(['emailAddress']),
+    ])
   }, [onChange, readOnly])
 
   const selectedSummary = useMemo(() => {
     if (linkType === 'external') {
       const url = value?.externalUrl?.trim()
       return url ? {label: url, detail: 'External · opens in new tab'} : null
+    }
+    if (linkType === 'email') {
+      const email = value?.emailAddress?.trim()
+      return email ? {label: email, detail: 'Email · opens mail app'} : null
     }
     const path = value?.internalPath?.trim()
     if (path) {
@@ -210,6 +253,7 @@ export function ContentLinkInput(props: ContentLinkInputProps) {
     pages,
     posts,
     value?.externalUrl,
+    value?.emailAddress,
     value?.internalPath,
     value?.internalReference?._ref,
   ])
@@ -259,6 +303,14 @@ export function ContentLinkInput(props: ContentLinkInputProps) {
             />
             <Text size={1}>External</Text>
           </Flex>
+          <Flex as="label" align="center" gap={2}>
+            <Radio
+              checked={linkType === 'email'}
+              disabled={readOnly}
+              onChange={() => applyLinkType('email')}
+            />
+            <Text size={1}>Email</Text>
+          </Flex>
         </Flex>
       </Stack>
 
@@ -301,6 +353,21 @@ export function ContentLinkInput(props: ContentLinkInputProps) {
           />
           <Text size={1} muted>
             Opens in a new tab with an external-link icon on the site.
+          </Text>
+        </Stack>
+      ) : linkType === 'email' ? (
+        <Stack space={2}>
+          <Text size={1} weight="semibold">
+            Email address
+          </Text>
+          <TextInput
+            value={value?.emailAddress ?? ''}
+            disabled={readOnly}
+            placeholder="hello@example.com"
+            onChange={(event) => applyEmailAddress(event.currentTarget.value)}
+          />
+          <Text size={1} muted>
+            Opens the visitor’s default email app.
           </Text>
         </Stack>
       ) : (

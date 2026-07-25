@@ -56,17 +56,23 @@ Choose **External** for a destination outside the PEDP website, then enter its c
 
 External links open in a new browser tab and show an external-link icon. The icon tells visitors that they are leaving the site.
 
+### Email links
+
+Choose **Email** when the link should open the visitor’s email app, then enter the address only (for example `hello@publicenvirodata.org`). Do not type `mailto:` yourself.
+
+Email links open the visitor’s default mail app and do not show an external-link icon.
+
 ### Changing or removing a link
 
 - Use **Clear** to remove the current destination.
-- If you switch between Internal and External, the old destination is cleared automatically. Select or enter a new one.
+- If you switch between Internal, External, and Email, the old destination is cleared automatically. Select or enter a new one.
 - A CTA or linked card may disappear from the website if its required link is incomplete. Finish the destination before publishing.
 
 ### Rich-text links
 
 1. Highlight the words that should become a link.
 2. Select the link annotation in the rich-text toolbar.
-3. Choose **Internal** or **External** and complete the destination as described above.
+3. Choose **Internal**, **External**, or **Email** and complete the destination as described above.
 4. Publish the document.
 
 When updating an older rich-text link, reselect its destination through this workflow before publishing. This converts the link to the current format.

@@ -4,19 +4,23 @@ import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
 import {cache} from 'react'
 
+import {Grid12, SiteShell} from '@/components/layout'
 import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
 import {TestimonialSection} from '@/components/sections/testimonial-section'
 import {SimpleSectionBlock} from '@/components/site-page/simple-section-block'
+import {ARTICLE_COL_PROSE_CLASS} from '@/lib/article-body-grid'
 import {CONTENT_LINK_GROQ, PT_BLOCKS_GROQ} from '@/lib/content-link'
 import type {ByTheNumbersSectionFields} from '@/lib/mappers/by-the-numbers-section'
 import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
 import type {TestimonialSectionFields} from '@/lib/mappers/testimonial-section'
 import {mapTestimonialSectionToProps} from '@/lib/mappers/testimonial-section'
+import {cn} from '@/lib/utils'
 import {sanityFetch} from '@/sanity/live'
 
 export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][0]{
   title,
   slug,
+  lastUpdated,
   sections[]{
     _type,
     _key,
@@ -59,6 +63,7 @@ export type SitePageSectionGroq =
 
 export type SitePageData = {
   title: string | null
+  lastUpdated?: string | null
   sections?: SitePageSectionGroq[] | null
 }
 
@@ -91,12 +96,36 @@ export async function sitePageMetadata(slugSegment: string): Promise<Metadata> {
   }
 }
 
-function renderSection(section: SitePageSectionGroq) {
+/** Format Sanity `date` (YYYY-MM-DD) as "March 17, 2025" in local calendar terms. */
+export function formatSitePageLastUpdated(dateStr: string): string | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr.trim())
+  if (!match) {
+    return null
+  }
+  const year = Number(match[1])
+  const month = Number(match[2])
+  const day = Number(match[3])
+  const date = new Date(year, month - 1, day)
+  if (Number.isNaN(date.getTime())) {
+    return null
+  }
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(date)
+}
+
+function isDocumentStylePage(sections: SitePageSectionGroq[]): boolean {
+  return (
+    sections.length > 0 &&
+    sections.every((section) => section._type === 'simpleSection' && !section.heading?.trim())
+  )
+}
+
+function renderLegacySection(section: SitePageSectionGroq) {
   switch (section._type) {
     case 'simpleSection': {
-      if (!section.heading) {
-        return null
-      }
       return (
         <div key={section._key} className="mx-auto w-full max-w-site px-6 md:px-12">
           <SimpleSectionBlock heading={section.heading} body={section.body ?? undefined} />
@@ -116,6 +145,39 @@ function renderSection(section: SitePageSectionGroq) {
   }
 }
 
+function SitePageHeader({
+  title,
+  lastUpdated,
+  documentStyle,
+}: {
+  title: string
+  lastUpdated?: string | null
+  documentStyle: boolean
+}) {
+  const lastUpdatedLabel = lastUpdated ? formatSitePageLastUpdated(lastUpdated) : null
+
+  return (
+    <header className={cn('min-w-0', documentStyle ? 'text-center' : 'text-left')}>
+      <h1
+        className={cn(
+          'text-foreground text-3xl font-semibold tracking-tight md:text-4xl',
+          documentStyle && 'uppercase',
+        )}
+      >
+        {title}
+      </h1>
+      {lastUpdatedLabel ? (
+        <p className="text-foreground mt-4 text-sm font-semibold tracking-wide uppercase md:text-base">
+          Last updated:{' '}
+          <time dateTime={lastUpdated ?? undefined} className="font-normal normal-case italic">
+            {lastUpdatedLabel}
+          </time>
+        </p>
+      ) : null}
+    </header>
+  )
+}
+
 export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
   const {data} = await fetchSitePage(slugSegment)
 
@@ -129,16 +191,43 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
   }
 
   const sections = data.sections ?? []
+  const documentStyle = isDocumentStylePage(sections)
+
+  if (documentStyle) {
+    return (
+      <div className="flex flex-1 flex-col font-sans">
+        <SiteShell padding="grid" className="pt-16 pb-16 md:pt-20 md:pb-20">
+          <Grid12 className="gap-y-12 md:gap-y-16">
+            <div className={cn(ARTICLE_COL_PROSE_CLASS, 'min-w-0')}>
+              <SitePageHeader
+                title={title}
+                lastUpdated={data.lastUpdated}
+                documentStyle
+              />
+            </div>
+            {sections.map((section) =>
+              section._type === 'simpleSection' ? (
+                <div
+                  key={section._key}
+                  className={cn(ARTICLE_COL_PROSE_CLASS, 'min-w-0 text-left')}
+                >
+                  <SimpleSectionBlock body={section.body ?? undefined} />
+                </div>
+              ) : null,
+            )}
+          </Grid12>
+        </SiteShell>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-1 flex-col font-sans">
       <div className="mx-auto w-full max-w-site px-6 pt-16 md:px-12 md:pt-20">
-        <h1 className="text-foreground text-3xl font-semibold tracking-tight md:text-4xl">
-          {title}
-        </h1>
+        <SitePageHeader title={title} lastUpdated={data.lastUpdated} documentStyle={false} />
       </div>
       <div className="mt-12 flex flex-col gap-16 pb-16 md:mt-16 md:gap-20 md:pb-20">
-        {sections.map((section) => renderSection(section))}
+        {sections.map((section) => renderLegacySection(section))}
       </div>
     </div>
   )

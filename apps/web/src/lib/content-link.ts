@@ -1,8 +1,9 @@
 /** GROQ fragment shape for `contentLink` objects. */
 export type ContentLinkGroq = {
-  linkType?: 'internal' | 'external' | null
+  linkType?: 'internal' | 'external' | 'email' | null
   internalPath?: string | null
   externalUrl?: string | null
+  emailAddress?: string | null
   internalReference?: {
     _type?: string | null
     slug?: {current?: string | null} | null
@@ -62,6 +63,14 @@ export function resolveContentLink(
     return {href, external: true}
   }
 
+  if (target.linkType === 'email') {
+    const emailAddress = target.emailAddress?.trim()
+    if (!emailAddress || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress)) {
+      return null
+    }
+    return {href: `mailto:${emailAddress}`, external: false}
+  }
+
   if (target.linkType !== 'internal') {
     return null
   }
@@ -98,6 +107,9 @@ export function resolvePortableTextLink(
   if (/^https?:\/\//i.test(href)) {
     return {href, external: true}
   }
+  if (/^mailto:[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(href)) {
+    return {href, external: false}
+  }
   return {href, external: false}
 }
 
@@ -106,6 +118,7 @@ export const CONTENT_LINK_GROQ = `{
   linkType,
   internalPath,
   externalUrl,
+  emailAddress,
   internalReference->{
     _type,
     slug

@@ -18,13 +18,14 @@ export const articlePortableTextComponents: Partial<PortableTextComponents> = {
     h5: ({children}: {children?: React.ReactNode}) => <h5>{children}</h5>,
   },
   list: {
+    // Match global `p` body size (1.375rem) — lists inherit `body` (0.875rem) otherwise.
     bullet: ({children}: {children?: React.ReactNode}) => (
-      <ul className="text-muted-foreground mb-4 list-disc space-y-2 ps-6 leading-relaxed last:mb-0">
+      <ul className="text-muted-foreground mb-4 list-disc space-y-2 ps-6 text-[1.375rem] leading-[1.625] last:mb-0">
         {children}
       </ul>
     ),
     number: ({children}: {children?: React.ReactNode}) => (
-      <ol className="text-muted-foreground mb-4 list-decimal space-y-2 ps-6 leading-relaxed last:mb-0">
+      <ol className="text-muted-foreground mb-4 list-decimal space-y-2 ps-6 text-[1.375rem] leading-[1.625] last:mb-0">
         {children}
       </ol>
     ),
