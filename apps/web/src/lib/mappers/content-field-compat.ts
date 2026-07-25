@@ -4,9 +4,7 @@
  * @see docs/content-terminology.md
  */
 
-export function firstNonEmpty(
-  ...values: Array<string | null | undefined>
-): string | undefined {
+export function firstNonEmpty(...values: Array<string | null | undefined>): string | undefined {
   for (const value of values) {
     const trimmed = value?.trim()
     if (trimmed) {

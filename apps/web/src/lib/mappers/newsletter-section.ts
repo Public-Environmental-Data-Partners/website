@@ -1,4 +1,7 @@
-import {pickNewsletterPrompt, pickSectionHeadingFromKicker} from '@/lib/mappers/content-field-compat'
+import {
+  pickNewsletterPrompt,
+  pickSectionHeadingFromKicker,
+} from '@/lib/mappers/content-field-compat'
 
 export type NewsletterSectionProps = {
   presentation: 'homepage' | 'contact'

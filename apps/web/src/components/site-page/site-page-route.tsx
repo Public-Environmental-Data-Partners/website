@@ -9,18 +9,11 @@ import {Grid12, SiteShell} from '@/components/layout'
 import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
 import {TestimonialSection} from '@/components/sections/testimonial-section'
 import {ContactHeroSection} from '@/components/site-page/contact-hero-section'
-import {
-  type ContactCtaBlock,
-  ContactSection,
-} from '@/components/site-page/contact-section'
+import {type ContactCtaBlock, ContactSection} from '@/components/site-page/contact-section'
 import {LegalDocumentSection} from '@/components/site-page/legal-document-section'
 import {SimpleSectionBlock} from '@/components/site-page/simple-section-block'
 import {ARTICLE_COL_PROSE_CLASS} from '@/lib/article-body-grid'
-import {
-  CONTENT_LINK_GROQ,
-  PT_BLOCKS_GROQ,
-  PT_MARK_DEFS_GROQ,
-} from '@/lib/content-link'
+import {CONTENT_LINK_GROQ, PT_BLOCKS_GROQ, PT_MARK_DEFS_GROQ} from '@/lib/content-link'
 import type {ByTheNumbersSectionFields} from '@/lib/mappers/by-the-numbers-section'
 import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
 import {pickContactSectionHeading} from '@/lib/mappers/content-field-compat'
@@ -177,9 +170,7 @@ export function formatSitePageLastUpdated(dateStr: string): string | null {
   }).format(date)
 }
 
-function getLegalDocumentSection(
-  sections: SitePageSectionGroq[],
-): LegalDocumentSectionGroq | null {
+function getLegalDocumentSection(sections: SitePageSectionGroq[]): LegalDocumentSectionGroq | null {
   if (sections.length !== 1) {
     return null
   }
@@ -254,13 +245,7 @@ function renderContactPageSection(section: SitePageSectionGroq, pageTitle: strin
   }
 }
 
-function LegalDocumentHeader({
-  title,
-  lastUpdated,
-}: {
-  title: string
-  lastUpdated?: string | null
-}) {
+function LegalDocumentHeader({title, lastUpdated}: {title: string; lastUpdated?: string | null}) {
   const lastUpdatedLabel = lastUpdated ? formatSitePageLastUpdated(lastUpdated) : null
 
   return (
@@ -324,7 +309,9 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
   return (
     <div className="flex flex-1 flex-col font-sans">
       <div className="mx-auto w-full max-w-site px-6 pt-16 md:px-12 md:pt-20">
-        <h1 className="text-foreground text-3xl font-semibold tracking-tight md:text-4xl">{title}</h1>
+        <h1 className="text-foreground text-3xl font-semibold tracking-tight md:text-4xl">
+          {title}
+        </h1>
       </div>
       <div className="mt-12 flex flex-col gap-16 pb-16 md:mt-16 md:gap-20 md:pb-20">
         {sections.map((section) => renderMarketingSection(section))}

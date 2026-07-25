@@ -129,15 +129,15 @@ Record baseline totals per dataset before Phase 4 migration.
 
 Counts (query #3 + contact `heading` adjustment from query #1):
 
-| Metric | Value |
-|--------|------:|
-| `sectionHeadingReady` | 1 |
-| `legacyKickerOnly` | 5 |
-| `legacyHeadingLabelOnly` | 2 |
-| `legacyContactHeadingOnly` | 1 |
-| `newsletterPromptReady` | 0 |
-| `newsletterLegacyHeadingOnly` | 2 |
-| conflicts (`hasConflict: true`) | 0 |
+| Metric                          | Value |
+| ------------------------------- | ----: |
+| `sectionHeadingReady`           |     1 |
+| `legacyKickerOnly`              |     5 |
+| `legacyHeadingLabelOnly`        |     2 |
+| `legacyContactHeadingOnly`      |     1 |
+| `newsletterPromptReady`         |     0 |
+| `newsletterLegacyHeadingOnly`   |     2 |
+| conflicts (`hasConflict: true`) |     0 |
 
 Notes:
 

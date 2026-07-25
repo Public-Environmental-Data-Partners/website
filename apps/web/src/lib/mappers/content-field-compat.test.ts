@@ -21,10 +21,7 @@ describe('firstNonEmpty', () => {
 
 describe('pickSectionHeadingFromKicker', () => {
   it('prefers sectionHeading over kicker', () => {
-    assert.equal(
-      pickSectionHeadingFromKicker({sectionHeading: 'NEW', kicker: 'OLD'}),
-      'NEW',
-    )
+    assert.equal(pickSectionHeadingFromKicker({sectionHeading: 'NEW', kicker: 'OLD'}), 'NEW')
   })
 
   it('falls back to kicker', () => {
@@ -34,10 +31,7 @@ describe('pickSectionHeadingFromKicker', () => {
 
 describe('pickSectionHeadingFromHeading', () => {
   it('prefers sectionHeading over heading', () => {
-    assert.equal(
-      pickSectionHeadingFromHeading({sectionHeading: 'NEW', heading: 'OLD'}),
-      'NEW',
-    )
+    assert.equal(pickSectionHeadingFromHeading({sectionHeading: 'NEW', heading: 'OLD'}), 'NEW')
   })
 
   it('falls back to heading', () => {
