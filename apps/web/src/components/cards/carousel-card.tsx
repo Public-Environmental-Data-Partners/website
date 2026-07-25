@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import Link from 'next/link'
 
+import {ContentLink, ContentLinkExternalIcon} from '@/components/content-link'
 import {Button} from '@/components/ui/button'
 import type {CardCarouselCardProps} from '@/lib/mappers/card-carousel-section'
 import {cn} from '@/lib/utils'
@@ -9,10 +9,6 @@ export type CarouselCardProps = CardCarouselCardProps
 
 function imageDimension(value: number | undefined, fallback: number) {
   return typeof value === 'number' && value > 0 ? value : fallback
-}
-
-function isExternalHref(href: string) {
-  return /^https?:\/\//i.test(href)
 }
 
 const storyCardShell = cn(
@@ -56,10 +52,9 @@ function StoryCard({
   title,
   photoCredit,
   href,
+  external,
   image,
 }: Extract<CarouselCardProps, {_type: 'storyCard'}>) {
-  const external = isExternalHref(href)
-
   return (
     <article className={storyCardShell}>
       <div className="relative aspect-[3/2] w-full overflow-hidden bg-muted">
@@ -88,13 +83,9 @@ function StoryCard({
         </h3>
         <div className="mt-auto flex justify-center pt-8">
           <Button asChild size="cta" variant="surface" className="border-border">
-            {external ? (
-              <a href={href} target="_blank" rel="noopener noreferrer">
-                View Post
-              </a>
-            ) : (
-              <Link href={href}>View Post</Link>
-            )}
+            <ContentLink href={href} external={external}>
+              View Post
+            </ContentLink>
           </Button>
         </div>
       </div>
@@ -103,22 +94,12 @@ function StoryCard({
 }
 
 function ToolCard(props: Extract<CarouselCardProps, {_type: 'toolCard'}>) {
-  const {href} = props
-  const external = isExternalHref(href)
-  const content = <ToolCardInner {...props} />
-
-  if (external) {
-    return (
-      <a href={href} className={toolCardShell} rel="noopener noreferrer" target="_blank">
-        {content}
-      </a>
-    )
-  }
+  const {href, external} = props
 
   return (
-    <Link href={href} className={toolCardShell}>
-      {content}
-    </Link>
+    <ContentLink href={href} external={external} className={toolCardShell} showExternalIcon={false}>
+      <ToolCardInner {...props} />
+    </ContentLink>
   )
 }
 
@@ -127,6 +108,7 @@ function ToolCardInner({
   title,
   description,
   image,
+  external,
 }: Extract<CarouselCardProps, {_type: 'toolCard'}>) {
   return (
     <>
@@ -158,12 +140,13 @@ function ToolCardInner({
         <div className="flex justify-end pt-4">
           <span
             className={cn(
-              'inline-flex min-h-9 items-center justify-center rounded-[4px]',
+              'inline-flex min-h-9 items-center justify-center gap-2 rounded-[4px]',
               'bg-foreground px-5 py-2 text-xs font-semibold text-background',
               'transition-colors group-hover:bg-foreground/90',
             )}
           >
             Explore
+            {external ? <ContentLinkExternalIcon /> : null}
           </span>
         </div>
       </div>

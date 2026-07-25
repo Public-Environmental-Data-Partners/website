@@ -1,5 +1,7 @@
 import {defaultComponents, mergeComponents, type PortableTextComponents} from '@portabletext/react'
 
+import {contentLinkMark} from '@/components/content/portable-text-link'
+
 /** Caption copy under article figures — Figtree 24px / 100% LH (article-body-images plan). */
 export const articleFigureCaptionComponents: Partial<PortableTextComponents> = {
   block: {
@@ -11,11 +13,7 @@ export const articleFigureCaptionComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: React.ReactNode}) => (
       <strong className="font-semibold">{children}</strong>
     ),
-    link: ({children, value}: {children?: React.ReactNode; value?: {href?: string}}) => (
-      <a href={value?.href ?? '#'} className="text-accent underline underline-offset-[0.15em]">
-        {children}
-      </a>
-    ),
+    link: contentLinkMark('text-accent underline underline-offset-[0.15em]'),
   },
 }
 

@@ -1,6 +1,7 @@
 import {draftMode} from 'next/headers'
 import {cache} from 'react'
 
+import {PT_BLOCKS_GROQ, PT_MARK_DEFS_GROQ} from '@/lib/content-link'
 import type {NewsPostDetail} from '@/lib/mappers/news-post'
 import {SANITY_IMAGE_PROJECTION} from '@/lib/queries/sanity-image-projection'
 import {sanityFetch} from '@/sanity/live'
@@ -44,24 +45,32 @@ const NEWS_POST_BY_SLUG_QUERY = `*[
   },
   body[]{
     ...,
+    ${PT_MARK_DEFS_GROQ},
     _type == "imageBlock" => {
       ...,
       photoCredit,
-      caption[]{...},
+      caption[]${PT_BLOCKS_GROQ},
       image ${SANITY_IMAGE_PROJECTION}
     },
     _type == "twoImageBlock" => {
       ...,
       items[]{
         ...,
-        caption[]{...},
+        caption[]${PT_BLOCKS_GROQ},
         image ${SANITY_IMAGE_PROJECTION}
       }
     },
     _type == "imageTextBlock" => {
       ...,
-      body[]{...},
+      body[]${PT_BLOCKS_GROQ},
       image ${SANITY_IMAGE_PROJECTION}
+    },
+    _type == "listBlock" => {
+      ...,
+      rows[]{
+        ...,
+        content[]${PT_BLOCKS_GROQ}
+      }
     }
   }
 }`

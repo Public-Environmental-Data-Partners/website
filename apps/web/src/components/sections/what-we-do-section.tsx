@@ -6,8 +6,9 @@ import {
   type PortableTextComponents,
 } from '@portabletext/react'
 import Image from 'next/image'
-import Link from 'next/link'
 
+import {contentLinkMark} from '@/components/content/portable-text-link'
+import {ContentLink} from '@/components/content-link'
 import {ContentStack, SectionBand, SiteShell} from '@/components/layout'
 import {Button} from '@/components/ui/button'
 import {
@@ -27,20 +28,9 @@ const bodyPortableTextComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: React.ReactNode}) => (
       <strong className="font-semibold">{children}</strong>
     ),
-    link: ({children, value}: {children?: React.ReactNode; value?: {href?: string}}) => {
-      const href = typeof value?.href === 'string' ? value.href : '#'
-      const openExternal = /^https?:\/\//i.test(href)
-      return (
-        <a
-          href={href}
-          className="text-foreground underline underline-offset-[0.2em] transition-opacity hover:opacity-80"
-          rel={openExternal ? 'noopener noreferrer' : undefined}
-          target={openExternal ? '_blank' : undefined}
-        >
-          {children}
-        </a>
-      )
-    },
+    link: contentLinkMark(
+      'text-foreground underline underline-offset-[0.2em] transition-opacity hover:opacity-80',
+    ),
   },
 }
 
@@ -77,7 +67,9 @@ function WhatWeDoItemCard({item, index}: {item: WhatWeDoItemProps; index: number
       </div>
       {item.href ? (
         <Button asChild variant="surface" size="cta" className="mt-auto">
-          <Link href={item.href}>{item.ctaLabel}</Link>
+          <ContentLink href={item.href} external={item.external}>
+            {item.ctaLabel}
+          </ContentLink>
         </Button>
       ) : null}
     </article>

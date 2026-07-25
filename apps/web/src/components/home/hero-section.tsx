@@ -6,6 +6,7 @@ import {
   type PortableTextComponents,
 } from '@portabletext/react'
 
+import {contentLinkMark} from '@/components/content/portable-text-link'
 import type {HeroImage} from '@/components/hero/hero-image'
 import {SectionBand, SiteShell} from '@/components/layout'
 import {ImageWithShelf} from '@/components/media/image-with-shelf'
@@ -31,20 +32,9 @@ const homeHeroPortableTextComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: React.ReactNode}) => (
       <strong className="font-semibold">{children}</strong>
     ),
-    link: ({children, value}: {children?: React.ReactNode; value?: {href?: string}}) => {
-      const href = typeof value?.href === 'string' ? value.href : '#'
-      const openExternal = /^https?:\/\//i.test(href)
-      return (
-        <a
-          href={href}
-          className="text-foreground underline underline-offset-[0.2em] transition-opacity hover:opacity-80"
-          rel={openExternal ? 'noopener noreferrer' : undefined}
-          target={openExternal ? '_blank' : undefined}
-        >
-          {children}
-        </a>
-      )
-    },
+    link: contentLinkMark(
+      'text-foreground underline underline-offset-[0.2em] transition-opacity hover:opacity-80',
+    ),
   },
 }
 

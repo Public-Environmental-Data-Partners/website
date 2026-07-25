@@ -1,5 +1,6 @@
 import {draftMode} from 'next/headers'
 
+import {CONTENT_LINK_GROQ, PT_BLOCKS_GROQ} from '@/lib/content-link'
 import {HomeSectionRow, type PageHomeGroqData} from '@/lib/home-sections'
 import {sanityFetch} from '@/sanity/live'
 
@@ -11,9 +12,9 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
     _type,
     _key,
     heroHeading,
-    heroParagraph1,
-    heroParagraph2,
-    heroParagraph3,
+    heroParagraph1[]${PT_BLOCKS_GROQ},
+    heroParagraph2[]${PT_BLOCKS_GROQ},
+    heroParagraph3[]${PT_BLOCKS_GROQ},
     heroImage{
       alt,
       asset->{
@@ -36,17 +37,12 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
       _key,
       icon,
       title,
-      body,
+      body[]${PT_BLOCKS_GROQ},
       ctaLabel,
-      ctaPage->{
-        slug
-      }
+      ctaLink${CONTENT_LINK_GROQ}
     },
-    quote,
+    quote[]${PT_BLOCKS_GROQ},
     attribution,
-    ctaPage->{
-      slug
-    },
     useMarquee,
     partners[]{
       name,
@@ -71,13 +67,9 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
       icon,
       value,
       label,
-      body,
+      body[]${PT_BLOCKS_GROQ},
       ctaLabel,
-      ctaLinkType,
-      ctaPage->{
-        slug
-      },
-      ctaExternalUrl
+      ctaLink${CONTENT_LINK_GROQ}
     },
     image{
       alt,
@@ -93,15 +85,9 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
     },
     titleLine,
     heading,
-    body,
+    body[]${PT_BLOCKS_GROQ},
     ctaLabel,
-    ctaLink{
-      path,
-      externalUrl,
-      sitePage->{
-        slug
-      }
-    },
+    ctaLink${CONTENT_LINK_GROQ},
     sectionHeading,
     cards[]{
       _type,
@@ -111,13 +97,7 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
       authors,
       description,
       chip,
-      link{
-        path,
-        externalUrl,
-        sitePage->{
-          slug
-        }
-      },
+      link${CONTENT_LINK_GROQ},
       image{
         alt,
         asset->{

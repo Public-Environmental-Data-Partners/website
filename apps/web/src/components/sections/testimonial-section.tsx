@@ -6,8 +6,9 @@ import {
   type PortableTextComponents,
 } from '@portabletext/react'
 import Image from 'next/image'
-import Link from 'next/link'
 
+import {contentLinkMark} from '@/components/content/portable-text-link'
+import {ContentLink} from '@/components/content-link'
 import {SectionBand, SiteShell} from '@/components/layout'
 import {Button} from '@/components/ui/button'
 import {
@@ -27,20 +28,9 @@ const quotePortableTextComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: React.ReactNode}) => (
       <strong className="font-semibold">{children}</strong>
     ),
-    link: ({children, value}: {children?: React.ReactNode; value?: {href?: string}}) => {
-      const href = typeof value?.href === 'string' ? value.href : '#'
-      const openExternal = /^https?:\/\//i.test(href)
-      return (
-        <a
-          href={href}
-          className="text-light-blue underline underline-offset-[0.2em] transition-opacity hover:opacity-80"
-          rel={openExternal ? 'noopener noreferrer' : undefined}
-          target={openExternal ? '_blank' : undefined}
-        >
-          {children}
-        </a>
-      )
-    },
+    link: contentLinkMark(
+      'text-light-blue underline underline-offset-[0.2em] transition-opacity hover:opacity-80',
+    ),
   },
 }
 
@@ -61,6 +51,7 @@ export function TestimonialSection({
   attribution,
   ctaLabel,
   href,
+  external,
 }: TestimonialSectionProps) {
   const headingId = 'testimonial-heading'
 
@@ -96,7 +87,9 @@ export function TestimonialSection({
           {href ? (
             <div className="col-span-2 row-start-3 flex justify-center lg:col-span-1 lg:col-start-3 lg:row-span-2 lg:row-start-1 lg:self-center lg:justify-end">
               <Button asChild variant="lightBlue" size="cta">
-                <Link href={href}>{ctaLabel}</Link>
+                <ContentLink href={href} external={external}>
+                  {ctaLabel}
+                </ContentLink>
               </Button>
             </div>
           ) : null}

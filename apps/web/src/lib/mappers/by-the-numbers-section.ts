@@ -1,5 +1,7 @@
 import type {PortableTextBlock} from '@portabletext/react'
 
+import {type ContentLinkGroq, resolveContentLink} from '@/lib/content-link'
+
 export const BY_THE_NUMBERS_ICONS = ['dataDb', 'members', 'projects'] as const
 
 export type ByTheNumbersIconId = (typeof BY_THE_NUMBERS_ICONS)[number]
@@ -35,9 +37,7 @@ export type ByTheNumbersStatFields = {
   label?: string | null
   body?: unknown
   ctaLabel?: string | null
-  ctaLinkType?: string | null
-  ctaPage?: {slug?: {current?: string | null} | null} | null
-  ctaExternalUrl?: string | null
+  ctaLink?: ContentLinkGroq | null
 }
 
 export type ByTheNumbersSectionFields = {
@@ -53,14 +53,6 @@ function toPortableTextBlocks(value: unknown): PortableTextBlock[] {
   return Array.isArray(value) ? (value as PortableTextBlock[]) : []
 }
 
-function normalizeInternalPath(path: string): string {
-  const p = path.trim()
-  if (!p) {
-    return ''
-  }
-  return p.startsWith('/') ? p : `/${p}`
-}
-
 function mapStat(item: ByTheNumbersStatFields, index: number): ByTheNumbersStatProps | null {
   const value = item.value?.trim()
   const label = item.label?.trim()
@@ -71,22 +63,7 @@ function mapStat(item: ByTheNumbersStatFields, index: number): ByTheNumbersStatP
   }
 
   const ctaLabel = item.ctaLabel?.trim() || undefined
-  const linkType = item.ctaLinkType === 'external' ? 'external' : 'internal'
-
-  let href: string | undefined
-  let external = false
-  if (linkType === 'external') {
-    const url = item.ctaExternalUrl?.trim()
-    if (url) {
-      href = url
-      external = true
-    }
-  } else {
-    const slug = item.ctaPage?.slug?.current?.trim()
-    if (slug) {
-      href = normalizeInternalPath(slug)
-    }
-  }
+  const resolved = resolveContentLink(item.ctaLink)
 
   return {
     keyId: item._key?.trim() || `by-the-numbers-${index}`,
@@ -94,9 +71,9 @@ function mapStat(item: ByTheNumbersStatFields, index: number): ByTheNumbersStatP
     value,
     label,
     body,
-    ctaLabel: href ? ctaLabel || 'Learn More' : undefined,
-    href,
-    external: href ? external : undefined,
+    ...(resolved
+      ? {ctaLabel: ctaLabel || 'Learn More', href: resolved.href, external: resolved.external}
+      : {}),
   }
 }
 

@@ -1,5 +1,7 @@
 import {defaultComponents, mergeComponents, type PortableTextComponents} from '@portabletext/react'
 
+import {contentLinkMark} from '@/components/content/portable-text-link'
+
 /**
  * Article detail body typography.
  * Heading sizes/weight live in `article-body.css` under `[data-slot='article-body-prose']`.
@@ -35,11 +37,7 @@ export const articlePortableTextComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: React.ReactNode}) => (
       <strong className="text-foreground font-semibold">{children}</strong>
     ),
-    link: ({children, value}: {children?: React.ReactNode; value?: {href?: string}}) => (
-      <a href={value?.href ?? '#'} className="text-accent underline underline-offset-2">
-        {children}
-      </a>
-    ),
+    link: contentLinkMark('text-accent underline underline-offset-2'),
   },
 }
 

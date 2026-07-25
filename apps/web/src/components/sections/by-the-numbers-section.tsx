@@ -5,10 +5,10 @@ import {
   type PortableTextBlock,
   type PortableTextComponents,
 } from '@portabletext/react'
-import {ArrowUpRight} from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
 
+import {contentLinkMark} from '@/components/content/portable-text-link'
+import {ContentLink} from '@/components/content-link'
 import {ContentStack, SectionBand, SiteShell} from '@/components/layout'
 import {Button} from '@/components/ui/button'
 import {
@@ -30,20 +30,9 @@ const bodyPortableTextComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: React.ReactNode}) => (
       <strong className="font-semibold">{children}</strong>
     ),
-    link: ({children, value}: {children?: React.ReactNode; value?: {href?: string}}) => {
-      const href = typeof value?.href === 'string' ? value.href : '#'
-      const openExternal = /^https?:\/\//i.test(href)
-      return (
-        <a
-          href={href}
-          className="text-foreground underline underline-offset-[0.2em] transition-opacity hover:opacity-80"
-          rel={openExternal ? 'noopener noreferrer' : undefined}
-          target={openExternal ? '_blank' : undefined}
-        >
-          {children}
-        </a>
-      )
-    },
+    link: contentLinkMark(
+      'text-foreground underline underline-offset-[0.2em] transition-opacity hover:opacity-80',
+    ),
   },
 }
 
@@ -63,16 +52,9 @@ function StatColumn({stat, index}: {stat: ByTheNumbersStatProps; index: number})
   const cta =
     stat.href && stat.ctaLabel ? (
       <Button asChild variant="surface" size="cta" className="mt-auto">
-        {stat.external ? (
-          <a href={stat.href} target="_blank" rel="noopener noreferrer">
-            <span>{stat.ctaLabel}</span>
-            <ArrowUpRight className="size-5" aria-hidden />
-          </a>
-        ) : (
-          <Link href={stat.href}>
-            <span>{stat.ctaLabel}</span>
-          </Link>
-        )}
+        <ContentLink href={stat.href} external={stat.external}>
+          {stat.ctaLabel}
+        </ContentLink>
       </Button>
     ) : null
 

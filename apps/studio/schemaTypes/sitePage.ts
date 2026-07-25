@@ -1,5 +1,7 @@
 import {defineField, defineType} from 'sanity'
 
+import {contentLinkAnnotation} from './contentLink'
+
 /** Match Sanity client / Vision; used only for validation queries. */
 const STUDIO_API_VERSION = '2024-01-01'
 
@@ -11,6 +13,13 @@ function siblingDocumentIds(documentId: string | undefined): string[] {
   const base = documentId.startsWith('drafts.') ? documentId.slice(7) : documentId
   return Array.from(new Set([documentId, `drafts.${base}`, base]))
 }
+
+const simpleSectionPortableTextBlock = {
+  type: 'block',
+  marks: {
+    annotations: [contentLinkAnnotation],
+  },
+} as const
 
 export const simpleSection = defineType({
   name: 'simpleSection',
@@ -27,7 +36,7 @@ export const simpleSection = defineType({
       name: 'body',
       title: 'Body',
       type: 'array',
-      of: [{type: 'block'}],
+      of: [simpleSectionPortableTextBlock],
       validation: (Rule) => Rule.required(),
     }),
   ],

@@ -1,5 +1,4 @@
-import type {HomepageLinkTargetGroq} from '@/lib/mappers/homepage-link-target'
-import {resolveHomepageLinkHref} from '@/lib/mappers/homepage-link-target'
+import {type ContentLinkGroq, resolveContentLink} from '@/lib/content-link'
 
 type SanityImageData = {
   alt?: string | null
@@ -16,6 +15,7 @@ export type StoryCardProps = {
   title: string
   photoCredit?: string
   href: string
+  external?: boolean
   image: {
     src: string
     alt: string
@@ -30,6 +30,7 @@ export type ToolCardProps = {
   description?: string
   chip: string
   href: string
+  external?: boolean
   image?: {
     src: string
     alt: string
@@ -52,7 +53,7 @@ type StoryCardGroq = {
   photoCredit?: string | null
   authors?: string | null
   chip?: string | null
-  link?: HomepageLinkTargetGroq | null
+  link?: ContentLinkGroq | null
   image?: SanityImageData
 }
 
@@ -62,7 +63,7 @@ type ToolCardGroq = {
   title?: string | null
   description?: string | null
   chip?: string | null
-  link?: HomepageLinkTargetGroq | null
+  link?: ContentLinkGroq | null
   image?: SanityImageData
 }
 
@@ -101,8 +102,8 @@ export function mapCardCarouselSectionToProps(
       continue
     }
     const title = card.title?.trim()
-    const href = resolveHomepageLinkHref(card.link)
-    if (!title || !href) {
+    const resolved = resolveContentLink(card.link)
+    if (!title || !resolved) {
       continue
     }
     if (card._type === 'storyCard') {
@@ -114,7 +115,8 @@ export function mapCardCarouselSectionToProps(
       cards.push({
         _type: 'storyCard',
         title,
-        href,
+        href: resolved.href,
+        external: resolved.external,
         image,
         ...(photoCredit ? {photoCredit} : {}),
       })
@@ -129,7 +131,8 @@ export function mapCardCarouselSectionToProps(
         _type: 'toolCard',
         title,
         chip,
-        href,
+        href: resolved.href,
+        external: resolved.external,
         ...(description ? {description} : {}),
         ...(image ? {image} : {}),
       })

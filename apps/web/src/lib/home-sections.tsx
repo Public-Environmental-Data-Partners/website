@@ -7,13 +7,13 @@ import {CardCarouselSection} from '@/components/sections/card-carousel-section'
 import {PartnerLogosSection} from '@/components/sections/partner-logos-section'
 import {TestimonialSection} from '@/components/sections/testimonial-section'
 import {WhatWeDoSection} from '@/components/sections/what-we-do-section'
+import type {ContentLinkGroq} from '@/lib/content-link'
 import type {ByTheNumbersSectionFields} from '@/lib/mappers/by-the-numbers-section'
 import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
 import {mapCardCarouselSectionToProps} from '@/lib/mappers/card-carousel-section'
 import type {HomeHeroFields} from '@/lib/mappers/hero-block'
 import {mapHeroBlockToProps} from '@/lib/mappers/hero-block'
 import {mapHighlightBannerSectionToProps} from '@/lib/mappers/highlight-banner-section'
-import type {HomepageLinkTargetGroq} from '@/lib/mappers/homepage-link-target'
 import {mapNewsletterSectionToProps} from '@/lib/mappers/newsletter-section'
 import type {PartnerLogosSectionFields} from '@/lib/mappers/partner-logos-section'
 import {mapPartnerLogosSectionToProps} from '@/lib/mappers/partner-logos-section'
@@ -30,7 +30,7 @@ type HighlightBannerSectionGroq = {
   heading?: string | null
   body?: unknown[] | null
   ctaLabel?: string | null
-  ctaLink?: HomepageLinkTargetGroq | null
+  ctaLink?: ContentLinkGroq | null
   image?: {
     alt?: string | null
     asset?: {
@@ -45,7 +45,7 @@ type StoryCardGroq = {
   _key: string
   title?: string | null
   photoCredit?: string | null
-  link?: HomepageLinkTargetGroq | null
+  link?: ContentLinkGroq | null
   image?: HighlightBannerSectionGroq['image']
 }
 
@@ -55,7 +55,7 @@ type ToolCardGroq = {
   title?: string | null
   description?: string | null
   chip?: string | null
-  link?: HomepageLinkTargetGroq | null
+  link?: ContentLinkGroq | null
   image?: HighlightBannerSectionGroq['image']
 }
 

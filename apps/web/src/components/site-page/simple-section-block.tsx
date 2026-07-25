@@ -6,6 +6,8 @@ import {
   type PortableTextComponents,
 } from '@portabletext/react'
 
+import {contentLinkMark} from '@/components/content/portable-text-link'
+
 type SimpleSectionBlockProps = {
   heading: string
   body: PortableTextBlock[] | null | undefined
@@ -31,11 +33,7 @@ const portableTextComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: React.ReactNode}) => (
       <strong className="text-foreground font-semibold">{children}</strong>
     ),
-    link: ({children, value}: {children?: React.ReactNode; value?: {href?: string}}) => (
-      <a href={value?.href ?? '#'} className="text-accent underline underline-offset-2">
-        {children}
-      </a>
-    ),
+    link: contentLinkMark('text-accent underline underline-offset-2'),
   },
 }
 

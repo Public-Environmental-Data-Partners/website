@@ -1,18 +1,14 @@
 import {defineField, defineType} from 'sanity'
 
+import {contentLinkAnnotation} from './contentLink'
+
 const heroPortableText = {
   type: 'block',
   styles: [{title: 'Normal', value: 'normal'}],
   lists: [],
   marks: {
     decorators: [{title: 'Strong', value: 'strong'}],
-    annotations: [
-      {
-        name: 'link',
-        type: 'object',
-        fields: [defineField({name: 'href', type: 'url'})],
-      },
-    ],
+    annotations: [contentLinkAnnotation],
   },
 } as const
 
@@ -241,32 +237,11 @@ export const byTheNumbersStat = defineType({
       description: 'Optional. Button is hidden when the link below is empty.',
     }),
     defineField({
-      name: 'ctaLinkType',
-      title: 'Button link type',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Internal (site page)', value: 'internal'},
-          {title: 'External URL', value: 'external'},
-        ],
-        layout: 'radio',
-      },
-      initialValue: 'internal',
-    }),
-    defineField({
-      name: 'ctaPage',
-      title: 'Button link (site page)',
-      type: 'reference',
-      to: [{type: 'sitePage'}],
-      hidden: ({parent}) => parent?.ctaLinkType === 'external',
-      description: 'Internal page. Button is hidden if left empty.',
-    }),
-    defineField({
-      name: 'ctaExternalUrl',
-      title: 'Button link (external URL)',
-      type: 'url',
-      hidden: ({parent}) => parent?.ctaLinkType !== 'external',
-      description: 'Opens in a new tab with an external-link icon. Button is hidden if left empty.',
+      name: 'ctaLink',
+      title: 'Button link',
+      type: 'contentLink',
+      description:
+        'Optional. Choose Internal (same tab) or External (new tab + icon). Button is hidden if left empty.',
     }),
   ],
   preview: {
@@ -382,8 +357,9 @@ export const highlightBannerSection = defineType({
     defineField({
       name: 'ctaLink',
       title: 'Button link',
-      type: 'homepageLinkTarget',
-      description: 'Optional. Button is hidden if left empty.',
+      type: 'contentLink',
+      description:
+        'Optional. Choose Internal (same tab) or External (new tab + icon). Button is hidden if left empty.',
     }),
   ],
   preview: {
@@ -443,8 +419,9 @@ export const storyCard = defineType({
     defineField({
       name: 'link',
       title: 'Button link',
-      type: 'homepageLinkTarget',
-      description: 'Destination for the View Post button.',
+      type: 'contentLink',
+      description:
+        'Destination for the View Post button. Internal = same tab; External = new tab + icon.',
       validation: (Rule) => Rule.required(),
     }),
   ],
@@ -506,7 +483,8 @@ export const toolCard = defineType({
     defineField({
       name: 'link',
       title: 'Card link',
-      type: 'homepageLinkTarget',
+      type: 'contentLink',
+      description: 'Internal = same tab; External = new tab + icon.',
       validation: (Rule) => Rule.required(),
     }),
   ],
@@ -675,11 +653,11 @@ export const whatWeDoItem = defineType({
       validation: (Rule) => Rule.required().max(40),
     }),
     defineField({
-      name: 'ctaPage',
-      title: 'Button link (site page)',
-      type: 'reference',
-      to: [{type: 'sitePage'}],
-      description: 'Internal page opened by the button. Button is hidden if left empty.',
+      name: 'ctaLink',
+      title: 'Button link',
+      type: 'contentLink',
+      description:
+        'Optional. Choose Internal (same tab) or External (new tab + icon). Button is hidden if left empty.',
     }),
   ],
   preview: {
@@ -772,11 +750,11 @@ export const testimonialSection = defineType({
       validation: (Rule) => Rule.required().max(40),
     }),
     defineField({
-      name: 'ctaPage',
-      title: 'Button link (site page)',
-      type: 'reference',
-      to: [{type: 'sitePage'}],
-      description: 'Internal page opened by the button. Button is hidden if left empty.',
+      name: 'ctaLink',
+      title: 'Button link',
+      type: 'contentLink',
+      description:
+        'Optional. Choose Internal (same tab) or External (new tab + icon). Button is hidden if left empty.',
     }),
   ],
   preview: {

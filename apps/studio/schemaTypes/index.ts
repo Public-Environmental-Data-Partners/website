@@ -1,6 +1,6 @@
 import {articleFigureItem} from './articleFigureItem'
+import {contentLink} from './contentLink'
 import {embedBlock} from './embedBlock'
-import {homepageLinkTarget} from './homepageLinkTarget'
 import {
   byTheNumbersSection,
   byTheNumbersStat,
@@ -34,7 +34,7 @@ import {twoImageBlock} from './twoImageBlock'
 
 export const schemaTypes = [
   byTheNumbersStat,
-  homepageLinkTarget,
+  contentLink,
   homeHero,
   whatWeDoItem,
   whatWeDoSection,

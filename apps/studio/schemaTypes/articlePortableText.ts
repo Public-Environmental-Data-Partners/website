@@ -1,4 +1,4 @@
-import {defineField} from 'sanity'
+import {contentLinkAnnotation} from './contentLink'
 
 /**
  * Article body Portable Text — Option A styles.
@@ -14,13 +14,7 @@ export const articleBodyPortableTextBlock = {
     {title: 'Heading 4', value: 'h4'},
   ],
   marks: {
-    annotations: [
-      {
-        name: 'link',
-        type: 'object',
-        fields: [defineField({name: 'href', type: 'url'})],
-      },
-    ],
+    annotations: [contentLinkAnnotation],
   },
 } as const
 
@@ -31,13 +25,7 @@ export const articleCaptionPortableTextBlock = {
   lists: [],
   marks: {
     decorators: [{title: 'Strong', value: 'strong'}],
-    annotations: [
-      {
-        name: 'link',
-        type: 'object',
-        fields: [defineField({name: 'href', type: 'url'})],
-      },
-    ],
+    annotations: [contentLinkAnnotation],
   },
 } as const
 
@@ -48,13 +36,7 @@ export const articleImageTextBodyPortableTextBlock = {
   lists: [],
   marks: {
     decorators: [{title: 'Strong', value: 'strong'}],
-    annotations: [
-      {
-        name: 'link',
-        type: 'object',
-        fields: [defineField({name: 'href', type: 'url'})],
-      },
-    ],
+    annotations: [contentLinkAnnotation],
   },
 } as const
 
@@ -65,12 +47,8 @@ export const listRowPortableTextBlock = {
   lists: [],
   marks: {
     decorators: [{title: 'Strong', value: 'strong'}],
-    annotations: [
-      {
-        name: 'link',
-        type: 'object',
-        fields: [defineField({name: 'href', type: 'url'})],
-      },
-    ],
+    annotations: [contentLinkAnnotation],
   },
 } as const
+
+export {contentLinkAnnotation}

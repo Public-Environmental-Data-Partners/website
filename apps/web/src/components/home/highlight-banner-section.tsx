@@ -5,8 +5,9 @@ import {
   type PortableTextComponents,
 } from '@portabletext/react'
 import {getImageProps} from 'next/image'
-import Link from 'next/link'
 
+import {contentLinkMark} from '@/components/content/portable-text-link'
+import {ContentLink} from '@/components/content-link'
 import {SectionBand, SiteShell} from '@/components/layout'
 import {Button} from '@/components/ui/button'
 import type {HighlightBannerSectionProps} from '@/lib/mappers/highlight-banner-section'
@@ -39,10 +40,6 @@ function BannerImageBlock({image}: Pick<HighlightBannerSectionProps, 'image'>) {
   )
 }
 
-function isExternalHref(href: string) {
-  return /^https?:\/\//i.test(href)
-}
-
 const bodyPortableTextComponents: Partial<PortableTextComponents> = {
   block: {
     normal: ({children}: {children?: React.ReactNode}) => (
@@ -55,40 +52,24 @@ const bodyPortableTextComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: React.ReactNode}) => (
       <strong className="font-semibold">{children}</strong>
     ),
-    link: ({children, value}: {children?: React.ReactNode; value?: {href?: string}}) => {
-      const href = typeof value?.href === 'string' ? value.href : '#'
-      const openExternal = /^https?:\/\//i.test(href)
-      return (
-        <a
-          href={href}
-          className="text-light-green underline decoration-light-green/50 underline-offset-[0.2em] transition-colors hover:decoration-light-green"
-          rel={openExternal ? 'noopener noreferrer' : undefined}
-          target={openExternal ? '_blank' : undefined}
-        >
-          {children}
-        </a>
-      )
-    },
+    link: contentLinkMark(
+      'text-light-green underline decoration-light-green/50 underline-offset-[0.2em] transition-colors hover:decoration-light-green',
+    ),
   },
 }
 
 const richTextComponents = mergeComponents(defaultComponents, bodyPortableTextComponents)
 
-function HighlightCta({label, href}: {label: string; href: string}) {
-  const external = isExternalHref(href)
+function HighlightCta({label, href, external}: {label: string; href: string; external?: boolean}) {
   return (
     <Button
       asChild
       size="cta"
       className="border-transparent bg-light-green text-forest hover:bg-light-green/90"
     >
-      {external ? (
-        <a href={href} target="_blank" rel="noopener noreferrer">
-          {label}
-        </a>
-      ) : (
-        <Link href={href}>{label}</Link>
-      )}
+      <ContentLink href={href} external={external}>
+        {label}
+      </ContentLink>
     </Button>
   )
 }
@@ -103,6 +84,7 @@ export function HighlightBannerSection({
   body,
   ctaLabel,
   ctaHref,
+  ctaExternal,
   image,
 }: HighlightBannerSectionProps) {
   const headingId = 'highlight-banner-heading'
@@ -121,7 +103,7 @@ export function HighlightBannerSection({
             {/* Tablet: CTA under image */}
             {showCta ? (
               <div className="hidden justify-center md:flex lg:hidden">
-                <HighlightCta href={ctaHref!} label={ctaLabel!} />
+                <HighlightCta href={ctaHref!} label={ctaLabel!} external={ctaExternal} />
               </div>
             ) : null}
           </div>
@@ -142,13 +124,13 @@ export function HighlightBannerSection({
             {/* Mobile: centered CTA under copy */}
             {showCta ? (
               <div className="mt-10 flex justify-center md:hidden">
-                <HighlightCta href={ctaHref!} label={ctaLabel!} />
+                <HighlightCta href={ctaHref!} label={ctaLabel!} external={ctaExternal} />
               </div>
             ) : null}
             {/* Desktop: CTA under copy */}
             {showCta ? (
               <div className="mt-10 hidden lg:block">
-                <HighlightCta href={ctaHref!} label={ctaLabel!} />
+                <HighlightCta href={ctaHref!} label={ctaLabel!} external={ctaExternal} />
               </div>
             ) : null}
           </div>

@@ -7,6 +7,7 @@ import {cache} from 'react'
 import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
 import {TestimonialSection} from '@/components/sections/testimonial-section'
 import {SimpleSectionBlock} from '@/components/site-page/simple-section-block'
+import {CONTENT_LINK_GROQ, PT_BLOCKS_GROQ} from '@/lib/content-link'
 import type {ByTheNumbersSectionFields} from '@/lib/mappers/by-the-numbers-section'
 import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
 import type {TestimonialSectionFields} from '@/lib/mappers/testimonial-section'
@@ -20,26 +21,20 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     _type,
     _key,
     heading,
-    body,
+    body[]${PT_BLOCKS_GROQ},
     kicker,
-    quote,
+    quote[]${PT_BLOCKS_GROQ},
     attribution,
     ctaLabel,
-    ctaPage->{
-      slug
-    },
+    ctaLink${CONTENT_LINK_GROQ},
     stats[]{
       _key,
       icon,
       value,
       label,
-      body,
+      body[]${PT_BLOCKS_GROQ},
       ctaLabel,
-      ctaLinkType,
-      ctaPage->{
-        slug
-      },
-      ctaExternalUrl
+      ctaLink${CONTENT_LINK_GROQ}
     }
   }
 }`

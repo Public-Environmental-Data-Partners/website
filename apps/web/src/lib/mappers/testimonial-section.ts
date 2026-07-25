@@ -1,5 +1,7 @@
 import type {PortableTextBlock} from '@portabletext/react'
 
+import {type ContentLinkGroq, resolveContentLink} from '@/lib/content-link'
+
 /** Fixed quote mark icon for the Testimonial band. */
 export const TESTIMONIAL_QUOTE_ICON_SRC = '/brand/testimonial/quote.svg'
 
@@ -8,8 +10,9 @@ export type TestimonialSectionProps = {
   quote: PortableTextBlock[]
   attribution?: string
   ctaLabel: string
-  /** Root-relative href; omit when no site page selected. */
+  /** Omit when no destination. */
   href?: string
+  external?: boolean
 }
 
 export type TestimonialSectionFields = {
@@ -17,19 +20,11 @@ export type TestimonialSectionFields = {
   quote?: unknown
   attribution?: string | null
   ctaLabel?: string | null
-  ctaPage?: {slug?: {current?: string | null} | null} | null
+  ctaLink?: ContentLinkGroq | null
 }
 
 function toPortableTextBlocks(value: unknown): PortableTextBlock[] {
   return Array.isArray(value) ? (value as PortableTextBlock[]) : []
-}
-
-function normalizeInternalPath(path: string): string {
-  const p = path.trim()
-  if (!p) {
-    return ''
-  }
-  return p.startsWith('/') ? p : `/${p}`
 }
 
 export function mapTestimonialSectionToProps(
@@ -43,14 +38,13 @@ export function mapTestimonialSectionToProps(
 
   const attribution = data?.attribution?.trim() || undefined
   const ctaLabel = data?.ctaLabel?.trim() || 'Get Involved'
-  const slug = data?.ctaPage?.slug?.current?.trim()
-  const href = slug ? normalizeInternalPath(slug) : undefined
+  const resolved = resolveContentLink(data?.ctaLink)
 
   return {
     kicker,
     quote,
     attribution,
     ctaLabel,
-    href,
+    ...(resolved ? {href: resolved.href, external: resolved.external} : {}),
   }
 }

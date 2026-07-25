@@ -1,5 +1,7 @@
 import type {PortableTextBlock} from '@portabletext/react'
 
+import {type ContentLinkGroq, resolveContentLink} from '@/lib/content-link'
+
 export const WHAT_WE_DO_ICONS = ['dataPreservation', 'toolsDevelopment', 'advocacy'] as const
 
 export type WhatWeDoIconId = (typeof WHAT_WE_DO_ICONS)[number]
@@ -17,8 +19,9 @@ export type WhatWeDoItemProps = {
   title: string
   body: PortableTextBlock[]
   ctaLabel: string
-  /** Root-relative href; omit when no site page selected. */
+  /** Omit when no destination. */
   href?: string
+  external?: boolean
 }
 
 export type WhatWeDoSectionProps = {
@@ -32,7 +35,7 @@ export type WhatWeDoItemFields = {
   title?: string | null
   body?: unknown
   ctaLabel?: string | null
-  ctaPage?: {slug?: {current?: string | null} | null} | null
+  ctaLink?: ContentLinkGroq | null
 }
 
 export type WhatWeDoSectionFields = {
@@ -48,14 +51,6 @@ function toPortableTextBlocks(value: unknown): PortableTextBlock[] {
   return Array.isArray(value) ? (value as PortableTextBlock[]) : []
 }
 
-function normalizeInternalPath(path: string): string {
-  const p = path.trim()
-  if (!p) {
-    return ''
-  }
-  return p.startsWith('/') ? p : `/${p}`
-}
-
 function mapItem(item: WhatWeDoItemFields, index: number): WhatWeDoItemProps | null {
   const title = item.title?.trim()
   const icon = typeof item.icon === 'string' ? item.icon.trim() : ''
@@ -65,8 +60,7 @@ function mapItem(item: WhatWeDoItemFields, index: number): WhatWeDoItemProps | n
   }
 
   const ctaLabel = item.ctaLabel?.trim() || 'Learn More'
-  const slug = item.ctaPage?.slug?.current?.trim()
-  const href = slug ? normalizeInternalPath(slug) : undefined
+  const resolved = resolveContentLink(item.ctaLink)
 
   return {
     keyId: item._key?.trim() || `what-we-do-${index}`,
@@ -74,7 +68,7 @@ function mapItem(item: WhatWeDoItemFields, index: number): WhatWeDoItemProps | n
     title,
     body,
     ctaLabel,
-    href,
+    ...(resolved ? {href: resolved.href, external: resolved.external} : {}),
   }
 }
 

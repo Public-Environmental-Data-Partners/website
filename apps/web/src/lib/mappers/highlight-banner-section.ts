@@ -1,5 +1,4 @@
-import type {HomepageLinkTargetGroq} from '@/lib/mappers/homepage-link-target'
-import {resolveHomepageLinkHref} from '@/lib/mappers/homepage-link-target'
+import {type ContentLinkGroq, resolveContentLink} from '@/lib/content-link'
 
 type SanityImageData = {
   alt?: string | null
@@ -18,6 +17,8 @@ export type HighlightBannerSectionProps = {
   /** Omit when no destination — button hidden. */
   ctaLabel?: string
   ctaHref?: string
+  /** True when CTA is an external contentLink. */
+  ctaExternal?: boolean
   image: {
     src: string
     alt: string
@@ -32,7 +33,7 @@ export type HighlightBannerSectionFields = {
   heading?: string | null
   body?: unknown[] | null
   ctaLabel?: string | null
-  ctaLink?: HomepageLinkTargetGroq | null
+  ctaLink?: ContentLinkGroq | null
   image?: SanityImageData
 }
 
@@ -70,7 +71,8 @@ export function mapHighlightBannerSectionToProps(
     return null
   }
 
-  const ctaHref = resolveHomepageLinkHref(data?.ctaLink) ?? undefined
+  const resolved = resolveContentLink(data?.ctaLink)
+  const ctaHref = resolved?.href
   const ctaLabel = ctaHref ? data?.ctaLabel?.trim() || 'Explore' : undefined
 
   return {
@@ -78,6 +80,6 @@ export function mapHighlightBannerSectionToProps(
     heading,
     body,
     image,
-    ...(ctaHref && ctaLabel ? {ctaLabel, ctaHref} : {}),
+    ...(ctaHref && ctaLabel ? {ctaLabel, ctaHref, ctaExternal: resolved?.external === true} : {}),
   }
 }
