@@ -17,7 +17,11 @@ const routes = [
 for (const path of routes) {
   test(`a11y: ${path}`, async ({page}) => {
     await page.goto(path)
-    const results = await new AxeBuilder({page}).withTags(['wcag2a', 'wcag2aa']).analyze()
+    const results = await new AxeBuilder({page})
+      .withTags(['wcag2a', 'wcag2aa'])
+      // Donorbox form/wall chrome is third-party; contrast and other a11y of the embed are out of our control.
+      .exclude('[data-slot="donorbox-embed"]')
+      .analyze()
     expect(results.violations).toEqual([])
   })
 }
