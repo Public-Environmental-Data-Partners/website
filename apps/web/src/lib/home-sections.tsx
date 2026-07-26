@@ -75,6 +75,7 @@ type SectionSpacerGroq = {
   _type: 'sectionSpacer'
   _key: string
   heightPx?: number | null
+  background?: 'none' | 'lightGreen' | null
 }
 
 export type HomeSectionGroq =
@@ -109,11 +110,13 @@ export function HomeSectionRow({section}: {section: HomeSectionGroq}) {
     }
     case 'sectionSpacer':
       return typeof section.heightPx === 'number' ? (
-        <SectionSpacer heightPx={section.heightPx} />
+        <SectionSpacer heightPx={section.heightPx} background={section.background} />
       ) : null
     case 'partnerLogosSection': {
       const props = mapPartnerLogosSectionToProps(section)
-      return props ? <PartnerLogosSection {...props} /> : null
+      return props ? (
+        <PartnerLogosSection {...props} headingId={`partner-logos-${section._key}`} />
+      ) : null
     }
     case 'byTheNumbersSection': {
       const props = mapByTheNumbersSectionToProps(section)

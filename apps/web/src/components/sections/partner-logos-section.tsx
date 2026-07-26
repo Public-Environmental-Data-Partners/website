@@ -21,6 +21,8 @@ export type PartnerLogosSectionProps = {
   partners: PartnerLogo[]
   /** CMS toggle; `prefers-reduced-motion` forces scroll fallback instead of marquee. */
   useMarquee: boolean
+  /** Unique heading id when multiple partner logo bands appear on one page. */
+  headingId?: string
 }
 
 function logoDimension(value: number | undefined, fallback: number) {
@@ -147,14 +149,13 @@ export function PartnerLogosSection({
   sectionHeading,
   partners,
   useMarquee,
+  headingId = 'partner-logos-heading',
 }: PartnerLogosSectionProps) {
   const prefersReducedMotion = usePrefersReducedMotion()
 
   if (partners.length === 0) {
     return null
   }
-
-  const headingId = 'partner-logos-heading'
 
   let strip: ReactNode
   if (useMarquee && !prefersReducedMotion) {

@@ -596,7 +596,7 @@ export const newsletterSection = defineType({
   },
 })
 
-/** Vertical rhythm between homepage slices; height only (pixels). */
+/** Vertical rhythm between page slices; height plus optional fill color. */
 export const sectionSpacer = defineType({
   name: 'sectionSpacer',
   title: 'Section spacer',
@@ -606,20 +606,36 @@ export const sectionSpacer = defineType({
       name: 'heightPx',
       title: 'Height (px)',
       type: 'number',
-      description: 'Empty vertical space between sections.',
+      description: 'Vertical space between sections.',
       initialValue: 40,
       validation: (Rule) => Rule.required().integer().min(0).max(600),
+    }),
+    defineField({
+      name: 'background',
+      title: 'Background',
+      type: 'string',
+      description: 'Optional fill. Leave as None for transparent spacing.',
+      options: {
+        list: [
+          {title: 'None', value: 'none'},
+          {title: 'Light green', value: 'lightGreen'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'none',
     }),
   ],
   preview: {
     select: {
       heightPx: 'heightPx',
+      background: 'background',
     },
-    prepare({heightPx}) {
+    prepare({heightPx, background}) {
       const h = typeof heightPx === 'number' ? heightPx : 0
+      const fill = background === 'lightGreen' ? 'light green' : 'transparent'
       return {
         title: 'Section spacer',
-        subtitle: `${h}px`,
+        subtitle: `${h}px · ${fill}`,
       }
     },
   },

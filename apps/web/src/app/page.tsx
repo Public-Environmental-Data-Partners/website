@@ -113,7 +113,8 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
     presentation,
     emailPlaceholder,
     submitLabel,
-    heightPx
+    heightPx,
+    background
   }
 }`
 

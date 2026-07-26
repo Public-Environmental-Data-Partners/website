@@ -30,6 +30,7 @@ import {quoteBlock} from './quoteBlock'
 import {siteFooter} from './siteFooter'
 import {siteNavGroup, siteNavigation, siteNavLink} from './siteNavigation'
 import {
+  aboutIntro,
   contactCta,
   contactHero,
   contactSection,
@@ -55,6 +56,7 @@ export const schemaTypes = [
   partnerLogosSection,
   sectionSpacer,
   page,
+  aboutIntro,
   contactCta,
   contactHero,
   contactSection,

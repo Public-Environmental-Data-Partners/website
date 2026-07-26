@@ -5,9 +5,12 @@ import {notFound} from 'next/navigation'
 import {cache} from 'react'
 
 import {NewsletterSection} from '@/components/home/newsletter-section'
+import {SectionSpacer} from '@/components/home/section-spacer'
 import {Grid12, SiteShell} from '@/components/layout'
 import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
+import {PartnerLogosSection} from '@/components/sections/partner-logos-section'
 import {TestimonialSection} from '@/components/sections/testimonial-section'
+import {AboutIntroSection} from '@/components/site-page/about-intro-section'
 import {ContactHeroSection} from '@/components/site-page/contact-hero-section'
 import {type ContactCtaBlock, ContactSection} from '@/components/site-page/contact-section'
 import {LegalDocumentSection} from '@/components/site-page/legal-document-section'
@@ -18,6 +21,8 @@ import type {ByTheNumbersSectionFields} from '@/lib/mappers/by-the-numbers-secti
 import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
 import type {NewsletterSectionFields} from '@/lib/mappers/newsletter-section'
 import {mapNewsletterSectionToProps} from '@/lib/mappers/newsletter-section'
+import type {PartnerLogosSectionFields} from '@/lib/mappers/partner-logos-section'
+import {mapPartnerLogosSectionToProps} from '@/lib/mappers/partner-logos-section'
 import {mapSanityImage, type SanityImageData} from '@/lib/mappers/sanity-image'
 import type {TestimonialSectionFields} from '@/lib/mappers/testimonial-section'
 import {mapTestimonialSectionToProps} from '@/lib/mappers/testimonial-section'
@@ -53,6 +58,26 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     attribution,
     ctaLabel,
     ctaLink${CONTENT_LINK_GROQ},
+    useMarquee,
+    partners[]{
+      name,
+      url,
+      ariaLabel,
+      logo{
+        alt,
+        asset->{
+          url,
+          metadata{
+            dimensions{
+              width,
+              height
+            }
+          }
+        }
+      }
+    },
+    heightPx,
+    background,
     stats[]{
       _key,
       icon,
@@ -79,6 +104,13 @@ export type LegalDocumentSectionGroq = {
   body?: PortableTextBlock[] | null
 }
 
+export type AboutIntroGroq = {
+  _type: 'aboutIntro'
+  _key: string
+  body?: PortableTextBlock[] | null
+  image?: SanityImageData
+}
+
 export type ContactHeroGroq = {
   _type: 'contactHero'
   _key: string
@@ -103,14 +135,29 @@ type ByTheNumbersSectionGroq = {
 } & ByTheNumbersSectionFields
 type TestimonialSectionGroq = {_type: 'testimonialSection'; _key: string} & TestimonialSectionFields
 
+type PartnerLogosSectionGroq = {
+  _type: 'partnerLogosSection'
+  _key: string
+} & PartnerLogosSectionFields
+
+type SectionSpacerGroq = {
+  _type: 'sectionSpacer'
+  _key: string
+  heightPx?: number | null
+  background?: 'none' | 'lightGreen' | null
+}
+
 export type SitePageSectionGroq =
   | SimpleSectionGroq
   | LegalDocumentSectionGroq
+  | AboutIntroGroq
   | ContactHeroGroq
   | ContactSectionGroq
   | NewsletterSectionGroq
   | ByTheNumbersSectionGroq
   | TestimonialSectionGroq
+  | PartnerLogosSectionGroq
+  | SectionSpacerGroq
 
 export type SitePageData = {
   title: string | null
@@ -206,14 +253,47 @@ function renderMarketingSection(section: SitePageSectionGroq) {
         <ContactSection key={section._key} sectionHeading={sectionHeading} body={body} />
       ) : null
     }
+    case 'partnerLogosSection': {
+      const props = mapPartnerLogosSectionToProps(section)
+      return props ? (
+        <PartnerLogosSection
+          key={section._key}
+          {...props}
+          headingId={`partner-logos-${section._key}`}
+        />
+      ) : null
+    }
+    case 'sectionSpacer':
+      return typeof section.heightPx === 'number' ? (
+        <SectionSpacer
+          key={section._key}
+          heightPx={section.heightPx}
+          background={section.background}
+        />
+      ) : null
+    case 'aboutIntro':
     case 'contactHero':
-      // Contact pages are handled as a composed page below.
+      // About / Contact pages are handled as composed pages below.
       return null
     case 'legalDocumentSection':
       // Schema validation keeps this as the sole section; defensive no-op if mixed.
       return null
     default:
       return null
+  }
+}
+
+function renderAboutPageSection(section: SitePageSectionGroq, pageTitle: string) {
+  switch (section._type) {
+    case 'aboutIntro': {
+      const image = mapSanityImage(section.image ?? null, '')
+      const body = section.body ?? []
+      return image && body.length > 0 ? (
+        <AboutIntroSection key={section._key} title={pageTitle} body={body} image={image} />
+      ) : null
+    }
+    default:
+      return renderMarketingSection(section)
   }
 }
 
@@ -289,6 +369,15 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
             </div>
           </Grid12>
         </SiteShell>
+      </div>
+    )
+  }
+
+  const isAboutPage = sections[0]?._type === 'aboutIntro'
+  if (isAboutPage) {
+    return (
+      <div className="flex flex-1 flex-col bg-cream font-sans">
+        {sections.map((section) => renderAboutPageSection(section, title))}
       </div>
     )
   }

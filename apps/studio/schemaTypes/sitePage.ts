@@ -81,6 +81,52 @@ export const contactHero = defineType({
 })
 
 /**
+ * About page intro. The page title is the only heading; this block owns the
+ * body copy and CMS-managed illustration.
+ */
+export const aboutIntro = defineType({
+  name: 'aboutIntro',
+  title: 'About intro',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'body',
+      title: 'Body',
+      type: 'array',
+      of: [sectionPortableTextBlock],
+      description: 'Mission copy, bullets, and closing paragraphs.',
+      validation: (Rule) => Rule.required().min(1),
+    }),
+    defineField({
+      name: 'image',
+      title: 'Illustration',
+      type: 'image',
+      validation: (Rule) => Rule.required(),
+      options: {hotspot: true},
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative text',
+          type: 'string',
+          validation: (Rule) => Rule.required().max(160),
+        }),
+      ],
+    }),
+  ],
+  preview: {
+    select: {media: 'image', body: 'body'},
+    prepare({media, body}) {
+      const blockCount = Array.isArray(body) ? body.length : 0
+      return {
+        title: 'About intro',
+        subtitle: `${blockCount} block${blockCount === 1 ? '' : 's'}`,
+        media,
+      }
+    },
+  },
+})
+
+/**
  * Full-width contact card. Editors can place CTA button blocks anywhere in
  * the rich-text flow (for example, between support copy and a GitHub note).
  */
@@ -242,14 +288,17 @@ export const sitePage = defineType({
       of: [
         {type: 'simpleSection'},
         {type: 'legalDocumentSection'},
+        {type: 'aboutIntro'},
         {type: 'contactHero'},
         {type: 'contactSection'},
         {type: 'newsletterSection'},
         {type: 'byTheNumbersSection'},
         {type: 'testimonialSection'},
+        {type: 'partnerLogosSection'},
+        {type: 'sectionSpacer'},
       ],
       description:
-        'Ordered sections that make up this page. Contact pages start with Contact hero, followed by Contact sections and an optional Contact-style Newsletter.',
+        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero.',
       validation: (Rule) =>
         Rule.required()
           .min(1)
@@ -270,6 +319,20 @@ export const sitePage = defineType({
             if (legalCount === 1 && sections.length > 1) {
               return 'A Legal document section must be the only section on the page.'
             }
+            const aboutIntroIndexes = sections.flatMap((section, index) =>
+              section &&
+              typeof section === 'object' &&
+              '_type' in section &&
+              section._type === 'aboutIntro'
+                ? [index]
+                : [],
+            )
+            if (aboutIntroIndexes.length > 1) {
+              return 'Use only one About intro per page.'
+            }
+            if (aboutIntroIndexes.length === 1 && aboutIntroIndexes[0] !== 0) {
+              return 'About intro must be the first section on the page.'
+            }
             const contactHeroIndexes = sections.flatMap((section, index) =>
               section &&
               typeof section === 'object' &&
@@ -283,6 +346,9 @@ export const sitePage = defineType({
             }
             if (contactHeroIndexes.length === 1 && contactHeroIndexes[0] !== 0) {
               return 'Contact hero must be the first section on the page.'
+            }
+            if (aboutIntroIndexes.length === 1 && contactHeroIndexes.length === 1) {
+              return 'A page cannot include both About intro and Contact hero.'
             }
             const hasContactSections = sections.some(
               (section) =>
