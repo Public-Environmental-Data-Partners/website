@@ -19,13 +19,14 @@ checklists should not remain after their useful content is incorporated here.
 
 ## Decisions
 
-Numbered ADRs record foundational accepted decisions. Current/deferred decision
-notes record choices that remain open:
+Numbered ADRs in [`decisions/`](./decisions/). Recent and open notes:
 
-- [`decisions/dependency-upgrades.md`](./decisions/dependency-upgrades.md)
-- [`decisions/theme-toggle.md`](./decisions/theme-toggle.md)
-- [`decisions/testing.md`](./decisions/testing.md)
-- [`decisions/deferred-integrations.md`](./decisions/deferred-integrations.md)
+- [`decisions/0005-dependency-upgrades.md`](./decisions/0005-dependency-upgrades.md)
+- [`decisions/0006-theme-toggle.md`](./decisions/0006-theme-toggle.md)
+- [`decisions/0007-testing.md`](./decisions/0007-testing.md)
+- [`decisions/0008-deferred-integrations.md`](./decisions/0008-deferred-integrations.md)
+- [`decisions/0009-donorbox-donate.md`](./decisions/0009-donorbox-donate.md)
+- [`decisions/0010-newsletter-signup-abuse-controls.md`](./decisions/0010-newsletter-signup-abuse-controls.md)
 
 ## Operations
 

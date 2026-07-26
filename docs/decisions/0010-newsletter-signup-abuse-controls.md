@@ -41,7 +41,7 @@ Chosen option: **no captcha for now**. Rely on the existing abuse controls:
 Operational detail lives in
 [`docs/ops/newsletter-signup.md`](../ops/newsletter-signup.md). Newsletter ESP
 selection remains deferred; see
-[`deferred-integrations.md`](./deferred-integrations.md).
+[`0008-deferred-integrations.md`](./0008-deferred-integrations.md).
 
 ### Positive Consequences
 

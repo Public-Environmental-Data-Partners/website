@@ -46,7 +46,7 @@ reimplement the site shell or copy full-bleed calculations.
 Brand tokens currently provide light values plus dark values under both
 `prefers-color-scheme` and `.dark`. Keep those paths synchronized until the
 manual-theme decision in
-[`../decisions/theme-toggle.md`](../decisions/theme-toggle.md) is resolved.
+[`../decisions/0006-theme-toggle.md`](../decisions/0006-theme-toggle.md) is resolved.
 
 ## Maintenance checklist
 

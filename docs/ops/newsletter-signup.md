@@ -31,7 +31,7 @@ The endpoint returns 503 when the write client is unavailable.
 ## Abuse controls
 
 No captcha for the interim Sanity-backed flow. Decision record:
-[`docs/decisions/newsletter-signup-abuse-controls.md`](../decisions/newsletter-signup-abuse-controls.md).
+[`docs/decisions/0010-newsletter-signup-abuse-controls.md`](../decisions/0010-newsletter-signup-abuse-controls.md).
 
 `apps/web/src/proxy.ts` limits the signup endpoint to 15 POST requests per IP per
 60 seconds. The limiter is in memory and therefore approximate across multiple

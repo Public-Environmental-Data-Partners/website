@@ -18,4 +18,4 @@ dedicated architecture/operations document.
 
 **Donations** — `/donate` is CMS-driven (`sitePage` slug `donate`) with Donorbox
 form + Donor Wall embeds. See
-[`donorbox-donate.md`](./donorbox-donate.md).
+[`0009-donorbox-donate.md`](./0009-donorbox-donate.md).
