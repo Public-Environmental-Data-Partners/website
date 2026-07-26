@@ -91,7 +91,7 @@ export function ContactSection({sectionHeading, body}: ContactSectionProps) {
       <SiteShell padding="grid">
         <Grid12>
           <section className="bg-off-white col-span-12 min-w-0 p-6 md:p-10 lg:p-12">
-            <h2 className="text-off-black mb-6 font-sans text-[1.375rem] leading-none font-semibold tracking-normal uppercase">
+            <h2 className="text-off-black mb-10 font-sans text-[1.375rem] leading-none font-bold tracking-normal uppercase">
               {sectionHeading}
             </h2>
             <PortableText components={richTextComponents} value={body} />

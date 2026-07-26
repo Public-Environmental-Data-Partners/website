@@ -76,7 +76,7 @@ function StatColumn({stat, index}: {stat: ByTheNumbersStatProps; index: number})
       <p className="mt-3 font-sans text-[1.25rem] leading-none font-medium text-foreground">
         {stat.label}
       </p>
-      <div className="mt-10 mb-12 max-w-[28rem] space-y-3 md:mt-12 md:mb-14">
+      <div className="mt-10 mb-12 w-full max-w-[28rem] space-y-3 text-left md:mt-12 md:mb-14">
         <StatBody value={stat.body} />
       </div>
       {cta}

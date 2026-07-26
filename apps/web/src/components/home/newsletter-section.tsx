@@ -73,11 +73,11 @@ export function NewsletterSection({
                 <div className={fadeSlot(!success)} aria-hidden={success}>
                   <h2
                     id={headingId}
-                    className="text-off-black font-sans text-[1.375rem] leading-none font-semibold tracking-normal uppercase"
+                    className="text-off-black mb-10 font-sans text-[1.375rem] leading-none font-bold tracking-normal uppercase"
                   >
                     {sectionHeading}
                   </h2>
-                  <p className="text-off-black mt-6 font-sans text-[1.375rem] leading-none font-semibold tracking-normal">
+                  <p className="text-off-black font-sans text-[1.375rem] leading-none font-semibold tracking-normal">
                     {prompt}
                   </p>
                   <form
