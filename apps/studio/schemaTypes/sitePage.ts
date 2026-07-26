@@ -294,6 +294,8 @@ export const sitePage = defineType({
         {type: 'donateFormSection'},
         {type: 'donateInfoSection'},
         {type: 'donorWallSection'},
+        {type: 'getInvolvedIntro'},
+        {type: 'otherWaysSection'},
         {type: 'newsletterSection'},
         {type: 'byTheNumbersSection'},
         {type: 'testimonialSection'},
@@ -301,7 +303,7 @@ export const sitePage = defineType({
         {type: 'sectionSpacer'},
       ],
       description:
-        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero; Donate pages start with Donate form.',
+        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero; Donate pages start with Donate form; Get Involved pages start with Get Involved intro.',
       validation: (Rule) =>
         Rule.required()
           .min(1)
@@ -394,6 +396,38 @@ export const sitePage = defineType({
               (aboutIntroIndexes.length === 1 || contactHeroIndexes.length === 1)
             ) {
               return 'A Donate page cannot also include About intro or Contact hero.'
+            }
+            const getInvolvedIntroIndexes = sections.flatMap((section, index) =>
+              section &&
+              typeof section === 'object' &&
+              '_type' in section &&
+              section._type === 'getInvolvedIntro'
+                ? [index]
+                : [],
+            )
+            const hasOtherWays = sections.some(
+              (section) =>
+                section &&
+                typeof section === 'object' &&
+                '_type' in section &&
+                section._type === 'otherWaysSection',
+            )
+            if (getInvolvedIntroIndexes.length > 1) {
+              return 'Use only one Get Involved intro per page.'
+            }
+            if (getInvolvedIntroIndexes.length === 1 && getInvolvedIntroIndexes[0] !== 0) {
+              return 'Get Involved intro must be the first section on the page.'
+            }
+            if (hasOtherWays && getInvolvedIntroIndexes.length === 0) {
+              return 'Pages with Other ways sections must start with a Get Involved intro.'
+            }
+            if (
+              getInvolvedIntroIndexes.length === 1 &&
+              (aboutIntroIndexes.length === 1 ||
+                contactHeroIndexes.length === 1 ||
+                donateFormIndexes.length === 1)
+            ) {
+              return 'A Get Involved page cannot also include About intro, Contact hero, or Donate form.'
             }
             return true
           }),

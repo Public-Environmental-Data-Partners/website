@@ -15,7 +15,9 @@ import {TestimonialSection} from '@/components/sections/testimonial-section'
 import {AboutIntroSection} from '@/components/site-page/about-intro-section'
 import {ContactHeroSection} from '@/components/site-page/contact-hero-section'
 import {type ContactCtaBlock, ContactSection} from '@/components/site-page/contact-section'
+import {GetInvolvedIntroSection} from '@/components/site-page/get-involved-intro-section'
 import {LegalDocumentSection} from '@/components/site-page/legal-document-section'
+import {OtherWaysSection} from '@/components/site-page/other-ways-section'
 import {SimpleSectionBlock} from '@/components/site-page/simple-section-block'
 import {ARTICLE_COL_PROSE_CLASS} from '@/lib/article-body-grid'
 import {CONTENT_LINK_GROQ, PT_BLOCKS_GROQ, PT_MARK_DEFS_GROQ} from '@/lib/content-link'
@@ -31,6 +33,14 @@ import {
   mapDonateInfoSectionToProps,
   mapDonorWallSectionToProps,
 } from '@/lib/mappers/donate-sections'
+import type {
+  GetInvolvedIntroFields,
+  OtherWaysSectionFields,
+} from '@/lib/mappers/get-involved-sections'
+import {
+  mapGetInvolvedIntroToProps,
+  mapOtherWaysSectionToProps,
+} from '@/lib/mappers/get-involved-sections'
 import type {NewsletterSectionFields} from '@/lib/mappers/newsletter-section'
 import {mapNewsletterSectionToProps} from '@/lib/mappers/newsletter-section'
 import type {PartnerLogosSectionFields} from '@/lib/mappers/partner-logos-section'
@@ -60,6 +70,7 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     heading,
     lastUpdated,
     body[]${SITE_PAGE_BODY_GROQ},
+    callout[]${SITE_PAGE_BODY_GROQ},
     image${SANITY_IMAGE_PROJECTION},
     presentation,
     emailPlaceholder,
@@ -69,6 +80,14 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     donorboxCampaign,
     rows[]{
       label,
+      icon${SANITY_IMAGE_PROJECTION}
+    },
+    cards[]{
+      _key,
+      title,
+      body[]${PT_BLOCKS_GROQ},
+      ctaLabel,
+      ctaLink${CONTENT_LINK_GROQ},
       icon${SANITY_IMAGE_PROJECTION}
     },
     quote[]${PT_BLOCKS_GROQ},
@@ -172,6 +191,16 @@ type PartnerLogosSectionGroq = {
   _key: string
 } & PartnerLogosSectionFields
 
+type GetInvolvedIntroGroq = {
+  _type: 'getInvolvedIntro'
+  _key: string
+} & GetInvolvedIntroFields
+
+type OtherWaysSectionGroq = {
+  _type: 'otherWaysSection'
+  _key: string
+} & OtherWaysSectionFields
+
 type SectionSpacerGroq = {
   _type: 'sectionSpacer'
   _key: string
@@ -192,6 +221,8 @@ export type SitePageSectionGroq =
   | ByTheNumbersSectionGroq
   | TestimonialSectionGroq
   | PartnerLogosSectionGroq
+  | GetInvolvedIntroGroq
+  | OtherWaysSectionGroq
   | SectionSpacerGroq
 
 export type SitePageData = {
@@ -298,6 +329,10 @@ function renderMarketingSection(section: SitePageSectionGroq) {
         />
       ) : null
     }
+    case 'otherWaysSection': {
+      const props = mapOtherWaysSectionToProps(section)
+      return props ? <OtherWaysSection key={section._key} {...props} /> : null
+    }
     case 'sectionSpacer':
       return typeof section.heightPx === 'number' ? (
         <SectionSpacer
@@ -311,7 +346,8 @@ function renderMarketingSection(section: SitePageSectionGroq) {
     case 'donateFormSection':
     case 'donateInfoSection':
     case 'donorWallSection':
-      // About / Contact / Donate pages are handled as composed pages below.
+    case 'getInvolvedIntro':
+      // About / Contact / Donate / Get Involved pages are handled as composed pages below.
       return null
     case 'legalDocumentSection':
       // Schema validation keeps this as the sole section; defensive no-op if mixed.
@@ -353,6 +389,17 @@ function renderContactPageSection(section: SitePageSectionGroq, pageTitle: strin
     case 'newsletterSection': {
       const props = mapNewsletterSectionToProps(section)
       return props ? <NewsletterSection key={section._key} {...props} /> : null
+    }
+    default:
+      return renderMarketingSection(section)
+  }
+}
+
+function renderGetInvolvedPageSection(section: SitePageSectionGroq, pageTitle: string) {
+  switch (section._type) {
+    case 'getInvolvedIntro': {
+      const props = mapGetInvolvedIntroToProps(section, pageTitle)
+      return props ? <GetInvolvedIntroSection key={section._key} {...props} /> : null
     }
     default:
       return renderMarketingSection(section)
@@ -463,6 +510,15 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
   const isDonatePage = sections[0]?._type === 'donateFormSection'
   if (isDonatePage) {
     return renderDonatePage(sections, title)
+  }
+
+  const isGetInvolvedPage = sections[0]?._type === 'getInvolvedIntro'
+  if (isGetInvolvedPage) {
+    return (
+      <div className="flex flex-1 flex-col bg-off-white font-sans">
+        {sections.map((section) => renderGetInvolvedPageSection(section, title))}
+      </div>
+    )
   }
 
   return (

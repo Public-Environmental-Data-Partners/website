@@ -15,6 +15,9 @@ const buttonVariants = cva(
         /** Soft white CTA on warm bands (e.g. What We Do “Learn More”). */
         surface:
           'border-border bg-white text-foreground hover:bg-white/90 aria-expanded:bg-white dark:bg-surface dark:hover:bg-surface/90',
+        /** Off-white CTA on light-blue callouts (e.g. Get Involved intro). */
+        offWhite:
+          'border-transparent bg-off-white text-foreground hover:bg-off-white/90 aria-expanded:bg-off-white',
         /** Light-blue CTA on dark bands (e.g. Testimonial “Get Involved”). */
         lightBlue:
           'border-transparent bg-light-blue text-dark-blue hover:bg-light-blue/90 aria-expanded:bg-light-blue',
