@@ -4,7 +4,6 @@ Product and infrastructure work intentionally not implemented yet.
 
 | Item               | Current state / decision needed                                                                                             |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| Donations          | `/donate` remains a placeholder. Select and integrate Donorbox or another provider, including CSP and accessibility review. |
 | Newsletter ESP     | Signups are stored in Sanity. Choose an ESP and migration/synchronization approach before replacing that interim flow.      |
 | Analytics          | No Google Analytics loader or environment contract exists. Confirm product/privacy requirements first.                      |
 | Site search        | Not present and not required for the initial release.                                                                       |
@@ -14,3 +13,9 @@ Product and infrastructure work intentionally not implemented yet.
 
 Remove an item when its product decision moves into an implementation issue or a
 dedicated architecture/operations document.
+
+## Related (no longer deferred)
+
+**Donations** — `/donate` is CMS-driven (`sitePage` slug `donate`) with Donorbox
+form + Donor Wall embeds. See
+[`donorbox-donate.md`](./donorbox-donate.md).

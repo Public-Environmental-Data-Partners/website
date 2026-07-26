@@ -4,6 +4,8 @@ import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
 import {cache} from 'react'
 
+import {DonateMainBand} from '@/components/donate/donate-main-band'
+import {DonorWallSection} from '@/components/donate/donor-wall-section'
 import {NewsletterSection} from '@/components/home/newsletter-section'
 import {SectionSpacer} from '@/components/home/section-spacer'
 import {Grid12, SiteShell} from '@/components/layout'
@@ -19,6 +21,16 @@ import {ARTICLE_COL_PROSE_CLASS} from '@/lib/article-body-grid'
 import {CONTENT_LINK_GROQ, PT_BLOCKS_GROQ, PT_MARK_DEFS_GROQ} from '@/lib/content-link'
 import type {ByTheNumbersSectionFields} from '@/lib/mappers/by-the-numbers-section'
 import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
+import type {
+  DonateFormSectionFields,
+  DonateInfoSectionFields,
+  DonorWallSectionFields,
+} from '@/lib/mappers/donate-sections'
+import {
+  mapDonateFormSectionToProps,
+  mapDonateInfoSectionToProps,
+  mapDonorWallSectionToProps,
+} from '@/lib/mappers/donate-sections'
 import type {NewsletterSectionFields} from '@/lib/mappers/newsletter-section'
 import {mapNewsletterSectionToProps} from '@/lib/mappers/newsletter-section'
 import type {PartnerLogosSectionFields} from '@/lib/mappers/partner-logos-section'
@@ -54,6 +66,11 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     submitLabel,
     sectionHeading,
     prompt,
+    donorboxCampaign,
+    rows[]{
+      label,
+      icon${SANITY_IMAGE_PROJECTION}
+    },
     quote[]${PT_BLOCKS_GROQ},
     attribution,
     ctaLabel,
@@ -124,6 +141,21 @@ export type ContactSectionGroq = {
   body?: Array<PortableTextBlock | ContactCtaBlock> | null
 }
 
+type DonateFormSectionGroq = {
+  _type: 'donateFormSection'
+  _key: string
+} & DonateFormSectionFields
+
+type DonateInfoSectionGroq = {
+  _type: 'donateInfoSection'
+  _key: string
+} & DonateInfoSectionFields
+
+type DonorWallSectionGroq = {
+  _type: 'donorWallSection'
+  _key: string
+} & DonorWallSectionFields
+
 export type NewsletterSectionGroq = {
   _type: 'newsletterSection'
   _key: string
@@ -153,6 +185,9 @@ export type SitePageSectionGroq =
   | AboutIntroGroq
   | ContactHeroGroq
   | ContactSectionGroq
+  | DonateFormSectionGroq
+  | DonateInfoSectionGroq
+  | DonorWallSectionGroq
   | NewsletterSectionGroq
   | ByTheNumbersSectionGroq
   | TestimonialSectionGroq
@@ -273,7 +308,10 @@ function renderMarketingSection(section: SitePageSectionGroq) {
       ) : null
     case 'aboutIntro':
     case 'contactHero':
-      // About / Contact pages are handled as composed pages below.
+    case 'donateFormSection':
+    case 'donateInfoSection':
+    case 'donorWallSection':
+      // About / Contact / Donate pages are handled as composed pages below.
       return null
     case 'legalDocumentSection':
       // Schema validation keeps this as the sole section; defensive no-op if mixed.
@@ -319,6 +357,37 @@ function renderContactPageSection(section: SitePageSectionGroq, pageTitle: strin
     default:
       return renderMarketingSection(section)
   }
+}
+
+function renderDonatePage(sections: SitePageSectionGroq[], pageTitle: string) {
+  let form: ReturnType<typeof mapDonateFormSectionToProps> = null
+  let info: ReturnType<typeof mapDonateInfoSectionToProps> = null
+  let wall: ReturnType<typeof mapDonorWallSectionToProps> = null
+  const trailing: SitePageSectionGroq[] = []
+
+  for (const section of sections) {
+    switch (section._type) {
+      case 'donateFormSection':
+        form = mapDonateFormSectionToProps(section)
+        break
+      case 'donateInfoSection':
+        info = mapDonateInfoSectionToProps(section)
+        break
+      case 'donorWallSection':
+        wall = mapDonorWallSectionToProps(section)
+        break
+      default:
+        trailing.push(section)
+    }
+  }
+
+  return (
+    <div className="flex flex-1 flex-col bg-cream font-sans">
+      <DonateMainBand pageTitle={pageTitle} form={form} info={info} />
+      {wall ? <DonorWallSection {...wall} /> : null}
+      {trailing.map((section) => renderMarketingSection(section))}
+    </div>
+  )
 }
 
 function LegalDocumentHeader({title, lastUpdated}: {title: string; lastUpdated?: string | null}) {
@@ -389,6 +458,11 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
         {sections.map((section) => renderContactPageSection(section, title))}
       </div>
     )
+  }
+
+  const isDonatePage = sections[0]?._type === 'donateFormSection'
+  if (isDonatePage) {
+    return renderDonatePage(sections, title)
   }
 
   return (

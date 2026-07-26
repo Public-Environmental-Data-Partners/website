@@ -291,6 +291,9 @@ export const sitePage = defineType({
         {type: 'aboutIntro'},
         {type: 'contactHero'},
         {type: 'contactSection'},
+        {type: 'donateFormSection'},
+        {type: 'donateInfoSection'},
+        {type: 'donorWallSection'},
         {type: 'newsletterSection'},
         {type: 'byTheNumbersSection'},
         {type: 'testimonialSection'},
@@ -298,7 +301,7 @@ export const sitePage = defineType({
         {type: 'sectionSpacer'},
       ],
       description:
-        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero.',
+        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero; Donate pages start with Donate form.',
       validation: (Rule) =>
         Rule.required()
           .min(1)
@@ -359,6 +362,38 @@ export const sitePage = defineType({
             )
             if (hasContactSections && contactHeroIndexes.length === 0) {
               return 'Pages with Contact sections must start with a Contact hero.'
+            }
+            const donateFormIndexes = sections.flatMap((section, index) =>
+              section &&
+              typeof section === 'object' &&
+              '_type' in section &&
+              section._type === 'donateFormSection'
+                ? [index]
+                : [],
+            )
+            const hasDonateSections = sections.some(
+              (section) =>
+                section &&
+                typeof section === 'object' &&
+                '_type' in section &&
+                (section._type === 'donateFormSection' ||
+                  section._type === 'donateInfoSection' ||
+                  section._type === 'donorWallSection'),
+            )
+            if (donateFormIndexes.length > 1) {
+              return 'Use only one Donate form per page.'
+            }
+            if (hasDonateSections && donateFormIndexes.length === 0) {
+              return 'Donate pages must start with a Donate form section.'
+            }
+            if (donateFormIndexes.length === 1 && donateFormIndexes[0] !== 0) {
+              return 'Donate form must be the first section on the page.'
+            }
+            if (
+              donateFormIndexes.length === 1 &&
+              (aboutIntroIndexes.length === 1 || contactHeroIndexes.length === 1)
+            ) {
+              return 'A Donate page cannot also include About intro or Contact hero.'
             }
             return true
           }),

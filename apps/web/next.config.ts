@@ -1,5 +1,20 @@
 import type {NextConfig} from 'next'
 
+/**
+ * frame-src only: unspecified CSP directives remain unrestricted.
+ * Includes Donorbox (donate embeds) and YouTube (article embeds).
+ * When a fuller CSP is added site-wide, keep these origins in frame-src and
+ * add donorbox.org to script-src for widget.js.
+ */
+const FRAME_SRC = [
+  "'self'",
+  'https://donorbox.org',
+  'https://*.donorbox.org',
+  'https://www.youtube.com',
+  'https://www.youtube-nocookie.com',
+  'https://youtube.com',
+].join(' ')
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -10,6 +25,19 @@ const nextConfig: NextConfig = {
         pathname: '/images/**',
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: `frame-src ${FRAME_SRC}`,
+          },
+        ],
+      },
+    ]
   },
 }
 

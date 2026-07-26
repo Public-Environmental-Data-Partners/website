@@ -1,0 +1,119 @@
+/*
+ * Donate info box — light-green band with section heading, lead body, prompt, and icon rows.
+ * Visual grammar borrows ListBlock's hairline rules; type matches marketing Figtree 22 / leading-none.
+ */
+
+[data-slot='donate-info-box'] {
+  --donate-info-fg: var(--dark-green);
+  --donate-info-padding-x: 1.5rem;
+  --donate-info-padding-y: 2rem;
+  --donate-info-row-padding-y: 1.5rem;
+  --donate-info-icon-size: 3.5rem;
+  --donate-info-icon-gap: 1.25rem;
+  --donate-info-divider-weight: 2px;
+  --donate-info-divider-opacity: 0.2;
+
+  min-width: 0;
+  padding: var(--donate-info-padding-y) var(--donate-info-padding-x);
+  color: var(--donate-info-fg);
+  background: var(--light-green);
+}
+
+@media (min-width: 768px) {
+  [data-slot='donate-info-box'] {
+    --donate-info-padding-x: 2.5rem;
+    --donate-info-padding-y: 2.5rem;
+    --donate-info-icon-size: 4.5rem;
+    --donate-info-icon-gap: 1.75rem;
+  }
+}
+
+[data-slot='donate-info-heading'] {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+[data-slot='donate-info-body'] {
+  margin-top: 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+[data-slot='donate-info-body'] p {
+  margin: 0;
+}
+
+[data-slot='donate-info-body'] p + p {
+  margin-top: 1.25rem;
+}
+
+[data-slot='donate-info-prompt'] {
+  margin: 2rem 0 0;
+  font-family: var(--font-sans);
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+[data-slot='donate-info-rule'] {
+  height: var(--donate-info-divider-weight);
+  margin: 0;
+  border: 0;
+  background: color-mix(
+    in srgb,
+    var(--donate-info-fg) calc(var(--donate-info-divider-opacity) * 100%),
+    transparent
+  );
+}
+
+[data-slot='donate-info-prompt'] + [data-slot='donate-info-rule'] {
+  margin-top: 1.25rem;
+}
+
+[data-slot='donate-info-rows'] {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-slot='donate-info-row'] {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  padding-block: var(--donate-info-row-padding-y);
+}
+
+[data-slot='donate-info-icon'] {
+  flex: none;
+  width: var(--donate-info-icon-size);
+  height: var(--donate-info-icon-size);
+}
+
+[data-slot='donate-info-icon'] img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+[data-slot='donate-info-label'] {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  margin-inline-start: var(--donate-info-icon-gap);
+  padding-block-start: 0.15em;
+  font-family: var(--font-sans);
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+}

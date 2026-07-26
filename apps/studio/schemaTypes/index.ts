@@ -1,5 +1,6 @@
 import {articleFigureItem} from './articleFigureItem'
 import {contentLink} from './contentLink'
+import {donateFormSection, donateInfoSection, donorWallSection} from './donatePageSections'
 import {embedBlock} from './embedBlock'
 import {
   byTheNumbersSection,
@@ -60,6 +61,9 @@ export const schemaTypes = [
   contactCta,
   contactHero,
   contactSection,
+  donateFormSection,
+  donateInfoSection,
+  donorWallSection,
   simpleSection,
   legalDocumentSection,
   sitePage,
