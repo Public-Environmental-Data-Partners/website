@@ -1,5 +1,6 @@
 import {draftMode} from 'next/headers'
 
+import {SiteShell} from '@/components/layout'
 import {CONTENT_LINK_GROQ, PT_BLOCKS_GROQ} from '@/lib/content-link'
 import {HomeSectionRow, type PageHomeGroqData} from '@/lib/home-sections'
 import {sanityFetch} from '@/sanity/live'
@@ -84,7 +85,6 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
         }
       }
     },
-    titleLine,
     heading,
     body[]${PT_BLOCKS_GROQ},
     ctaLabel,
@@ -132,11 +132,14 @@ export default async function Home() {
   if (!doc || !hasSections) {
     return (
       <div className="flex flex-1 flex-col font-sans">
-        <div className="mx-auto flex w-full max-w-site flex-1 flex-col gap-6 px-6 py-20 md:px-12">
+        <SiteShell
+          padding="none"
+          className="flex flex-1 flex-col gap-6 px-[var(--site-padding-x)] py-20"
+        >
           <p className="text-muted-foreground">
             No homepage sections. Add blocks in Sanity (Home → Homepage sections).
           </p>
-        </div>
+        </SiteShell>
       </div>
     )
   }

@@ -4,6 +4,7 @@ import {Fragment} from 'react'
 
 import {FooterNavLink} from '@/components/footer-nav-link'
 import {FooterSocialLinks} from '@/components/footer-social-links'
+import {SiteShell} from '@/components/layout'
 import {siteName} from '@/config/site'
 import {type FooterItem, getSiteFooter} from '@/lib/site-footer'
 
@@ -70,7 +71,10 @@ export async function SiteFooter() {
 
   return (
     <footer data-site-footer className="bg-footer text-footer-foreground mt-auto w-full shrink-0">
-      <div className="mx-auto flex min-h-[225px] max-w-site flex-col justify-center px-[var(--site-padding-x)] py-8 md:min-h-[322px] xl:min-h-[450px] xl:justify-start xl:py-12">
+      <SiteShell
+        padding="none"
+        className="flex min-h-[225px] flex-col justify-center px-[var(--site-padding-x)] py-8 md:min-h-[322px] xl:min-h-[450px] xl:justify-start xl:py-12"
+      >
         <h2 className="sr-only">Footer</h2>
 
         {/* Compact: centered icon + socials + copyright (no nav, no wordmark) */}
@@ -124,7 +128,7 @@ export async function SiteFooter() {
             ))}
           </nav>
         </div>
-      </div>
+      </SiteShell>
     </footer>
   )
 }

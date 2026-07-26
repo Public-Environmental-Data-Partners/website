@@ -182,9 +182,9 @@ function renderMarketingSection(section: SitePageSectionGroq) {
         return null
       }
       return (
-        <div key={section._key} className="mx-auto w-full max-w-site px-6 md:px-12">
+        <SiteShell key={section._key} padding="none" className="px-[var(--site-padding-x)]">
           <SimpleSectionBlock heading={heading} body={section.body ?? undefined} />
-        </div>
+        </SiteShell>
       )
     }
     case 'byTheNumbersSection': {
@@ -304,11 +304,11 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
 
   return (
     <div className="flex flex-1 flex-col font-sans">
-      <div className="mx-auto w-full max-w-site px-6 pt-16 md:px-12 md:pt-20">
+      <SiteShell padding="none" className="px-[var(--site-padding-x)] pt-16 md:pt-20">
         <h1 className="text-foreground text-3xl font-semibold tracking-tight md:text-4xl">
           {title}
         </h1>
-      </div>
+      </SiteShell>
       <div className="mt-12 flex flex-col gap-16 pb-16 md:mt-16 md:gap-20 md:pb-20">
         {sections.map((section) => renderMarketingSection(section))}
       </div>

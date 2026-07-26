@@ -25,8 +25,8 @@ without a link.
 7. Run typecheck, lint, build, and link regression checks.
 
 Inventory queries live in
-`apps/studio/migrations/inventory-content-links.groq.md`. Tighten the Portable
-Text query to test `href` without `linkType` before treating a zero result as
-proof.
+`apps/studio/migrations/inventory-content-links.groq.md`. Use query **2b** (or
+the **2c** count) — marks with `href` and no `linkType` — before treating a
+zero result as proof. The broader `href` query alone is not enough.
 
-Keep the inventory query after cleanup as a standing audit for future imports.
+Keep the inventory queries after cleanup as a standing audit for future imports.

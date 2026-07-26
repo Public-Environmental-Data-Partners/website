@@ -124,7 +124,7 @@ function PartnerLogosWrappedPanel({partners}: {partners: PartnerLogo[]}) {
 /** Horizontal strip when marquee is on but motion is reduced (no infinite animation). */
 function PartnerLogosScrollPanel({partners}: {partners: PartnerLogo[]}) {
   return (
-    <div className="-mx-6 overflow-x-auto px-6 pb-2 md:mx-0 md:px-0">
+    <div className="-mx-[var(--site-padding-x)] overflow-x-auto px-[var(--site-padding-x)] pb-2 md:mx-0 md:px-0">
       <InteractivePartnerRow layout="scroll" partners={partners} />
     </div>
   )
@@ -133,7 +133,7 @@ function PartnerLogosScrollPanel({partners}: {partners: PartnerLogo[]}) {
 /** CSS marquee when CMS marquee is on and motion is OK; pause on hover/focus via globals.css. */
 function PartnerLogosMarqueePanel({partners}: {partners: PartnerLogo[]}) {
   return (
-    <div className="partner-logos-marquee-root -mx-6 overflow-hidden px-6 pb-2 md:mx-0 md:px-0">
+    <div className="partner-logos-marquee-root -mx-[var(--site-padding-x)] overflow-hidden px-[var(--site-padding-x)] pb-2 md:mx-0 md:px-0">
       <div className="partner-logos-marquee-track flex w-max gap-6 md:gap-8">
         <InteractivePartnerRow layout="marquee" partners={partners} />
         <MarqueeDuplicatePartnerRow partners={partners} />

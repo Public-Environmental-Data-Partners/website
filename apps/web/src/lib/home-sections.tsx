@@ -27,7 +27,6 @@ type HighlightBannerSectionGroq = {
   _type: 'highlightBannerSection'
   _key: string
   sectionHeading?: string | null
-  titleLine?: string | null
   heading?: string | null
   body?: unknown[] | null
   ctaLabel?: string | null

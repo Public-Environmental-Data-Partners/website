@@ -1,3 +1,5 @@
+import {SiteShell} from '@/components/layout'
+
 /** Thin layout for routes until CMS copy and sections exist. */
 export function PlaceholderPageShell({
   title,
@@ -7,9 +9,12 @@ export function PlaceholderPageShell({
   description?: string
 }) {
   return (
-    <div className="mx-auto flex w-full max-w-site flex-1 flex-col gap-4 px-6 py-16 md:px-12">
+    <SiteShell
+      padding="none"
+      className="flex flex-1 flex-col gap-4 px-[var(--site-padding-x)] py-16"
+    >
       <h1 className="text-foreground text-3xl font-semibold tracking-tight md:text-4xl">{title}</h1>
       <p className="text-muted-foreground max-w-prose leading-relaxed">{description}</p>
-    </div>
+    </SiteShell>
   )
 }

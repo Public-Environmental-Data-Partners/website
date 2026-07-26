@@ -29,7 +29,7 @@ function getDesktopSizes(variant: HeroImageVariant) {
     return '(max-width: 1023px) 100vw, 40vw'
   }
   if (variant === 'split') {
-    return '(max-width: 767px) 100vw, (max-width: 89.9375rem) 50vw, 700px'
+    return '(max-width: 767px) 100vw, (max-width: 87.5rem) 50vw, 700px'
   }
   return '(max-width: 1023px) 100vw, 50vw'
 }

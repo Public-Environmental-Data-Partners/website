@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import {DonateLink} from '@/components/donate-link'
 import {HeaderNavLink} from '@/components/header-nav-link'
+import {SiteShell} from '@/components/layout'
 import {MobilePrimaryNavSheet} from '@/components/mobile-primary-nav-sheet'
 import {NavPrimaryGroup} from '@/components/nav-primary-group'
 import {donateNav} from '@/config/nav'
@@ -15,7 +16,10 @@ export async function SiteHeader() {
 
   return (
     <header className="bg-light-beige">
-      <div className="mx-auto flex min-h-[93px] max-w-site items-center justify-between gap-3 px-[var(--site-padding-x)] xl:min-h-[170px]">
+      <SiteShell
+        padding="none"
+        className="flex min-h-[93px] items-center justify-between gap-3 px-[var(--site-padding-x)] xl:min-h-[170px]"
+      >
         <Link
           href="/"
           aria-label={siteName}
@@ -77,7 +81,7 @@ export async function SiteHeader() {
             <MobilePrimaryNavSheet mainNav={primaryNav} />
           </div>
         </div>
-      </div>
+      </SiteShell>
     </header>
   )
 }

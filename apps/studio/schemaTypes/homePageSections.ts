@@ -326,13 +326,6 @@ export const highlightBannerSection = defineType({
       validation: (Rule) => Rule.required().max(80),
     }),
     defineField({
-      name: 'titleLine',
-      title: 'Title line',
-      type: 'string',
-      description: 'Short supporting line above the main heading (optional).',
-      validation: (Rule) => Rule.max(120),
-    }),
-    defineField({
       name: 'heading',
       title: 'Heading',
       type: 'string',

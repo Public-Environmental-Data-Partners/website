@@ -28,7 +28,7 @@ export function articleFigureDisplayHeight(width: number): number {
 
 export const ARTICLE_FIGURE_IMAGE_SIZES: Record<ArticleFigureImageSize, string> = {
   single10:
-    '(max-width: 1023px) 100vw, (max-width: 89.9375rem) calc((min(100vw, 87.5rem) - 2.5rem) * 10 / 12)',
+    '(max-width: 1023px) 100vw, (max-width: 87.5rem) calc((min(100vw, 87.5rem) - 2.5rem) * 10 / 12)',
   duo6: '(max-width: 767px) 100vw, (max-width: 1023px) calc((100vw - 4rem - 1.5rem) / 2), 688px',
   imageText4:
     '(max-width: 1023px) calc((100vw - 4rem - 1.5rem) / 2), calc((min(100vw, 87.5rem) - 2.5rem) * 4 / 12)',

@@ -29,7 +29,6 @@ export type HighlightBannerSectionProps = {
 
 export type HighlightBannerSectionFields = {
   sectionHeading?: string | null
-  titleLine?: string | null
   heading?: string | null
   body?: unknown[] | null
   ctaLabel?: string | null

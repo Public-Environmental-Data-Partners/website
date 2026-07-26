@@ -11,6 +11,8 @@ export const newsPostTeaserFields = defineType({
       title: 'Excerpt',
       type: 'text',
       rows: 4,
+      description:
+        'Shown on News & Updates hub cards. Also used as the default meta description when SEO is empty.',
       validation: (Rule) =>
         Rule.required().max(500).warning('Consider ≤ 500 chars for the hub listing.'),
     }),
@@ -19,7 +21,9 @@ export const newsPostTeaserFields = defineType({
       title: 'Tags',
       type: 'array',
       of: [defineArrayMember({type: 'string'})],
-      validation: (Rule) => Rule.max(5).warning('Consider ≤ 5 tags on the hub row.'),
+      description:
+        'Optional. Stored in CMS but not currently displayed on hub cards or article pages.',
+      validation: (Rule) => Rule.max(5).warning('Consider ≤ 5 tags.'),
       options: {layout: 'tags'},
     }),
   ],

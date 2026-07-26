@@ -12,11 +12,9 @@ const NEWS_POSTS_SLICE_QUERY = `{
     slug,
     publishedAt,
     postType,
-    eyebrow,
     image ${SANITY_IMAGE_PROJECTION},
     teaser {
-      excerpt,
-      tags
+      excerpt
     }
   },
   "total": count(*[_type == "newsPost" && defined(publishedAt)])

@@ -67,7 +67,8 @@ export const newsPost = defineType({
       title: 'Published date',
       type: 'datetime',
       validation: (Rule) => Rule.required(),
-      description: 'Hub sort order; detail “published …” line; listing “Published: …”.',
+      description:
+        'Required for the post to appear on the hub (newest first). Shown on the article hero and similar-post cards as MM.DD.YY. Not shown on hub listing cards.',
     }),
     defineField({
       name: 'postType',
@@ -99,7 +100,8 @@ export const newsPost = defineType({
       title: 'Author',
       type: 'string',
       validation: (Rule) => Rule.max(120).warning('Consider ≤ 120 chars.'),
-      description: 'Article detail only — e.g. “by Jane Doe”.',
+      description:
+        'Optional. Used in article structured data / link metadata when set. Not shown as a byline on the article page.',
     }),
     defineField({
       name: 'image',
@@ -107,7 +109,7 @@ export const newsPost = defineType({
       type: 'image',
       validation: (Rule) => Rule.required(),
       description:
-        'Shared on hub listing and article detail. Target ~500×400px display; upload at least 1000px wide.',
+        'Shared on hub listing and article detail. Upload at least 1900px wide at a 3:2 aspect ratio (e.g. 1900×1267). Use the hotspot to control the crop.',
       options: {hotspot: true},
       fields: [
         defineField({
@@ -134,7 +136,8 @@ export const newsPost = defineType({
       title: 'Hub teaser',
       type: 'newsPostTeaserFields',
       validation: (Rule) => Rule.required(),
-      description: 'Listing-only copy — excerpt and tags.',
+      description:
+        'Listing-only excerpt for hub cards and default SEO description. Tags are optional and not currently shown on the site.',
     }),
     defineField({
       name: 'seo',

@@ -10,7 +10,6 @@ import {
 
 export type NewsPostTeaserFields = {
   excerpt?: string | null
-  tags?: (string | null)[] | null
 }
 
 export type NewsPostSeoFields = {

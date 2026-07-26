@@ -19,8 +19,7 @@ const NEWS_POST_BY_SLUG_QUERY = `*[
   author,
   image ${SANITY_IMAGE_PROJECTION},
   teaser {
-    excerpt,
-    tags
+    excerpt
   },
   seo {
     title,
