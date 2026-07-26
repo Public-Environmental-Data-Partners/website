@@ -13,15 +13,16 @@ export function OtherWaysSection({sectionHeading, cards}: OtherWaysSectionProps)
 
   return (
     <SectionBand className="bg-light-beige" aria-labelledby={headingId}>
-      <SiteShell>
+      <SiteShell className="pt-[var(--section-padding-y)] pb-16 md:pt-[var(--section-padding-y-md)] md:pb-24">
         <ContentStack className="gap-10 md:gap-12">
-          <h2 id={headingId} className="section-label-heading text-foreground text-center">
+          <h2 id={headingId} className="section-label-heading text-foreground text-left">
             {sectionHeading}
           </h2>
           <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-x-12 md:gap-y-16 lg:grid-cols-3">
             {cards.map((card, index) => (
               <IconCard
                 key={card.keyId}
+                bodyFullWidth
                 icon={
                   <Image
                     src={card.icon.src}

@@ -38,6 +38,10 @@ export type IconCardProps = {
   ctaLabel: string
   href?: string
   external?: boolean
+  /** Horizontal alignment of icon, title, and CTA. Body copy stays left-aligned. */
+  align?: 'center' | 'start'
+  /** Let body copy fill the column instead of the centered prose measure. */
+  bodyFullWidth?: boolean
   /** Center the third card on tablet when used in a 2-column md / 3-column lg grid. */
   centerOnTablet?: boolean
   className?: string
@@ -54,13 +58,16 @@ export function IconCard({
   ctaLabel,
   href,
   external,
+  align = 'center',
+  bodyFullWidth = false,
   centerOnTablet = false,
   className,
 }: IconCardProps) {
   return (
     <article
       className={cn(
-        'flex flex-col items-center text-center',
+        'flex flex-col',
+        align === 'center' ? 'items-center text-center' : 'items-start text-left',
         centerOnTablet &&
           'md:col-span-2 md:mx-auto md:w-full md:max-w-[calc((100%-3rem)/2)] lg:col-span-1 lg:max-w-none',
         className,
@@ -72,7 +79,7 @@ export function IconCard({
       <h3 className="text-foreground mb-10 font-sans text-[1.375rem] font-medium tracking-wide uppercase">
         {title}
       </h3>
-      <div className="mb-8 w-full max-w-prose space-y-4 text-left">
+      <div className={cn('mb-8 w-full space-y-4 text-left', !bodyFullWidth && 'max-w-prose')}>
         <PortableText components={richTextComponents} value={body} />
       </div>
       {href ? (

@@ -12,7 +12,7 @@ import type {ReactNode} from 'react'
 import {contentLinkMark} from '@/components/content/portable-text-link'
 import {ContentLink} from '@/components/content-link'
 import type {HeroImage} from '@/components/hero/hero-image'
-import {Grid12, SectionBand, SiteShell} from '@/components/layout'
+import {Grid12, SectionBand} from '@/components/layout'
 import {type ContactCtaBlock} from '@/components/site-page/contact-section'
 import {Button} from '@/components/ui/button'
 import {resolveContentLink} from '@/lib/content-link'
@@ -117,8 +117,10 @@ export function GetInvolvedIntroSection({
 }: GetInvolvedIntroSectionProps) {
   return (
     <SectionBand className="bg-off-white">
-      <SiteShell padding="grid">
-        <div className="bg-cream px-6 pt-10 pb-10 md:px-8 md:pt-12 md:pb-12 lg:px-10">
+      {/* Cream panel is full-bleed below 1400 (no off-white sidebands) and caps at the
+          1400 grid above it, where the off-white band shows as sidebands. */}
+      <div className="bg-cream mx-auto w-full max-w-site">
+        <div className="px-[var(--site-padding-x)] py-10 md:py-12 lg:px-10">
           <Grid12 className="gap-y-10 lg:gap-y-0 lg:gap-x-12">
             <h1 className="text-foreground col-span-12 min-w-0 font-sans text-[1.375rem] leading-none font-bold tracking-normal uppercase lg:col-span-5 lg:col-start-7 lg:row-start-1 lg:mb-8">
               {title}
@@ -155,7 +157,7 @@ export function GetInvolvedIntroSection({
             ) : null}
           </Grid12>
         </div>
-      </SiteShell>
+      </div>
     </SectionBand>
   )
 }
