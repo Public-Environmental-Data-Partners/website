@@ -1,0 +1,7 @@
+{
+  "setup-worktree-unix": [
+    "pnpm install",
+    "cp \"$ROOT_WORKTREE_PATH/apps/web/.env.local\" apps/web/.env.local 2>/dev/null || true",
+    "cp \"$ROOT_WORKTREE_PATH/apps/studio/.env\" apps/studio/.env 2>/dev/null || true"
+  ]
+}
