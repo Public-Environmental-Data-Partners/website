@@ -94,7 +94,6 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
       _key,
       title,
       photoCredit,
-      authors,
       description,
       chip,
       link${CONTENT_LINK_GROQ},

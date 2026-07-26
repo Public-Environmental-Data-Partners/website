@@ -1,4 +1,4 @@
-/** Thin layout for routes until CMS copy and sections exist (web-build-plan §f). */
+/** Thin layout for routes until CMS copy and sections exist. */
 export function PlaceholderPageShell({
   title,
   description = 'Content for this page is not yet published. Check back soon.',

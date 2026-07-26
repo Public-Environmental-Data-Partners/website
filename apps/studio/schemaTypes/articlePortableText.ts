@@ -3,7 +3,7 @@ import {contentLinkAnnotation} from './contentLink'
 /**
  * Article body Portable Text — Option A styles.
  * H1/H5 omitted (hero owns page H1; H5 ≤ body). Pull quotes use `quoteBlock`.
- * Plan: docs/article-body-heading-typography-plan.md
+ * Spec: docs/architecture/article-components.md
  */
 export const articleBodyPortableTextBlock = {
   type: 'block',

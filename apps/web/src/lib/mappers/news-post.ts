@@ -104,7 +104,7 @@ function formatArticleHeroDate(iso: string): string | null {
   return `${month}.${day}.${year}`
 }
 
-/** v2 article hero — eyebrow → series, publishedAt → MM.DD.YY (docs/blog-components.md). */
+/** v2 article hero — eyebrow → series, publishedAt → MM.DD.YY (docs/architecture/article-components.md). */
 export function mapNewsPostToArticleHeroProps(
   post: NewsPostDetail | null | undefined,
 ): ArticleHeroSectionProps | null {

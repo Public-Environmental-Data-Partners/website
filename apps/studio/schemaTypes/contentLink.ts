@@ -6,7 +6,7 @@ import {validateContentLinkValue} from '../lib/content-link'
 /**
  * Shared CTA / Portable Text link target.
  * Editors choose Internal or External; the custom input writes the matching fields.
- * Plan: docs/content-links-implementation-plan.md
+ * See: docs/ops/content-links-cleanup.md
  */
 export const contentLink = defineType({
   name: 'contentLink',
@@ -105,7 +105,7 @@ export const contentLink = defineType({
 
 /**
  * Portable Text annotation that reuses the `contentLink` object type.
- * Mark def `_type` stays `link` so existing PT mark renderers can adopt gradually.
+ * Mark def `_type` stays `link` so existing PT mark renderers keep working.
  * Requires Sanity ≥ Jan 2026 custom-object annotation support.
  */
 export const contentLinkAnnotation = {

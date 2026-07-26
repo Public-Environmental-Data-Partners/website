@@ -1,7 +1,6 @@
 /*
  * Article body — Grid12 shell, block spacing, column span utilities.
- * Plans: docs/article-body-images-implementation-plan.md
- *         docs/article-body-heading-typography-plan.md
+ * Spec: docs/architecture/article-components.md
  */
 
 [data-slot='article-body-block'] {

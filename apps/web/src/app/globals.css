@@ -99,18 +99,17 @@
   /* Main layout column: 1400px (87.5rem @ 16px root) — layout-system v2. */
   --max-width-site: 87.5rem;
   --max-width-article-prose: var(--article-prose-max-width);
-  /* Layout-system geometry (see docs/layout-system.md) — use via var(), not duplicated calcs */
+  /* Layout-system geometry (see docs/architecture/layout-system.md) — use via var(), not duplicated calcs */
   --spacing-site-padding-x: var(--site-padding-x);
   --spacing-section-padding-y: var(--section-padding-y);
   --spacing-grid-gutter: var(--grid-gutter);
-  --width-site-gutter: var(--site-gutter);
   /* Body large — Figma 22px / 100% line-height (teaser excerpt, etc.) */
   --text-body-lg: 1.375rem;
   --text-body-lg--line-height: 1;
 }
 
 /*
- * Layout-system geometry tokens (v2 — docs/layout-system.md).
+ * Layout-system geometry tokens (v2 — docs/architecture/layout-system.md).
  */
 :root {
   --site-padding-x: 1rem;
@@ -118,11 +117,6 @@
   --grid-gutter: 1.5rem;
   --section-padding-y: 2.5rem;
   --section-padding-y-md: 3.5rem;
-  --site-gutter-offset: 7px;
-  --site-gutter-inset: 1rem;
-  --edge-strip-height: 40px;
-  --image-shelf-height: 50px;
-  --hero-accent-col-width: 1.25rem;
   --text-body-lg-size: 1.375rem;
   --text-body-lg-leading: 1;
   /* Article detail body column — tunable; default matches Tailwind prose (~12 words/line). */
@@ -130,22 +124,11 @@
   --article-image-aspect: 3 / 2;
   --article-image-band-leading-fraction: 90%;
   --article-image-band-trailing-fraction: 10%;
-  /* Shared viewport ↔ site column math (layout-system; used by bleed archetypes). */
-  --site-column-width: min(100vw, var(--max-width-site));
-  --site-column-start: calc((100vw - var(--site-column-width)) / 2);
-  --site-gutter: max(
-    0px,
-    calc(
-      (100vw - min(100vw, var(--max-width-site))) / 2 + var(--site-gutter-inset) -
-        var(--site-gutter-offset)
-    )
-  );
 }
 
 @media (min-width: 768px) {
   :root {
     --site-padding-x: var(--site-padding-x-md);
-    --site-gutter-inset: 2rem;
   }
 }
 

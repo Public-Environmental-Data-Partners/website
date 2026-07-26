@@ -1,5 +1,5 @@
 /*
- * Article detail hero — layered overlap (docs/blog-components.md).
+ * Article detail hero — layered overlap (docs/architecture/article-components.md).
  * Responsive typography @ lg (1024px); tune layout vars from comps as needed.
  */
 
@@ -34,7 +34,7 @@
   }
 }
 
-/* Full-bleed beige in viewport margins @ 1400+; shell inset below (docs/layout-system.md) */
+/* Full-bleed beige in viewport margins @ 1400+; shell inset below (docs/architecture/layout-system.md) */
 [data-slot='article-hero-text-row'] {
   position: relative;
   width: 100%;
@@ -81,7 +81,7 @@
   row-gap: 0;
 }
 
-/* Typography — mobile & tablet share sizes; desktop @ lg (docs/blog-components.md) */
+/* Typography — mobile & tablet share sizes; desktop @ lg (docs/architecture/article-components.md) */
 [data-slot='article-hero-series'],
 [data-slot='article-hero-date'] {
   font-size: 0.875rem;

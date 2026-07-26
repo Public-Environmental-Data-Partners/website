@@ -1,4 +1,4 @@
-/** Shared 12-col span classes for article body blocks — see docs/article-body-images-implementation-plan.md */
+/** Shared 12-col span classes for article body blocks — see docs/architecture/article-components.md */
 export const ARTICLE_BODY_BLOCK_CLASS = 'col-span-12 min-w-0'
 
 /** Prose / rich text: 6 cols centered @ desktop, full width @ tablet/mobile */

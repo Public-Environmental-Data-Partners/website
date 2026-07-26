@@ -1,7 +1,7 @@
 # Content links — Phase 0 inventory queries
 
 Run these in **Sanity Vision** against each dataset before migration.
-Plan: [`docs/content-links-implementation-plan.md`](../../docs/content-links-implementation-plan.md)
+Plan: [`docs/ops/content-links-cleanup.md`](../../docs/ops/content-links-cleanup.md)
 
 ## 1. Legacy CTA / card targets
 

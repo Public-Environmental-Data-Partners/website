@@ -51,7 +51,6 @@ type StoryCardGroq = {
   _key: string
   title?: string | null
   photoCredit?: string | null
-  authors?: string | null
   chip?: string | null
   link?: ContentLinkGroq | null
   image?: SanityImageData

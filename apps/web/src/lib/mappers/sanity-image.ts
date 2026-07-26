@@ -34,7 +34,7 @@ export type SanityImageData = {
   } | null
 } | null
 
-/** Hero upload spec: 3:2 @ min 1900px wide (docs/blog-components.md). */
+/** Hero upload spec: 3:2 @ min 1900px wide (docs/architecture/article-components.md). */
 export const ARTICLE_HERO_IMAGE_WIDTH = 1900
 export const ARTICLE_HERO_IMAGE_HEIGHT = 1267
 
@@ -77,7 +77,7 @@ export function mapSanityImage(image: SanityImageData, fallbackAlt = ''): HeroIm
   }
 }
 
-/** Hotspot-aware article hero crop via Sanity CDN (docs/blog-components.md). */
+/** Hotspot-aware article hero crop via Sanity CDN (docs/architecture/article-components.md). */
 export function mapSanityArticleHeroImage(
   image: SanityImageData,
   fallbackAlt = '',

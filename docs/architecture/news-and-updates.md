@@ -1,0 +1,114 @@
+# News and updates
+
+Current architecture for the News & Updates hub, article detail pages, and the
+homepage carousel integration.
+
+## Surfaces and URLs
+
+| Surface          | URL / component                        |
+| ---------------- | -------------------------------------- |
+| Hub              | `/news-and-updates`                    |
+| Article detail   | `/news-and-updates/<slug>`             |
+| Homepage stories | `cardCarouselSection` / `CarouselCard` |
+
+The hub and article pages use dedicated App Router routes. The hub is not a
+generic `sitePage`.
+
+## Sanity model
+
+### `newsPost`
+
+Important fields:
+
+- `title`, `slug`, `publishedAt`, and hotspot-enabled `image`
+- `postType`: `article`, `news`, `blog`, or `story`
+- optional `eyebrow` and `author`
+- required teaser excerpt and optional teaser tags
+- optional SEO title and description
+- optional article-level audio
+- modular `body`
+- ordered `similarPosts` references
+
+`postType` currently controls the hub card label only. `author` is used by
+structured data but is not rendered as an article byline.
+
+### `newsHubPage`
+
+The singleton `page.newsHub` controls the hub title, intro, SEO, and
+breakpoint-specific initial/load-more counts. Defaults are 9/6/3 for desktop,
+tablet, and mobile.
+
+## Fetching
+
+- Hub and article queries use draft perspective when Next Draft Mode is active
+  and published perspective otherwise.
+- The hub query includes only posts with `publishedAt`, ordered newest first.
+- `GET /api/news-posts?offset=&limit=` serves additional cards; the limit is
+  clamped to 48.
+- Article fetching expands body assets, Portable Text links, audio URLs, and
+  similar-post references.
+
+Both page routes are currently dynamic.
+
+## Hub UI
+
+`NewsHubSection` renders the title, intro, and a responsive grid of
+`NewsHubCard` components.
+
+Cards show:
+
+- image
+- uppercased `postType`
+- title
+- excerpt
+- “Read More” link
+
+Cards currently omit publication date, eyebrow, tags, and author. The client
+chooses the configured initial/load-more batch size using mobile, tablet, and
+desktop media queries.
+
+## Article UI
+
+Article details render the hero, optional audio/share section, modular body, and
+optional similar posts. See
+[`article-components.md`](./article-components.md) for the block and grid
+contracts.
+
+Article metadata includes canonical URL, Open Graph article data, publication
+time, Twitter card data, and a share image when available. Article JSON-LD uses
+the optional author and configured publisher.
+
+Draft preview uses `/api/draft` and `/api/disable-draft`. Sanity Presentation is
+not currently configured.
+
+## Homepage carousel
+
+Homepage `storyCard` content is intentionally curated:
+
+- editors enter its image, title, photo credit, and `contentLink`
+- an internal `contentLink` may reference a `newsPost`
+- the resolver builds `/news-and-updates/<slug>`
+- teaser content is not synchronized from the referenced post
+
+This keeps homepage presentation independent from hub-card presentation.
+`toolCard` remains a separate manual card type.
+
+## Current decisions
+
+- `postType` is a hub card label only; it does not filter listings or change
+  card/layout templates.
+- Hub cards show image, type label, title, excerpt, and “Read More”. They do
+  not show date, eyebrow, tags, or author.
+- Article pages have no visible byline; `author` is used for structured data /
+  metadata only when present.
+- Homepage `storyCard` content stays manually curated. An internal
+  `contentLink` may point at a `newsPost` for the URL, but teaser fields are not
+  synced from that document.
+- Article embeds support YouTube only.
+
+## Deferred
+
+- Automatic “latest posts” carousel mode (vs curated story/tool cards).
+- Sanity Presentation locations for one-click post preview (Draft Mode already
+  exists).
+- Additional embed providers beyond YouTube.

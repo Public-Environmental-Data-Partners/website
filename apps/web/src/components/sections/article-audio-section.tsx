@@ -14,7 +14,7 @@ export type ArticleAudioSectionComponentProps = ArticleAudioSectionProps & {
 /**
  * Optional listen row below the article hero (v2).
  * Heading uses the same prose column as body h2 (@ lg: col 4–9).
- * @see docs/article-audio-implementation-plan.md
+ * @see docs/architecture/article-components.md
  */
 export function ArticleAudioSection({
   audioSrc,

@@ -24,7 +24,7 @@ function imageDimension(value: number | undefined, fallback: number) {
 
 /**
  * Article detail hero (v2). Hotspot-aware Sanity CDN images.
- * @see docs/blog-components.md
+ * @see docs/architecture/article-components.md
  */
 const heroMainCol = 'col-span-10 col-start-2 lg:col-span-8 lg:col-start-3'
 

@@ -4,7 +4,7 @@ import {cn} from '@/lib/utils'
 
 /**
  * 12-column grid inside SiteShell (layout-system v2).
- * Geometry: docs/layout-system.md — 24px gutter via --grid-gutter.
+ * Geometry: docs/architecture/layout-system.md — 24px gutter via --grid-gutter.
  */
 function Grid12({className, ...props}: React.ComponentProps<'div'>) {
   return (

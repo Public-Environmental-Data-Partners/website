@@ -1,6 +1,6 @@
 /*
  * Article figure primitives — image frame, photo credit, caption.
- * Plan: docs/article-body-images-implementation-plan.md (Phase 2+)
+ * Spec: docs/architecture/article-components.md
  */
 
 [data-slot='article-figure-image-frame'] {

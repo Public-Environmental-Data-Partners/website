@@ -8,7 +8,7 @@ import {
 } from '@/lib/mappers/sanity-image'
 import {buildSanityImageUrl} from '@/lib/sanity-image-url'
 
-/** In-body figure display ratio (docs/article-body-images-implementation-plan.md). */
+/** In-body figure display ratio (docs/architecture/article-components.md). */
 export const ARTICLE_FIGURE_ASPECT_WIDTH = 4
 export const ARTICLE_FIGURE_ASPECT_HEIGHT = 3
 

@@ -1,6 +1,6 @@
 /*
  * §09 list-block — article / page body content band.
- * Prototype: docs/layout-prototype.html §09a–§09e
+ * Spec: docs/architecture/article-components.md
  */
 
 [data-slot='list-block'] {
