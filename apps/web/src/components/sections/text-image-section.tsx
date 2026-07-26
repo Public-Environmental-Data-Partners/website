@@ -15,7 +15,8 @@ import {cn} from '@/lib/utils'
 export function TextImageSection({body, image, imagePosition}: TextImageSectionProps) {
   const imageLeft = imagePosition === 'left'
 
-  const textColClass = image && imageLeft ? 'lg:col-start-7 lg:order-2' : 'lg:col-start-2 lg:order-1'
+  const textColClass =
+    image && imageLeft ? 'lg:col-start-7 lg:order-2' : 'lg:col-start-2 lg:order-1'
   const imageColClass = imageLeft
     ? 'lg:col-span-6 lg:col-start-1 lg:order-1'
     : 'lg:col-span-5 lg:col-start-7 lg:order-2'
@@ -35,12 +36,7 @@ export function TextImageSection({body, image, imagePosition}: TextImageSectionP
           </div>
         </div>
       ) : null}
-      <div
-        className={cn(
-          'col-span-12 order-2 min-w-0 lg:col-span-5 lg:row-start-1',
-          textColClass,
-        )}
-      >
+      <div className={cn('col-span-12 order-2 min-w-0 lg:col-span-5 lg:row-start-1', textColClass)}>
         <PortableText components={sectionBodyRichTextComponents} value={body} />
       </div>
     </Grid12>
