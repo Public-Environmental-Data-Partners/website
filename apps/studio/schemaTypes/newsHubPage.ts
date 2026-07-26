@@ -70,24 +70,10 @@ export const newsHubPage = defineType({
     defineField({
       name: 'seo',
       title: 'SEO',
-      type: 'object',
+      type: 'seoFields',
       options: {collapsible: true, collapsed: true},
-      fields: [
-        defineField({
-          name: 'title',
-          title: 'Page title',
-          type: 'string',
-          description: 'Browser tab / search title. Defaults to the hub title when empty.',
-          validation: (Rule) => Rule.max(70).warning('Consider ≤ 70 chars for search results.'),
-        }),
-        defineField({
-          name: 'description',
-          title: 'Meta description',
-          type: 'text',
-          rows: 3,
-          validation: (Rule) => Rule.max(160).warning('Consider ≤ 160 chars.'),
-        }),
-      ],
+      description:
+        'Optional overrides for search and link previews. Leave empty to use the hub title and site default description; shares use the PEDP logo card.',
     }),
   ],
   preview: {

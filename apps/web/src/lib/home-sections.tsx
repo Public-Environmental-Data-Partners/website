@@ -91,6 +91,10 @@ export type HomeSectionGroq =
 
 /** `page.home`, where homepage is defined only by modular `sections[]`. */
 export type PageHomeGroqData = {
+  seo?: {
+    title?: string | null
+    description?: string | null
+  } | null
   sections?: HomeSectionGroq[] | null
 }
 

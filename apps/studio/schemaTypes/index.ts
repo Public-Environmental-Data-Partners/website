@@ -29,6 +29,7 @@ import {newsPostAudio} from './newsPostAudio'
 import {newsPostTeaserFields} from './newsPostTeaserFields'
 import {page} from './page'
 import {quoteBlock} from './quoteBlock'
+import {seoFields} from './seoFields'
 import {siteFooter} from './siteFooter'
 import {siteNavGroup, siteNavigation, siteNavLink} from './siteNavigation'
 import {
@@ -44,6 +45,7 @@ import {
 import {twoImageBlock} from './twoImageBlock'
 
 export const schemaTypes = [
+  seoFields,
   byTheNumbersStat,
   contentLink,
   homeHero,

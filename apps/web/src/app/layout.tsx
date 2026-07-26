@@ -17,9 +17,10 @@ import Script from 'next/script'
 import {DraftPreviewBanner} from '@/components/draft-preview-banner'
 import {ReturnToTopStrip} from '@/components/return-to-top-strip'
 import {SanityLiveRoot} from '@/components/sanity-live-root'
+import {SiteJsonLd} from '@/components/seo/site-json-ld'
 import {SiteFooter} from '@/components/site-footer'
 import {SiteHeader} from '@/components/site-header'
-import {siteDescription, siteName, siteUrl} from '@/config/site'
+import {defaultOgImagePath, siteDescription, siteName, siteUrl} from '@/config/site'
 import {cn} from '@/lib/utils'
 
 const fontSans = Figtree({
@@ -56,11 +57,20 @@ export const metadata: Metadata = {
     siteName,
     title: siteName,
     description: siteDescription,
+    images: [
+      {
+        url: defaultOgImagePath,
+        width: 1200,
+        height: 630,
+        alt: siteName,
+      },
+    ],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: siteName,
     description: siteDescription,
+    images: [defaultOgImagePath],
   },
   robots: {
     index: true,
@@ -92,6 +102,7 @@ export default async function RootLayout({
       )}
     >
       <body id="top" className="flex min-h-full flex-col bg-background text-foreground">
+        <SiteJsonLd />
         {/*
           beforeInteractive: runs early so the first paint can use the right theme.
           Syncs the `dark` class on document.documentElement with prefers-color-scheme and

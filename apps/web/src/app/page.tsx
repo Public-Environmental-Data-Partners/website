@@ -1,14 +1,22 @@
+import type {Metadata} from 'next'
 import {draftMode} from 'next/headers'
+import {cache} from 'react'
 
 import {SiteShell} from '@/components/layout'
+import {siteName} from '@/config/site'
 import {CONTENT_LINK_GROQ, PT_BLOCKS_GROQ} from '@/lib/content-link'
 import {HomeSectionRow, type PageHomeGroqData} from '@/lib/home-sections'
+import {buildPageMetadata, resolveSeoDescription} from '@/lib/metadata/page-seo'
 import {sanityFetch} from '@/sanity/live'
 
 /** Draft preview must not use a single build-time snapshot. */
 export const dynamic = 'force-dynamic'
 
 const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
+  seo {
+    title,
+    description
+  },
   sections[]{
     _type,
     _key,
@@ -119,14 +127,35 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
   }
 }`
 
-export default async function Home() {
+const fetchHomePage = cache(async function fetchHomePage(): Promise<PageHomeGroqData | null> {
   const {isEnabled: isDraftMode} = await draftMode()
   const {data} = await sanityFetch({
     query: HOME_QUERY,
     perspective: isDraftMode ? 'drafts' : 'published',
   })
+  return data as PageHomeGroqData | null
+})
 
-  const doc = data as PageHomeGroqData | null
+export async function generateMetadata(): Promise<Metadata> {
+  const doc = await fetchHomePage()
+  const seoTitle = doc?.seo?.title?.trim()
+  const metadata = buildPageMetadata({
+    title: seoTitle || siteName,
+    description: resolveSeoDescription(doc?.seo),
+    canonicalPath: '/',
+  })
+
+  return {
+    ...metadata,
+    // Avoid "Site Name | Site Name" from the root title template.
+    title: {
+      absolute: seoTitle ? `${seoTitle} | ${siteName}` : siteName,
+    },
+  }
+}
+
+export default async function Home() {
+  const doc = await fetchHomePage()
   const sections = doc?.sections
 
   const hasSections = Array.isArray(sections) && sections.length > 0

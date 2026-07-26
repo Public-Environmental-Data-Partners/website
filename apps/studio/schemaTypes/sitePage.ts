@@ -505,5 +505,13 @@ export const sitePage = defineType({
             return true
           }),
     }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seoFields',
+      options: {collapsible: true, collapsed: true},
+      description:
+        'Optional overrides for search and link previews. Leave empty to use the page title and site default description; shares use the PEDP logo card.',
+    }),
   ],
 })

@@ -34,6 +34,17 @@ Do **not** post preview links or secrets in public channels.
 
 Questions about access or broken preview: **[dev@publicenvirodata.org](mailto:dev@publicenvirodata.org)**.
 
+## SEO (search & sharing)
+
+Most pages and news posts have an optional **SEO** section (collapsed near the bottom of the document).
+
+- **Page title** — browser tab / search title. Leave empty to use the page or article title (homepage falls back to the site name).
+- **Meta description** — search snippet and link-preview text. Leave empty to use the site default description (news posts fall back to the hub excerpt).
+
+Link previews use the page’s share image when available (news hero). Otherwise they use the PEDP logo share card. You do not need to upload a separate social image for normal pages.
+
+New **Site page** documents get these fields automatically.
+
 ## Adding links
 
 CTA buttons, linked cards, and links inside rich text use the same link controls.

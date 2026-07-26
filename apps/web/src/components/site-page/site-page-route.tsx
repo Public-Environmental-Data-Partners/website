@@ -51,6 +51,7 @@ import type {TestimonialSectionFields} from '@/lib/mappers/testimonial-section'
 import {mapTestimonialSectionToProps} from '@/lib/mappers/testimonial-section'
 import type {TextImageSectionFields} from '@/lib/mappers/text-image-section'
 import {mapTextImageSectionToProps} from '@/lib/mappers/text-image-section'
+import {buildPageMetadata, resolveSeoDescription, resolveSeoTitle} from '@/lib/metadata/page-seo'
 import {SANITY_IMAGE_PROJECTION} from '@/lib/queries/sanity-image-projection'
 import {SECTION_LABEL_HEADING_CLASS} from '@/lib/typography'
 import {cn} from '@/lib/utils'
@@ -68,6 +69,10 @@ const SITE_PAGE_BODY_GROQ = `{
 export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][0]{
   title,
   slug,
+  seo {
+    title,
+    description
+  },
   sections[]{
     _type,
     _key,
@@ -239,6 +244,10 @@ export type SitePageSectionGroq =
 
 export type SitePageData = {
   title: string | null
+  seo?: {
+    title?: string | null
+    description?: string | null
+  } | null
   sections?: SitePageSectionGroq[] | null
 }
 
@@ -261,14 +270,16 @@ export const fetchSitePage = cache(async function fetchSitePage(
 export async function sitePageMetadata(slugSegment: string): Promise<Metadata> {
   const {data} = await fetchSitePage(slugSegment)
 
-  const title = data?.title?.trim()
-  if (!data || !title) {
+  const pageTitle = data?.title?.trim()
+  if (!data || !pageTitle) {
     notFound()
   }
 
-  return {
-    title,
-  }
+  return buildPageMetadata({
+    title: resolveSeoTitle(data.seo, pageTitle),
+    description: resolveSeoDescription(data.seo),
+    canonicalPath: `/${slugSegment}`,
+  })
 }
 
 /** Format Sanity `date` (YYYY-MM-DD) as "March 17, 2025" in local calendar terms. */

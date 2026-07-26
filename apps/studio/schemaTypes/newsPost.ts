@@ -142,28 +142,10 @@ export const newsPost = defineType({
     defineField({
       name: 'seo',
       title: 'SEO & sharing',
-      type: 'object',
+      type: 'seoFields',
       options: {collapsible: true, collapsed: true},
       description:
-        'Optional overrides for search and link previews (iMessage, Slack, etc.). Leave empty to use the title, hub excerpt, and hero image.',
-      fields: [
-        defineField({
-          name: 'title',
-          title: 'Page title',
-          type: 'string',
-          description: 'Browser tab / search title. Defaults to the article title when empty.',
-          validation: (Rule) => Rule.max(70).warning('Consider ≤ 70 chars for search results.'),
-        }),
-        defineField({
-          name: 'description',
-          title: 'Meta description',
-          type: 'text',
-          rows: 3,
-          description:
-            'Search snippet and link-preview text. Defaults to the hub excerpt when empty.',
-          validation: (Rule) => Rule.max(160).warning('Consider ≤ 160 chars.'),
-        }),
-      ],
+        'Optional overrides for search and link previews (iMessage, Slack, etc.). Leave empty to use the title, hub excerpt, and hero image (or the PEDP logo card when no hero).',
     }),
     defineField({
       name: 'audio',

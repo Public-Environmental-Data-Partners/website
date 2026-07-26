@@ -2,23 +2,24 @@ import type {Metadata} from 'next'
 
 import {NewsHubSection} from '@/components/news/news-hub-section'
 import {mapNewsPostToHubCardProps} from '@/lib/mappers/news-post'
+import {buildPageMetadata, resolveSeoDescription, resolveSeoTitle} from '@/lib/metadata/page-seo'
 import {getNewsHubPage, resolveNewsHubLoadConfig} from '@/lib/queries/news-hub-page'
 import {getNewsPostsSlice} from '@/lib/queries/news-posts'
 
 export const dynamic = 'force-dynamic'
 
 const DEFAULT_TITLE = 'News & Updates'
+const NEWS_HUB_PATH = '/news-and-updates'
 
 export async function generateMetadata(): Promise<Metadata> {
   const hub = await getNewsHubPage()
-  const seoTitle = hub?.seo?.title?.trim()
-  const description = hub?.seo?.description?.trim()
-  const title = seoTitle || hub?.title?.trim() || DEFAULT_TITLE
+  const title = resolveSeoTitle(hub?.seo, hub?.title?.trim() || DEFAULT_TITLE)
 
-  return {
+  return buildPageMetadata({
     title,
-    ...(description ? {description} : {}),
-  }
+    description: resolveSeoDescription(hub?.seo),
+    canonicalPath: NEWS_HUB_PATH,
+  })
 }
 
 export default async function NewsAndUpdatesPage() {
