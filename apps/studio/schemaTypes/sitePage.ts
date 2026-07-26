@@ -127,6 +127,78 @@ export const aboutIntro = defineType({
 })
 
 /**
+ * Reusable text + image row (How We Work and peers). Leave the illustration
+ * empty for a text-only row in the same column as the rows above and below.
+ */
+export const textImageSection = defineType({
+  name: 'textImageSection',
+  title: 'Text + image',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'body',
+      title: 'Body',
+      type: 'array',
+      of: [sectionPortableTextBlock],
+      description: 'Paragraphs and bullets. Bold the lead-in of a bullet to match the design.',
+      validation: (Rule) => Rule.required().min(1),
+    }),
+    defineField({
+      name: 'image',
+      title: 'Illustration',
+      type: 'image',
+      description:
+        'Optional. Upload 4:3 at min 900px wide; set hotspot to control the crop. Leave empty for a text-only row.',
+      options: {hotspot: true},
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative text',
+          type: 'string',
+          validation: (Rule) =>
+            Rule.max(160).custom((alt, context) => {
+              const parent = context.parent as {asset?: unknown} | undefined
+              if (!parent?.asset) {
+                return true
+              }
+              return typeof alt === 'string' && alt.trim()
+                ? true
+                : 'Alternative text is required when an illustration is set.'
+            }),
+        }),
+      ],
+    }),
+    defineField({
+      name: 'imagePosition',
+      title: 'Image position',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Image left', value: 'left'},
+          {title: 'Image right', value: 'right'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'right',
+      hidden: ({parent}) => !(parent as {image?: {asset?: unknown}} | undefined)?.image?.asset,
+    }),
+  ],
+  preview: {
+    select: {media: 'image', body: 'body', imagePosition: 'imagePosition'},
+    prepare({media, body, imagePosition}) {
+      const blockCount = Array.isArray(body) ? body.length : 0
+      const blocks = `${blockCount} block${blockCount === 1 ? '' : 's'}`
+      const side = media ? (imagePosition === 'left' ? 'Image left' : 'Image right') : 'Text only'
+      return {
+        title: 'Text + image',
+        subtitle: `${side} · ${blocks}`,
+        media,
+      }
+    },
+  },
+})
+
+/**
  * Full-width contact card. Editors can place CTA button blocks anywhere in
  * the rich-text flow (for example, between support copy and a GitHub note).
  */
@@ -289,6 +361,7 @@ export const sitePage = defineType({
         {type: 'simpleSection'},
         {type: 'legalDocumentSection'},
         {type: 'aboutIntro'},
+        {type: 'textImageSection'},
         {type: 'contactHero'},
         {type: 'contactSection'},
         {type: 'donateFormSection'},
@@ -303,7 +376,7 @@ export const sitePage = defineType({
         {type: 'sectionSpacer'},
       ],
       description:
-        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero; Donate pages start with Donate form; Get Involved pages start with Get Involved intro.',
+        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero; Donate pages start with Donate form; Get Involved pages start with Get Involved intro; How We Work-style pages start with Text + image.',
       validation: (Rule) =>
         Rule.required()
           .min(1)

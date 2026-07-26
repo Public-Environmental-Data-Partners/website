@@ -44,6 +44,7 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
     },
     quote[]${PT_BLOCKS_GROQ},
     attribution,
+    surface,
     useMarquee,
     partners[]{
       name,

@@ -765,6 +765,20 @@ export const testimonialSection = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'surface',
+      title: 'Band color',
+      type: 'string',
+      description: 'Dark blue band with light text, or light blue band with dark text.',
+      options: {
+        list: [
+          {title: 'Dark blue', value: 'dark'},
+          {title: 'Light blue', value: 'light'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'dark',
+    }),
+    defineField({
       name: 'attribution',
       title: 'Attribution (name)',
       type: 'string',

@@ -21,6 +21,9 @@ const buttonVariants = cva(
         /** Light-blue CTA on dark bands (e.g. Testimonial “Get Involved”). */
         lightBlue:
           'border-transparent bg-light-blue text-dark-blue hover:bg-light-blue/90 aria-expanded:bg-light-blue',
+        /** Dark-blue CTA on light bands (e.g. light Testimonial “Get Involved”). */
+        darkBlue:
+          'border-transparent bg-dark-blue text-light-blue hover:bg-dark-blue/90 aria-expanded:bg-dark-blue',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
         ghost:

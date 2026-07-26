@@ -39,6 +39,7 @@ import {
   legalDocumentSection,
   simpleSection,
   sitePage,
+  textImageSection,
 } from './sitePage'
 import {twoImageBlock} from './twoImageBlock'
 
@@ -70,6 +71,7 @@ export const schemaTypes = [
   otherWaysSection,
   simpleSection,
   legalDocumentSection,
+  textImageSection,
   sitePage,
   siteNavLink,
   siteNavGroup,

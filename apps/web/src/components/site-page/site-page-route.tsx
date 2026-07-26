@@ -8,10 +8,11 @@ import {DonateMainBand} from '@/components/donate/donate-main-band'
 import {DonorWallSection} from '@/components/donate/donor-wall-section'
 import {NewsletterSection} from '@/components/home/newsletter-section'
 import {SectionSpacer} from '@/components/home/section-spacer'
-import {Grid12, SiteShell} from '@/components/layout'
+import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
 import {PartnerLogosSection} from '@/components/sections/partner-logos-section'
 import {TestimonialSection} from '@/components/sections/testimonial-section'
+import {TextImageSection} from '@/components/sections/text-image-section'
 import {AboutIntroSection} from '@/components/site-page/about-intro-section'
 import {ContactHeroSection} from '@/components/site-page/contact-hero-section'
 import {type ContactCtaBlock, ContactSection} from '@/components/site-page/contact-section'
@@ -48,7 +49,10 @@ import {mapPartnerLogosSectionToProps} from '@/lib/mappers/partner-logos-section
 import {mapSanityImage, type SanityImageData} from '@/lib/mappers/sanity-image'
 import type {TestimonialSectionFields} from '@/lib/mappers/testimonial-section'
 import {mapTestimonialSectionToProps} from '@/lib/mappers/testimonial-section'
+import type {TextImageSectionFields} from '@/lib/mappers/text-image-section'
+import {mapTextImageSectionToProps} from '@/lib/mappers/text-image-section'
 import {SANITY_IMAGE_PROJECTION} from '@/lib/queries/sanity-image-projection'
+import {SECTION_LABEL_HEADING_CLASS} from '@/lib/typography'
 import {cn} from '@/lib/utils'
 import {sanityFetch} from '@/sanity/live'
 
@@ -72,6 +76,8 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     body[]${SITE_PAGE_BODY_GROQ},
     callout[]${SITE_PAGE_BODY_GROQ},
     image${SANITY_IMAGE_PROJECTION},
+    imagePosition,
+    surface,
     presentation,
     emailPlaceholder,
     submitLabel,
@@ -147,6 +153,11 @@ export type AboutIntroGroq = {
   image?: SanityImageData
 }
 
+export type TextImageSectionGroq = {
+  _type: 'textImageSection'
+  _key: string
+} & TextImageSectionFields
+
 export type ContactHeroGroq = {
   _type: 'contactHero'
   _key: string
@@ -212,6 +223,7 @@ export type SitePageSectionGroq =
   | SimpleSectionGroq
   | LegalDocumentSectionGroq
   | AboutIntroGroq
+  | TextImageSectionGroq
   | ContactHeroGroq
   | ContactSectionGroq
   | DonateFormSectionGroq
@@ -319,6 +331,16 @@ function renderMarketingSection(section: SitePageSectionGroq) {
         <ContactSection key={section._key} sectionHeading={sectionHeading} body={body} />
       ) : null
     }
+    case 'textImageSection': {
+      const props = mapTextImageSectionToProps(section)
+      return props ? (
+        <SectionBand key={section._key} className="bg-off-white">
+          <SiteShell padding="grid" className="bg-cream py-10 md:py-12">
+            <TextImageSection {...props} />
+          </SiteShell>
+        </SectionBand>
+      ) : null
+    }
     case 'partnerLogosSection': {
       const props = mapPartnerLogosSectionToProps(section)
       return props ? (
@@ -369,6 +391,44 @@ function renderAboutPageSection(section: SitePageSectionGroq, pageTitle: string)
     default:
       return renderMarketingSection(section)
   }
+}
+
+/**
+ * How We Work-style page: the page title and the leading run of Text + image
+ * rows share one cream shell so the band reads as a single surface, with
+ * off-white viewport rails above 1400px. Later sections keep their own bands.
+ */
+function TextImagePageBody({title, sections}: {title: string; sections: SitePageSectionGroq[]}) {
+  const leadingRowCount = sections.findIndex((section) => section._type !== 'textImageSection')
+  const splitAt = leadingRowCount === -1 ? sections.length : leadingRowCount
+  const rows = sections.slice(0, splitAt) as TextImageSectionGroq[]
+  const remainingSections = sections.slice(splitAt)
+
+  return (
+    <div className="flex flex-1 flex-col bg-off-white font-sans">
+      <SectionBand className="bg-off-white">
+        <SiteShell padding="grid" className="bg-cream pt-10 pb-12 md:pt-12 md:pb-16">
+          <div className="flex flex-col gap-8 md:gap-12">
+            <Grid12>
+              <h1
+                className={cn(
+                  SECTION_LABEL_HEADING_CLASS,
+                  'text-off-black col-span-12 min-w-0 lg:col-span-5 lg:col-start-2',
+                )}
+              >
+                {title}
+              </h1>
+            </Grid12>
+            {rows.map((row) => {
+              const props = mapTextImageSectionToProps(row)
+              return props ? <TextImageSection key={row._key} {...props} /> : null
+            })}
+          </div>
+        </SiteShell>
+      </SectionBand>
+      {remainingSections.map((section) => renderMarketingSection(section))}
+    </div>
+  )
 }
 
 function renderContactPageSection(section: SitePageSectionGroq, pageTitle: string) {
@@ -496,6 +556,11 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
         {sections.map((section) => renderAboutPageSection(section, title))}
       </div>
     )
+  }
+
+  const isTextImagePage = sections[0]?._type === 'textImageSection'
+  if (isTextImagePage) {
+    return <TextImagePageBody title={title} sections={sections} />
   }
 
   const isContactPage = sections[0]?._type === 'contactHero'
