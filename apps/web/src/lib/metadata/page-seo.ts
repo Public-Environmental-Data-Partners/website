@@ -31,10 +31,7 @@ export type PageSeoContent = {
 }
 
 /** CMS SEO title, else document/page title. */
-export function resolveSeoTitle(
-  seo: CmsSeoFields | undefined,
-  fallbackTitle: string,
-): string {
+export function resolveSeoTitle(seo: CmsSeoFields | undefined, fallbackTitle: string): string {
   return seo?.title?.trim() || fallbackTitle.trim()
 }
 

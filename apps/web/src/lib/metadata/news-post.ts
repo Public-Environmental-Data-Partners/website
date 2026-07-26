@@ -87,7 +87,9 @@ export function buildNewsPostArticleJsonLd(seo: NewsPostSeoContent): Record<stri
       '@type': 'WebPage',
       '@id': canonicalUrl,
     },
-    ...(imageSrc ? {image: [imageSrc.startsWith('http') ? imageSrc : new URL(imageSrc, siteUrl).href]} : {}),
+    ...(imageSrc
+      ? {image: [imageSrc.startsWith('http') ? imageSrc : new URL(imageSrc, siteUrl).href]}
+      : {}),
     ...(seo.author ? {author: formatJsonLdAuthor(seo.author)} : {}),
     publisher: {
       '@type': 'Organization',
