@@ -16,7 +16,6 @@ import {ARTICLE_COL_PROSE_CLASS} from '@/lib/article-body-grid'
 import {CONTENT_LINK_GROQ, PT_BLOCKS_GROQ, PT_MARK_DEFS_GROQ} from '@/lib/content-link'
 import type {ByTheNumbersSectionFields} from '@/lib/mappers/by-the-numbers-section'
 import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
-import {pickContactSectionHeading} from '@/lib/mappers/content-field-compat'
 import type {NewsletterSectionFields} from '@/lib/mappers/newsletter-section'
 import {mapNewsletterSectionToProps} from '@/lib/mappers/newsletter-section'
 import {mapSanityImage, type SanityImageData} from '@/lib/mappers/sanity-image'
@@ -48,7 +47,6 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     presentation,
     emailPlaceholder,
     submitLabel,
-    kicker,
     sectionHeading,
     prompt,
     quote[]${PT_BLOCKS_GROQ},
@@ -91,8 +89,6 @@ export type ContactSectionGroq = {
   _type: 'contactSection'
   _key: string
   sectionHeading?: string | null
-  kicker?: string | null
-  heading?: string | null
   body?: Array<PortableTextBlock | ContactCtaBlock> | null
 }
 
@@ -204,7 +200,7 @@ function renderMarketingSection(section: SitePageSectionGroq) {
       return props ? <NewsletterSection key={section._key} {...props} /> : null
     }
     case 'contactSection': {
-      const sectionHeading = pickContactSectionHeading(section)
+      const sectionHeading = section.sectionHeading?.trim()
       const body = section.body ?? []
       return sectionHeading && body.length > 0 ? (
         <ContactSection key={section._key} sectionHeading={sectionHeading} body={body} />
@@ -230,7 +226,7 @@ function renderContactPageSection(section: SitePageSectionGroq, pageTitle: strin
       ) : null
     }
     case 'contactSection': {
-      const sectionHeading = pickContactSectionHeading(section)
+      const sectionHeading = section.sectionHeading?.trim()
       const body = section.body ?? []
       return sectionHeading && body.length > 0 ? (
         <ContactSection key={section._key} sectionHeading={sectionHeading} body={body} />

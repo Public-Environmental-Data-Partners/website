@@ -83,35 +83,13 @@ For each role, align all layers:
 HTML semantics remain independent of the stored field name. For example, a
 `sectionHeading` may correctly render as an `h2` when it labels a section.
 
-## Current interim state
+## Rollout status
 
-Web mappers dual-read legacy and target fields, while Studio still stores
-legacy keys until the coordinated migration.
+This vocabulary is fully applied. Every section label is stored as
+`sectionHeading`, and the newsletter instructional line is stored as `prompt`,
+in Studio schemas, previews, GROQ projections, types, mappers, and React props.
 
-Equivalent section headings are currently stored under a mixture of:
-
-- `sectionHeading` — card carousel (already target)
-- `heading` — What We Do and partner logos
-- `kicker` — By the Numbers, highlight banner, newsletter, testimonial, and
-  contact sections
-
-The newsletter prompt is currently stored as `heading`.
-
-Studio titles for those labels should say **Section heading** / **Prompt**.
-Web components and mapper outputs already use `sectionHeading` / `prompt` and
-accept either stored shape.
-
-Until the coordinated migration is implemented, preserve those existing stored
-field names so published content continues to render.
-
-## Migration target
-
-A future coordinated migration should:
-
-- rename all section-label fields to `sectionHeading`
-- rename the newsletter instructional `heading` to `prompt`
-- update schemas, previews, projections, types, mappers, and React props in the
-  same change
-- migrate both draft and published documents in every active dataset
-- verify the homepage, Contact page, and all reusable section renderers before
-  removing compatibility reads
+The `apps/studio/migrations/rename-section-labels-to-section-heading` migration
+moved the legacy `kicker` and label-role `heading` values into place. No
+compatibility reads remain, so new section types should adopt these names
+directly.

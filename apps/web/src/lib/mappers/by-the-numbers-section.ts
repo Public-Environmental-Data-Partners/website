@@ -1,7 +1,6 @@
 import type {PortableTextBlock} from '@portabletext/react'
 
 import {type ContentLinkGroq, resolveContentLink} from '@/lib/content-link'
-import {pickSectionHeadingFromKicker} from '@/lib/mappers/content-field-compat'
 
 export const BY_THE_NUMBERS_ICONS = ['dataDb', 'members', 'projects'] as const
 
@@ -43,8 +42,6 @@ export type ByTheNumbersStatFields = {
 
 export type ByTheNumbersSectionFields = {
   sectionHeading?: string | null
-  /** Legacy section label. */
-  kicker?: string | null
   stats?: ByTheNumbersStatFields[] | null
 }
 
@@ -83,7 +80,7 @@ function mapStat(item: ByTheNumbersStatFields, index: number): ByTheNumbersStatP
 export function mapByTheNumbersSectionToProps(
   data: ByTheNumbersSectionFields | null | undefined,
 ): ByTheNumbersSectionProps | null {
-  const sectionHeading = pickSectionHeadingFromKicker(data ?? {})
+  const sectionHeading = data?.sectionHeading?.trim()
   if (!sectionHeading) {
     return null
   }

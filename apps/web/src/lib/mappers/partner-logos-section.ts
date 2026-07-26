@@ -1,5 +1,4 @@
 import type {PartnerLogosSectionProps} from '@/components/sections/partner-logos-section'
-import {pickSectionHeadingFromHeading} from '@/lib/mappers/content-field-compat'
 
 type SanityLogo = {
   alt?: string | null
@@ -23,8 +22,6 @@ type SanityPartner = {
 
 export type PartnerLogosSectionFields = {
   sectionHeading?: string | null
-  /** Legacy section label. */
-  heading?: string | null
   partners?: SanityPartner[] | null
   useMarquee?: boolean | null
 }
@@ -60,7 +57,7 @@ export function mapPartnerLogosSectionToProps(
   }
 
   return {
-    sectionHeading: pickSectionHeadingFromHeading(data ?? {}) || 'Our partners',
+    sectionHeading: data?.sectionHeading?.trim() || 'Our partners',
     partners,
     useMarquee: data?.useMarquee === true,
   }

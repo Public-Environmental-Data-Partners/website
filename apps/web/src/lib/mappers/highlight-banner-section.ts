@@ -1,5 +1,4 @@
 import {type ContentLinkGroq, resolveContentLink} from '@/lib/content-link'
-import {pickSectionHeadingFromKicker} from '@/lib/mappers/content-field-compat'
 
 type SanityImageData = {
   alt?: string | null
@@ -30,8 +29,6 @@ export type HighlightBannerSectionProps = {
 
 export type HighlightBannerSectionFields = {
   sectionHeading?: string | null
-  /** Legacy section label. */
-  kicker?: string | null
   titleLine?: string | null
   heading?: string | null
   body?: unknown[] | null
@@ -60,7 +57,7 @@ function mapBannerImage(
 export function mapHighlightBannerSectionToProps(
   data: HighlightBannerSectionFields | null | undefined,
 ): HighlightBannerSectionProps | null {
-  const sectionHeading = pickSectionHeadingFromKicker(data ?? {})
+  const sectionHeading = data?.sectionHeading?.trim()
   const heading = data?.heading?.trim()
   if (!sectionHeading || !heading) {
     return null

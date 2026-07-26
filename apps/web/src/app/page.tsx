@@ -61,7 +61,6 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
         }
       }
     },
-    kicker,
     sectionHeading,
     prompt,
     stats[]{

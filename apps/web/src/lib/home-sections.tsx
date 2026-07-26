@@ -14,6 +14,7 @@ import {mapCardCarouselSectionToProps} from '@/lib/mappers/card-carousel-section
 import type {HomeHeroFields} from '@/lib/mappers/hero-block'
 import {mapHeroBlockToProps} from '@/lib/mappers/hero-block'
 import {mapHighlightBannerSectionToProps} from '@/lib/mappers/highlight-banner-section'
+import type {NewsletterSectionFields} from '@/lib/mappers/newsletter-section'
 import {mapNewsletterSectionToProps} from '@/lib/mappers/newsletter-section'
 import type {PartnerLogosSectionFields} from '@/lib/mappers/partner-logos-section'
 import {mapPartnerLogosSectionToProps} from '@/lib/mappers/partner-logos-section'
@@ -26,7 +27,6 @@ type HighlightBannerSectionGroq = {
   _type: 'highlightBannerSection'
   _key: string
   sectionHeading?: string | null
-  kicker?: string | null
   titleLine?: string | null
   heading?: string | null
   body?: unknown[] | null
@@ -70,14 +70,7 @@ type CardCarouselSectionGroq = {
 type NewsletterSectionGroq = {
   _type: 'newsletterSection'
   _key: string
-  presentation?: 'homepage' | 'contact' | null
-  sectionHeading?: string | null
-  kicker?: string | null
-  prompt?: string | null
-  heading?: string | null
-  emailPlaceholder?: string | null
-  submitLabel?: string | null
-}
+} & NewsletterSectionFields
 
 type SectionSpacerGroq = {
   _type: 'sectionSpacer'
