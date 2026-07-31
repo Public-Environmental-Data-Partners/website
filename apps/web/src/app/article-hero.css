@@ -67,6 +67,10 @@
   padding-bottom: var(--article-hero-image-overlap);
 }
 
+[data-slot='article-hero'][data-hero-layout='text-only'] [data-slot='article-hero-text-panel'] {
+  padding-bottom: var(--article-hero-text-panel-pt);
+}
+
 [data-slot='article-hero-figure'] {
   position: relative;
   z-index: 2;
@@ -75,6 +79,10 @@
   aspect-ratio: var(--article-hero-image-aspect);
   overflow: hidden;
   background: #c8c8c8;
+}
+
+[data-slot='article-hero'][data-hero-layout='image-only'] [data-slot='article-hero-figure'] {
+  margin-top: 0;
 }
 
 [data-slot='article-hero-image-grid'] {

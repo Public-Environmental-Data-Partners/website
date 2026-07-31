@@ -109,8 +109,8 @@ This keeps homepage presentation independent from hub-card presentation.
 
 ## Current decisions
 
-- `postType` is a hub card label only; it does not filter listings or change
-  card/layout templates.
+- `postType` is a hub card label for article, blog, and news. For `story`, it
+  also unlocks detail-page display toggles for title, date, and hero image.
 - Hub cards show image, type label, title, excerpt, and “Read More”. They do
   not show date, eyebrow, tags, or author.
 - Article pages have no visible byline; `author` is used for structured data /
@@ -118,11 +118,15 @@ This keeps homepage presentation independent from hub-card presentation.
 - Homepage `storyCard` content stays manually curated. An internal
   `contentLink` may point at a `newsPost` for the URL, but teaser fields are not
   synced from that document.
-- Article embeds support YouTube only.
+- Article embeds support YouTube and pages on `elhamyali.com` /
+  `www.elhamyali.com` (tall iframe with optional open-link controls).
+- Story detail toggles (`showTitleOnPage`, `showDateOnPage`,
+  `showHeroImageOnPage`) default to off. Title, date, and image remain required
+  in Studio for hub sorting, cards, and SEO.
 
 ## Deferred
 
 - Automatic “latest posts” carousel mode (vs curated story/tool cards).
 - Sanity Presentation locations for one-click post preview (Draft Mode already
   exists).
-- Additional embed providers beyond YouTube.
+- Additional embed providers beyond YouTube and elhamyali.com.

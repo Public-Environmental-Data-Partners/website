@@ -50,6 +50,18 @@ classes live in `apps/web/src/lib/article-body-grid.ts`.
 
 Two-up images switch from stacked to 6+6 at `md`.
 
+## Embeds
+
+`embedBlock` resolves through an allowlisted provider registry
+(`apps/web/src/lib/embed-providers`).
+
+| Provider   | URLs                                      | Layout                                      |
+| ---------- | ----------------------------------------- | ------------------------------------------- |
+| YouTube    | watch / youtu.be / embed / shorts / live  | 16:9 (`aspect-video`)                       |
+| Elham Ali  | `elhamyali.com` and `www.elhamyali.com`   | Fixed height (`80vh`) with optional caption and “Open full story” link |
+
+Unsupported URLs render nothing. CSP `frame-src` must include each provider host.
+
 ## Hero
 
 - Series text comes from `eyebrow`.
@@ -59,6 +71,11 @@ Two-up images switch from stacked to 6+6 at `md`.
   `PHOTO CREDIT:` prefixes.
 - The text and image regions use an 8-column centered span at `lg` and a
   10-column centered span below it.
+- Stories (`postType: story`) keep title, published date, and hero image
+  required for the hub and SEO. Studio toggles (default off) control whether
+  each appears on the detail page. A hidden title still renders as an
+  `sr-only` `h1`. Partial heroes omit empty chrome (text-only, image-only, or
+  heading-only).
 
 ## Body typography
 

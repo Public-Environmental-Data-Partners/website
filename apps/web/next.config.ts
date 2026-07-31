@@ -2,7 +2,8 @@ import type {NextConfig} from 'next'
 
 /**
  * frame-src only: unspecified CSP directives remain unrestricted.
- * Includes Donorbox (donate embeds) and YouTube (article embeds).
+ * Includes Donorbox (donate embeds), YouTube (article embeds), and
+ * elhamyali.com story embeds.
  * When a fuller CSP is added site-wide, keep these origins in frame-src and
  * add donorbox.org to script-src for widget.js.
  */
@@ -13,6 +14,8 @@ const FRAME_SRC = [
   'https://www.youtube.com',
   'https://www.youtube-nocookie.com',
   'https://youtube.com',
+  'https://elhamyali.com',
+  'https://www.elhamyali.com',
 ].join(' ')
 
 const nextConfig: NextConfig = {

@@ -17,6 +17,10 @@ function isNewsPostType(document: {_type?: string; postType?: unknown} | undefin
   return document?.postType === 'news'
 }
 
+function isStoryPostType(document: {_type?: string; postType?: unknown} | undefined): boolean {
+  return document?.postType === 'story'
+}
+
 /** On-site articles only — News posts are external hub cards with no slug page. */
 const INTERNAL_NEWS_POST_FILTER =
   '_type == "newsPost" && postType != "news" && _id != $publishedId && _id != $draftId'
@@ -31,6 +35,8 @@ export const newsPost = defineType({
       title: 'Title',
       type: 'string',
       validation: (Rule) => Rule.required().max(160).warning('Consider ≤ 160 chars.'),
+      description:
+        'Required for hub cards and SEO. Stories can hide the title on the detail page via “Show title on story page”.',
     }),
     defineField({
       name: 'slug',
@@ -83,7 +89,7 @@ export const newsPost = defineType({
       type: 'datetime',
       validation: (Rule) => Rule.required(),
       description:
-        'Required for the post to appear on the hub (newest first). Shown on the article hero and similar-post cards as MM.DD.YY. Not shown on hub listing cards.',
+        'Required for the post to appear on the hub (newest first). Shown on the article hero and similar-post cards as MM.DD.YY (Stories can hide the date on the detail page). Not shown on hub listing cards.',
     }),
     defineField({
       name: 'postType',
@@ -101,7 +107,31 @@ export const newsPost = defineType({
       initialValue: 'article',
       validation: (Rule) => Rule.required(),
       description:
-        'Shown as the category label on News & Updates hub cards (e.g. ARTICLE, BLOG). News posts link externally and have no on-site article page.',
+        'Shown as the category label on News & Updates hub cards (e.g. ARTICLE, BLOG). News posts link externally and have no on-site article page. Stories can hide title, date, and hero image on the detail page while keeping them for the hub and SEO.',
+    }),
+    defineField({
+      name: 'showTitleOnPage',
+      title: 'Show title on story page',
+      type: 'boolean',
+      initialValue: false,
+      hidden: ({document}) => !isStoryPostType(document),
+      description: 'When off, the title stays required for the hub and SEO but is visually hidden on the story page (screen-reader heading still present).',
+    }),
+    defineField({
+      name: 'showDateOnPage',
+      title: 'Show date on story page',
+      type: 'boolean',
+      initialValue: false,
+      hidden: ({document}) => !isStoryPostType(document),
+      description: 'When off, the published date is still used for hub sorting but is not shown on the story page hero.',
+    }),
+    defineField({
+      name: 'showHeroImageOnPage',
+      title: 'Show hero image on story page',
+      type: 'boolean',
+      initialValue: false,
+      hidden: ({document}) => !isStoryPostType(document),
+      description: 'When off, the hero image still appears on hub cards but is omitted from the story page.',
     }),
     defineField({
       name: 'externalUrl',
@@ -153,7 +183,7 @@ export const newsPost = defineType({
       type: 'image',
       validation: (Rule) => Rule.required(),
       description:
-        'Shared on hub listing and article detail. Upload at least 1900px wide at a 3:2 aspect ratio (e.g. 1900×1267). Use the hotspot to control the crop.',
+        'Required for hub listing cards. Also used on article/blog detail heroes (Stories can hide it on the detail page). Upload at least 1900px wide at a 3:2 aspect ratio (e.g. 1900×1267). Use the hotspot to control the crop.',
       options: {hotspot: true},
       fields: [
         defineField({

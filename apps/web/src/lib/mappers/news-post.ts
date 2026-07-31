@@ -45,6 +45,9 @@ export type NewsPostListItem = {
 }
 
 export type NewsPostDetail = NewsPostListItem & {
+  showTitleOnPage?: boolean | null
+  showDateOnPage?: boolean | null
+  showHeroImageOnPage?: boolean | null
   audio?: NewsPostAudioFields
   body?: unknown
   similarPosts?: (NewsPostListItem | null)[] | null
@@ -157,12 +160,18 @@ export function mapNewsPostToArticleHeroProps(
     return null
   }
 
+  const isStory = post.postType?.trim().toLowerCase() === 'story'
+  const showTitle = isStory ? post.showTitleOnPage === true : true
+  const showDate = isStory ? post.showDateOnPage === true : true
+  const showImage = isStory ? post.showHeroImageOnPage === true : true
+
   return {
     title,
-    date,
-    image,
+    showTitle,
+    date: showDate ? date : undefined,
+    image: showImage ? image : undefined,
     seriesName: post.eyebrow?.trim() || undefined,
-    photoCredit: formatPhotoCredit(post.image?.credit),
+    photoCredit: showImage ? formatPhotoCredit(post.image?.credit) : undefined,
   }
 }
 

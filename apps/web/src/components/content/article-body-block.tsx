@@ -63,6 +63,8 @@ export type EmbedBlockEntry = {
   _key?: string
   url?: string | null
   caption?: string | null
+  showOpenLink?: boolean | null
+  openLinkLabel?: string | null
 }
 
 export type ListBlockEntry = {
@@ -199,7 +201,14 @@ export function ArticleBodyBlock({block}: ArticleBodyBlockProps) {
     if (!embed) {
       return null
     }
-    return <EmbedBlock caption={block.caption} embed={embed} />
+    return (
+      <EmbedBlock
+        caption={block.caption}
+        embed={embed}
+        openLinkLabel={block.openLinkLabel}
+        showOpenLink={block.showOpenLink}
+      />
+    )
   }
 
   if (isListBlockEntry(block)) {

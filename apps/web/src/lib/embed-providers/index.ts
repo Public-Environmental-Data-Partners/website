@@ -1,8 +1,11 @@
+import {elhamyaliEmbedProvider} from '@/lib/embed-providers/elhamyali'
 import type {EmbedProvider, ResolvedEmbed} from '@/lib/embed-providers/types'
 import {youtubeEmbedProvider} from '@/lib/embed-providers/youtube'
 
 /** Allowlisted iframe embed providers — add entries here as new hosts are supported. */
-export const EMBED_PROVIDERS: EmbedProvider[] = [youtubeEmbedProvider]
+export const EMBED_PROVIDERS: EmbedProvider[] = [youtubeEmbedProvider, elhamyaliEmbedProvider]
+
+export {isElhamyaliEmbedUrl, isElhamyaliHost} from '@/lib/embed-providers/elhamyali'
 
 export function resolveEmbedUrl(rawUrl: string): ResolvedEmbed | null {
   const trimmed = rawUrl.trim()

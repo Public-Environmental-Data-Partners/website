@@ -6,7 +6,8 @@ export type ResolvedEmbed = {
   src: string
   title: string
   aspect: EmbedAspect
-  fixedHeight?: number
+  /** Pixel height (number) or CSS length (e.g. `80vh`) for `aspect: 'fixed'`. */
+  fixedHeight?: number | string
 }
 
 export type EmbedProvider = {
