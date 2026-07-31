@@ -13,6 +13,14 @@ function siblingDocumentIds(documentId: string | undefined): string[] {
   return Array.from(new Set([documentId, `drafts.${base}`, base]))
 }
 
+function isNewsPostType(document: {_type?: string; postType?: unknown} | undefined): boolean {
+  return document?.postType === 'news'
+}
+
+/** On-site articles only — News posts are external hub cards with no slug page. */
+const INTERNAL_NEWS_POST_FILTER =
+  '_type == "newsPost" && postType != "news" && _id != $publishedId && _id != $draftId'
+
 export const newsPost = defineType({
   name: 'newsPost',
   title: 'News post',
@@ -28,13 +36,17 @@ export const newsPost = defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
+      hidden: ({document}) => isNewsPostType(document),
       description:
-        'Short URL segment only — the site adds /news-and-updates/. Set before publish date; locked once both are filled.',
+        'Short URL segment only — the site adds /news-and-updates/. Set before publish date; locked once both are filled. Not used for News posts (external link only).',
       options: {
         source: 'title',
         maxLength: 96,
       },
       readOnly: ({document, value}) => {
+        if (isNewsPostType(document)) {
+          return true
+        }
         const publishedAt = document?.publishedAt
         const hasPublishedAt = typeof publishedAt === 'string' && publishedAt.trim().length > 0
         const slugCurrent =
@@ -44,13 +56,16 @@ export const newsPost = defineType({
         return hasPublishedAt && slugCurrent.length > 0
       },
       validation: (Rule) =>
-        Rule.required().custom(async (slug, context) => {
+        Rule.custom(async (slug, context) => {
+          if (isNewsPostType(context.document)) {
+            return true
+          }
           const current =
             slug && typeof slug === 'object' && 'current' in slug
               ? String((slug as {current?: string | null}).current ?? '').trim()
               : ''
           if (!current) {
-            return true
+            return 'Required'
           }
           const {document, getClient} = context
           const client = getClient({apiVersion: STUDIO_API_VERSION})
@@ -85,12 +100,40 @@ export const newsPost = defineType({
       },
       initialValue: 'article',
       validation: (Rule) => Rule.required(),
-      description: 'Shown as the category label on News & Updates hub cards (e.g. ARTICLE, BLOG).',
+      description:
+        'Shown as the category label on News & Updates hub cards (e.g. ARTICLE, BLOG). News posts link externally and have no on-site article page.',
+    }),
+    defineField({
+      name: 'externalUrl',
+      title: 'External link',
+      type: 'url',
+      hidden: ({document}) => !isNewsPostType(document),
+      description: 'Required for News. Hub card CTA opens this URL in a new tab.',
+      validation: (Rule) =>
+        Rule.uri({scheme: ['http', 'https']}).custom((url, context) => {
+          if (!isNewsPostType(context.document)) {
+            return true
+          }
+          if (typeof url !== 'string' || !url.trim()) {
+            return 'Required for News posts'
+          }
+          return true
+        }),
+    }),
+    defineField({
+      name: 'buttonText',
+      title: 'Button text',
+      type: 'string',
+      hidden: ({document}) => !isNewsPostType(document),
+      initialValue: 'Read more',
+      description: 'Hub card CTA label. Defaults to “Read more”.',
+      validation: (Rule) => Rule.max(40).warning('Keep button text short (≤ 40 chars).'),
     }),
     defineField({
       name: 'eyebrow',
       title: 'Eyebrow',
       type: 'string',
+      hidden: ({document}) => isNewsPostType(document),
       validation: (Rule) => Rule.max(40).warning('Keep this short (≤ 40 chars).'),
       description:
         'Shared on the article hero. This is also displayed as the Series Name when this post appears in Similar Posts.',
@@ -99,6 +142,7 @@ export const newsPost = defineType({
       name: 'author',
       title: 'Author',
       type: 'string',
+      hidden: ({document}) => isNewsPostType(document),
       validation: (Rule) => Rule.max(120).warning('Consider ≤ 120 chars.'),
       description:
         'Optional. Used in article structured data / link metadata when set. Not shown as a byline on the article page.',
@@ -125,6 +169,7 @@ export const newsPost = defineType({
           name: 'credit',
           title: 'Photo credit',
           type: 'string',
+          hidden: ({document}) => isNewsPostType(document),
           description:
             'Optional. Article detail hero only — shown as “PHOTO CREDIT: …” below the image.',
           validation: (Rule) => Rule.max(120).warning('Consider ≤ 120 chars.'),
@@ -133,16 +178,17 @@ export const newsPost = defineType({
     }),
     defineField({
       name: 'teaser',
-      title: 'Hub teaser',
+      title: 'Description',
       type: 'newsPostTeaserFields',
       validation: (Rule) => Rule.required(),
       description:
-        'Listing-only excerpt for hub cards and default SEO description. Tags are optional and not currently shown on the site.',
+        'Listing excerpt for hub cards. For article/blog/story posts this is also the default SEO description when SEO is empty.',
     }),
     defineField({
       name: 'seo',
       title: 'SEO & sharing',
       type: 'seoFields',
+      hidden: ({document}) => isNewsPostType(document),
       options: {collapsible: true, collapsed: true},
       description:
         'Optional overrides for search and link previews (iMessage, Slack, etc.). Leave empty to use the title, hub excerpt, and hero image (or the PEDP logo card when no hero).',
@@ -151,6 +197,7 @@ export const newsPost = defineType({
       name: 'audio',
       title: 'Article audio',
       type: 'newsPostAudio',
+      hidden: ({document}) => isNewsPostType(document),
       description:
         'Optional listen row below the hero on the article page. Leave the file empty to hide it. Requires SEO & sharing (meta description) or hub excerpt so the share control can render.',
     }),
@@ -158,6 +205,7 @@ export const newsPost = defineType({
       name: 'body',
       title: 'Body',
       type: 'array',
+      hidden: ({document}) => isNewsPostType(document),
       of: [
         articleBodyPortableTextBlock,
         defineArrayMember({type: 'quoteBlock'}),
@@ -173,8 +221,9 @@ export const newsPost = defineType({
       name: 'similarPosts',
       title: 'Similar posts',
       type: 'array',
+      hidden: ({document}) => isNewsPostType(document),
       description:
-        'Optional posts shown at the bottom of this article. Add as many as needed and drag to set their display order. Each selected post’s Eyebrow is displayed as its Series Name.',
+        'Optional posts shown at the bottom of this article. Add as many as needed and drag to set their display order. Each selected post’s Eyebrow is displayed as its Series Name. News (external) posts cannot be selected.',
       of: [
         defineArrayMember({
           type: 'reference',
@@ -183,10 +232,12 @@ export const newsPost = defineType({
             filter: ({document}) => {
               const currentId = document?._id?.replace(/^drafts\./, '')
               if (!currentId) {
-                return {}
+                return {
+                  filter: 'postType != "news"',
+                }
               }
               return {
-                filter: '_id != $publishedId && _id != $draftId',
+                filter: INTERNAL_NEWS_POST_FILTER,
                 params: {
                   publishedId: currentId,
                   draftId: `drafts.${currentId}`,
@@ -211,8 +262,9 @@ export const newsPost = defineType({
       title: 'title',
       publishedAt: 'publishedAt',
       media: 'image',
+      postType: 'postType',
     },
-    prepare({title, publishedAt, media}) {
+    prepare({title, publishedAt, media, postType}) {
       const date =
         typeof publishedAt === 'string'
           ? new Date(publishedAt).toLocaleDateString('en-US', {
@@ -221,9 +273,14 @@ export const newsPost = defineType({
               year: 'numeric',
             })
           : undefined
+      const typeLabel =
+        typeof postType === 'string' && postType.trim()
+          ? postType.trim().charAt(0).toUpperCase() + postType.trim().slice(1)
+          : null
+      const published = date ? `Published ${date}` : 'Draft'
       return {
         title: title?.trim() || 'News post',
-        subtitle: date ? `Published ${date}` : 'Draft',
+        subtitle: typeLabel ? `${typeLabel} · ${published}` : published,
         media,
       }
     },

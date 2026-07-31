@@ -88,7 +88,8 @@ export const PUBLISHED_SITE_PAGES_QUERY = `*[_type == "sitePage" && !(_id in pat
   "slug": slug.current
 }`
 
-export const PUBLISHED_NEWS_POSTS_QUERY = `*[_type == "newsPost" && !(_id in path("drafts.**"))] | order(publishedAt desc) {
+/** On-site articles only — News (`postType == "news"`) has no slug page. */
+export const PUBLISHED_NEWS_POSTS_QUERY = `*[_type == "newsPost" && postType != "news" && defined(slug.current) && !(_id in path("drafts.**"))] | order(publishedAt desc) {
   _id,
   title,
   "slug": slug.current,

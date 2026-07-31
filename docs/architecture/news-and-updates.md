@@ -20,17 +20,21 @@ generic `sitePage`.
 
 Important fields:
 
-- `title`, `slug`, `publishedAt`, and hotspot-enabled `image`
+- `title`, `publishedAt`, and hotspot-enabled `image`
 - `postType`: `article`, `news`, `blog`, or `story`
-- optional `eyebrow` and `author`
-- required teaser excerpt and optional teaser tags
-- optional SEO title and description
-- optional article-level audio
-- modular `body`
-- ordered `similarPosts` references
+- News (`postType: news`): external hub cards only. Studio prompts for title,
+  description (`teaser.excerpt`), image, publish date, `externalUrl`, and
+  `buttonText` (defaults to “Read more”). No slug page; hub CTA opens the
+  external URL in a new tab. Slug, body, SEO, audio, similar posts, eyebrow,
+  author, and tags are hidden.
+- Article / blog / story: on-site detail at `/news-and-updates/<slug>` with
+  optional `eyebrow` and `author`, required teaser excerpt, optional SEO, optional
+  article audio, modular `body`, and ordered `similarPosts` (News posts cannot be
+  selected).
 
-`postType` currently controls the hub card label only. `author` is used by
-structured data but is not rendered as an article byline.
+`postType` controls the hub card label. For News it also switches the document to
+external-link mode. `author` is used by structured data but is not rendered as an
+article byline.
 
 ### `newsHubPage`
 
@@ -46,7 +50,9 @@ tablet, and mobile.
 - `GET /api/news-posts?offset=&limit=` serves additional cards; the limit is
   clamped to 48.
 - Article fetching expands body assets, Portable Text links, audio URLs, and
-  similar-post references.
+  similar-post references. Detail routes exclude `postType == "news"` (no slug
+  page). Sitemap likewise omits News posts. Internal Content link pickers and
+  Similar posts exclude News posts.
 
 Both page routes are currently dynamic.
 
@@ -61,11 +67,12 @@ Cards show:
 - uppercased `postType`
 - title
 - excerpt
-- “Read More” link
+- CTA (“Read More” for on-site posts; News uses `buttonText`, default “Read more”)
 
-Cards currently omit publication date, eyebrow, tags, and author. The client
-chooses the configured initial/load-more batch size using mobile, tablet, and
-desktop media queries.
+News cards open the external URL in a new tab (CTA only). On-site posts link to
+`/news-and-updates/<slug>` in the same tab. Cards currently omit publication date,
+eyebrow, tags, and author. The client chooses the configured initial/load-more
+batch size using mobile, tablet, and desktop media queries.
 
 ## Article UI
 

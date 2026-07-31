@@ -33,8 +33,12 @@ export const contentLink = defineType({
       title: 'Internal page or post',
       type: 'reference',
       to: [{type: 'sitePage'}, {type: 'newsPost'}],
+      options: {
+        filter: '_type == "sitePage" || (_type == "newsPost" && postType != "news")',
+      },
       hidden: ({parent}) => parent?.linkType !== 'internal',
-      description: 'Prefer references so links stay valid when slugs change.',
+      description:
+        'Prefer references so links stay valid when slugs change. News (external) posts are excluded — they have no on-site page.',
     }),
     defineField({
       name: 'internalPath',

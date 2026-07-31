@@ -35,6 +35,8 @@ export type NewsPostListItem = {
   slug?: {current?: string | null} | null
   publishedAt?: string | null
   postType?: string | null
+  externalUrl?: string | null
+  buttonText?: string | null
   eyebrow?: string | null
   author?: string | null
   image?: SanityImageData
@@ -60,6 +62,13 @@ export function formatNewsPostTypeLabel(postType: string | null | undefined): st
   return (POST_TYPE_LABELS[key] ?? POST_TYPE_LABELS.article).toUpperCase()
 }
 
+const DEFAULT_INTERNAL_CTA = 'Read More'
+const DEFAULT_NEWS_CTA = 'Read more'
+
+function isExternalNewsPost(postType: string | null | undefined): boolean {
+  return postType?.trim().toLowerCase() === 'news'
+}
+
 /** Hub card props for News & Updates listing. */
 export function mapNewsPostToHubCardProps(
   post: NewsPostListItem | null | undefined,
@@ -69,15 +78,38 @@ export function mapNewsPostToHubCardProps(
   }
 
   const title = post.title?.trim()
-  const slug = post.slug?.current?.trim()
   const excerpt = post.teaser?.excerpt?.trim()
+  const externalNews = isExternalNewsPost(post.postType)
 
-  if (!title || !slug || !excerpt) {
+  if (!title || !excerpt) {
     return null
   }
 
   const image = mapSanityImage(post.image ?? null, title)
   if (!image) {
+    return null
+  }
+
+  if (externalNews) {
+    const href = post.externalUrl?.trim()
+    if (!href || !/^https?:\/\//i.test(href)) {
+      return null
+    }
+    const ctaLabel = post.buttonText?.trim() || DEFAULT_NEWS_CTA
+    return {
+      href,
+      title,
+      excerpt,
+      image,
+      postTypeLabel: formatNewsPostTypeLabel(post.postType),
+      ctaLabel,
+      external: true,
+      titleId: `news-hub-card-${post._id.replace(/^drafts\./, '')}`,
+    }
+  }
+
+  const slug = post.slug?.current?.trim()
+  if (!slug) {
     return null
   }
 
@@ -87,6 +119,8 @@ export function mapNewsPostToHubCardProps(
     excerpt,
     image,
     postTypeLabel: formatNewsPostTypeLabel(post.postType),
+    ctaLabel: DEFAULT_INTERNAL_CTA,
+    external: false,
     titleId: `news-hub-card-${slug}`,
   }
 }
@@ -141,6 +175,9 @@ export function mapNewsPostToSimilarPosts(
   }
 
   return post.similarPosts.flatMap((similarPost) => {
+    if (isExternalNewsPost(similarPost?.postType)) {
+      return []
+    }
     const title = similarPost?.title?.trim()
     const slug = similarPost?.slug?.current?.trim()
     const publishedAt = similarPost?.publishedAt?.trim()

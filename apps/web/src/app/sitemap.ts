@@ -19,7 +19,7 @@ const SITE_PAGE_SLUGS_QUERY = `*[_type == "sitePage" && defined(slug.current) &&
   _updatedAt
 }`
 
-const NEWS_POST_SLUGS_QUERY = `*[_type == "newsPost" && defined(slug.current) && defined(publishedAt) && !(_id in path("drafts.**"))] | order(publishedAt desc){
+const NEWS_POST_SLUGS_QUERY = `*[_type == "newsPost" && postType != "news" && defined(slug.current) && defined(publishedAt) && !(_id in path("drafts.**"))] | order(publishedAt desc){
   "slug": slug.current,
   publishedAt,
   _updatedAt

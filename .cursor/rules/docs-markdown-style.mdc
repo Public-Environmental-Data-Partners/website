@@ -1,0 +1,22 @@
+---
+description: Markdown style for repository docs (no bold asterisks, no em dashes)
+globs: docs/**/*.md
+alwaysApply: false
+---
+
+# Docs markdown style
+
+When writing or editing files under `docs/`:
+
+- Do not use `**...**` (or `__...__`) for bold emphasis. Prefer plain prose, headings, or backticks for code/identifiers.
+- Do not use em dashes (—) or en dashes (–). Use a colon, comma, parentheses, or a period instead.
+
+Examples:
+
+```markdown
+<!-- Bad -->
+- **News (`postType: news`)** — external hub cards only.
+
+<!-- Good -->
+- News (`postType: news`): external hub cards only.
+```

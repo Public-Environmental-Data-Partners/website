@@ -12,6 +12,8 @@ const NEWS_POSTS_SLICE_QUERY = `{
     slug,
     publishedAt,
     postType,
+    externalUrl,
+    buttonText,
     image ${SANITY_IMAGE_PROJECTION},
     teaser {
       excerpt

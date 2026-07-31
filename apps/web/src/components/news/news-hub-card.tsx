@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import Link from 'next/link'
 
+import {ContentLink} from '@/components/content-link'
 import type {HeroImage} from '@/components/hero/hero-image'
 import {cn} from '@/lib/utils'
 
@@ -10,6 +10,10 @@ export type NewsHubCardProps = {
   excerpt: string
   image: HeroImage
   postTypeLabel: string
+  /** Hub CTA label. Defaults to “Read More” for on-site posts. */
+  ctaLabel?: string
+  /** When true, CTA opens in a new tab (News / external posts). */
+  external?: boolean
   titleId?: string
   className?: string
   /** Eager-load above-the-fold images (first card(s) on the hub). */
@@ -26,6 +30,8 @@ export function NewsHubCard({
   excerpt,
   image,
   postTypeLabel,
+  ctaLabel = 'Read More',
+  external = false,
   titleId,
   className,
   priority = false,
@@ -52,9 +58,9 @@ export function NewsHubCard({
           {title}
         </h2>
         <p data-slot="news-hub-card-excerpt">{excerpt}</p>
-        <Link href={href} data-slot="news-hub-card-cta">
-          Read More
-        </Link>
+        <ContentLink href={href} external={external} data-slot="news-hub-card-cta">
+          {ctaLabel}
+        </ContentLink>
       </div>
     </article>
   )

@@ -6,6 +6,7 @@ export type ContentLinkGroq = {
   emailAddress?: string | null
   internalReference?: {
     _type?: string | null
+    postType?: string | null
     slug?: {current?: string | null} | null
   } | null
 }
@@ -32,6 +33,10 @@ function normalizeInternalPath(path: string): string {
 
 function hrefForInternalReference(ref: ContentLinkGroq['internalReference']): string | null {
   if (!ref) {
+    return null
+  }
+  // News posts are external hub cards only — no on-site slug page.
+  if (ref._type === 'newsPost' && ref.postType === 'news') {
     return null
   }
   const slug = ref.slug?.current?.trim()
@@ -121,6 +126,7 @@ export const CONTENT_LINK_GROQ = `{
   emailAddress,
   internalReference->{
     _type,
+    postType,
     slug
   }
 }`
@@ -130,6 +136,7 @@ export const PT_MARK_DEFS_GROQ = `markDefs[]{
   ...,
   internalReference->{
     _type,
+    postType,
     slug
   }
 }`

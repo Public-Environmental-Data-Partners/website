@@ -8,6 +8,7 @@ import {sanityFetch} from '@/sanity/live'
 
 const NEWS_POST_BY_SLUG_QUERY = `*[
   _type == "newsPost" &&
+  postType != "news" &&
   slug.current == $slug &&
   defined(publishedAt)
 ][0]{
@@ -39,9 +40,10 @@ const NEWS_POST_BY_SLUG_QUERY = `*[
     title,
     slug,
     publishedAt,
+    postType,
     eyebrow,
     image ${SANITY_IMAGE_PROJECTION}
-  },
+  }[postType != "news"],
   body[]{
     ...,
     ${PT_MARK_DEFS_GROQ},
