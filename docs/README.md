@@ -8,6 +8,7 @@ checklists should not remain after their useful content is incorporated here.
 
 - [`content-managers.md`](./content-managers.md) — Studio and publishing guide
 - [`content-terminology.md`](./content-terminology.md) — canonical content field vocabulary
+- [`design/dark-mode-color-tokens.md`](./design/dark-mode-color-tokens.md): dark mode color token worksheet for design
 
 ## Architecture
 
