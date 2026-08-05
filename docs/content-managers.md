@@ -92,3 +92,26 @@ When updating an older rich-text link, reselect its destination through this wor
 
 - Primary navigation and footer links are internal-only.
 - Partner logos and social links are always external.
+
+## Embedding videos in posts
+
+News and Updates posts can include a video with an Embed block in the article body.
+
+### How to add a YouTube video
+
+1. Open the post in Studio and go to the body content.
+2. Add an Embed block where the video should appear. On smaller screens, Quote and Image appear first in the insert menu; open the three-dot menu to find Embed and the other block types.
+3. Paste a YouTube share link into the URL field. Supported forms include:
+   - `https://www.youtube.com/watch?v=...`
+   - `https://youtu.be/...`
+   - `https://www.youtube.com/embed/...`
+   - `https://www.youtube.com/shorts/...`
+   - `https://www.youtube.com/live/...`
+4. Optionally add a caption below the embed.
+5. Publish the post (or use draft preview to check first).
+
+YouTube is the only video source supported in posts right now. Unsupported URLs will not show on the website.
+
+### Other video sources
+
+If you need Vimeo, Google Drive, Facebook, Instagram, or any other provider, drop a request in the website channel in Rocket Chat and tag Vim. Engineering must allowlist and wire up each new source before it will work in Studio or on the site. 
