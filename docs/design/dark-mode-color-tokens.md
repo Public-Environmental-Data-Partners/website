@@ -100,6 +100,7 @@ Confirm whether these should stay locked or become theme-aware.
 | `--footer` | `bg-footer` / site footer | `#f4f1ec` | | | Footer background; currently locked |
 | `--footer-foreground` | `text-footer-foreground` | `#2c2c2c` | | | Footer text; currently locked |
 | `--off-black` | `off-black` | `#42413d` | | | Currently locked |
+| `--clay` | `clay` | `#e2885e` | | | Tool card status pill; currently locked |
 
 ---
 

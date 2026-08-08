@@ -13,6 +13,8 @@ import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
 import {PartnerLogosSection} from '@/components/sections/partner-logos-section'
 import {TestimonialSection} from '@/components/sections/testimonial-section'
 import {TextImageSection} from '@/components/sections/text-image-section'
+import {ToolCategorySection} from '@/components/sections/tool-category-section'
+import {ToolsDevelopmentHero} from '@/components/sections/tools-development-hero'
 import {AboutIntroSection} from '@/components/site-page/about-intro-section'
 import {ContactHeroSection} from '@/components/site-page/contact-hero-section'
 import {type ContactCtaBlock, ContactSection} from '@/components/site-page/contact-section'
@@ -51,6 +53,14 @@ import type {TestimonialSectionFields} from '@/lib/mappers/testimonial-section'
 import {mapTestimonialSectionToProps} from '@/lib/mappers/testimonial-section'
 import type {TextImageSectionFields} from '@/lib/mappers/text-image-section'
 import {mapTextImageSectionToProps} from '@/lib/mappers/text-image-section'
+import type {
+  ToolCategorySectionFields,
+  ToolsDevelopmentHeroFields,
+} from '@/lib/mappers/tools-development'
+import {
+  mapToolCategorySectionToProps,
+  mapToolsDevelopmentHeroToProps,
+} from '@/lib/mappers/tools-development'
 import {buildPageMetadata, resolveSeoDescription, resolveSeoTitle} from '@/lib/metadata/page-seo'
 import {SANITY_IMAGE_PROJECTION} from '@/lib/queries/sanity-image-projection'
 import {SECTION_LABEL_HEADING_CLASS} from '@/lib/typography'
@@ -88,6 +98,15 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     submitLabel,
     sectionHeading,
     prompt,
+    focusAreasHeading,
+    focusAreas[]{
+      _key,
+      icon,
+      title
+    },
+    guidePrompt,
+    guideCtaLabel,
+    guideCtaLink${CONTENT_LINK_GROQ},
     donorboxCampaign,
     rows[]{
       label,
@@ -96,10 +115,15 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     cards[]{
       _key,
       title,
+      description,
+      version,
+      pill,
       body[]${PT_BLOCKS_GROQ},
       ctaLabel,
       ctaLink${CONTENT_LINK_GROQ},
-      icon${SANITY_IMAGE_PROJECTION}
+      link${CONTENT_LINK_GROQ},
+      icon${SANITY_IMAGE_PROJECTION},
+      image${SANITY_IMAGE_PROJECTION}
     },
     quote[]${PT_BLOCKS_GROQ},
     attribution,
@@ -202,6 +226,16 @@ type ByTheNumbersSectionGroq = {
 } & ByTheNumbersSectionFields
 type TestimonialSectionGroq = {_type: 'testimonialSection'; _key: string} & TestimonialSectionFields
 
+type ToolsDevelopmentHeroGroq = {
+  _type: 'toolsDevelopmentHero'
+  _key: string
+} & ToolsDevelopmentHeroFields
+
+type ToolCategorySectionGroq = {
+  _type: 'toolCategorySection'
+  _key: string
+} & ToolCategorySectionFields
+
 type PartnerLogosSectionGroq = {
   _type: 'partnerLogosSection'
   _key: string
@@ -237,6 +271,8 @@ export type SitePageSectionGroq =
   | NewsletterSectionGroq
   | ByTheNumbersSectionGroq
   | TestimonialSectionGroq
+  | ToolsDevelopmentHeroGroq
+  | ToolCategorySectionGroq
   | PartnerLogosSectionGroq
   | GetInvolvedIntroGroq
   | OtherWaysSectionGroq
@@ -330,6 +366,14 @@ function renderMarketingSection(section: SitePageSectionGroq) {
     case 'testimonialSection': {
       const props = mapTestimonialSectionToProps(section)
       return props ? <TestimonialSection key={section._key} {...props} /> : null
+    }
+    case 'toolsDevelopmentHero': {
+      const props = mapToolsDevelopmentHeroToProps(section)
+      return props ? <ToolsDevelopmentHero key={section._key} {...props} /> : null
+    }
+    case 'toolCategorySection': {
+      const props = mapToolCategorySectionToProps(section, `tool-category-${section._key}`)
+      return props ? <ToolCategorySection key={section._key} {...props} /> : null
     }
     case 'newsletterSection': {
       const props = mapNewsletterSectionToProps(section)
@@ -593,6 +637,15 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
     return (
       <div className="flex flex-1 flex-col bg-off-white font-sans">
         {sections.map((section) => renderGetInvolvedPageSection(section, title))}
+      </div>
+    )
+  }
+
+  const isToolsDevelopmentPage = sections[0]?._type === 'toolsDevelopmentHero'
+  if (isToolsDevelopmentPage) {
+    return (
+      <div className="flex flex-1 flex-col bg-cream font-sans">
+        {sections.map((section) => renderMarketingSection(section))}
       </div>
     )
   }

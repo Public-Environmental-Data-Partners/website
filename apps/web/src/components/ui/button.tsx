@@ -18,12 +18,18 @@ const buttonVariants = cva(
         /** Off-white CTA on light-blue callouts (e.g. Get Involved intro). */
         offWhite:
           'border-transparent bg-off-white text-foreground hover:bg-off-white/90 aria-expanded:bg-off-white',
+        /** Light beige CTA (e.g. Tools Development “View Guide”). */
+        lightBeige:
+          'border-transparent bg-light-beige text-off-black hover:bg-light-beige/90 aria-expanded:bg-light-beige',
         /** Light-blue CTA on dark bands (e.g. Testimonial “Get Involved”). */
         lightBlue:
           'border-transparent bg-light-blue text-dark-blue hover:bg-light-blue/90 aria-expanded:bg-light-blue',
         /** Dark-blue CTA on light bands (e.g. light Testimonial “Get Involved”). */
         darkBlue:
           'border-transparent bg-dark-blue text-light-blue hover:bg-dark-blue/90 aria-expanded:bg-dark-blue',
+        /** Charcoal CTA on tool cards (Tools Development). */
+        offBlack:
+          'border-transparent bg-off-black text-white hover:bg-off-black/90 aria-expanded:bg-off-black',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
         ghost:

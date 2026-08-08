@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import {ContentLink, ContentLinkExternalIcon} from '@/components/content-link'
+import {ContentLink} from '@/components/content-link'
 import {Button} from '@/components/ui/button'
 import type {CardCarouselCardProps} from '@/lib/mappers/card-carousel-section'
 import {cn} from '@/lib/utils'
@@ -15,46 +15,14 @@ const storyCardShell = cn(
   'bg-off-white border-border flex h-full w-full flex-col overflow-hidden border',
 )
 
-const toolCardShell = cn(
-  'group bg-off-white border-border dark:bg-surface flex h-full w-[min(100%,22.5rem)] min-h-[35rem] shrink-0 flex-col overflow-hidden border',
-  'max-md:min-h-[min(35rem,calc(100dvh_-_30rem))]',
-  'max-md:max-h-[min(35rem,calc(100dvh_-_30rem))]',
-  'transition-shadow hover:shadow-md',
-  'focus-visible:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-)
-
-const carouselCompactBodyScroll =
-  'max-md:min-h-0 max-md:overflow-y-auto max-md:overscroll-y-contain'
-
-/** 40% / 60% flex split on image vs body at all breakpoints (stable cross-width). */
-const carouselImageBand = cn(
-  'relative w-full min-h-0 shrink grow-[2] basis-0 overflow-hidden bg-muted',
-)
-
-const carouselBodyBand = (opts?: {fillWhenNoImage?: boolean}) =>
-  cn(
-    'flex min-h-0 flex-col px-4 pt-4 pb-4',
-    opts?.fillWhenNoImage ? 'flex-1' : 'shrink grow-[3] basis-0',
-  )
-
 /**
- * Shared carousel item: `storyCard` vs `toolCard` (mapper props, page-agnostic).
- * Story: button-only link. Tool: entire surface is one link.
+ * Homepage carousel story card. Button-only link.
  */
 export function CarouselCard(props: CarouselCardProps) {
-  if (props._type === 'storyCard') {
-    return <StoryCard {...props} />
-  }
-  return <ToolCard {...props} />
+  return <StoryCard {...props} />
 }
 
-function StoryCard({
-  title,
-  photoCredit,
-  href,
-  external,
-  image,
-}: Extract<CarouselCardProps, {_type: 'storyCard'}>) {
+function StoryCard({title, photoCredit, href, external, image}: CarouselCardProps) {
   return (
     <article className={storyCardShell}>
       <div className="relative aspect-[3/2] w-full overflow-hidden bg-muted">
@@ -90,66 +58,5 @@ function StoryCard({
         </div>
       </div>
     </article>
-  )
-}
-
-function ToolCard(props: Extract<CarouselCardProps, {_type: 'toolCard'}>) {
-  const {href, external} = props
-
-  return (
-    <ContentLink href={href} external={external} className={toolCardShell} showExternalIcon={false}>
-      <ToolCardInner {...props} />
-    </ContentLink>
-  )
-}
-
-function ToolCardInner({
-  chip,
-  title,
-  description,
-  image,
-  external,
-}: Extract<CarouselCardProps, {_type: 'toolCard'}>) {
-  return (
-    <>
-      {image ? (
-        <div className={cn(carouselImageBand, 'border-border border-b lg:border-b-0')}>
-          <Image
-            src={image.src}
-            alt={image.alt}
-            width={imageDimension(image.width, 1200)}
-            height={imageDimension(image.height, 900)}
-            className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]"
-            sizes="(max-width: 1023px) 90vw, 360px"
-          />
-        </div>
-      ) : null}
-      <div className={cn(carouselBodyBand({fillWhenNoImage: !image}), carouselCompactBodyScroll)}>
-        <p className="text-muted-foreground text-[0.65rem] font-semibold uppercase tracking-widest">
-          {chip}
-        </p>
-        <h3 className="text-foreground mt-1 font-sans text-lg font-semibold leading-tight">
-          {title}
-        </h3>
-        {description ? (
-          <p className="text-muted-foreground mt-2 line-clamp-4 text-sm leading-relaxed">
-            {description}
-          </p>
-        ) : null}
-        <div className="flex-1" aria-hidden />
-        <div className="flex justify-end pt-4">
-          <span
-            className={cn(
-              'inline-flex min-h-9 items-center justify-center gap-2 rounded-[4px]',
-              'bg-foreground px-5 py-2 text-xs font-semibold text-background',
-              'transition-colors group-hover:bg-foreground/90',
-            )}
-          >
-            Explore
-            {external ? <ContentLinkExternalIcon /> : null}
-          </span>
-        </div>
-      </div>
-    </>
   )
 }

@@ -368,13 +368,6 @@ export const highlightBannerSection = defineType({
   },
 })
 
-const toolCardChipList = [
-  {title: 'Tool', value: 'Tool'},
-  {title: 'Resource', value: 'Resource'},
-  {title: 'Guide', value: 'Guide'},
-  {title: 'Dataset', value: 'Dataset'},
-] as const
-
 /** Story card object; stored `_type` is `storyCard`. */
 export const storyCard = defineType({
   name: 'storyCard',
@@ -433,7 +426,10 @@ export const storyCard = defineType({
   },
 })
 
-/** Tool card object; stored `_type` is `toolCard`. */
+/**
+ * Tool card for Tools Development category sections.
+ * Stored `_type` is `toolCard`.
+ */
 export const toolCard = defineType({
   name: 'toolCard',
   title: 'Tool card',
@@ -441,15 +437,16 @@ export const toolCard = defineType({
   fields: [
     defineField({
       name: 'image',
-      title: 'Card image (optional)',
+      title: 'Card image',
       type: 'image',
       options: {hotspot: true},
+      validation: (Rule) => Rule.required(),
       fields: [
         defineField({
           name: 'alt',
-          title: 'Alternative text (optional)',
+          title: 'Alternative text',
           type: 'string',
-          validation: (Rule) => Rule.max(160),
+          validation: (Rule) => Rule.required().max(160),
         }),
       ],
     }),
@@ -457,25 +454,40 @@ export const toolCard = defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
+      description: 'Tool name (e.g. CEJST, EJSCREEN).',
       validation: (Rule) => Rule.required().max(120),
     }),
     defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
-      rows: 3,
-      validation: (Rule) => Rule.max(240),
+      rows: 4,
+      validation: (Rule) => Rule.required().max(480),
     }),
     defineField({
-      name: 'chip',
-      title: 'Tag / pill',
+      name: 'version',
+      title: 'Version',
       type: 'string',
-      options: {list: [...toolCardChipList], layout: 'dropdown'},
-      validation: (Rule) => Rule.required(),
+      description: 'Optional. e.g. Version 2.2',
+      validation: (Rule) => Rule.max(40),
+    }),
+    defineField({
+      name: 'pill',
+      title: 'Pill / tag',
+      type: 'string',
+      description: 'Optional status label (e.g. NEW FEATURES).',
+      validation: (Rule) => Rule.max(40),
+    }),
+    defineField({
+      name: 'ctaLabel',
+      title: 'Button label',
+      type: 'string',
+      initialValue: 'Open',
+      validation: (Rule) => Rule.required().max(60),
     }),
     defineField({
       name: 'link',
-      title: 'Card link',
+      title: 'Button link',
       type: 'contentLink',
       description: 'Internal = same tab; External = new tab + icon.',
       validation: (Rule) => Rule.required(),
@@ -484,12 +496,16 @@ export const toolCard = defineType({
   preview: {
     select: {
       title: 'title',
-      chip: 'chip',
+      version: 'version',
+      pill: 'pill',
+      media: 'image',
     },
-    prepare({title, chip}) {
+    prepare({title, version, pill, media}) {
+      const parts = [version?.trim(), pill?.trim()].filter(Boolean)
       return {
         title: title || 'Tool card',
-        subtitle: chip,
+        subtitle: parts.length > 0 ? parts.join(' · ') : undefined,
+        media,
       }
     },
   },
@@ -512,8 +528,8 @@ export const cardCarouselSection = defineType({
       title: 'Cards',
       type: 'array',
       description:
-        'Mix story and tool cards. Order is preserved; the site shows navigation when there are more than three.',
-      of: [{type: 'storyCard'}, {type: 'toolCard'}],
+        'Story cards only. Order is preserved; the site shows navigation when there are more than three.',
+      of: [{type: 'storyCard'}],
       validation: (Rule) => Rule.required().min(1),
     }),
   ],

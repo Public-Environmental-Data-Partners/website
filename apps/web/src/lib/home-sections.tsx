@@ -49,21 +49,11 @@ type StoryCardGroq = {
   image?: HighlightBannerSectionGroq['image']
 }
 
-type ToolCardGroq = {
-  _type: 'toolCard'
-  _key: string
-  title?: string | null
-  description?: string | null
-  chip?: string | null
-  link?: ContentLinkGroq | null
-  image?: HighlightBannerSectionGroq['image']
-}
-
 type CardCarouselSectionGroq = {
   _type: 'cardCarouselSection'
   _key: string
   sectionHeading?: string | null
-  cards?: Array<StoryCardGroq | ToolCardGroq> | null
+  cards?: Array<StoryCardGroq> | null
 }
 
 type NewsletterSectionGroq = {

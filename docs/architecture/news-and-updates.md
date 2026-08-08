@@ -105,7 +105,8 @@ Homepage `storyCard` content is intentionally curated:
 - teaser content is not synchronized from the referenced post
 
 This keeps homepage presentation independent from hub-card presentation.
-`toolCard` remains a separate manual card type.
+Homepage carousel cards are story-only. Tool cards live on Tools Development
+(`toolCategorySection`).
 
 ## Current decisions
 
@@ -126,7 +127,7 @@ This keeps homepage presentation independent from hub-card presentation.
 
 ## Deferred
 
-- Automatic “latest posts” carousel mode (vs curated story/tool cards).
+- Automatic “latest posts” carousel mode (vs curated story cards).
 - Sanity Presentation locations for one-click post preview (Draft Mode already
   exists).
 - Additional embed providers beyond YouTube and elhamyali.com.

@@ -373,10 +373,12 @@ export const sitePage = defineType({
         {type: 'byTheNumbersSection'},
         {type: 'testimonialSection'},
         {type: 'partnerLogosSection'},
+        {type: 'toolsDevelopmentHero'},
+        {type: 'toolCategorySection'},
         {type: 'sectionSpacer'},
       ],
       description:
-        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero; Donate pages start with Donate form; Get Involved pages start with Get Involved intro; How We Work-style pages start with Text + image.',
+        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero; Donate pages start with Donate form; Get Involved pages start with Get Involved intro; How We Work-style pages start with Text + image; Tools Development pages typically start with Tools Development hero.',
       validation: (Rule) =>
         Rule.required()
           .min(1)

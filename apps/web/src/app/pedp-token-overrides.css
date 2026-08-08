@@ -76,6 +76,8 @@
   --light-blue: #c5e8ff;
   --blue: #98c0f4;
   --dark-blue: #2b3e6f;
+  /* Tool card status pill (Tools Development). */
+  --clay: #e2885e;
 }
 
 /*
@@ -145,6 +147,7 @@
     --light-blue: #c5e8ff;
     --blue: #98c0f4;
     --dark-blue: #2b3e6f;
+    --clay: #e2885e;
   }
 }
 
@@ -203,6 +206,7 @@
   --light-blue: #c5e8ff;
   --blue: #98c0f4;
   --dark-blue: #2b3e6f;
+  --clay: #e2885e;
 }
 
 html {
