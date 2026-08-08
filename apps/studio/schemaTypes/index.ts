@@ -1,6 +1,13 @@
 import {articleFigureItem} from './articleFigureItem'
 import {brandSvg} from './brandSvg'
 import {contentLink} from './contentLink'
+import {
+  dataPreservationHero,
+  focusOnAccessItem,
+  focusOnAccessSection,
+  metadataStandardsSection,
+  riskNominateSection,
+} from './dataPreservationSections'
 import {donateFormSection, donateInfoSection, donorWallSection} from './donatePageSections'
 import {embedBlock} from './embedBlock'
 import {getInvolvedIntro, otherWaysCard, otherWaysSection} from './getInvolvedSections'
@@ -43,11 +50,7 @@ import {
   sitePage,
   textImageSection,
 } from './sitePage'
-import {
-  focusAreaItem,
-  toolCategorySection,
-  toolsDevelopmentHero,
-} from './toolsDevelopmentSections'
+import {focusAreaItem, toolCategorySection, toolsDevelopmentHero} from './toolsDevelopmentSections'
 import {twoImageBlock} from './twoImageBlock'
 
 export const schemaTypes = [
@@ -78,6 +81,11 @@ export const schemaTypes = [
   getInvolvedIntro,
   otherWaysCard,
   otherWaysSection,
+  dataPreservationHero,
+  focusOnAccessItem,
+  focusOnAccessSection,
+  riskNominateSection,
+  metadataStandardsSection,
   focusAreaItem,
   toolsDevelopmentHero,
   toolCategorySection,

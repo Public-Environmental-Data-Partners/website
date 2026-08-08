@@ -37,10 +37,7 @@ function toPortableTextBlocks(value: unknown): PortableTextBlock[] {
   return Array.isArray(value) ? (value as PortableTextBlock[]) : []
 }
 
-function mapFocusAreaItem(
-  item: FocusAreaItemFields,
-  index: number,
-): FocusAreaItemProps | null {
+function mapFocusAreaItem(item: FocusAreaItemFields, index: number): FocusAreaItemProps | null {
   const title = item.title?.trim()
   const icon = typeof item.icon === 'string' ? item.icon.trim() : ''
   if (!title || !isBrandSvgPath(icon)) {

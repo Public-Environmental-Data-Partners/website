@@ -57,10 +57,7 @@ export function ArticleHeroSection({
   const heading = (
     <h1
       data-slot="article-hero-title"
-      className={cn(
-        'text-foreground font-serif m-0 font-medium',
-        !showVisibleTitle && 'sr-only',
-      )}
+      className={cn('text-foreground font-serif m-0 font-medium', !showVisibleTitle && 'sr-only')}
     >
       {titleText}
     </h1>

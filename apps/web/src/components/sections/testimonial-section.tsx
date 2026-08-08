@@ -86,7 +86,12 @@ export function TestimonialSection({
 
           {href ? (
             <div className="col-span-2 row-start-3 flex justify-center lg:col-span-1 lg:col-start-3 lg:row-span-2 lg:row-start-1 lg:self-center lg:justify-end">
-              <Button asChild variant={isLight ? 'darkBlue' : 'lightBlue'} size="cta">
+              <Button
+                asChild
+                variant={isLight ? 'darkBlue' : 'lightBlue'}
+                size="cta"
+                className="px-6"
+              >
                 <ContentLink href={href} external={external}>
                   {ctaLabel}
                 </ContentLink>

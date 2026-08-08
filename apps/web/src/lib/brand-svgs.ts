@@ -22,6 +22,8 @@ export const BRAND_SVG_PATHS = [
   '/brand/tools-dev/mirroring.svg',
   '/brand/tools-dev/resources.svg',
   '/brand/tools-dev/ideating.svg',
+  '/brand/data-preservation/legislation.svg',
+  '/brand/data-preservation/archives.svg',
 ] as const
 
 export type BrandSvgPath = (typeof BRAND_SVG_PATHS)[number]

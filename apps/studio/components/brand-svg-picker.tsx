@@ -2,12 +2,7 @@ import {Box, Button, Card, Flex, Grid, Stack, Text} from '@sanity/ui'
 import {useCallback, useMemo, useState} from 'react'
 import {set, type StringInputProps, unset} from 'sanity'
 
-import {
-  BRAND_SVGS,
-  type BrandSvgPath,
-  brandSvgPreviewUrl,
-  brandSvgTitle,
-} from '../lib/brand-svgs'
+import {BRAND_SVGS, type BrandSvgPath, brandSvgPreviewUrl, brandSvgTitle} from '../lib/brand-svgs'
 
 /**
  * Visual picker for brand SVGs under `apps/web/public/brand`.
@@ -87,7 +82,9 @@ export function BrandSvgPicker(props: StringInputProps) {
                         height={48}
                         style={{width: '100%', height: '100%', objectFit: 'contain'}}
                         onError={() =>
-                          setBroken((prev) => (prev[entry.value] ? prev : {...prev, [entry.value]: true}))
+                          setBroken((prev) =>
+                            prev[entry.value] ? prev : {...prev, [entry.value]: true},
+                          )
                         }
                       />
                     </Box>

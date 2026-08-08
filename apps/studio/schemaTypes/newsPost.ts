@@ -115,7 +115,8 @@ export const newsPost = defineType({
       type: 'boolean',
       initialValue: false,
       hidden: ({document}) => !isStoryPostType(document),
-      description: 'When off, the title stays required for the hub and SEO but is visually hidden on the story page (screen-reader heading still present).',
+      description:
+        'When off, the title stays required for the hub and SEO but is visually hidden on the story page (screen-reader heading still present).',
     }),
     defineField({
       name: 'showDateOnPage',
@@ -123,7 +124,8 @@ export const newsPost = defineType({
       type: 'boolean',
       initialValue: false,
       hidden: ({document}) => !isStoryPostType(document),
-      description: 'When off, the published date is still used for hub sorting but is not shown on the story page hero.',
+      description:
+        'When off, the published date is still used for hub sorting but is not shown on the story page hero.',
     }),
     defineField({
       name: 'showHeroImageOnPage',
@@ -131,7 +133,8 @@ export const newsPost = defineType({
       type: 'boolean',
       initialValue: false,
       hidden: ({document}) => !isStoryPostType(document),
-      description: 'When off, the hero image still appears on hub cards but is omitted from the story page.',
+      description:
+        'When off, the hero image still appears on hub cards but is omitted from the story page.',
     }),
     defineField({
       name: 'externalUrl',

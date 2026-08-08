@@ -51,10 +51,16 @@ export function ToolCategorySection({
 
   return (
     <SectionBand className="bg-cream" aria-labelledby={headingId}>
-      <SiteShell padding="grid" className="py-10 md:py-14">
+      <SiteShell padding="none" className="px-[var(--site-padding-x)] py-10 md:py-14">
         <ContentStack className="gap-10 md:gap-12">
           <Grid12 className="items-start gap-y-8">
-            <div className={showGuide ? 'col-span-12 lg:col-span-6' : 'col-span-12 lg:col-span-8'}>
+            <div
+              className={
+                showGuide
+                  ? 'col-span-12 min-w-0 lg:col-span-6'
+                  : 'col-span-12 min-w-0 lg:col-span-8'
+              }
+            >
               <h2 id={headingId} className="section-label-heading text-off-black mb-5">
                 {sectionHeading}
               </h2>

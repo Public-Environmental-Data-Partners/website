@@ -10,7 +10,11 @@ import {NewsletterSection} from '@/components/home/newsletter-section'
 import {SectionSpacer} from '@/components/home/section-spacer'
 import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
+import {DataPreservationHeroSection} from '@/components/sections/data-preservation-hero-section'
+import {FocusOnAccessSection} from '@/components/sections/focus-on-access-section'
+import {MetadataStandardsSection} from '@/components/sections/metadata-standards-section'
 import {PartnerLogosSection} from '@/components/sections/partner-logos-section'
+import {RiskNominateSection} from '@/components/sections/risk-nominate-section'
 import {TestimonialSection} from '@/components/sections/testimonial-section'
 import {TextImageSection} from '@/components/sections/text-image-section'
 import {ToolCategorySection} from '@/components/sections/tool-category-section'
@@ -26,6 +30,18 @@ import {ARTICLE_COL_PROSE_CLASS} from '@/lib/article-body-grid'
 import {CONTENT_LINK_GROQ, PT_BLOCKS_GROQ, PT_MARK_DEFS_GROQ} from '@/lib/content-link'
 import type {ByTheNumbersSectionFields} from '@/lib/mappers/by-the-numbers-section'
 import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
+import type {
+  DataPreservationHeroFields,
+  FocusOnAccessSectionFields,
+  MetadataStandardsSectionFields,
+  RiskNominateSectionFields,
+} from '@/lib/mappers/data-preservation-sections'
+import {
+  mapDataPreservationHeroToProps,
+  mapFocusOnAccessSectionToProps,
+  mapMetadataStandardsSectionToProps,
+  mapRiskNominateSectionToProps,
+} from '@/lib/mappers/data-preservation-sections'
 import type {
   DonateFormSectionFields,
   DonateInfoSectionFields,
@@ -87,10 +103,13 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     _type,
     _key,
     heading,
+    eyebrow,
     lastUpdated,
     body[]${SITE_PAGE_BODY_GROQ},
     callout[]${SITE_PAGE_BODY_GROQ},
     image${SANITY_IMAGE_PROJECTION},
+    fileListImage${SANITY_IMAGE_PROJECTION},
+    collageImage${SANITY_IMAGE_PROJECTION},
     imagePosition,
     surface,
     presentation,
@@ -108,6 +127,8 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     guideCtaLabel,
     guideCtaLink${CONTENT_LINK_GROQ},
     donorboxCampaign,
+    cardHeading,
+    cardBody[]${PT_BLOCKS_GROQ},
     rows[]{
       label,
       icon${SANITY_IMAGE_PROJECTION}
@@ -124,6 +145,12 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
       link${CONTENT_LINK_GROQ},
       icon${SANITY_IMAGE_PROJECTION},
       image${SANITY_IMAGE_PROJECTION}
+    },
+    items[]{
+      _key,
+      icon,
+      heading,
+      body[]${PT_BLOCKS_GROQ}
     },
     quote[]${PT_BLOCKS_GROQ},
     attribution,
@@ -251,6 +278,26 @@ type OtherWaysSectionGroq = {
   _key: string
 } & OtherWaysSectionFields
 
+type DataPreservationHeroGroq = {
+  _type: 'dataPreservationHero'
+  _key: string
+} & DataPreservationHeroFields
+
+type FocusOnAccessSectionGroq = {
+  _type: 'focusOnAccessSection'
+  _key: string
+} & FocusOnAccessSectionFields
+
+type RiskNominateSectionGroq = {
+  _type: 'riskNominateSection'
+  _key: string
+} & RiskNominateSectionFields
+
+type MetadataStandardsSectionGroq = {
+  _type: 'metadataStandardsSection'
+  _key: string
+} & MetadataStandardsSectionFields
+
 type SectionSpacerGroq = {
   _type: 'sectionSpacer'
   _key: string
@@ -276,6 +323,10 @@ export type SitePageSectionGroq =
   | PartnerLogosSectionGroq
   | GetInvolvedIntroGroq
   | OtherWaysSectionGroq
+  | DataPreservationHeroGroq
+  | FocusOnAccessSectionGroq
+  | RiskNominateSectionGroq
+  | MetadataStandardsSectionGroq
   | SectionSpacerGroq
 
 export type SitePageData = {
@@ -410,6 +461,22 @@ function renderMarketingSection(section: SitePageSectionGroq) {
       const props = mapOtherWaysSectionToProps(section)
       return props ? <OtherWaysSection key={section._key} {...props} /> : null
     }
+    case 'dataPreservationHero': {
+      // Handled by the Data Preservation page composer (needs page title for h1).
+      return null
+    }
+    case 'focusOnAccessSection': {
+      const props = mapFocusOnAccessSectionToProps(section)
+      return props ? <FocusOnAccessSection key={section._key} {...props} /> : null
+    }
+    case 'riskNominateSection': {
+      const props = mapRiskNominateSectionToProps(section)
+      return props ? <RiskNominateSection key={section._key} {...props} /> : null
+    }
+    case 'metadataStandardsSection': {
+      const props = mapMetadataStandardsSectionToProps(section)
+      return props ? <MetadataStandardsSection key={section._key} {...props} /> : null
+    }
     case 'sectionSpacer':
       return typeof section.heightPx === 'number' ? (
         <SectionSpacer
@@ -431,6 +498,17 @@ function renderMarketingSection(section: SitePageSectionGroq) {
       return null
     default:
       return null
+  }
+}
+
+function renderDataPreservationPageSection(section: SitePageSectionGroq, pageTitle: string) {
+  switch (section._type) {
+    case 'dataPreservationHero': {
+      const props = mapDataPreservationHeroToProps(section, pageTitle)
+      return props ? <DataPreservationHeroSection key={section._key} {...props} /> : null
+    }
+    default:
+      return renderMarketingSection(section)
   }
 }
 
@@ -646,6 +724,15 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
     return (
       <div className="flex flex-1 flex-col bg-cream font-sans">
         {sections.map((section) => renderMarketingSection(section))}
+      </div>
+    )
+  }
+
+  const isDataPreservationPage = sections[0]?._type === 'dataPreservationHero'
+  if (isDataPreservationPage) {
+    return (
+      <div className="flex flex-1 flex-col font-sans">
+        {sections.map((section) => renderDataPreservationPageSection(section, title))}
       </div>
     )
   }

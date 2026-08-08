@@ -46,24 +46,27 @@ export function ToolsDevelopmentHero({
 
   return (
     <SectionBand className="bg-cream" aria-labelledby={headingId}>
-      <SiteShell padding="grid" className="relative py-10 md:py-14">
+      <SiteShell padding="none" className="relative px-[var(--site-padding-x)] py-10 md:py-14">
         {/* Desktop-only accent: full hero height (touches nav) + left bleed to viewport edge. */}
         <div
           aria-hidden
           className={cn(
             'bg-pedp-green pointer-events-none absolute top-0 bottom-0 hidden lg:block',
-            'left-[calc(-1*var(--site-padding-x-md))] w-[calc(var(--site-padding-x-md)+0.25rem)]',
-            'min-[87.5rem]:left-[calc(-1*(100vw-var(--max-width-site))/2)]',
-            'min-[87.5rem]:w-[calc((100vw-var(--max-width-site))/2+0.25rem)]',
+            'left-[calc(-1*var(--site-padding-x))] w-[calc(var(--site-padding-x)+0.25rem)]',
+            'min-[87.5rem]:left-[calc(-1*((100vw-var(--max-width-site))/2+var(--site-padding-x)))]',
+            'min-[87.5rem]:w-[calc((100vw-var(--max-width-site))/2+var(--site-padding-x)+0.25rem)]',
           )}
         />
         <Grid12 className="items-start gap-y-10">
-          <div className="col-span-12 pl-5 md:col-span-6 md:pl-6">
+          <div className="col-span-12 min-w-0 md:col-span-6 lg:ps-16">
             <ContentStack className="gap-5 md:gap-6">
               <p className="text-off-black m-0 font-sans text-[1.375rem] leading-none font-bold tracking-normal uppercase">
                 {sectionHeading}
               </p>
-              <h1 id={headingId} className="tools-development-heading text-off-black tracking-normal">
+              <h1
+                id={headingId}
+                className="tools-development-heading text-off-black tracking-normal"
+              >
                 {heading}
               </h1>
               <div>
@@ -78,7 +81,7 @@ export function ToolsDevelopmentHero({
             )}
             aria-label={focusAreasHeading}
           >
-            <h2 className="text-dark-green -mx-6 mb-8 border-b-2 border-dark-green/20 px-6 pb-2 text-left font-serif text-[1.75rem] leading-none font-medium italic tracking-normal md:-mx-8 md:mb-10 md:px-8">
+            <h2 className="text-dark-green mb-8 border-b-2 border-dark-green/20 pb-5 text-left font-serif text-[1.75rem] leading-none font-medium italic tracking-normal md:mb-10 md:pb-6">
               {focusAreasHeading}
             </h2>
             <ul className="grid grid-cols-2 gap-x-6 gap-y-8 sm:gap-x-8 md:grid-cols-3">

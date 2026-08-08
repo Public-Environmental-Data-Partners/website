@@ -369,6 +369,10 @@ export const sitePage = defineType({
         {type: 'donorWallSection'},
         {type: 'getInvolvedIntro'},
         {type: 'otherWaysSection'},
+        {type: 'dataPreservationHero'},
+        {type: 'focusOnAccessSection'},
+        {type: 'riskNominateSection'},
+        {type: 'metadataStandardsSection'},
         {type: 'newsletterSection'},
         {type: 'byTheNumbersSection'},
         {type: 'testimonialSection'},
@@ -378,7 +382,7 @@ export const sitePage = defineType({
         {type: 'sectionSpacer'},
       ],
       description:
-        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero; Donate pages start with Donate form; Get Involved pages start with Get Involved intro; How We Work-style pages start with Text + image; Tools Development pages typically start with Tools Development hero.',
+        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero; Donate pages start with Donate form; Get Involved pages start with Get Involved intro; How We Work-style pages start with Text + image; Data Preservation pages start with Data Preservation hero; Tools Development pages typically start with Tools Development hero.',
       validation: (Rule) =>
         Rule.required()
           .min(1)
@@ -503,6 +507,29 @@ export const sitePage = defineType({
                 donateFormIndexes.length === 1)
             ) {
               return 'A Get Involved page cannot also include About intro, Contact hero, or Donate form.'
+            }
+            const dataPreservationHeroIndexes = sections.flatMap((section, index) =>
+              section &&
+              typeof section === 'object' &&
+              '_type' in section &&
+              section._type === 'dataPreservationHero'
+                ? [index]
+                : [],
+            )
+            if (dataPreservationHeroIndexes.length > 1) {
+              return 'Use only one Data Preservation hero per page.'
+            }
+            if (dataPreservationHeroIndexes.length === 1 && dataPreservationHeroIndexes[0] !== 0) {
+              return 'Data Preservation hero must be the first section on the page.'
+            }
+            if (
+              dataPreservationHeroIndexes.length === 1 &&
+              (aboutIntroIndexes.length === 1 ||
+                contactHeroIndexes.length === 1 ||
+                donateFormIndexes.length === 1 ||
+                getInvolvedIntroIndexes.length === 1)
+            ) {
+              return 'A Data Preservation page cannot also include About intro, Contact hero, Donate form, or Get Involved intro.'
             }
             return true
           }),

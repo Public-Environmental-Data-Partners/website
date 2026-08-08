@@ -94,6 +94,16 @@ export const BRAND_SVGS = [
     value: '/brand/tools-dev/ideating.svg',
     group: 'Tools Dev',
   },
+  {
+    title: 'Data Preservation — Legislation',
+    value: '/brand/data-preservation/legislation.svg',
+    group: 'Data Preservation',
+  },
+  {
+    title: 'Data Preservation — Archives',
+    value: '/brand/data-preservation/archives.svg',
+    group: 'Data Preservation',
+  },
 ] as const
 
 export type BrandSvgPath = (typeof BRAND_SVGS)[number]['value']
