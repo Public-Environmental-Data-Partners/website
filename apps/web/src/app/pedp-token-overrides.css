@@ -78,8 +78,9 @@
   --light-blue: #c5e8ff;
   --blue: #98c0f4;
   --dark-blue: #2b3e6f;
-  /* Tool card status pill (Tools Development). */
+  /* Tool card status pill (Tools Development). Dark text: white on clay fails WCAG AA. */
   --clay: #e2885e;
+  --clay-foreground: #2c2c2c;
 }
 
 /*
@@ -151,6 +152,7 @@
     --blue: #98c0f4;
     --dark-blue: #2b3e6f;
     --clay: #e2885e;
+    --clay-foreground: #2c2c2c;
   }
 }
 
@@ -211,6 +213,7 @@
   --blue: #98c0f4;
   --dark-blue: #2b3e6f;
   --clay: #e2885e;
+  --clay-foreground: #2c2c2c;
 }
 
 html {

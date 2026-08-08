@@ -52,7 +52,7 @@ export function ToolCard({
           </p>
         ) : null}
         {pill ? (
-          <span className="bg-clay mt-5 inline-flex w-fit self-center rounded-full px-3 py-1 font-sans text-sm font-semibold tracking-normal text-white uppercase">
+          <span className="bg-clay text-clay-foreground mt-5 inline-flex w-fit self-center rounded-full px-3 py-1 font-sans text-sm font-semibold tracking-normal uppercase">
             {pill}
           </span>
         ) : null}

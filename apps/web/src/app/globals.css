@@ -61,6 +61,7 @@
   --color-light-blue: var(--light-blue);
   --color-dark-blue: var(--dark-blue);
   --color-clay: var(--clay);
+  --color-clay-foreground: var(--clay-foreground);
   /* Mid accents: pedp-* avoids clashing with Tailwind default green/blue scales. */
   --color-pedp-green: var(--green);
   --color-pedp-blue: var(--blue);
