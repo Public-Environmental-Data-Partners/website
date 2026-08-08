@@ -1,10 +1,20 @@
 [data-slot='return-to-top-strip'] {
+  background: var(--light-gray);
+  color: var(--foreground);
+}
+
+[data-slot='return-to-top-shell'] {
   display: flex;
   min-height: 3.25rem;
   align-items: center;
   justify-content: center;
-  background: var(--light-gray);
-  color: var(--foreground);
+}
+
+/* Desktop: right-align within the site shell. */
+@media (min-width: 1024px) {
+  [data-slot='return-to-top-shell'] {
+    justify-content: flex-end;
+  }
 }
 
 [data-slot='return-to-top-strip-link'] {
@@ -22,8 +32,8 @@
   letter-spacing: 0;
   text-align: center;
   text-decoration: underline;
-  text-transform: uppercase;
-  text-underline-offset: 0;
+  text-underline-offset: 0.25em;
+  text-decoration-skip-ink: none;
 }
 
 [data-slot='return-to-top-strip-link'] svg {
