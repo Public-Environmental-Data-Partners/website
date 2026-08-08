@@ -9,6 +9,7 @@ import Image from 'next/image'
 import {contentLinkMark} from '@/components/content/portable-text-link'
 import {ContentStack, Grid12, SectionBand, SiteShell} from '@/components/layout'
 import type {ToolsDevelopmentHeroProps} from '@/lib/mappers/tools-development'
+import {SITE_PAGE_HERO_HEADING_CLASS} from '@/lib/typography'
 import {cn} from '@/lib/utils'
 
 const bodyPortableTextComponents: Partial<PortableTextComponents> = {
@@ -63,10 +64,7 @@ export function ToolsDevelopmentHero({
               <p className="text-off-black m-0 font-sans text-[1.375rem] leading-none font-bold tracking-normal uppercase">
                 {sectionHeading}
               </p>
-              <h1
-                id={headingId}
-                className="tools-development-heading text-off-black tracking-normal"
-              >
+              <h1 id={headingId} className={cn(SITE_PAGE_HERO_HEADING_CLASS, 'text-off-black')}>
                 {heading}
               </h1>
               <div>

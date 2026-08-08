@@ -66,6 +66,8 @@
   --light-beige: #ebe4db;
   --beige: #d4cbbf;
   --dark-beige: #6d6659;
+  /* Neutral gray (image shelf, return-to-top strip). */
+  --light-gray: #d9d9d9;
 
   /* PEDP accent palette; Tailwind uses bg-pedp-green / bg-pedp-blue (see globals @theme). */
   --light-green: #c4edac;
@@ -140,6 +142,7 @@
     --light-beige: #ebe4db;
     --beige: #d4cbbf;
     --dark-beige: #6d6659;
+    --light-gray: #d9d9d9;
     --light-green: #c4edac;
     --green: #7ac473;
     --green-4: #558457;
@@ -199,6 +202,7 @@
   --light-beige: #ebe4db;
   --beige: #d4cbbf;
   --dark-beige: #6d6659;
+  --light-gray: #d9d9d9;
   --light-green: #c4edac;
   --green: #7ac473;
   --green-4: #558457;

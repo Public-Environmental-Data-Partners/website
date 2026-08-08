@@ -22,7 +22,7 @@ export function CarouselCard(props: CarouselCardProps) {
   return <StoryCard {...props} />
 }
 
-function StoryCard({title, photoCredit, href, external, image}: CarouselCardProps) {
+function StoryCard({title, eyebrow, href, external, image}: CarouselCardProps) {
   return (
     <article className={storyCardShell}>
       <div className="relative aspect-[3/2] w-full overflow-hidden bg-muted">
@@ -36,15 +36,15 @@ function StoryCard({title, photoCredit, href, external, image}: CarouselCardProp
         />
       </div>
       <div className="flex flex-1 flex-col px-6 pt-4 pb-8">
-        {photoCredit ? (
+        {eyebrow ? (
           <p className="mt-5 mb-8 font-sans text-[1.25rem] leading-none font-normal tracking-normal text-foreground uppercase">
-            {photoCredit}
+            {eyebrow}
           </p>
         ) : null}
         <h3
           className={cn(
             'font-serif text-[1.875rem] leading-[2.1875rem] font-semibold italic text-foreground',
-            photoCredit ? 'mt-0' : 'mt-2',
+            eyebrow ? 'mt-0' : 'mt-2',
           )}
         >
           {title}

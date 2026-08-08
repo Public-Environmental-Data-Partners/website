@@ -54,6 +54,7 @@
   --color-light-beige: var(--light-beige);
   --color-beige: var(--beige);
   --color-dark-beige: var(--dark-beige);
+  --color-light-gray: var(--light-gray);
   --color-light-green: var(--light-green);
   --color-green-4: var(--green-4);
   --color-dark-green: var(--dark-green);
@@ -189,17 +190,6 @@ body {
     font-weight: 500;
   }
 
-  /*
-   * Tools Development hero heading — Source Serif 4 / 500 / 48 / 55 (all breakpoints).
-   */
-  h1.tools-development-heading {
-    font-family: var(--font-source-serif-4), ui-serif, Georgia, serif;
-    font-size: 3rem;
-    line-height: 3.4375rem;
-    font-weight: 500;
-    letter-spacing: 0;
-  }
-
   h2 {
     font-size: 2.125rem;
   }
@@ -232,11 +222,6 @@ body {
     }
 
     h1.hero-primary-heading {
-      font-size: 3rem;
-      line-height: 3.4375rem;
-    }
-
-    h1.tools-development-heading {
       font-size: 3rem;
       line-height: 3.4375rem;
     }

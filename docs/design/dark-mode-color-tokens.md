@@ -81,6 +81,7 @@ These currently keep the light hex in dark mode. Highest priority for real dark 
 | `--light-beige` | `light-beige` | `#ebe4db` | | | |
 | `--beige` | `beige` | `#d4cbbf` | | | |
 | `--dark-beige` | `dark-beige` | `#6d6659` | | | |
+| `--light-gray` | `light-gray` | `#d9d9d9` | | | | Image shelf, return-to-top strip |
 | `--light-green` | `light-green` | `#c4edac` | | | |
 | `--green` | `pedp-green` | `#7ac473` | | | |
 | `--green-4` | `green-4` | `#558457` | | | e.g. highlight banner gutter |

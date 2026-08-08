@@ -9,7 +9,9 @@ import {DonorWallSection} from '@/components/donate/donor-wall-section'
 import {NewsletterSection} from '@/components/home/newsletter-section'
 import {SectionSpacer} from '@/components/home/section-spacer'
 import {Grid12, SectionBand, SiteShell} from '@/components/layout'
+import {AdvocacyHeroSection} from '@/components/sections/advocacy-hero-section'
 import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
+import {CardCarouselSection} from '@/components/sections/card-carousel-section'
 import {DataPreservationHeroSection} from '@/components/sections/data-preservation-hero-section'
 import {FocusOnAccessSection} from '@/components/sections/focus-on-access-section'
 import {MetadataStandardsSection} from '@/components/sections/metadata-standards-section'
@@ -28,8 +30,12 @@ import {OtherWaysSection} from '@/components/site-page/other-ways-section'
 import {SimpleSectionBlock} from '@/components/site-page/simple-section-block'
 import {ARTICLE_COL_PROSE_CLASS} from '@/lib/article-body-grid'
 import {CONTENT_LINK_GROQ, PT_BLOCKS_GROQ, PT_MARK_DEFS_GROQ} from '@/lib/content-link'
+import type {AdvocacyHeroFields} from '@/lib/mappers/advocacy-sections'
+import {mapAdvocacyHeroToProps} from '@/lib/mappers/advocacy-sections'
 import type {ByTheNumbersSectionFields} from '@/lib/mappers/by-the-numbers-section'
 import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
+import type {CardCarouselSectionFields} from '@/lib/mappers/card-carousel-section'
+import {mapCardCarouselSectionToProps} from '@/lib/mappers/card-carousel-section'
 import type {
   DataPreservationHeroFields,
   FocusOnAccessSectionFields,
@@ -110,6 +116,7 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     image${SANITY_IMAGE_PROJECTION},
     fileListImage${SANITY_IMAGE_PROJECTION},
     collageImage${SANITY_IMAGE_PROJECTION},
+    imageShelf,
     imagePosition,
     surface,
     presentation,
@@ -129,13 +136,17 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
     donorboxCampaign,
     cardHeading,
     cardBody[]${PT_BLOCKS_GROQ},
+    showCta,
     rows[]{
       label,
       icon${SANITY_IMAGE_PROJECTION}
     },
     cards[]{
+      _type,
       _key,
       title,
+      eyebrow,
+      photoCredit,
       description,
       version,
       pill,
@@ -278,6 +289,11 @@ type OtherWaysSectionGroq = {
   _key: string
 } & OtherWaysSectionFields
 
+type AdvocacyHeroGroq = {
+  _type: 'advocacyHero'
+  _key: string
+} & AdvocacyHeroFields
+
 type DataPreservationHeroGroq = {
   _type: 'dataPreservationHero'
   _key: string
@@ -298,11 +314,16 @@ type MetadataStandardsSectionGroq = {
   _key: string
 } & MetadataStandardsSectionFields
 
+type CardCarouselSectionGroq = {
+  _type: 'cardCarouselSection'
+  _key: string
+} & CardCarouselSectionFields
+
 type SectionSpacerGroq = {
   _type: 'sectionSpacer'
   _key: string
   heightPx?: number | null
-  background?: 'none' | 'lightGreen' | null
+  background?: string | null
 }
 
 export type SitePageSectionGroq =
@@ -323,10 +344,12 @@ export type SitePageSectionGroq =
   | PartnerLogosSectionGroq
   | GetInvolvedIntroGroq
   | OtherWaysSectionGroq
+  | AdvocacyHeroGroq
   | DataPreservationHeroGroq
   | FocusOnAccessSectionGroq
   | RiskNominateSectionGroq
   | MetadataStandardsSectionGroq
+  | CardCarouselSectionGroq
   | SectionSpacerGroq
 
 export type SitePageData = {
@@ -461,6 +484,10 @@ function renderMarketingSection(section: SitePageSectionGroq) {
       const props = mapOtherWaysSectionToProps(section)
       return props ? <OtherWaysSection key={section._key} {...props} /> : null
     }
+    case 'advocacyHero': {
+      // Handled by the Advocacy page composer (needs page title for h1).
+      return null
+    }
     case 'dataPreservationHero': {
       // Handled by the Data Preservation page composer (needs page title for h1).
       return null
@@ -476,6 +503,10 @@ function renderMarketingSection(section: SitePageSectionGroq) {
     case 'metadataStandardsSection': {
       const props = mapMetadataStandardsSectionToProps(section)
       return props ? <MetadataStandardsSection key={section._key} {...props} /> : null
+    }
+    case 'cardCarouselSection': {
+      const props = mapCardCarouselSectionToProps(section)
+      return props ? <CardCarouselSection key={section._key} {...props} /> : null
     }
     case 'sectionSpacer':
       return typeof section.heightPx === 'number' ? (
@@ -498,6 +529,17 @@ function renderMarketingSection(section: SitePageSectionGroq) {
       return null
     default:
       return null
+  }
+}
+
+function renderAdvocacyPageSection(section: SitePageSectionGroq, pageTitle: string) {
+  switch (section._type) {
+    case 'advocacyHero': {
+      const props = mapAdvocacyHeroToProps(section, pageTitle)
+      return props ? <AdvocacyHeroSection key={section._key} {...props} /> : null
+    }
+    default:
+      return renderMarketingSection(section)
   }
 }
 
@@ -724,6 +766,15 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
     return (
       <div className="flex flex-1 flex-col bg-cream font-sans">
         {sections.map((section) => renderMarketingSection(section))}
+      </div>
+    )
+  }
+
+  const isAdvocacyPage = sections[0]?._type === 'advocacyHero'
+  if (isAdvocacyPage) {
+    return (
+      <div className="flex flex-1 flex-col font-sans">
+        {sections.map((section) => renderAdvocacyPageSection(section, title))}
       </div>
     )
   }

@@ -1,6 +1,7 @@
 import {defineField, defineType} from 'sanity'
 
 import {contentLinkAnnotation} from './contentLink'
+import {IMAGE_SHELF_BRAND_COLORS} from './imageShelf'
 
 const heroPortableText = {
   type: 'block',
@@ -390,10 +391,10 @@ export const storyCard = defineType({
       ],
     }),
     defineField({
-      name: 'photoCredit',
-      title: 'Photo credit',
+      name: 'eyebrow',
+      title: 'Card eyebrow',
       type: 'string',
-      description: 'Optional. e.g. PHOTO CREDIT: Jane Doe',
+      description: 'Optional short label under the image (e.g. CONTEXT, TIME, or a photo credit).',
       validation: (Rule) => Rule.max(120),
     }),
     defineField({
@@ -414,13 +415,13 @@ export const storyCard = defineType({
   preview: {
     select: {
       title: 'title',
-      photoCredit: 'photoCredit',
+      eyebrow: 'eyebrow',
       media: 'image',
     },
-    prepare({title, photoCredit}) {
+    prepare({title, eyebrow}) {
       return {
         title: title || 'Story card',
-        subtitle: photoCredit?.trim() || undefined,
+        subtitle: eyebrow?.trim() || undefined,
       }
     },
   },
@@ -612,7 +613,7 @@ export const newsletterSection = defineType({
   },
 })
 
-/** Vertical rhythm between page slices; height plus optional fill color. */
+/** Vertical rhythm between page slices; height plus optional brand fill color. */
 export const sectionSpacer = defineType({
   name: 'sectionSpacer',
   title: 'Section spacer',
@@ -630,11 +631,14 @@ export const sectionSpacer = defineType({
       name: 'background',
       title: 'Background',
       type: 'string',
-      description: 'Optional fill. Leave as None for transparent spacing.',
+      description: 'Optional brand fill. Leave as None for transparent spacing.',
       options: {
         list: [
           {title: 'None', value: 'none'},
-          {title: 'Light green', value: 'lightGreen'},
+          ...IMAGE_SHELF_BRAND_COLORS.map(({title, value, hex}) => ({
+            title: `${title} (${hex})`,
+            value,
+          })),
         ],
         layout: 'radio',
       },
@@ -648,7 +652,8 @@ export const sectionSpacer = defineType({
     },
     prepare({heightPx, background}) {
       const h = typeof heightPx === 'number' ? heightPx : 0
-      const fill = background === 'lightGreen' ? 'light green' : 'transparent'
+      const entry = IMAGE_SHELF_BRAND_COLORS.find((item) => item.value === background)
+      const fill = entry ? entry.title.toLowerCase() : 'transparent'
       return {
         title: 'Section spacer',
         subtitle: `${h}px · ${fill}`,

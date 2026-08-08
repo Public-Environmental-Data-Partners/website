@@ -44,6 +44,8 @@ type StoryCardGroq = {
   _type: 'storyCard'
   _key: string
   title?: string | null
+  eyebrow?: string | null
+  /** @deprecated Prefer `eyebrow`; kept for pre-migration content. */
   photoCredit?: string | null
   link?: ContentLinkGroq | null
   image?: HighlightBannerSectionGroq['image']
@@ -65,7 +67,7 @@ type SectionSpacerGroq = {
   _type: 'sectionSpacer'
   _key: string
   heightPx?: number | null
-  background?: 'none' | 'lightGreen' | null
+  background?: string | null
 }
 
 export type HomeSectionGroq =

@@ -22,6 +22,30 @@ export const page = defineType({
         {type: 'newsletterSection'},
         {type: 'partnerLogosSection'},
       ],
+      options: {
+        insertMenu: {
+          filter: true,
+          groups: [
+            {
+              name: 'pageSpecific',
+              title: 'Page-specific',
+              of: ['homeHero', 'whatWeDoSection', 'highlightBannerSection'],
+            },
+            {
+              name: 'shared',
+              title: 'Shared',
+              of: [
+                'byTheNumbersSection',
+                'cardCarouselSection',
+                'newsletterSection',
+                'partnerLogosSection',
+                'sectionSpacer',
+                'testimonialSection',
+              ],
+            },
+          ],
+        },
+      },
       validation: (Rule) => Rule.required().min(1),
     }),
     defineField({

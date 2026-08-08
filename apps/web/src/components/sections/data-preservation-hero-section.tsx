@@ -6,7 +6,7 @@ import {ContentLink} from '@/components/content-link'
 import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import {Button} from '@/components/ui/button'
 import type {DataPreservationHeroProps} from '@/lib/mappers/data-preservation-sections'
-import {SECTION_LABEL_HEADING_CLASS} from '@/lib/typography'
+import {SECTION_LABEL_HEADING_CLASS, SITE_PAGE_HERO_HEADING_CLASS} from '@/lib/typography'
 import {cn} from '@/lib/utils'
 
 const HERO_IMAGE_SIZES = '(min-width: 1024px) 25vw, 0px'
@@ -48,10 +48,7 @@ export function DataPreservationHeroSection({
         <Grid12 className="relative items-stretch gap-y-10 lg:gap-x-0">
           <div className="col-span-12 flex min-w-0 flex-col gap-6 py-10 md:py-14 lg:col-span-6 lg:py-16 lg:ps-16">
             <h1 className={cn(SECTION_LABEL_HEADING_CLASS, 'text-off-black')}>{label}</h1>
-            <h2
-              id={headingId}
-              className="font-serif text-[2.5rem] leading-none font-medium tracking-normal text-off-black md:text-[3.25rem]"
-            >
+            <h2 id={headingId} className={cn(SITE_PAGE_HERO_HEADING_CLASS, 'text-off-black')}>
               {heading}
             </h2>
             <div className="mt-6 max-w-xl md:mt-8">

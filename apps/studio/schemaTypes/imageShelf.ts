@@ -17,6 +17,7 @@ export const IMAGE_SHELF_BRAND_COLORS = [
   {title: 'Light beige', value: 'lightBeige', hex: '#ebe4db'},
   {title: 'Beige', value: 'beige', hex: '#d4cbbf'},
   {title: 'Dark beige', value: 'darkBeige', hex: '#6d6659'},
+  {title: 'Light gray', value: 'lightGray', hex: '#d9d9d9'},
   {title: 'Light green', value: 'lightGreen', hex: '#c4edac'},
   {title: 'PEDP green', value: 'pedpGreen', hex: '#7ac473'},
   {title: 'Green 4', value: 'green4', hex: '#558457'},

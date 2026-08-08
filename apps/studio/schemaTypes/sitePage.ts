@@ -369,6 +369,7 @@ export const sitePage = defineType({
         {type: 'donorWallSection'},
         {type: 'getInvolvedIntro'},
         {type: 'otherWaysSection'},
+        {type: 'advocacyHero'},
         {type: 'dataPreservationHero'},
         {type: 'focusOnAccessSection'},
         {type: 'riskNominateSection'},
@@ -377,12 +378,62 @@ export const sitePage = defineType({
         {type: 'byTheNumbersSection'},
         {type: 'testimonialSection'},
         {type: 'partnerLogosSection'},
+        {type: 'cardCarouselSection'},
         {type: 'toolsDevelopmentHero'},
         {type: 'toolCategorySection'},
         {type: 'sectionSpacer'},
       ],
+      options: {
+        insertMenu: {
+          filter: true,
+          groups: [
+            {
+              name: 'pageSpecific',
+              title: 'Page-specific',
+              of: [
+                'aboutIntro',
+                'advocacyHero',
+                'contactHero',
+                'dataPreservationHero',
+                'donateFormSection',
+                'getInvolvedIntro',
+                'legalDocumentSection',
+                'textImageSection',
+                'toolsDevelopmentHero',
+              ],
+            },
+            {
+              name: 'pageCompanions',
+              title: 'Page companions',
+              of: [
+                'contactSection',
+                'donateInfoSection',
+                'donorWallSection',
+                'focusOnAccessSection',
+                'metadataStandardsSection',
+                'otherWaysSection',
+                'riskNominateSection',
+                'toolCategorySection',
+              ],
+            },
+            {
+              name: 'shared',
+              title: 'Shared',
+              of: [
+                'byTheNumbersSection',
+                'cardCarouselSection',
+                'newsletterSection',
+                'partnerLogosSection',
+                'sectionSpacer',
+                'simpleSection',
+                'testimonialSection',
+              ],
+            },
+          ],
+        },
+      },
       description:
-        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero; Donate pages start with Donate form; Get Involved pages start with Get Involved intro; How We Work-style pages start with Text + image; Data Preservation pages start with Data Preservation hero; Tools Development pages typically start with Tools Development hero.',
+        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero; Donate pages start with Donate form; Get Involved pages start with Get Involved intro; How We Work-style pages start with Text + image; Advocacy pages start with Advocacy hero; Data Preservation pages start with Data Preservation hero; Tools Development pages typically start with Tools Development hero.',
       validation: (Rule) =>
         Rule.required()
           .min(1)
@@ -508,6 +559,29 @@ export const sitePage = defineType({
             ) {
               return 'A Get Involved page cannot also include About intro, Contact hero, or Donate form.'
             }
+            const advocacyHeroIndexes = sections.flatMap((section, index) =>
+              section &&
+              typeof section === 'object' &&
+              '_type' in section &&
+              section._type === 'advocacyHero'
+                ? [index]
+                : [],
+            )
+            if (advocacyHeroIndexes.length > 1) {
+              return 'Use only one Advocacy hero per page.'
+            }
+            if (advocacyHeroIndexes.length === 1 && advocacyHeroIndexes[0] !== 0) {
+              return 'Advocacy hero must be the first section on the page.'
+            }
+            if (
+              advocacyHeroIndexes.length === 1 &&
+              (aboutIntroIndexes.length === 1 ||
+                contactHeroIndexes.length === 1 ||
+                donateFormIndexes.length === 1 ||
+                getInvolvedIntroIndexes.length === 1)
+            ) {
+              return 'An Advocacy page cannot also include About intro, Contact hero, Donate form, or Get Involved intro.'
+            }
             const dataPreservationHeroIndexes = sections.flatMap((section, index) =>
               section &&
               typeof section === 'object' &&
@@ -527,9 +601,13 @@ export const sitePage = defineType({
               (aboutIntroIndexes.length === 1 ||
                 contactHeroIndexes.length === 1 ||
                 donateFormIndexes.length === 1 ||
-                getInvolvedIntroIndexes.length === 1)
+                getInvolvedIntroIndexes.length === 1 ||
+                advocacyHeroIndexes.length === 1)
             ) {
-              return 'A Data Preservation page cannot also include About intro, Contact hero, Donate form, or Get Involved intro.'
+              return 'A Data Preservation page cannot also include About intro, Contact hero, Donate form, Get Involved intro, or Advocacy hero.'
+            }
+            if (advocacyHeroIndexes.length === 1 && dataPreservationHeroIndexes.length === 1) {
+              return 'A page cannot include both Advocacy hero and Data Preservation hero.'
             }
             return true
           }),

@@ -13,7 +13,8 @@ type SanityImageData = {
 export type StoryCardProps = {
   _type: 'storyCard'
   title: string
-  photoCredit?: string
+  /** Short label under the image (source, credit, etc.). */
+  eyebrow?: string
   href: string
   external?: boolean
   image: {
@@ -35,6 +36,8 @@ type StoryCardGroq = {
   _type: 'storyCard'
   _key: string
   title?: string | null
+  eyebrow?: string | null
+  /** @deprecated Prefer `eyebrow`; kept for pre-migration content. */
   photoCredit?: string | null
   link?: ContentLinkGroq | null
   image?: SanityImageData
@@ -83,14 +86,14 @@ export function mapCardCarouselSectionToProps(
     if (!image) {
       continue
     }
-    const photoCredit = card.photoCredit?.trim()
+    const eyebrow = card.eyebrow?.trim() || card.photoCredit?.trim()
     cards.push({
       _type: 'storyCard',
       title,
       href: resolved.href,
       external: resolved.external,
       image,
-      ...(photoCredit ? {photoCredit} : {}),
+      ...(eyebrow ? {eyebrow} : {}),
     })
   }
   if (cards.length === 0) {

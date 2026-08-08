@@ -1,3 +1,4 @@
+import {advocacyHero} from './advocacySections'
 import {articleFigureItem} from './articleFigureItem'
 import {brandSvg} from './brandSvg'
 import {contentLink} from './contentLink'
@@ -81,6 +82,7 @@ export const schemaTypes = [
   getInvolvedIntro,
   otherWaysCard,
   otherWaysSection,
+  advocacyHero,
   dataPreservationHero,
   focusOnAccessItem,
   focusOnAccessSection,
