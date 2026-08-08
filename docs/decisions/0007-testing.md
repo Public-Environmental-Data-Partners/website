@@ -13,7 +13,12 @@ CI runs:
 - formatting check
 - Playwright E2E in Chromium
 
-The E2E suite currently runs axe WCAG 2 A/AA checks across core public routes.
+The E2E suite currently runs:
+
+- axe WCAG 2 A/AA checks across core public routes
+- sitemap/seed link crawl: internal links are blocking; external links are
+  warn-only (logged + annotated, do not fail the job)
+
 Configuration lives in `apps/web/playwright.config.ts`; tests live in
 `apps/web/e2e`.
 
@@ -23,6 +28,8 @@ Configuration lives in `apps/web/playwright.config.ts`; tests live in
 - article-detail smoke coverage using a stable published fixture
 - newsletter happy-path coverage with writes safely isolated
 - targeted unit tests when mapping or parsing logic becomes complex
+- optional scheduled external-link report (still non-blocking) once CMS link
+  hygiene is stable
 
 There is no requirement for a broad unit suite while behavior is adequately
 covered by types, focused functions, and route-level checks.
