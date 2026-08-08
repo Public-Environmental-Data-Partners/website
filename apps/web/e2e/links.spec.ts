@@ -137,11 +137,13 @@ async function pathsFromSitemap(request: APIRequestContext): Promise<string[]> {
 }
 
 async function collectAnchors(page: Page): Promise<string[]> {
-  return page.locator('a[href]').evaluateAll((anchors) =>
-    anchors
-      .map((anchor) => (anchor as HTMLAnchorElement).getAttribute('href') ?? '')
-      .filter(Boolean),
-  )
+  return page
+    .locator('a[href]')
+    .evaluateAll((anchors) =>
+      anchors
+        .map((anchor) => (anchor as HTMLAnchorElement).getAttribute('href') ?? '')
+        .filter(Boolean),
+    )
 }
 
 async function checkReachable(
@@ -217,7 +219,9 @@ async function crawlSite(
     }
   }
 
-  console.log(`[links] crawled ${visited.size} page(s); discovered ${classified.size} unique href(s)`)
+  console.log(
+    `[links] crawled ${visited.size} page(s); discovered ${classified.size} unique href(s)`,
+  )
   return {visited, classified}
 }
 
