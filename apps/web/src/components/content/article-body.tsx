@@ -27,8 +27,37 @@ function toBodyEntries(value: unknown): ArticleBodyBlockEntry[] {
   return value as ArticleBodyBlockEntry[]
 }
 
-function isPortableTextBody(blocks: ArticleBodyBlockEntry[]): blocks is PortableTextBlock[] {
-  return blocks.length > 0 && blocks.every((block) => isPortableTextBlockEntry(block))
+type ArticleBodyRow =
+  | {kind: 'prose'; key: string; blocks: PortableTextBlock[]}
+  | {kind: 'other'; key: string; block: ArticleBodyBlockEntry}
+
+/** Consecutive Portable Text blocks share one renderer so lists stay a single <ul>/<ol>. */
+function groupBodyEntries(blocks: ArticleBodyBlockEntry[]): ArticleBodyRow[] {
+  const rows: ArticleBodyRow[] = []
+
+  for (const [index, block] of blocks.entries()) {
+    if (isPortableTextBlockEntry(block)) {
+      const last = rows.at(-1)
+      if (last?.kind === 'prose') {
+        last.blocks.push(block)
+        continue
+      }
+      rows.push({
+        kind: 'prose',
+        key: block._key ?? `prose-${index}`,
+        blocks: [block],
+      })
+      continue
+    }
+
+    rows.push({
+      kind: 'other',
+      key: block._key ?? `body-block-${index}`,
+      block,
+    })
+  }
+
+  return rows
 }
 
 function getBodyBlockColumnKind(block: ArticleBodyBlockEntry): ArticleBodyBlockColumnKind {
@@ -76,26 +105,24 @@ export function ArticleBody({body}: ArticleBodyProps) {
     return null
   }
 
-  if (isPortableTextBody(blocks)) {
-    return (
-      <ArticleBodyShell>
-        <ArticleBodyBlockRow columnKind="prose">
-          <RichTextBlock value={blocks} />
-        </ArticleBodyBlockRow>
-      </ArticleBodyShell>
-    )
-  }
+  const rows = groupBodyEntries(blocks)
 
   return (
     <ArticleBodyShell>
-      {blocks.map((block, index) => (
-        <ArticleBodyBlockRow
-          columnKind={getBodyBlockColumnKind(block)}
-          key={block._key ?? `body-block-${index}`}
-        >
-          <ArticleBodyBlock block={block} />
-        </ArticleBodyBlockRow>
-      ))}
+      {rows.map((row) =>
+        row.kind === 'prose' ? (
+          <ArticleBodyBlockRow columnKind="prose" key={row.key}>
+            <RichTextBlock value={row.blocks} />
+          </ArticleBodyBlockRow>
+        ) : (
+          <ArticleBodyBlockRow
+            columnKind={getBodyBlockColumnKind(row.block)}
+            key={row.key}
+          >
+            <ArticleBodyBlock block={row.block} />
+          </ArticleBodyBlockRow>
+        ),
+      )}
     </ArticleBodyShell>
   )
 }

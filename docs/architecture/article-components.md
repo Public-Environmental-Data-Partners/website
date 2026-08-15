@@ -33,6 +33,10 @@ style.
 `ArticleFigure` is the shared image primitive: a 4:3 frame followed by optional
 photo credit and Portable Text caption.
 
+Consecutive `_type == "block"` items (paragraphs, headings, and list items) are
+grouped into one prose renderer even when the article also has images or quotes.
+That keeps a bullet list as a single `ul` instead of one spaced row per item.
+
 ## Grid
 
 Article body blocks use `SectionBand` → `SiteShell` → `Grid12`. Shared span
