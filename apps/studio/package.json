@@ -10,6 +10,7 @@
     "deploy-graphql": "sanity graphql deploy",
     "dev": "sanity dev",
     "start": "sanity start",
+    "import-catalog": "tsx scripts/import-catalog-datasets.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
@@ -19,6 +20,7 @@
     "sanity"
   ],
   "dependencies": {
+    "@sanity/client": "^7.23.2",
     "@sanity/ui": "^3.1.14",
     "@sanity/vision": "^6.5.0",
     "lucide-react": "^1.8.0",
@@ -34,6 +36,7 @@
     "eslint": "^9.28",
     "eslint-plugin-simple-import-sort": "^13.0.0",
     "prettier": "^3.5",
+    "tsx": "^4.23.12",
     "typescript": "^5.8"
   },
   "prettier": {

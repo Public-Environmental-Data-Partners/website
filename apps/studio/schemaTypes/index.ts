@@ -1,7 +1,9 @@
 import {advocacyHero} from './advocacySections'
 import {articleFigureItem} from './articleFigureItem'
 import {brandSvg} from './brandSvg'
+import {catalogDataset, catalogMentionedInItem} from './catalogDataset'
 import {contentLink} from './contentLink'
+import {dataCatalogCta, dataCatalogPage} from './dataCatalogPage'
 import {
   dataPreservationHero,
   focusOnAccessItem,
@@ -101,6 +103,10 @@ export const schemaTypes = [
   siteFooter,
   newsletterSignup,
   newsHubPage,
+  dataCatalogCta,
+  dataCatalogPage,
+  catalogMentionedInItem,
+  catalogDataset,
   newsPostTeaserFields,
   newsPostAudio,
   quoteBlock,

@@ -28,10 +28,13 @@ Numbered ADRs in [`decisions/`](./decisions/). Recent and open notes:
 - [`decisions/0008-deferred-integrations.md`](./decisions/0008-deferred-integrations.md)
 - [`decisions/0009-donorbox-donate.md`](./decisions/0009-donorbox-donate.md)
 - [`decisions/0010-newsletter-signup-abuse-controls.md`](./decisions/0010-newsletter-signup-abuse-controls.md)
+- [`decisions/0011-data-catalog.md`](./decisions/0011-data-catalog.md)
 
 ## Operations
 
 - [`ops/newsletter-signup.md`](./ops/newsletter-signup.md)
+- [`ops/data-catalog-import.md`](./ops/data-catalog-import.md) — CSV import for catalog datasets
+- [`ops/data-catalog-limited-set-test.md`](./ops/data-catalog-limited-set-test.md) — manual test while the sample set is live; remove after the full catalog
 - [`ops/content-links-cleanup.md`](./ops/content-links-cleanup.md) — temporary; remove after cleanup
 
 ## What belongs here

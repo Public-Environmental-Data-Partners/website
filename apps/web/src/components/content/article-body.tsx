@@ -115,10 +115,7 @@ export function ArticleBody({body}: ArticleBodyProps) {
             <RichTextBlock value={row.blocks} />
           </ArticleBodyBlockRow>
         ) : (
-          <ArticleBodyBlockRow
-            columnKind={getBodyBlockColumnKind(row.block)}
-            key={row.key}
-          >
+          <ArticleBodyBlockRow columnKind={getBodyBlockColumnKind(row.block)} key={row.key}>
             <ArticleBodyBlock block={row.block} />
           </ArticleBodyBlockRow>
         ),

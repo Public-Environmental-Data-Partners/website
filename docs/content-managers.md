@@ -114,4 +114,35 @@ YouTube is the only video source supported in posts right now. Unsupported URLs 
 
 ### Other video sources
 
-If you need Vimeo, Google Drive, Facebook, Instagram, or any other provider, drop a request in the website channel in Rocket Chat and tag Vim. Engineering must allowlist and wire up each new source before it will work in Studio or on the site. 
+If you need Vimeo, Google Drive, Facebook, Instagram, or any other provider, drop a request in the website channel in Rocket Chat and tag Vim. Engineering must allowlist and wire up each new source before it will work in Studio or on the site.
+
+## Data Catalog
+
+The public list is [https://pedp-website.vercel.app/data-catalog](https://pedp-website.vercel.app/data-catalog) (or the production domain once it replaces that URL). The page is not in the main navigation.
+
+How-to for the CSV import script is for engineering:
+[`docs/ops/data-catalog-import.md`](./ops/data-catalog-import.md). Field meaning (Summary vs Description, dates, Open in / Download) is in
+[`docs/decisions/0011-data-catalog.md`](./decisions/0011-data-catalog.md).
+
+### Documents in Studio
+
+- **Data Catalog page** (one document): hero title, intro, Data Guide CTA, Nominate Data CTA, SEO. Publish this or the route has no chrome.
+- **Catalog dataset** (one document per archived dataset): card title, agencies, dates, Summary, imported Description, links, Mentioned in.
+
+Import creates dataset documents as **drafts**. They do not appear on the public catalog until you **Publish**. You can use [draft preview](#draft-preview-before-you-publish) to check unpublished cards.
+
+Do **not** create a second Catalog dataset document for a deposit that already exists (same DOI or same backup URL). Ask engineering to re-run import or to find the existing draft.
+
+### What to edit
+
+- **Summary** is what visitors should see in the card description. Keep it around 450 characters (about 5 lines). Longer text is truncated and a “Read more on [host]” link is added.
+- **Description (imported)** is the metadata text, stored word for word. Leave it unless you are correcting a bad import. The site uses it only when Summary is empty.
+- **Mentioned in** is Studio-only (not in the spreadsheet). Add internal news/pages and/or external URLs with a label.
+- **Time period:** if start/end stay blank, the card shows “See backup”.
+- **Download date:** if blank, the card shows “Not recorded”. Flags such as “needs review” mean the import could not parse the spreadsheet; you can still publish after you set the date fields.
+- **Backup host** and **Backup URL is a file** are filled by import from the backup URL. You usually do not type the host. The button says “Open in Zenodo” (or Harvard Dataverse, SciOp, GitHub, …) or **Download** when the URL looks like a file.
+
+A later spreadsheet import **does not overwrite** fields you already filled. Empty fields can still be filled from the CSV.
+
+If a row never shows on the site: confirm it is published, then ask engineering (it may have been skipped for a missing DOI and backup URL).
+

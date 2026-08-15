@@ -71,6 +71,9 @@
 
   /* PEDP accent palette; Tailwind uses bg-pedp-green / bg-pedp-blue (see globals @theme). */
   --light-green: #c4edac;
+  /* Data Catalog hero (in-shell) and Nominate band. */
+  --pale-green: #e8ffdb;
+  --ice-blue: #e1f3ff;
   --green: #7ac473;
   /* Brand mid-green (e.g. highlight banner gutter). */
   --green-4: #558457;
@@ -145,6 +148,8 @@
     --dark-beige: #6d6659;
     --light-gray: #d9d9d9;
     --light-green: #c4edac;
+    --pale-green: #e8ffdb;
+    --ice-blue: #e1f3ff;
     --green: #7ac473;
     --green-4: #558457;
     --dark-green: #324a3d;
@@ -206,6 +211,9 @@
   --dark-beige: #6d6659;
   --light-gray: #d9d9d9;
   --light-green: #c4edac;
+  /* Data Catalog hero (in-shell) and Nominate band. */
+  --pale-green: #e8ffdb;
+  --ice-blue: #e1f3ff;
   --green: #7ac473;
   --green-4: #558457;
   --dark-green: #324a3d;

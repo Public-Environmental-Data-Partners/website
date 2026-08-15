@@ -92,6 +92,43 @@ const structure: StructureResolver = (S) =>
                 ),
             ]),
         ),
+      S.listItem()
+        .title('Data Catalog')
+        .id('data-catalog')
+        .child(
+          S.list()
+            .title('Data Catalog')
+            .items([
+              S.listItem()
+                .title('Catalog page')
+                .id('data-catalog-page')
+                .child(
+                  S.document()
+                    .schemaType('dataCatalogPage')
+                    .documentId('page.dataCatalog')
+                    .title('Data Catalog page'),
+                ),
+              S.listItem()
+                .title('Datasets')
+                .id('catalog-datasets')
+                .child(
+                  S.documentTypeList('catalogDataset')
+                    .title('Catalog datasets')
+                    .defaultOrdering([{field: 'archivedTitle', direction: 'asc'}]),
+                ),
+              S.listItem()
+                .title('Needs date review')
+                .id('catalog-datasets-review')
+                .child(
+                  S.documentList()
+                    .title('Needs date review')
+                    .filter(
+                      '_type == "catalogDataset" && (timePeriodNeedsReview == true || downloadDateNeedsReview == true)',
+                    )
+                    .defaultOrdering([{field: 'agency', direction: 'asc'}]),
+                ),
+            ]),
+        ),
       S.divider(),
       S.listItem()
         .title('Pages')

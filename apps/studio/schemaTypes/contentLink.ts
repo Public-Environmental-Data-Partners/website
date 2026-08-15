@@ -46,7 +46,7 @@ export const contentLink = defineType({
       type: 'string',
       hidden: ({parent}) => parent?.linkType !== 'internal',
       description:
-        'Used for established routes that are not Site page / News post documents (e.g. /news-and-updates, /donate).',
+        'Used for established routes that are not Site page / News post documents (e.g. /news-and-updates, /donate, /data-catalog).',
       validation: (Rule) =>
         Rule.custom((path, context) => {
           const parent = context.parent as {linkType?: string} | undefined
