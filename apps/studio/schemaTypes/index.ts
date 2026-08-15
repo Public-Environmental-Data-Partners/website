@@ -4,6 +4,7 @@ import {brandSvg} from './brandSvg'
 import {catalogDataset, catalogMentionedInItem} from './catalogDataset'
 import {contentLink} from './contentLink'
 import {dataCatalogCta, dataCatalogPage} from './dataCatalogPage'
+import {dataGuideBody, dataGuideHero} from './dataGuideSections'
 import {
   dataPreservationHero,
   focusOnAccessItem,
@@ -85,6 +86,8 @@ export const schemaTypes = [
   otherWaysCard,
   otherWaysSection,
   advocacyHero,
+  dataGuideHero,
+  dataGuideBody,
   dataPreservationHero,
   focusOnAccessItem,
   focusOnAccessSection,

@@ -12,6 +12,8 @@ import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import {AdvocacyHeroSection} from '@/components/sections/advocacy-hero-section'
 import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
 import {CardCarouselSection} from '@/components/sections/card-carousel-section'
+import {DataGuideBodySection} from '@/components/sections/data-guide-body-section'
+import {DataGuideHeroSection} from '@/components/sections/data-guide-hero-section'
 import {DataPreservationHeroSection} from '@/components/sections/data-preservation-hero-section'
 import {FocusOnAccessSection} from '@/components/sections/focus-on-access-section'
 import {MetadataStandardsSection} from '@/components/sections/metadata-standards-section'
@@ -36,6 +38,8 @@ import type {ByTheNumbersSectionFields} from '@/lib/mappers/by-the-numbers-secti
 import {mapByTheNumbersSectionToProps} from '@/lib/mappers/by-the-numbers-section'
 import type {CardCarouselSectionFields} from '@/lib/mappers/card-carousel-section'
 import {mapCardCarouselSectionToProps} from '@/lib/mappers/card-carousel-section'
+import type {DataGuideBodyFields, DataGuideHeroFields} from '@/lib/mappers/data-guide-sections'
+import {mapDataGuideBodyToProps, mapDataGuideHeroToProps} from '@/lib/mappers/data-guide-sections'
 import type {
   DataPreservationHeroFields,
   FocusOnAccessSectionFields,
@@ -289,6 +293,16 @@ type OtherWaysSectionGroq = {
   _key: string
 } & OtherWaysSectionFields
 
+type DataGuideHeroGroq = {
+  _type: 'dataGuideHero'
+  _key: string
+} & DataGuideHeroFields
+
+type DataGuideBodyGroq = {
+  _type: 'dataGuideBody'
+  _key: string
+} & DataGuideBodyFields
+
 type AdvocacyHeroGroq = {
   _type: 'advocacyHero'
   _key: string
@@ -344,6 +358,8 @@ export type SitePageSectionGroq =
   | PartnerLogosSectionGroq
   | GetInvolvedIntroGroq
   | OtherWaysSectionGroq
+  | DataGuideHeroGroq
+  | DataGuideBodyGroq
   | AdvocacyHeroGroq
   | DataPreservationHeroGroq
   | FocusOnAccessSectionGroq
@@ -484,6 +500,14 @@ function renderMarketingSection(section: SitePageSectionGroq) {
       const props = mapOtherWaysSectionToProps(section)
       return props ? <OtherWaysSection key={section._key} {...props} /> : null
     }
+    case 'dataGuideHero': {
+      // Handled by the Data Guide page composer (needs page title for h1).
+      return null
+    }
+    case 'dataGuideBody': {
+      const props = mapDataGuideBodyToProps(section)
+      return props ? <DataGuideBodySection key={section._key} {...props} /> : null
+    }
     case 'advocacyHero': {
       // Handled by the Advocacy page composer (needs page title for h1).
       return null
@@ -529,6 +553,17 @@ function renderMarketingSection(section: SitePageSectionGroq) {
       return null
     default:
       return null
+  }
+}
+
+function renderDataGuidePageSection(section: SitePageSectionGroq, pageTitle: string) {
+  switch (section._type) {
+    case 'dataGuideHero': {
+      const props = mapDataGuideHeroToProps(section, pageTitle)
+      return props ? <DataGuideHeroSection key={section._key} {...props} /> : null
+    }
+    default:
+      return renderMarketingSection(section)
   }
 }
 
@@ -766,6 +801,15 @@ export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
     return (
       <div className="flex flex-1 flex-col bg-cream font-sans">
         {sections.map((section) => renderMarketingSection(section))}
+      </div>
+    )
+  }
+
+  const isDataGuidePage = sections[0]?._type === 'dataGuideHero'
+  if (isDataGuidePage) {
+    return (
+      <div className="flex flex-1 flex-col font-sans">
+        {sections.map((section) => renderDataGuidePageSection(section, title))}
       </div>
     )
   }

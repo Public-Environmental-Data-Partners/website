@@ -160,6 +160,10 @@
   color: var(--dark-blue);
 }
 
+[data-slot='data-catalog-nominate'] [data-slot='button'] {
+  color: var(--ice-blue);
+}
+
 [data-slot='data-catalog-cta-blurb'] {
   font-family: var(--font-sans);
   font-weight: 500;

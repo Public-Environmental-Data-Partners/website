@@ -50,6 +50,49 @@ pager does not appear. That is expected.
   published.
 * Browser tab / SEO follow the page SEO fields (or the page title fallback).
 
+## Copy, links, and buttons
+
+Check Studio-managed copy and every control, not only card layout.
+
+Copy:
+
+* Hero title and intro match Studio, including line breaks and inline marks.
+* Data Guide and Nominate blurbs and button labels match Studio.
+* Empty-state copy (“No datasets match this search.”) and date fallbacks
+  (“See backup”, “Not recorded”) still read correctly.
+
+Links:
+
+* Hero intro content links (internal, external, email) go to the right place.
+  External links open in a new tab with the external icon.
+* Data Guide CTA goes to `/data-guide` (or the Studio href). Expect 404 until
+  that Site page is published.
+* Nominate CTA uses the Studio URL and opens in a new tab.
+* On cards: Open in / Download, Read more on [host], Metadata, Original URL,
+  and Mentioned in each hit the stored URL. Missing URL means the control is
+  absent, not a dead link.
+
+Buttons:
+
+* Search submits the query. Enter in the field does the same.
+* Sort pills select and reverse as documented below.
+* Expand plus / minus toggles the card and has an accessible name.
+* Open in vs Download matches backup URL type (page vs file-like).
+
+## Mentioned in
+
+Studio-only (not in the CSV). Import must not add, overwrite, or clear it.
+
+* On one published card, add at least one internal item (news post or site
+  page) and one external URL, each with a label. Publish.
+* Collapsed card: Mentioned in is hidden.
+* Expanded card: “Mentioned in:” lists the labels. Internal opens same tab.
+  External opens a new tab with the external icon.
+* A row with no label or no link is omitted.
+* A card with an empty Mentioned in array does not show the heading.
+* Re-import the same CSV row: Mentioned in is unchanged.
+
+
 ## Draft vs published
 
 * Unpublished dataset is absent from the public catalog.

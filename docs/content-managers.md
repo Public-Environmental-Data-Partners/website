@@ -56,7 +56,7 @@ Choose **Internal** for any destination on the PEDP website. Internal links open
 Choose the destination from one of these views:
 
 - **Navigation:** Follows the website's main navigation. Expand a group such as **What We Do** to see its pages. Expand **News and Updates** to choose the news hub or a published post.
-- **All pages:** Search all published website pages, including pages that are not in the main navigation.
+- **All pages:** Search all published website pages, including pages that are not in the main navigation. **Data Catalog** is listed here (`/data-catalog`); it is not in the main navigation.
 - **All posts:** Search all published news posts.
 
 Select the destination from the picker instead of copying its URL. Page and post selections remain valid if their slug changes.

@@ -5,6 +5,9 @@ export const CONTENT_LINK_API_VERSION = '2024-01-01'
 /** Canonical News & Updates hub path (not a `sitePage` document). */
 export const NEWS_HUB_PATH = '/news-and-updates'
 
+/** Canonical Data Catalog path (singleton `dataCatalogPage`, not a `sitePage`). */
+export const DATA_CATALOG_PATH = '/data-catalog'
+
 export type ContentLinkType = 'internal' | 'external' | 'email'
 
 export type ContentLinkReference = {
@@ -109,6 +112,13 @@ export function isNewsHubPath(path: string | null | undefined): boolean {
     return false
   }
   return normalizeInternalPath(path) === NEWS_HUB_PATH
+}
+
+export function isDataCatalogPath(path: string | null | undefined): boolean {
+  if (!path) {
+    return false
+  }
+  return normalizeInternalPath(path) === DATA_CATALOG_PATH
 }
 
 export function hrefForSitePageSlug(slug: string | null | undefined): string | null {

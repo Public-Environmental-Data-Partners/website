@@ -7,8 +7,10 @@ import {
   CONTENT_LINK_API_VERSION,
   type ContentLinkType,
   type ContentLinkValue,
+  DATA_CATALOG_PATH,
   hrefForNewsPostSlug,
   hrefForSitePageSlug,
+  isDataCatalogPath,
   isNewsHubPath,
   type NavGroupProjection,
   type NavLinkProjection,
@@ -430,7 +432,24 @@ export function ContentLinkInput(props: ContentLinkInputProps) {
 
             {browseMode === 'pages' ? (
               <Stack space={1}>
-                {filteredPages.length === 0 ? (
+                {matchesQuery('Data Catalog', DATA_CATALOG_PATH, search) ? (
+                  <DestinationRow
+                    label="Data Catalog"
+                    href={DATA_CATALOG_PATH}
+                    selected={isDataCatalogPath(value?.internalPath)}
+                    disabled={readOnly}
+                    badge="Catalog"
+                    onSelect={() =>
+                      applyInternal({
+                        kind: 'path',
+                        path: DATA_CATALOG_PATH,
+                        label: 'Data Catalog',
+                      })
+                    }
+                  />
+                ) : null}
+                {filteredPages.length === 0 &&
+                !matchesQuery('Data Catalog', DATA_CATALOG_PATH, search) ? (
                   <Box padding={3}>
                     <Text size={1} muted>
                       No published pages match.

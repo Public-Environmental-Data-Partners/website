@@ -370,6 +370,8 @@ export const sitePage = defineType({
         {type: 'getInvolvedIntro'},
         {type: 'otherWaysSection'},
         {type: 'advocacyHero'},
+        {type: 'dataGuideHero'},
+        {type: 'dataGuideBody'},
         {type: 'dataPreservationHero'},
         {type: 'focusOnAccessSection'},
         {type: 'riskNominateSection'},
@@ -394,6 +396,7 @@ export const sitePage = defineType({
                 'aboutIntro',
                 'advocacyHero',
                 'contactHero',
+                'dataGuideHero',
                 'dataPreservationHero',
                 'donateFormSection',
                 'getInvolvedIntro',
@@ -407,6 +410,7 @@ export const sitePage = defineType({
               title: 'Page companions',
               of: [
                 'contactSection',
+                'dataGuideBody',
                 'donateInfoSection',
                 'donorWallSection',
                 'focusOnAccessSection',
@@ -433,7 +437,7 @@ export const sitePage = defineType({
         },
       },
       description:
-        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero; Donate pages start with Donate form; Get Involved pages start with Get Involved intro; How We Work-style pages start with Text + image; Advocacy pages start with Advocacy hero; Data Preservation pages start with Data Preservation hero; Tools Development pages typically start with Tools Development hero.',
+        'Ordered sections that make up this page. About pages start with About intro; Contact pages start with Contact hero; Donate pages start with Donate form; Get Involved pages start with Get Involved intro; How We Work-style pages start with Text + image; Advocacy pages start with Advocacy hero; Data Guide pages start with Data Guide hero; Data Preservation pages start with Data Preservation hero; Tools Development pages typically start with Tools Development hero.',
       validation: (Rule) =>
         Rule.required()
           .min(1)
@@ -608,6 +612,41 @@ export const sitePage = defineType({
             }
             if (advocacyHeroIndexes.length === 1 && dataPreservationHeroIndexes.length === 1) {
               return 'A page cannot include both Advocacy hero and Data Preservation hero.'
+            }
+            const dataGuideHeroIndexes = sections.flatMap((section, index) =>
+              section &&
+              typeof section === 'object' &&
+              '_type' in section &&
+              section._type === 'dataGuideHero'
+                ? [index]
+                : [],
+            )
+            const hasDataGuideBody = sections.some(
+              (section) =>
+                section &&
+                typeof section === 'object' &&
+                '_type' in section &&
+                section._type === 'dataGuideBody',
+            )
+            if (dataGuideHeroIndexes.length > 1) {
+              return 'Use only one Data Guide hero per page.'
+            }
+            if (dataGuideHeroIndexes.length === 1 && dataGuideHeroIndexes[0] !== 0) {
+              return 'Data Guide hero must be the first section on the page.'
+            }
+            if (hasDataGuideBody && dataGuideHeroIndexes.length === 0) {
+              return 'Pages with Data Guide body must start with a Data Guide hero.'
+            }
+            if (
+              dataGuideHeroIndexes.length === 1 &&
+              (aboutIntroIndexes.length === 1 ||
+                contactHeroIndexes.length === 1 ||
+                donateFormIndexes.length === 1 ||
+                getInvolvedIntroIndexes.length === 1 ||
+                advocacyHeroIndexes.length === 1 ||
+                dataPreservationHeroIndexes.length === 1)
+            ) {
+              return 'A Data Guide page cannot also include About intro, Contact hero, Donate form, Get Involved intro, Advocacy hero, or Data Preservation hero.'
             }
             return true
           }),
