@@ -11,10 +11,8 @@ import {sectionBodyPortableTextComponents} from '@/components/content/section-bo
 import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import type {DataGuideBodyProps} from '@/lib/mappers/data-guide-sections'
 
-const bodyPortableTextComponents: Partial<PortableTextComponents> = {
-  ...sectionBodyPortableTextComponents,
+const dataGuideBodyOverrides: Partial<PortableTextComponents> = {
   block: {
-    ...sectionBodyPortableTextComponents.block,
     h2: ({children}: {children?: ReactNode}) => (
       <h2 className="text-off-black mt-10 mb-4 font-serif text-[1.75rem] leading-tight font-medium tracking-normal first:mt-0">
         {children}
@@ -27,12 +25,14 @@ const bodyPortableTextComponents: Partial<PortableTextComponents> = {
     ),
   },
   marks: {
-    ...sectionBodyPortableTextComponents.marks,
     link: contentLinkMark('text-off-black underline underline-offset-2'),
   },
 }
 
-const richTextComponents = mergeComponents(defaultComponents, bodyPortableTextComponents)
+const richTextComponents = mergeComponents(
+  mergeComponents(defaultComponents, sectionBodyPortableTextComponents),
+  dataGuideBodyOverrides,
+)
 
 /**
  * `dataGuideBody` CMS block.
