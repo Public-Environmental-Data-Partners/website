@@ -24,6 +24,10 @@ const HOME_QUERY = `*[_type == "page" && _id == "page.home"][0]{
     heroParagraph1[]${PT_BLOCKS_GROQ},
     heroParagraph2[]${PT_BLOCKS_GROQ},
     heroParagraph3[]${PT_BLOCKS_GROQ},
+    primaryCtaLabel,
+    primaryCtaLink${CONTENT_LINK_GROQ},
+    secondaryCtaLabel,
+    secondaryCtaLink${CONTENT_LINK_GROQ},
     heroImage{
       alt,
       asset->{

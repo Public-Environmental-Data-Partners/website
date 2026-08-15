@@ -47,6 +47,32 @@ export const homeHero = defineType({
       description: 'Optional. On mobile, appears after paragraph 2.',
     }),
     defineField({
+      name: 'primaryCtaLabel',
+      title: 'Primary button label',
+      type: 'string',
+      description: 'Optional. Button is hidden if the label or link is empty.',
+      validation: (Rule) => Rule.max(40),
+    }),
+    defineField({
+      name: 'primaryCtaLink',
+      title: 'Primary button link',
+      type: 'contentLink',
+      description: 'Optional. Button is hidden if left empty.',
+    }),
+    defineField({
+      name: 'secondaryCtaLabel',
+      title: 'Secondary button label',
+      type: 'string',
+      description: 'Optional. Button is hidden if the label or link is empty.',
+      validation: (Rule) => Rule.max(40),
+    }),
+    defineField({
+      name: 'secondaryCtaLink',
+      title: 'Secondary button link',
+      type: 'contentLink',
+      description: 'Optional. Button is hidden if left empty.',
+    }),
+    defineField({
       name: 'heroImage',
       title: 'Image',
       type: 'image',

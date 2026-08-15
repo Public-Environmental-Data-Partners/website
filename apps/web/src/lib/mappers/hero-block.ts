@@ -1,6 +1,7 @@
 import type {PortableTextBlock} from '@portabletext/react'
 
 import type {HomeHeroSectionProps} from '@/components/home/hero-section'
+import {type ContentLinkGroq, resolveContentLink} from '@/lib/content-link'
 import {type ImageShelfSettingsFields, mapImageShelfSettings} from '@/lib/mappers/image-shelf'
 
 import {mapSanityImage, type SanityImageData} from './sanity-image'
@@ -11,8 +12,24 @@ export type HomeHeroFields = {
   heroParagraph1?: unknown
   heroParagraph2?: unknown
   heroParagraph3?: unknown
+  primaryCtaLabel?: string | null
+  primaryCtaLink?: ContentLinkGroq | null
+  secondaryCtaLabel?: string | null
+  secondaryCtaLink?: ContentLinkGroq | null
   heroImage?: SanityImageData
   imageShelf?: ImageShelfSettingsFields | null
+}
+
+function mapHeroCta(
+  label: string | null | undefined,
+  link: ContentLinkGroq | null | undefined,
+): HomeHeroSectionProps['primaryCta'] {
+  const text = label?.trim()
+  const resolved = resolveContentLink(link)
+  if (!text || !resolved) {
+    return undefined
+  }
+  return {label: text, href: resolved.href, external: resolved.external}
 }
 
 function toPortableTextBlocks(value: unknown): PortableTextBlock[] {
@@ -45,6 +62,8 @@ export function mapHeroBlockToProps(
     paragraph1,
     paragraph2: paragraph2.length > 0 ? paragraph2 : undefined,
     paragraph3: paragraph3.length > 0 ? paragraph3 : undefined,
+    primaryCta: mapHeroCta(data?.primaryCtaLabel, data?.primaryCtaLink),
+    secondaryCta: mapHeroCta(data?.secondaryCtaLabel, data?.secondaryCtaLink),
     image,
     imageShelf: mapImageShelfSettings(data?.imageShelf),
   }
