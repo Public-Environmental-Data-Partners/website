@@ -229,6 +229,10 @@ export function DataCatalogExplorer({
       setSortDir('asc')
     }
     setPage(1)
+    posthog.capture('data_catalog_sorted', {
+      sort_key: next,
+      sort_dir: sortDir,
+    })
   }
 
   const filtered = useMemo(() => {
