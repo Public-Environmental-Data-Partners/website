@@ -1,6 +1,7 @@
 'use client'
 
 import {Pause, PlaySquare} from 'lucide-react'
+import posthog from 'posthog-js'
 import {useCallback, useId, useRef, useState} from 'react'
 
 import {cn} from '@/lib/utils'
@@ -31,10 +32,11 @@ export function ArticleListenPill({audioSrc, durationMinutes, className}: Articl
     try {
       await audio.play()
       setIsPlaying(true)
+      posthog.capture('article_audio_started', {duration_minutes: durationMinutes})
     } catch {
       setIsPlaying(false)
     }
-  }, [isPlaying])
+  }, [durationMinutes, isPlaying])
 
   return (
     <>

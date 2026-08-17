@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import posthog from 'posthog-js'
 import {useId, useState} from 'react'
 
 import {Grid12, SectionBand, SiteShell} from '@/components/layout'
@@ -53,6 +54,7 @@ export function NewsletterSection({
         return
       }
       setSuccess(true)
+      posthog.capture('newsletter_subscribed')
     } catch {
       setError('Something went wrong. Please try again.')
     } finally {

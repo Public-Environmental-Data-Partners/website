@@ -1,6 +1,7 @@
 'use client'
 
 import {ChevronLeft, ChevronRight, Minus, Plus, Search} from 'lucide-react'
+import posthog from 'posthog-js'
 import {type FormEvent, useMemo, useState} from 'react'
 
 import {ContentLink} from '@/components/content-link'
@@ -49,6 +50,14 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
   const buttonLabel = catalogButtonLabel(card)
   const panelId = `${card.id}-panel`
 
+  function toggleDetails() {
+    const nextOpen = !open
+    setOpen(nextOpen)
+    if (nextOpen) {
+      posthog.capture('dataset_expanded')
+    }
+  }
+
   return (
     <article data-slot="data-catalog-card" className="relative">
       <button
@@ -56,7 +65,7 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
         data-slot="data-catalog-expand"
         aria-expanded={open}
         aria-controls={panelId}
-        onClick={() => setOpen((v) => !v)}
+        onClick={toggleDetails}
       >
         {open ? (
           <Minus className="size-10" strokeWidth={3} aria-hidden />
@@ -203,6 +212,11 @@ export function DataCatalogExplorer({
 
   function onSearch(event: FormEvent) {
     event.preventDefault()
+    const resultCount = filterCatalogCards(datasets, draftQuery).length
+    posthog.capture('data_catalog_searched', {
+      has_query: draftQuery.trim().length > 0,
+      result_count: resultCount,
+    })
     setQuery(draftQuery)
     setPage(1)
   }
