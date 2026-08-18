@@ -13,6 +13,7 @@ if (!posthogKey || !posthogHost) {
   }
 } else {
   posthog.init(posthogKey, {
+    cookieless_mode: "always",
     api_host: posthogHost,
     defaults: '2025-11-30',
     capture_exceptions: true,
