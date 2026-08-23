@@ -84,6 +84,19 @@
   padding-right: 6.75rem;
 }
 
+[data-slot='data-catalog-card-title'] button {
+  font: inherit;
+  color: inherit;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+  cursor: pointer;
+}
+
 [data-slot='data-catalog-expand'] {
   position: absolute;
   top: 0.75rem;

@@ -65,7 +65,16 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
         )}
         <span className="sr-only">{open ? 'Collapse dataset' : 'Expand dataset'}</span>
       </button>
-      <h2 data-slot="data-catalog-card-title">{card.title}</h2>
+      <h2 data-slot="data-catalog-card-title">
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-controls={panelId}
+          onClick={() => setOpen((v) => !v)}
+        >
+          {card.title}
+        </button>
+      </h2>
       {open ? (
         <div id={panelId} className="mt-6 flex flex-col gap-6">
           {card.description ? (
@@ -124,15 +133,6 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
             </ContentLink>
           </p>
         ) : null}
-        {!open ? (
-          <div className="col-span-9 flex justify-center">
-            <Button asChild size="cta" variant="offBlack" className="px-6 text-off-white">
-              <ContentLink href={card.backupUrl} external>
-                {buttonLabel}
-              </ContentLink>
-            </Button>
-          </div>
-        ) : null}
       </div>
       {open ? (
         <div className="mt-6 flex flex-col gap-6">
@@ -155,6 +155,14 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
               </p>
             </div>
           ) : null}
+          {card.keywords ? (
+            <div>
+              <h3 data-slot="data-catalog-section-label">Keywords:</h3>
+              <p data-slot="data-catalog-body" className="mt-2">
+                {card.keywords}
+              </p>
+            </div>
+          ) : null}
           {card.mentionedIn.length > 0 ? (
             <div>
               <h3 data-slot="data-catalog-section-label">Mentioned in:</h3>
@@ -173,7 +181,7 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
               </ul>
             </div>
           ) : null}
-          <div className="flex justify-center">
+          <div className="flex justify-end">
             <Button asChild size="cta" variant="offBlack" className="px-6 text-off-white">
               <ContentLink href={card.backupUrl} external>
                 {buttonLabel}

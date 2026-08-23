@@ -208,7 +208,9 @@ export const catalogDataset = defineType({
       title: 'Keywords',
       type: 'text',
       rows: 2,
-      group: 'search',
+      group: 'copy',
+      description:
+        'Shown on the expanded card as a comma-separated list, above Mentioned in. Hidden if empty. Also used in search.',
     }),
     defineField({
       name: 'cchTerms',
