@@ -134,7 +134,8 @@
   letter-spacing: 0;
 }
 
-[data-slot='data-catalog-body'] {
+[data-slot='data-catalog-body'],
+[data-slot='data-catalog-results-summary'] {
   font-family: var(--font-sans);
   font-weight: 400;
   font-size: 1.375rem;

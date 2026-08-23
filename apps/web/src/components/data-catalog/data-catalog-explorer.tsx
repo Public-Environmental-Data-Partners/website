@@ -233,6 +233,8 @@ export function DataCatalogExplorer({
   const {slice, totalPages, page: safePage} = paginateCatalog(filtered, page)
   const pages = catalogPageItems(totalPages, safePage)
   const count = datasets.length
+  const hasSearch = query.trim().length > 0
+  const resultCountLabel = `${filtered.length} data set${filtered.length === 1 ? '' : 's'}`
 
   const sidebar = (
     <div className="flex flex-col gap-6">
@@ -305,6 +307,11 @@ export function DataCatalogExplorer({
           </div>
         </div>
         <div className="mt-8 flex flex-col gap-4">
+          {hasSearch ? (
+            <p data-slot="data-catalog-results-summary" role="status">
+              Showing {resultCountLabel} matching your search
+            </p>
+          ) : null}
           {slice.length === 0 ? (
             <p data-slot="data-catalog-body">No datasets match this search.</p>
           ) : (
