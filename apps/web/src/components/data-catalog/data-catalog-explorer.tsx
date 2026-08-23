@@ -1,11 +1,11 @@
 'use client'
 
 import {ChevronLeft, ChevronRight, Minus, Plus, Search} from 'lucide-react'
-import posthog from 'posthog-js'
 import {type FormEvent, useMemo, useState} from 'react'
 
 import {ContentLink} from '@/components/content-link'
 import {Button} from '@/components/ui/button'
+import {captureEvent} from '@/lib/analytics'
 import {
   catalogButtonLabel,
   type CatalogCardProps,
@@ -54,7 +54,11 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
     const nextOpen = !open
     setOpen(nextOpen)
     if (nextOpen) {
-      posthog.capture('dataset_expanded')
+      captureEvent('dataset_expanded', {
+        dataset_id: card.id,
+        dataset_title: card.title,
+        agency: card.agency,
+      })
     }
   }
 
@@ -213,7 +217,7 @@ export function DataCatalogExplorer({
   function onSearch(event: FormEvent) {
     event.preventDefault()
     const resultCount = filterCatalogCards(datasets, draftQuery).length
-    posthog.capture('data_catalog_searched', {
+    captureEvent('data_catalog_searched', {
       has_query: draftQuery.trim().length > 0,
       result_count: resultCount,
     })
@@ -222,16 +226,14 @@ export function DataCatalogExplorer({
   }
 
   function onSort(next: SortKey) {
-    if (sortKey === next) {
-      setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'))
-    } else {
-      setSortKey(next)
-      setSortDir('asc')
-    }
+    const nextDir: SortDir = sortKey === next ? (sortDir === 'asc' ? 'desc' : 'asc') : 'asc'
+
+    setSortKey(next)
+    setSortDir(nextDir)
     setPage(1)
-    posthog.capture('data_catalog_sorted', {
+    captureEvent('data_catalog_sorted', {
       sort_key: next,
-      sort_dir: sortDir,
+      sort_dir: nextDir,
     })
   }
 

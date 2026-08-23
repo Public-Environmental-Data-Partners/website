@@ -5,7 +5,6 @@ Product and infrastructure work intentionally not implemented yet.
 | Item               | Current state / decision needed                                                                                             |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------- |
 | Newsletter ESP     | Signups are stored in Sanity. Choose an ESP and migration/synchronization approach before replacing that interim flow.      |
-| Analytics          | No Google Analytics loader or environment contract exists. Confirm product/privacy requirements first.                      |
 | Site search        | Not present and not required for the initial release.                                                                       |
 | Sanity roles       | Publishing roles remain informal. Define permissions when the editor group requires separation of duties.                   |
 | Global share image | Site metadata exists, but a default Open Graph image and final production domain still need confirmation.                   |
@@ -16,6 +15,9 @@ dedicated architecture/operations document.
 
 ## Related (no longer deferred)
 
-**Donations** — `/donate` is CMS-driven (`sitePage` slug `donate`) with Donorbox
-form + Donor Wall embeds. See
+Donations: `/donate` is CMS-driven (`sitePage` slug `donate`) with Donorbox
+form and Donor Wall embeds. See
 [`0009-donorbox-donate.md`](./0009-donorbox-donate.md).
+
+Analytics: PostHog cookieless browser analytics on `apps/web`. See
+[`../architecture/analytics.md`](../architecture/analytics.md).

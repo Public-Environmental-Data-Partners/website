@@ -1,9 +1,9 @@
 'use client'
 
 import {Share2} from 'lucide-react'
-import posthog from 'posthog-js'
 import {useCallback, useState} from 'react'
 
+import {captureEvent} from '@/lib/analytics'
 import {cn} from '@/lib/utils'
 
 export type ArticleShareButtonProps = {
@@ -19,7 +19,7 @@ export function ArticleShareButton({shareUrl, shareTitle, className}: ArticleSha
     if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
       try {
         await navigator.share({url: shareUrl, title: shareTitle})
-        posthog.capture('article_shared', {share_method: 'native'})
+        captureEvent('article_shared', {share_method: 'native'})
         return
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') {
@@ -31,7 +31,7 @@ export function ArticleShareButton({shareUrl, shareTitle, className}: ArticleSha
     try {
       await navigator.clipboard.writeText(shareUrl)
       setStatusMessage('Link copied to clipboard')
-      posthog.capture('article_shared', {share_method: 'clipboard'})
+      captureEvent('article_shared', {share_method: 'clipboard'})
     } catch {
       setStatusMessage('Could not copy link')
     }

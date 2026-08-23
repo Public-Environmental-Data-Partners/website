@@ -1,9 +1,9 @@
 'use client'
 
 import {Pause, PlaySquare} from 'lucide-react'
-import posthog from 'posthog-js'
 import {useCallback, useId, useRef, useState} from 'react'
 
+import {captureEvent} from '@/lib/analytics'
 import {cn} from '@/lib/utils'
 
 export type ArticleListenPillProps = {
@@ -30,9 +30,14 @@ export function ArticleListenPill({audioSrc, durationMinutes, className}: Articl
     }
 
     try {
+      // Count a start, not pause/resume. Check before play(); currentTime can
+      // advance as soon as playback begins.
+      const isStart = audio.currentTime < 0.25
       await audio.play()
       setIsPlaying(true)
-      posthog.capture('article_audio_started', {duration_minutes: durationMinutes})
+      if (isStart) {
+        captureEvent('article_audio_started', {duration_minutes: durationMinutes})
+      }
     } catch {
       setIsPlaying(false)
     }

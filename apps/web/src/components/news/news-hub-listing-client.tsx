@@ -1,9 +1,9 @@
 'use client'
 
-import posthog from 'posthog-js'
 import {useCallback, useState, useSyncExternalStore} from 'react'
 
 import {NewsHubCard, type NewsHubCardProps} from '@/components/news/news-hub-card'
+import {captureEvent} from '@/lib/analytics'
 import type {NewsHubLoadCounts} from '@/lib/queries/news-hub-page'
 
 type Breakpoint = 'mobile' | 'tablet' | 'desktop'
@@ -93,7 +93,7 @@ export function NewsHubListingClient({
         setPosts(nextPosts)
       }
       setExtraCount(nextExtra)
-      posthog.capture('news_posts_loaded', {
+      captureEvent('news_posts_loaded', {
         loaded_count: Math.min(loadMoreCount, total - displayCount),
       })
     } catch {

@@ -17,6 +17,7 @@ checklists should not remain after their useful content is incorporated here.
 - [`architecture/web-css.md`](./architecture/web-css.md)
 - [`architecture/article-components.md`](./architecture/article-components.md)
 - [`architecture/news-and-updates.md`](./architecture/news-and-updates.md)
+- [`architecture/analytics.md`](./architecture/analytics.md): PostHog events and privacy defaults
 
 ## Decisions
 
