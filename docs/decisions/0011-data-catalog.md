@@ -99,6 +99,11 @@ stay unparsed in v1 (`needsReview` plus this fallback).
 
 If blank or unparsed, the card shows "Not recorded".
 
+### Keywords
+
+Shown on the expanded card above Mentioned in as a comma-separated string.
+Hidden if empty. Still included in client-side search.
+
 ### Backup Host
 
 Not a CSV column. Import (or an editor override) sets it by parsing the backup
