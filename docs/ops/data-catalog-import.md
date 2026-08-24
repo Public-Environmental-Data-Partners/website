@@ -7,6 +7,8 @@ Editors publish and edit in Studio; see
 [`docs/content-managers.md`](../content-managers.md) (Data Catalog).
 Limited-set QA:
 [`docs/ops/data-catalog-limited-set-test.md`](./data-catalog-limited-set-test.md).
+CSV column inventory (which headers the script and Sanity use):
+[`docs/ops/data-catalog-csv-fields.md`](./data-catalog-csv-fields.md).
 
 ## What the script does
 
@@ -15,11 +17,21 @@ as drafts (`drafts.catalog.…`). It does not publish. The public `/data-catalog
 page lists published documents only.
 
 Re-import matches rows by import key (normalized DOI, else normalized backup
-URL). For each field, if Studio already has a non-empty value, the script
-leaves it alone. Empty fields are filled from the CSV. Mentioned in is not in
-the CSV and is never overwritten by import.
+URL). By default, if Studio already has a non-empty value, the script leaves
+it alone. Empty fields are filled from the CSV. Pass `--overwrite` to replace
+CSV-mapped fields on a draft of the existing document. The published document
+is not patched; editors publish the draft to update the live catalog. Only
+columns present in the CSV are written. Empty cells unset those fields, except
+Summary: Summary is updated only when the CSV has a non-empty Summary value.
+Mentioned in is not in the CSV and is never written. Changing a DOI creates a
+new key and does not update the old document.
 
 Rows with neither a DOI nor a backup URL are skipped and printed as `SKIP`.
+
+CSV header names must match the script exactly. For a new import file, copy
+`apps/studio/scripts/metadata_final_datacatalogue_20260821.csv` and edit rows
+rather than starting from a blank export. Column list:
+[`data-catalog-csv-fields.md`](./data-catalog-csv-fields.md).
 
 ## Flow
 
@@ -29,7 +41,8 @@ Rows with neither a DOI nor a backup URL are skipped and printed as `SKIP`.
 3. Build the import key (normalized DOI, else backup URL). Skip the row if both
    are missing.
 4. `--dry-run` logs the draft id and stops. Otherwise create a draft, or patch
-   only fields that are still empty on the existing document.
+   the existing document: empty fields only, or CSV-mapped fields on a draft
+   when `--overwrite` is set. Always dry-run overwrite before a real write.
 5. Editors publish in Studio. The public catalog does not include drafts.
 
 ## Command
@@ -49,16 +62,32 @@ SANITY_API_WRITE_TOKEN='…' pnpm --filter pedp-studio run import-catalog
 ```
 
 Optional path (default is
-`apps/studio/scripts/fixtures/sample-combined.csv`):
+`apps/studio/scripts/fixtures/sample-combined.csv`). `pnpm --filter` runs in
+`apps/studio`, so a relative path may be from the repo root or from that
+package. This also works:
 
 ```bash
-SANITY_API_WRITE_TOKEN='…' pnpm --filter pedp-studio run import-catalog -- /path/to/export.csv
+pnpm --filter pedp-studio run import-catalog -- --dry-run scripts/metadata_final_datacatalogue_20260821.csv
 ```
+
+Overwrite CSV-mapped fields on documents that already exist (dry-run first):
+
+```bash
+pnpm --filter pedp-studio run import-catalog -- --dry-run --overwrite /path/to/export.csv
+SANITY_API_WRITE_TOKEN='…' pnpm --filter pedp-studio run import-catalog -- --overwrite /path/to/export.csv
+```
+
+`--overwrite` writes a draft (`drafts.{id}`). If only a published document
+exists, it copies that document to a draft first, then patches the draft. It
+does not change the live catalog until someone publishes. It does not delete
+documents. New rows still create drafts. Always run `--dry-run --overwrite`
+before a real overwrite. A changed DOI is a new dataset, not an update of the
+old one.
 
 Equivalent from `apps/studio`:
 
 ```bash
-SANITY_API_WRITE_TOKEN='…' npx tsx scripts/import-catalog-datasets.ts [--dry-run] [path/to.csv]
+SANITY_API_WRITE_TOKEN='…' npx tsx scripts/import-catalog-datasets.ts [--dry-run] [--overwrite] [path/to.csv]
 ```
 
 ## Environment
@@ -79,14 +108,18 @@ drafts).
 ## After import
 
 Tell editors that new rows are drafts. They publish in Studio (individually or
-with a bulk publish). Import will not unpublish or overwrite filled Summary,
-agency names, or other non-empty Studio fields.
+with a bulk publish). Default import will not unpublish or overwrite filled
+Summary, agency names, or other non-empty Studio fields. `--overwrite` updates
+a draft with CSV columns that are present; it will not clear Summary unless the
+CSV has a Summary value, and it will not patch published documents.
 
 Backup host and “backup is a file” are derived from the backup URL during
 import. See Field behavior in the ADR for Open in vs Download.
 
 ## Logs
 
-Typical lines: `CREATE`, `PATCH` (with field names), `NOOP`, `SKIP`, then
+Typical lines: `CREATE`, `DRAFT` (published copied to a draft before
+overwrite), `PATCH` (with field names), `OVERWRITE` (with set and unset field
+names), `NOOP`, `SKIP`, then
 `done created=… updated=… skipped=…`. Treat `SKIP` as a review list for missing
 DOI and backup URL.

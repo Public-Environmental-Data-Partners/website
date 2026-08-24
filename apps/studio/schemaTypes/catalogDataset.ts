@@ -194,7 +194,7 @@ export const catalogDataset = defineType({
       rows: 8,
       group: 'copy',
       description:
-        'Word-for-word metadata description from import. Does not change with later CSV runs if already filled. Used on the card only when Summary is empty.',
+        'Word-for-word metadata description from import. Default re-import does not change it if already filled. --overwrite replaces it from the CSV on a draft. Used on the card only when Summary is empty.',
     }),
     defineField({
       name: 'archiveNotes',

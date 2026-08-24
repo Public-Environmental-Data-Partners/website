@@ -23,7 +23,9 @@ lives in [`docs/ops/data-catalog-import.md`](../ops/data-catalog-import.md) and
   a Studio CSV uploader in v1.
 * Payload size stays reasonable if the browser loads the published catalog.
 * UI matches the Figma catalog comps (desktop and mobile).
-* Field mapping follows `Dataset Field Index - Dataset Import.csv`.
+* Field mapping follows `Dataset Field Index - Dataset Import.csv`. The live
+  inventory of catalog CSV headers versus the import script and Sanity is
+  [`docs/ops/data-catalog-csv-fields.md`](../ops/data-catalog-csv-fields.md).
 
 ## Assumptions
 
@@ -179,8 +181,11 @@ Chosen for v1:
    published documents only.
 3. Unique key: normalized DOI, else normalized backup URL. Skip and flag
    otherwise.
-4. Re-import fills empty fields only. Existing Studio values win. Revisit
-   overwrite-vs-refresh when this ADR is next updated.
+4. Re-import fills empty fields only by default. Existing Studio values win.
+   `--overwrite` replaces fields whose CSV columns are present, writes a draft
+   (never the published document), and does not clear Summary unless the CSV
+   has a non-empty Summary. Mentioned in is never imported. A changed DOI is a
+   new key and does not update the old document.
 5. Client-side search, sort, and pagination on the published list payload.
    Search commits on button or Enter. Placeholder includes the published
    dataset count. Search fields follow the import index (name, archived title,
@@ -210,8 +215,9 @@ Chosen for v1:
   later.
 * Editors must publish drafts before rows appear. A bulk publish in Studio is
   an operational step, not a script default.
-* Re-import will not refresh a bad agency name that was already saved. That is
-  accepted for v1.
+* Re-import will not refresh a bad agency name that was already saved, unless
+  `--overwrite` is passed and the draft is published. Default fill-empty remains
+  the usual path.
 * Data Guide may 404 or be empty until that page exists. The CTA should still
   be CMS-editable.
 * Token mapping: prefer existing `pedp-token-overrides.css` values. Add tokens
@@ -220,7 +226,6 @@ Chosen for v1:
 ## Explicitly not in v1
 
 * Studio CSV upload UI.
-* Re-import that overwrites non-empty Studio fields.
 * As-you-type search.
 * Server-side GROQ search or Algolia.
 * Clickable search chips / suggested-term pills (hero may mention terms as
@@ -241,8 +246,6 @@ Chosen for v1:
 
 ## Follow-ups (when this ADR is next edited)
 
-* Should re-import overwrite CSV-mapped fields while preserving Summary and
-  Mentioned in?
 * Rename CSV column Agency or Org Abbrev to Org Abbrev.
 * What to do with Dataset Size / units.
 * Year-only time period display (`1998 - 2024`) vs always day-precision.

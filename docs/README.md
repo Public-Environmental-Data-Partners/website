@@ -34,6 +34,7 @@ Numbered ADRs in [`decisions/`](./decisions/). Recent and open notes:
 
 - [`ops/newsletter-signup.md`](./ops/newsletter-signup.md)
 - [`ops/data-catalog-import.md`](./ops/data-catalog-import.md) — CSV import for catalog datasets
+- [`ops/data-catalog-csv-fields.md`](./ops/data-catalog-csv-fields.md) — catalog CSV headers vs import and Sanity; copy this file for future imports
 - [`ops/data-catalog-limited-set-test.md`](./ops/data-catalog-limited-set-test.md) — manual test while the sample set is live; remove after the full catalog
 - [`ops/content-links-cleanup.md`](./ops/content-links-cleanup.md) — temporary; remove after cleanup
 

@@ -2,12 +2,17 @@
  * Import catalog datasets from CSV into Sanity as drafts.
  *
  * Unique key: normalized DOI, else backup URL. Skips rows with neither.
- * Re-import fills empty fields only (does not overwrite existing Studio values).
+ * Re-import fills empty fields only unless --overwrite is passed.
+ * --overwrite updates a draft (never the published doc). It only writes
+ * fields whose CSV columns are present. Empty cells unset those fields,
+ * except Summary, which is set only when the CSV has a non-empty Summary.
+ * Mentioned in is not in the CSV and is never written.
+ * A changed DOI is a new key and will not update the old document.
  *
  * Runbook: docs/ops/data-catalog-import.md
  * Field rules: docs/decisions/0011-data-catalog.md
  */
-import {readFileSync} from 'node:fs'
+import {existsSync, readFileSync} from 'node:fs'
 import {dirname, isAbsolute, resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
 
@@ -15,6 +20,19 @@ import {createClient} from '@sanity/client'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const DEFAULT_CSV = resolve(HERE, 'fixtures/sample-combined.csv')
+const REPO_ROOT = resolve(HERE, '../../..')
+
+function resolveCsvPath(csvArg: string): string {
+  if (isAbsolute(csvArg)) return csvArg
+  const candidates = [
+    resolve(process.cwd(), csvArg),
+    resolve(REPO_ROOT, csvArg),
+    resolve(HERE, csvArg),
+  ]
+  const found = candidates.find((p) => existsSync(p))
+  if (found) return found
+  throw new Error(`CSV not found: ${csvArg} (tried ${candidates.join(', ')})`)
+}
 
 type CsvRow = Record<string, string>
 
@@ -263,6 +281,76 @@ function fillEmpty(existing: Record<string, unknown> | null, next: Record<string
   return out
 }
 
+function hasHeader(headers: Set<string>, ...names: string[]): boolean {
+  return names.some((n) => headers.has(n))
+}
+
+function writableFieldsFromCsv(headers: Set<string>): Set<string> {
+  const fields = new Set<string>(['importKey'])
+  const add = (ok: boolean, ...keys: string[]) => {
+    if (ok) for (const k of keys) fields.add(k)
+  }
+  add(hasHeader(headers, 'Archived Title'), 'archivedTitle')
+  add(
+    hasHeader(headers, 'Dataset Title', 'Dataset/Tool Name', 'Dataset/Tool Name Backup'),
+    'datasetTitle',
+  )
+  add(hasHeader(headers, 'Org Abbrev', 'Agency or Org Abbrev'), 'orgAbbrev')
+  add(hasHeader(headers, 'Deposit Digital Identifier'), 'depositId')
+  add(hasHeader(headers, 'Agency'), 'agency')
+  add(hasHeader(headers, 'Sub-Agency/Org'), 'subAgency')
+  add(hasHeader(headers, 'PEDP Agency for Sorting'), 'pedpAgencyForSorting')
+  add(hasHeader(headers, 'Original Location (URL)', 'Original URL'), 'originalUrl')
+  add(hasHeader(headers, 'Backup Location (URL)'), 'backupUrl', 'backupHost', 'backupIsFile')
+  add(hasHeader(headers, 'PEDP Metadata Doc'), 'metadataDocUrl')
+  add(
+    hasHeader(headers, 'Time Period / Temporal Resolution'),
+    'timePeriodRaw',
+    'timePeriodStart',
+    'timePeriodEnd',
+    'timePeriodNeedsReview',
+  )
+  add(
+    hasHeader(headers, 'Date Downloaded', 'Capture / Download Date'),
+    'downloadDateRaw',
+    'downloadDate',
+    'downloadDateNeedsReview',
+  )
+  add(hasHeader(headers, 'Summary'), 'summary')
+  add(hasHeader(headers, 'Description'), 'description')
+  add(hasHeader(headers, 'Notes'), 'archiveNotes')
+  add(hasHeader(headers, 'Keywords'), 'keywords')
+  add(hasHeader(headers, 'CCH Terms'), 'cchTerms')
+  add(hasHeader(headers, 'Subject'), 'subject')
+  add(hasHeader(headers, 'Dataset Size'), 'datasetSize')
+  add(hasHeader(headers, 'Dataset Size_Units (MB,GB,TB, etc.)'), 'datasetSizeUnits')
+  return fields
+}
+
+function overwritePatch(
+  next: Record<string, unknown>,
+  allowed: Set<string>,
+): {
+  set: Record<string, unknown>
+  unset: string[]
+} {
+  const set: Record<string, unknown> = {}
+  const unset: string[] = []
+  for (const [k, v] of Object.entries(next)) {
+    if (k.startsWith('_')) continue
+    if (!allowed.has(k)) continue
+    if (k === 'summary' && isEmptyValue(v)) continue
+    if (isEmptyValue(v)) unset.push(k)
+    else set[k] = v
+  }
+  return {set, unset}
+}
+
+function withoutRev(doc: Record<string, unknown>): Record<string, unknown> {
+  const {_id, _rev, _updatedAt, ...rest} = doc
+  return rest
+}
+
 function rowToDoc(
   row: CsvRow,
 ): {ok: false; skip: string} | {ok: true; id: string; doc: Record<string, unknown>} {
@@ -295,7 +383,8 @@ function rowToDoc(
     _type: 'catalogDataset',
     importKey,
     archivedTitle: cell(row, 'Archived Title') || undefined,
-    datasetTitle: cell(row, 'Dataset Title', 'Dataset/Tool Name') || undefined,
+    datasetTitle:
+      cell(row, 'Dataset Title', 'Dataset/Tool Name', 'Dataset/Tool Name Backup') || undefined,
     orgAbbrev: cell(row, 'Org Abbrev', 'Agency or Org Abbrev') || undefined,
     depositId: doi || undefined,
     agency: cell(row, 'Agency') || undefined,
@@ -329,12 +418,9 @@ function rowToDoc(
 async function main() {
   const args = process.argv.slice(2)
   const dryRun = args.includes('--dry-run')
+  const overwrite = args.includes('--overwrite')
   const csvArg = args.find((a) => a !== '--' && !a.startsWith('--'))
-  const csvPath = csvArg
-    ? isAbsolute(csvArg)
-      ? csvArg
-      : resolve(process.cwd(), csvArg)
-    : DEFAULT_CSV
+  const csvPath = csvArg ? resolveCsvPath(csvArg) : DEFAULT_CSV
 
   const projectId =
     process.env.SANITY_STUDIO_PROJECT_ID || process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
@@ -348,7 +434,8 @@ async function main() {
   }
 
   const rows = parseCsv(readFileSync(csvPath, 'utf8'))
-  console.log(`CSV ${csvPath}: ${rows.length} rows`)
+  const writable = writableFieldsFromCsv(new Set(Object.keys(rows[0] ?? {})))
+  console.log(`CSV ${csvPath}: ${rows.length} rows${overwrite ? ' overwrite' : ''}`)
 
   const client = createClient({
     projectId,
@@ -373,17 +460,44 @@ async function main() {
     const {id, doc} = mapped
     const draftId = `drafts.${id}`
     if (dryRun) {
-      console.log(`DRY ${draftId} ${title} key=${doc.importKey}`)
+      console.log(`DRY ${overwrite ? 'OVERWRITE ' : ''}${draftId} ${title} key=${doc.importKey}`)
       created += 1
       continue
     }
-    const existing = (await client.getDocument(draftId)) || (await client.getDocument(id)) || null
-    const patch = fillEmpty(existing as Record<string, unknown> | null, doc)
+    const draft = (await client.getDocument(draftId)) || null
+    const published = (await client.getDocument(id)) || null
+    const existing = draft || published
     if (!existing) {
       await client.create({_id: draftId, _type: 'catalogDataset', ...doc})
       created += 1
       console.log(`CREATE ${draftId}`)
-    } else if (Object.keys(patch).length > 0) {
+      continue
+    }
+    if (overwrite) {
+      if (!draft) {
+        await client.create({
+          _id: draftId,
+          _type: 'catalogDataset',
+          ...withoutRev(existing as Record<string, unknown>),
+        })
+        console.log(`DRAFT ${draftId}`)
+      }
+      const {set, unset} = overwritePatch(doc, writable)
+      if (Object.keys(set).length === 0 && unset.length === 0) {
+        console.log(`NOOP ${draftId}`)
+        continue
+      }
+      let patch = client.patch(draftId)
+      if (Object.keys(set).length > 0) patch = patch.set(set)
+      if (unset.length > 0) patch = patch.unset(unset)
+      await patch.commit()
+      updated += 1
+      const unsetLog = unset.length ? ` unset=${unset.join(',')}` : ''
+      console.log(`OVERWRITE ${draftId} set=${Object.keys(set).join(',')}${unsetLog}`)
+      continue
+    }
+    const patch = fillEmpty(existing as Record<string, unknown> | null, doc)
+    if (Object.keys(patch).length > 0) {
       await client
         .patch(existing._id as string)
         .set(patch)

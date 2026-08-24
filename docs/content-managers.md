@@ -142,7 +142,10 @@ Do **not** create a second Catalog dataset document for a deposit that already e
 - **Download date:** if blank, the card shows “Not recorded”. Flags such as “needs review” mean the import could not parse the spreadsheet; you can still publish after you set the date fields.
 - **Backup host** and **Backup URL is a file** are filled by import from the backup URL. You usually do not type the host. The button says “Open in Zenodo” (or Harvard Dataverse, SciOp, GitHub, …) or **Download** when the URL looks like a file.
 
-A later spreadsheet import **does not overwrite** fields you already filled. Empty fields can still be filled from the CSV.
+A later spreadsheet import does not overwrite fields you already filled, unless
+engineering re-runs import with overwrite. Overwrite updates a draft; the live
+card does not change until you publish. Empty fields can still be filled from
+the CSV. Mentioned in is never imported.
 
 If a row never shows on the site: confirm it is published, then ask engineering (it may have been skipped for a missing DOI and backup URL).
 
