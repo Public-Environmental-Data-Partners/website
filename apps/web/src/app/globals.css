@@ -9,13 +9,9 @@
 @import 'shadcn/tailwind.css';
 
 /*
- * Class-based `dark:` utilities: Tailwind’s `dark:` variant targets elements under an
- * ancestor with `.dark` (typically `<html class="dark">`), not only `prefers-color-scheme`.
- * With JS, the root layout runs a small `beforeInteractive` script that toggles `.dark` on
- * `<html>` to match the user’s system theme and keeps it in sync when the OS setting changes.
- * That lets token values and `dark:` classes agree with shadcn-style class dark mode.
- * Without JS, rely on `@media (prefers-color-scheme: dark)` in stylesheets (e.g. overrides)
- * so colors still follow the system.
+ * Class-based `dark:` utilities stay defined so leftover `dark:` classes compile, but the
+ * site is light-only until design finishes `docs/design/dark-mode-color-tokens.md`. Nothing
+ * adds `.dark` on `<html>`, and token overrides do not follow `prefers-color-scheme`.
  */
 @custom-variant dark (&:is(.dark *));
 

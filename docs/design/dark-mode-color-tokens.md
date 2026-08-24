@@ -16,14 +16,15 @@ Related: [`../architecture/web-css.md`](../architecture/web-css.md),
 Do not invent new token names here unless an existing token cannot express the need.
 If you need a new token, add a row at the bottom under Proposed new tokens.
 
-Source of light values and current dark placeholders: `pedp-token-overrides.css`
-(as of this doc). Current dark placeholders are provisional until this sheet is completed.
+Source of light values: `apps/web/src/app/pedp-token-overrides.css` (as of this
+doc). The live site is light-only until this sheet is completed. Dark columns
+below are the last engineering placeholders; they are not applied in CSS.
 
 ---
 
 ## 1. Semantic UI tokens
 
-These already have provisional dark values in code. Confirm or replace them.
+These rows list the last engineering placeholders (not applied in CSS). Confirm or replace them.
 
 | CSS token | Tailwind / usage | Light (current) | Dark (current placeholder) | Dark (design) | Behavior | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -71,7 +72,7 @@ These already have provisional dark values in code. Confirm or replace them.
 
 ## 2. Brand palette
 
-These currently keep the light hex in dark mode. Highest priority for real dark values
+These have no dark mapping yet. Highest priority for real dark values
 (or an explicit `same` / `locked` decision).
 
 | CSS token | Tailwind color | Light (current) | Dark (design) | Behavior | Notes |

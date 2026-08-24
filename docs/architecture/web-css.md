@@ -43,10 +43,16 @@ reimplement the site shell or copy full-bleed calculations.
 
 ## Dark mode
 
-Brand tokens currently provide light values plus dark values under both
-`prefers-color-scheme` and `.dark`. Keep those paths synchronized until the
-manual-theme decision in
-[`../decisions/0006-theme-toggle.md`](../decisions/0006-theme-toggle.md) is resolved.
+The site is light-only until design finishes
+[`../design/dark-mode-color-tokens.md`](../design/dark-mode-color-tokens.md).
+Token overrides live on `:root` only. Nothing adds `.dark` on `<html>`, and
+`color-scheme: light` keeps native UI on the light palette even when the OS
+prefers dark.
+
+Long-term intent is still light and dark from OS preference
+([`../decisions/0004-light-dark-mode-switching.md`](../decisions/0004-light-dark-mode-switching.md)).
+A user-controlled toggle remains deferred
+([`../decisions/0006-theme-toggle.md`](../decisions/0006-theme-toggle.md)).
 
 ## Maintenance checklist
 
@@ -54,5 +60,5 @@ manual-theme decision in
 - Update all token paths when changing a brand value.
 - Prefer semantic variables over raw values.
 - Keep feature styles scoped.
-- Check mobile, tablet, desktop, dark mode, and reduced motion.
+- Check mobile, tablet, desktop, and reduced motion.
 - Remove obsolete feature CSS when its component is deleted.
