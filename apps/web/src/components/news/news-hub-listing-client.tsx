@@ -3,7 +3,6 @@
 import {useCallback, useState, useSyncExternalStore} from 'react'
 
 import {NewsHubCard, type NewsHubCardProps} from '@/components/news/news-hub-card'
-import {captureEvent} from '@/lib/analytics'
 import type {NewsHubLoadCounts} from '@/lib/queries/news-hub-page'
 
 type Breakpoint = 'mobile' | 'tablet' | 'desktop'
@@ -93,9 +92,6 @@ export function NewsHubListingClient({
         setPosts(nextPosts)
       }
       setExtraCount(nextExtra)
-      captureEvent('news_posts_loaded', {
-        loaded_count: Math.min(loadMoreCount, total - displayCount),
-      })
     } catch {
       setError('Unable to load more posts. Please try again.')
     } finally {
