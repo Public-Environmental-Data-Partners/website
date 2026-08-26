@@ -64,7 +64,6 @@ traffic after cutover.
 | `article_audio_started` | `duration_minutes` | Do people start the article audio (first play near the beginning, not resume)? |
 | `article_shared` | `share_method`: `native` or `clipboard` | Do people share articles, and do they use the system share sheet or copy link? |
 | `newsletter_subscribed` | none | Did the newsletter form succeed? (Email is not sent to PostHog.) |
-| `news_posts_loaded` | `loaded_count` | How often do people load more posts on the news hub, and how many cards did that click add? |
 | `data_catalog_searched` | `has_query` (boolean), `result_count` | Do people search the catalog, and do they get results? (The query string is not sent.) |
 | `data_catalog_sorted` | `sort_key`, `sort_dir` | Which catalog sort (name or agency, asc or desc) do people choose? |
 | `dataset_expanded` | `dataset_id`, `dataset_title`, `agency` | Which catalog datasets do people open? |
