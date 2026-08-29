@@ -127,11 +127,13 @@ How-to for the CSV import script is for engineering:
 ### Documents in Studio
 
 - **Data Catalog page** (one document): hero title, intro, Data Guide CTA, Nominate Data CTA, SEO. Publish this or the route has no chrome.
-- **Catalog dataset** (one document per archived dataset): card title, agencies, dates, Summary, imported Description, links, Mentioned in.
+- Catalog dataset (one document per archived dataset): card title, agencies, dates, Summary, imported Description, links, Mentioned in.
 
-Import creates dataset documents as **drafts**. They do not appear on the public catalog until you **Publish**. You can use [draft preview](#draft-preview-before-you-publish) to check unpublished cards.
+Spreadsheet import creates dataset documents as drafts. You can also create a Catalog dataset in Studio: Data Catalog, Datasets, then Create. New documents (imported or created in Studio) do not appear on the public catalog until you Publish. You can use [draft preview](#draft-preview-before-you-publish) to check unpublished cards.
 
-Do **not** create a second Catalog dataset document for a deposit that already exists (same DOI or same backup URL). Ask engineering to re-run import or to find the existing draft.
+Required to publish a dataset you add by hand: archived title or dataset title, agency, and backup location URL. Deposit identifier (DOI) is optional but preferred when the dataset has one. Import key, backup host, and the file/page flag fill in from the DOI or backup URL. You do not type Import key.
+
+Search Datasets first. Do not create a second document for a deposit that already exists (same DOI or same backup URL). Studio blocks publish when the Import key matches another dataset.
 
 ### What to edit
 
@@ -140,7 +142,7 @@ Do **not** create a second Catalog dataset document for a deposit that already e
 - **Mentioned in** is Studio-only (not in the spreadsheet). Add internal news/pages and/or external URLs with a label.
 - **Time period:** if start/end stay blank, the card shows “See backup”.
 - **Download date:** if blank, the card shows “Not recorded”. Flags such as “needs review” mean the import could not parse the spreadsheet; you can still publish after you set the date fields.
-- **Backup host** and **Backup URL is a file** are filled by import from the backup URL. You usually do not type the host. The button says “Open in Zenodo” (or Harvard Dataverse, SciOp, GitHub, …) or **Download** when the URL looks like a file.
+- Backup host and Backup URL is a file fill from the backup URL (import or when you paste the URL in Studio). You usually do not type the host. You can override host if needed. The button says “Open in Zenodo” (or Harvard Dataverse, SciOp, GitHub, …) or Download when the URL looks like a file.
 
 A later spreadsheet import does not overwrite fields you already filled, unless
 engineering re-runs import with overwrite. Overwrite updates a draft; the live
