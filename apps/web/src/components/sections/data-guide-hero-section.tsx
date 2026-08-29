@@ -4,9 +4,11 @@ import {
   PortableText,
   type PortableTextComponents,
 } from '@portabletext/react'
+import {ChevronLeft} from 'lucide-react'
 import type {ReactNode} from 'react'
 
 import {contentLinkMark} from '@/components/content/portable-text-link'
+import {ContentLink} from '@/components/content-link'
 import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import type {DataGuideHeroProps} from '@/lib/mappers/data-guide-sections'
 import {SITE_PAGE_HERO_HEADING_CLASS} from '@/lib/typography'
@@ -51,6 +53,13 @@ export function DataGuideHeroSection({pageTitle, body}: DataGuideHeroProps) {
           )}
         />
         <div className="xl:ps-[calc(56px+0.75rem)]">
+          <ContentLink
+            href="/data-catalog"
+            className="mb-6 inline-flex min-h-11 items-center gap-2 font-sans text-lg font-semibold text-dark-green underline decoration-2 underline-offset-4 xl:hidden"
+          >
+            <ChevronLeft className="size-5" aria-hidden />
+            Return to Data Catalog
+          </ContentLink>
           <Grid12>
             <div className="col-span-12 min-w-0 lg:col-span-7">
               <h1 id={headingId} className={cn(SITE_PAGE_HERO_HEADING_CLASS, 'text-dark-green')}>
