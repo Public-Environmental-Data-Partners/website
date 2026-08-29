@@ -11,7 +11,7 @@ const FALLBACK_SEED_PATHS = [
   '/how-we-work',
   '/news-and-updates',
   '/privacy-policy',
-  '/tool-development',
+  '/tools-development',
 ]
 
 /**
