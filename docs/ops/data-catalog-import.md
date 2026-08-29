@@ -17,14 +17,16 @@ as drafts (`drafts.catalog.…`). It does not publish. The public `/data-catalog
 page lists published documents only.
 
 Re-import matches rows by import key (normalized DOI, else normalized backup
-URL). By default, if Studio already has a non-empty value, the script leaves
-it alone. Empty fields are filled from the CSV. Pass `--overwrite` to replace
-CSV-mapped fields on a draft of the existing document. The published document
-is not patched; editors publish the draft to update the live catalog. Only
-columns present in the CSV are written. Empty cells unset those fields, except
-Summary: Summary is updated only when the CSV has a non-empty Summary value.
-Mentioned in is not in the CSV and is never written. Changing a DOI creates a
-new key and does not update the old document.
+URL). It looks up the CSV import document id (`catalog.…`) first, then any
+`catalogDataset` with that import key, so a dataset created in Studio is updated
+instead of duplicated. By default, if Studio already has a non-empty value, the
+script leaves it alone. Empty fields are filled from the CSV. Pass `--overwrite`
+to replace CSV-mapped fields on a draft of the existing document. The published
+document is not patched; editors publish the draft to update the live catalog.
+Only columns present in the CSV are written. Empty cells unset those fields,
+except Summary: Summary is updated only when the CSV has a non-empty Summary
+value. Mentioned in is not in the CSV and is never written. Changing a DOI
+creates a new key and does not update the old document.
 
 Rows with neither a DOI nor a backup URL are skipped and printed as `SKIP`.
 
@@ -40,9 +42,11 @@ rather than starting from a blank export. Column list:
    backup URL. Parse dates when possible.
 3. Build the import key (normalized DOI, else backup URL). Skip the row if both
    are missing.
-4. `--dry-run` logs the draft id and stops. Otherwise create a draft, or patch
-   the existing document: empty fields only, or CSV-mapped fields on a draft
-   when `--overwrite` is set. Always dry-run overwrite before a real write.
+4. `--dry-run` logs the intended `catalog.…` draft id and stops. Otherwise look
+   up an existing document by that id, then by import key (covers datasets
+   created in Studio). Create a draft, or patch the existing document: empty
+   fields only, or CSV-mapped fields on a draft when `--overwrite` is set.
+   Always dry-run overwrite before a real write.
 5. Editors publish in Studio. The public catalog does not include drafts.
 
 ## Command

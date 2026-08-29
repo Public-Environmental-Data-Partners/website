@@ -8,6 +8,7 @@
  * except Summary, which is set only when the CSV has a non-empty Summary.
  * Mentioned in is not in the CSV and is never written.
  * A changed DOI is a new key and will not update the old document.
+ * Studio-created documents (random ids) are matched by importKey.
  *
  * Runbook: docs/ops/data-catalog-import.md
  * Field rules: docs/decisions/0011-data-catalog.md
@@ -17,6 +18,8 @@ import {dirname, isAbsolute, resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
 
 import {createClient} from '@sanity/client'
+
+import {catalogImportKey, normalizeDoi, parseBackupHost} from '../lib/catalog-dataset-key'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const DEFAULT_CSV = resolve(HERE, 'fixtures/sample-combined.csv')
@@ -137,16 +140,6 @@ function cell(row: CsvRow, ...names: string[]): string {
   return ''
 }
 
-export function normalizeDoi(raw: string): string | null {
-  const t = raw.trim()
-  if (!t) return null
-  const m = t.match(
-    /(?:doi:\s*|https?:\/\/(?:dx\.)?doi\.org\/)?(10\.\d{4,9}\/[-._;()/:A-Za-z0-9]+)/i,
-  )
-  if (!m) return null
-  return m[1].replace(/\/+$/, '').toLowerCase()
-}
-
 function extractUrls(raw: string): string[] {
   if (!raw.trim()) return []
   const matches = raw.match(/https?:\/\/[^\s,;]+/gi) ?? []
@@ -162,23 +155,6 @@ function pickBackupUrl(raw: string): {url: string | null; flag: boolean} {
   if (zenodo) return {url: zenodo, flag: false}
   if (urls.length === 1) return {url: urls[0], flag: false}
   return {url: urls[0], flag: true}
-}
-
-function parseBackupHost(url: string): {host: string; isFile: boolean} {
-  let pathname = ''
-  try {
-    pathname = new URL(url).pathname
-  } catch {
-    pathname = url
-  }
-  const isFile = /\.(zip|csv|pdf|tar|gz|tgz|xlsx?|json|xml|nc|tiff?)$/i.test(pathname)
-  const u = url.toLowerCase()
-  let host = 'Archive'
-  if (u.includes('zenodo')) host = 'Zenodo'
-  else if (u.includes('dataverse') || u.includes('/dvn/')) host = 'Harvard Dataverse'
-  else if (u.includes('github')) host = 'GitHub'
-  else if (u.includes('sciop')) host = 'SciOp'
-  return {host, isFile}
 }
 
 function sanityIdFromKey(key: string): string {
@@ -351,6 +327,54 @@ function withoutRev(doc: Record<string, unknown>): Record<string, unknown> {
   return rest
 }
 
+type CatalogClient = ReturnType<typeof createClient>
+type SanityDoc = {_id: string} & Record<string, unknown>
+
+async function loadById(client: CatalogClient, id: string): Promise<SanityDoc | null> {
+  return ((await client.getDocument(id)) as SanityDoc | undefined) || null
+}
+
+function publishedIdFrom(id: string): string {
+  return id.startsWith('drafts.') ? id.slice(7) : id
+}
+
+/**
+ * Match catalog.{slug} first (CSV import ids), then any document with this
+ * importKey (Studio-created documents use random ids).
+ */
+async function findExisting(
+  client: CatalogClient,
+  catalogId: string,
+  importKey: string,
+): Promise<{id: string; draft: SanityDoc | null; published: SanityDoc | null}> {
+  const draft = await loadById(client, `drafts.${catalogId}`)
+  const published = await loadById(client, catalogId)
+  if (draft || published) {
+    return {id: catalogId, draft, published}
+  }
+
+  const ids = await client.fetch<string[]>(
+    `*[_type == "catalogDataset" && importKey == $key]._id`,
+    {key: importKey},
+  )
+  const uniqueBases = [...new Set(ids.map(publishedIdFrom))]
+  if (uniqueBases.length === 0) {
+    return {id: catalogId, draft: null, published: null}
+  }
+  if (uniqueBases.length > 1) {
+    console.warn(`WARN multiple documents for key=${importKey}: ${uniqueBases.join(', ')}`)
+  }
+  const id = uniqueBases[0]
+  if (!id) {
+    return {id: catalogId, draft: null, published: null}
+  }
+  return {
+    id,
+    draft: await loadById(client, `drafts.${id}`),
+    published: await loadById(client, id),
+  }
+}
+
 function rowToDoc(
   row: CsvRow,
 ): {ok: false; skip: string} | {ok: true; id: string; doc: Record<string, unknown>} {
@@ -358,11 +382,7 @@ function rowToDoc(
   const doi = normalizeDoi(doiRaw)
   const backupCell = cell(row, 'Backup Location (URL)')
   const backupPick = pickBackupUrl(backupCell)
-  let importKey = doi
-  if (!importKey && backupPick.url) {
-    const asDoi = normalizeDoi(backupPick.url)
-    importKey = asDoi || backupPick.url.replace(/\/+$/, '').toLowerCase()
-  }
+  const importKey = catalogImportKey(doiRaw, backupPick.url || '')
   if (!importKey) {
     return {ok: false, skip: 'missing DOI and backup URL'}
   }
@@ -457,16 +477,18 @@ async function main() {
       console.warn(`SKIP ${title}: ${mapped.skip}`)
       continue
     }
-    const {id, doc} = mapped
-    const draftId = `drafts.${id}`
+    const {id: catalogId, doc} = mapped
+    const importKey = String(doc.importKey)
     if (dryRun) {
-      console.log(`DRY ${overwrite ? 'OVERWRITE ' : ''}${draftId} ${title} key=${doc.importKey}`)
+      console.log(
+        `DRY ${overwrite ? 'OVERWRITE ' : ''}drafts.${catalogId} ${title} key=${importKey}`,
+      )
       created += 1
       continue
     }
-    const draft = (await client.getDocument(draftId)) || null
-    const published = (await client.getDocument(id)) || null
-    const existing = draft || published
+    const found = await findExisting(client, catalogId, importKey)
+    const draftId = `drafts.${found.id}`
+    const existing = found.draft || found.published
     if (!existing) {
       await client.create({_id: draftId, _type: 'catalogDataset', ...doc})
       created += 1
@@ -474,11 +496,11 @@ async function main() {
       continue
     }
     if (overwrite) {
-      if (!draft) {
+      if (!found.draft) {
         await client.create({
           _id: draftId,
           _type: 'catalogDataset',
-          ...withoutRev(existing as Record<string, unknown>),
+          ...withoutRev(existing),
         })
         console.log(`DRAFT ${draftId}`)
       }
@@ -496,12 +518,9 @@ async function main() {
       console.log(`OVERWRITE ${draftId} set=${Object.keys(set).join(',')}${unsetLog}`)
       continue
     }
-    const patch = fillEmpty(existing as Record<string, unknown> | null, doc)
+    const patch = fillEmpty(existing, doc)
     if (Object.keys(patch).length > 0) {
-      await client
-        .patch(existing._id as string)
-        .set(patch)
-        .commit()
+      await client.patch(existing._id).set(patch).commit()
       updated += 1
       console.log(`PATCH ${existing._id} fields=${Object.keys(patch).join(',')}`)
     } else {
