@@ -9,11 +9,7 @@ import {cn} from '@/lib/utils'
 export type ListBlockBackground = 'lightGreen' | 'lightBlue'
 
 export type ListBlockVariant =
-  | 'unstyled'
-  | 'dividedParagraph'
-  | 'dividedIcon'
-  | 'dividedOrdered'
-  | 'dividedBulleted'
+  'unstyled' | 'dividedParagraph' | 'dividedIcon' | 'dividedOrdered' | 'dividedBulleted'
 
 export type ListBlockRow = {
   icon?: string | null
