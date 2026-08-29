@@ -26,7 +26,7 @@ const cardBodyPortableTextComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: ReactNode}) => (
       <strong className="font-semibold">{children}</strong>
     ),
-    link: contentLinkMark('text-dark-blue underline underline-offset-2'),
+    link: contentLinkMark('text-dark-blue'),
   },
 }
 

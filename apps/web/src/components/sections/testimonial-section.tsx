@@ -27,7 +27,7 @@ const quotePortableTextComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: React.ReactNode}) => (
       <strong className="font-semibold">{children}</strong>
     ),
-    link: contentLinkMark('underline underline-offset-[0.2em] transition-opacity hover:opacity-80'),
+    link: contentLinkMark(),
   },
 }
 

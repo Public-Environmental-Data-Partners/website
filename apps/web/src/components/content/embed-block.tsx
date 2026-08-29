@@ -1,4 +1,6 @@
+import {contentLinkClass} from '@/components/content/portable-text-link'
 import type {ResolvedEmbed} from '@/lib/embed-providers'
+import {cn} from '@/lib/utils'
 
 const DEFAULT_OPEN_LINK_LABEL = 'Open full story'
 
@@ -47,7 +49,7 @@ export function EmbedBlock({embed, caption, showOpenLink, openLinkLabel}: EmbedB
       {showLink ? (
         <p className={`text-sm leading-relaxed ${trimmedCaption ? 'mt-2' : 'mt-3'}`}>
           <a
-            className="text-accent underline underline-offset-2"
+            className={cn('text-accent', contentLinkClass)}
             href={embed.src}
             rel="noopener noreferrer"
             target="_blank"

@@ -236,9 +236,10 @@ export function NewsletterSection({
                     />
                     <Button
                       type="submit"
+                      variant="lightGreen"
                       size="cta"
                       disabled={submitting}
-                      className="shrink-0 border-transparent bg-light-green text-forest hover:bg-light-green/90 lg:self-center"
+                      className="shrink-0 text-forest lg:self-center"
                     >
                       {submitting ? 'Sending...' : submitLabel}
                     </Button>

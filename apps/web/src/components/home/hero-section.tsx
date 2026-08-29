@@ -42,9 +42,7 @@ const homeHeroPortableTextComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: React.ReactNode}) => (
       <strong className="font-semibold">{children}</strong>
     ),
-    link: contentLinkMark(
-      'text-foreground underline underline-offset-[0.2em] transition-opacity hover:opacity-80',
-    ),
+    link: contentLinkMark('text-foreground underline-offset-[0.2em]'),
   },
 }
 

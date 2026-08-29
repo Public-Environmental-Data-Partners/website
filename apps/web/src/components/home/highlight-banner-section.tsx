@@ -52,9 +52,7 @@ const bodyPortableTextComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: React.ReactNode}) => (
       <strong className="font-semibold">{children}</strong>
     ),
-    link: contentLinkMark(
-      'text-light-green underline decoration-light-green/50 underline-offset-[0.2em] transition-colors hover:decoration-light-green',
-    ),
+    link: contentLinkMark('text-light-green underline-offset-[0.2em]'),
   },
 }
 
@@ -62,11 +60,7 @@ const richTextComponents = mergeComponents(defaultComponents, bodyPortableTextCo
 
 function HighlightCta({label, href, external}: {label: string; href: string; external?: boolean}) {
   return (
-    <Button
-      asChild
-      size="cta"
-      className="border-transparent bg-light-green text-forest hover:bg-light-green/90"
-    >
+    <Button asChild variant="lightGreen" size="cta" className="text-forest">
       <ContentLink href={href} external={external}>
         {label}
       </ContentLink>

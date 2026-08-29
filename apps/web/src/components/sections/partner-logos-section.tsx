@@ -66,7 +66,7 @@ function InteractivePartnerRow({
             aria-label={partner.ariaLabel}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center"
+            className="inline-flex items-center justify-center transition-opacity hover:opacity-80"
           >
             <PartnerLogoImage partner={partner} />
           </a>
@@ -90,7 +90,7 @@ function MarqueeDuplicatePartnerRow({partners}: {partners: PartnerLogo[]}) {
             tabIndex={-1}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center"
+            className="inline-flex items-center justify-center transition-opacity hover:opacity-80"
           >
             <PartnerLogoImage partner={partner} decorative />
           </a>
@@ -112,7 +112,7 @@ function PartnerLogosWrappedPanel({partners}: {partners: PartnerLogo[]}) {
               aria-label={partner.ariaLabel}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center"
+              className="inline-flex items-center justify-center transition-opacity hover:opacity-80"
             >
               <PartnerLogoImage partner={partner} />
             </a>

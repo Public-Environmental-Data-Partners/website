@@ -3,6 +3,10 @@ import type {ReactNode} from 'react'
 
 import {ContentLink} from '@/components/content-link'
 import {type PortableTextLinkValue, resolvePortableTextLink} from '@/lib/content-link'
+import {cn} from '@/lib/utils'
+
+/** Shared body-copy link chrome. Callers add color; do not use on Button CTAs. */
+export const contentLinkClass = 'underline underline-offset-2 transition-opacity hover:opacity-80'
 
 type ContentLinkMarkProps = PortableTextMarkComponentProps<PortableTextLinkValue> & {
   className?: string
@@ -25,9 +29,9 @@ export function ContentLinkMark({children, value, className}: ContentLinkMarkPro
   )
 }
 
-/** Factory for section-specific link classNames. */
-export function contentLinkMark(className: string) {
+/** Factory for section-specific link classNames (color / offset). Hover is shared. */
+export function contentLinkMark(className?: string) {
   return function Mark(props: PortableTextMarkComponentProps<PortableTextLinkValue>) {
-    return <ContentLinkMark {...props} className={className} />
+    return <ContentLinkMark {...props} className={cn(contentLinkClass, className)} />
   }
 }

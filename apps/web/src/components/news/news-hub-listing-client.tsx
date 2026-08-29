@@ -3,6 +3,7 @@
 import {useCallback, useState, useSyncExternalStore} from 'react'
 
 import {NewsHubCard, type NewsHubCardProps} from '@/components/news/news-hub-card'
+import {Button} from '@/components/ui/button'
 import type {NewsHubLoadCounts} from '@/lib/queries/news-hub-page'
 
 type Breakpoint = 'mobile' | 'tablet' | 'desktop'
@@ -111,14 +112,16 @@ export function NewsHubListingClient({
 
       {hasMore ? (
         <div data-slot="news-hub-actions">
-          <button
+          <Button
             type="button"
+            variant="surface"
+            size="cta"
             data-slot="news-hub-load-more"
             onClick={onLoadMore}
             disabled={loading}
           >
             {loading ? 'Loading…' : 'Load More'}
-          </button>
+          </Button>
         </div>
       ) : null}
 

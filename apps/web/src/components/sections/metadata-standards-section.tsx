@@ -51,11 +51,7 @@ export function MetadataStandardsSection({
             <PortableText components={sectionBodyRichTextComponents} value={body} />
             {href && ctaLabel ? (
               <div className="flex justify-center">
-                <Button
-                  asChild
-                  size="cta"
-                  className="bg-light-green px-6 text-forest hover:bg-light-green/90"
-                >
+                <Button asChild variant="lightGreen" size="cta" className="px-6 text-forest">
                   <ContentLink href={href} external={external}>
                     {ctaLabel}
                   </ContentLink>

@@ -54,6 +54,7 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
       <button
         type="button"
         data-slot="data-catalog-expand"
+        className="transition-opacity hover:opacity-80"
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((v) => !v)}
@@ -85,7 +86,7 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
                   <ContentLink
                     href={card.backupUrl}
                     external
-                    className="font-sans text-[1.375rem] text-off-black underline underline-offset-2"
+                    className="font-sans text-[1.375rem] text-off-black underline underline-offset-2 transition-opacity hover:opacity-80"
                   >
                     Read more on {card.backupHost}
                   </ContentLink>
@@ -127,7 +128,7 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
             <ContentLink
               href={card.metadataDocUrl}
               external
-              className="font-sans text-[1.375rem] text-off-black underline underline-offset-2"
+              className="font-sans text-[1.375rem] text-off-black underline underline-offset-2 transition-opacity hover:opacity-80"
             >
               Metadata
             </ContentLink>
@@ -141,7 +142,7 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
               <ContentLink
                 href={card.originalUrl}
                 external
-                className="font-sans text-[1.375rem] text-off-black underline underline-offset-2"
+                className="font-sans text-[1.375rem] text-off-black underline underline-offset-2 transition-opacity hover:opacity-80"
               >
                 Original URL
               </ContentLink>
@@ -172,7 +173,7 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
                     <ContentLink
                       href={item.href}
                       external={item.external}
-                      className="font-sans text-[1.375rem] text-off-black underline underline-offset-2"
+                      className="font-sans text-[1.375rem] text-off-black underline underline-offset-2 transition-opacity hover:opacity-80"
                     >
                       {item.label}
                     </ContentLink>
@@ -322,7 +323,7 @@ export function DataCatalogExplorer({
           <nav className="mt-10 flex items-center justify-center gap-2" aria-label="Catalog pages">
             <button
               type="button"
-              className="p-2 text-off-black disabled:opacity-40"
+              className="p-2 text-off-black transition-opacity hover:opacity-80 disabled:opacity-40"
               disabled={safePage <= 1}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
             >
@@ -340,7 +341,7 @@ export function DataCatalogExplorer({
                   type="button"
                   data-slot="data-catalog-page-link"
                   data-active={item === safePage}
-                  className="flex size-10 items-center justify-center rounded-full font-sans text-off-black"
+                  className="flex size-10 items-center justify-center rounded-full font-sans text-off-black transition-colors hover:bg-light-beige"
                   onClick={() => setPage(item)}
                   aria-current={item === safePage ? 'page' : undefined}
                 >
@@ -350,7 +351,7 @@ export function DataCatalogExplorer({
             )}
             <button
               type="button"
-              className="p-2 text-off-black disabled:opacity-40"
+              className="p-2 text-off-black transition-opacity hover:opacity-80 disabled:opacity-40"
               disabled={safePage >= totalPages}
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             >

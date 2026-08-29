@@ -5,6 +5,7 @@ import Link from 'next/link'
 import {usePathname} from 'next/navigation'
 import {useState} from 'react'
 
+import {DonateLink} from '@/components/donate-link'
 import {Button} from '@/components/ui/button'
 import {
   Sheet,
@@ -52,22 +53,14 @@ function TopLevelSheetLink({
   )
 }
 
-function MobileDonateLink({pathname, onNavigate}: {pathname: string; onNavigate: () => void}) {
-  const active = isActiveNavPath(pathname, donateNav.href)
+function MobileDonateLink({onNavigate}: {onNavigate: () => void}) {
   return (
-    <Link
+    <DonateLink
       href={donateNav.href}
-      className={cn(
-        'inline-flex min-h-11 w-full items-center justify-center rounded-[4px] px-5 py-3 text-[1.375rem] font-semibold transition-colors',
-        active
-          ? 'bg-light-green text-dark-green ring-2 ring-dark-green/40 ring-offset-2 ring-offset-light-beige'
-          : 'bg-light-green text-dark-green hover:bg-light-green/90',
-      )}
-      aria-current={active ? 'page' : undefined}
-      onClick={onNavigate}
-    >
-      {donateNav.label}
-    </Link>
+      label={donateNav.label}
+      variant="sheet"
+      onNavigate={onNavigate}
+    />
   )
 }
 
@@ -82,7 +75,7 @@ function MobilePrimaryNavSheetInner({mainNav}: {mainNav: MainNavEntry[]}) {
           type="button"
           variant="ghost"
           size="icon"
-          className="text-foreground hover:bg-transparent hover:text-foreground shrink-0 border-0 shadow-none"
+          className="text-foreground hover:bg-transparent hover:text-foreground hover:opacity-80 shrink-0 border-0 shadow-none"
         >
           <Menu aria-hidden className="size-6" strokeWidth={2} />
           <span className="sr-only">Open menu</span>
@@ -141,7 +134,7 @@ function MobilePrimaryNavSheetInner({mainNav}: {mainNav: MainNavEntry[]}) {
             ),
           )}
           <div className="border-border mt-auto border-t pt-4">
-            <MobileDonateLink pathname={pathname} onNavigate={() => setOpen(false)} />
+            <MobileDonateLink onNavigate={() => setOpen(false)} />
           </div>
         </nav>
       </SheetContent>

@@ -56,7 +56,7 @@ const calloutPortableTextComponents: Partial<PortableTextComponents> = {
       <strong className="font-semibold">{children}</strong>
     ),
     em: ({children}: {children?: ReactNode}) => <em className="italic">{children}</em>,
-    link: contentLinkMark('text-dark-blue underline underline-offset-2'),
+    link: contentLinkMark('text-dark-blue'),
   },
   types: {
     contactCta: CalloutCta,
@@ -97,7 +97,7 @@ const bodyPortableTextComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: ReactNode}) => (
       <strong className="font-bold">{children}</strong>
     ),
-    link: contentLinkMark('text-dark-blue underline underline-offset-2'),
+    link: contentLinkMark('text-dark-blue'),
   },
 }
 

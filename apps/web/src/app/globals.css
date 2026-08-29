@@ -267,6 +267,23 @@ blockquote,
   body {
     @apply bg-background text-foreground;
   }
+
+  /*
+   * Interactive cursor. Tailwind v4 preflight leaves buttons on the UA arrow.
+   * Links, enabled buttons, and role=button controls use pointer; disabled
+   * controls use not-allowed. Text inputs keep the I-beam.
+   */
+  a[href],
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']):not([data-disabled]) {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled='true'],
+  [data-disabled] {
+    cursor: not-allowed;
+  }
 }
 
 /*

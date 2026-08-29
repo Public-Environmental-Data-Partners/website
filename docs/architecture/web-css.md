@@ -35,6 +35,23 @@ existing tokens. Use a feature CSS file when:
 Global element selectors should be rare. Scope editorial typography and feature
 styles with a data attribute or feature class.
 
+## Interactive cursor and hover
+
+`globals.css` `@layer base` sets `cursor: pointer` on `a[href]`, enabled
+`button`s, and `[role=button]`. Disabled controls use `not-allowed`. Native
+text inputs keep the I-beam.
+
+`Button` also sets `cursor-pointer` so `asChild` links and native submits match.
+Do not add one-off `cursor: pointer` in feature CSS.
+
+Filled marketing CTAs use `Button` (`size="cta"` plus a color variant). Donate
+goes through `DonateLink` → `Button variant="lightGreen"`. News hub Read More
+and Load More use `Button variant="surface"`.
+
+Body-copy links use `contentLinkClass` / `contentLinkMark()` (underline plus
+`hover:opacity-80`). Header and footer nav keep underline-on-hover because they
+are not always underlined. Do not put `contentLinkClass` on a `Button` CTA.
+
 ## Layout boundary
 
 Shell width, grid columns, shared gutters, and reusable responsive geometry are

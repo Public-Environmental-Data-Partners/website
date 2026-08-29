@@ -3,29 +3,31 @@
 import Link from 'next/link'
 import {usePathname} from 'next/navigation'
 
+import {Button} from '@/components/ui/button'
 import {isActiveNavPath} from '@/lib/nav-active'
 import {cn} from '@/lib/utils'
 
-const base =
-  'inline-flex shrink-0 items-center justify-center font-semibold transition-colors focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none'
+/** Header Donate — Figma: 121×65, radius 10. Overrides CTA min-width. */
+const headerClass = 'w-[121px] min-w-[121px]'
 
-/** Header Donate — Figma: 121×65, radius 10, pad 16/8, light-green. */
-const headerClass =
-  'h-[65px] w-[121px] rounded-[10px] px-2 py-4 text-center align-middle text-[1.375rem] leading-5'
+const footerClass = 'h-auto min-h-10 rounded-[4px] px-5 py-2 text-sm font-semibold leading-5'
 
-const footerClass = 'min-h-10 rounded-[4px] px-5 py-2 text-sm'
+const sheetClass =
+  'h-auto min-h-11 w-full rounded-[4px] px-5 py-3 text-[1.375rem] font-semibold leading-none'
 
 export function DonateLink({
   href,
   label,
   variant = 'header',
   className,
+  onNavigate,
 }: {
   href: string
   label: string
-  /** `footer` uses footer background for focus ring offset so the halo matches the band. */
-  variant?: 'header' | 'footer'
+  /** `footer` / `sheet` use the matching surface for focus ring offset. */
+  variant?: 'header' | 'footer' | 'sheet'
   className?: string
+  onNavigate?: () => void
 }) {
   const pathname = usePathname()
   const active = isActiveNavPath(pathname, href)
@@ -35,21 +37,20 @@ export function DonateLink({
       : 'focus-visible:ring-offset-2 focus-visible:ring-offset-light-beige'
 
   return (
-    <Link
-      href={href}
+    <Button
+      asChild
+      variant="lightGreen"
+      size={variant === 'header' ? 'cta' : 'default'}
       className={cn(
-        base,
-        variant === 'header' ? headerClass : footerClass,
+        variant === 'header' ? headerClass : variant === 'sheet' ? sheetClass : footerClass,
         ringOffsetClass,
-        'focus-visible:ring-ring focus-visible:ring-2',
-        active
-          ? 'bg-light-green text-dark-green ring-2 ring-dark-green/40 ring-offset-2'
-          : 'bg-light-green text-dark-green hover:bg-light-green/90',
+        active && 'ring-2 ring-dark-green/40 ring-offset-2',
         className,
       )}
-      aria-current={active ? 'page' : undefined}
     >
-      {label}
-    </Link>
+      <Link href={href} aria-current={active ? 'page' : undefined} onClick={onNavigate}>
+        {label}
+      </Link>
+    </Button>
   )
 }

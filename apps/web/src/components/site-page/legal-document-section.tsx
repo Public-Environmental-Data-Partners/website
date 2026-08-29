@@ -44,7 +44,7 @@ const portableTextComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: React.ReactNode}) => (
       <strong className="text-off-black font-semibold">{children}</strong>
     ),
-    link: contentLinkMark('text-accent underline underline-offset-2'),
+    link: contentLinkMark('text-accent'),
   },
 }
 
