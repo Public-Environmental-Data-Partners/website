@@ -100,31 +100,31 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
         id={panelId}
         className="mt-10 grid grid-cols-9 items-baseline gap-x-[var(--grid-gutter)] gap-y-6 lg:mt-12"
       >
-        <p data-slot="data-catalog-meta-label" className="col-span-9 lg:col-span-4">
+        <p data-slot="data-catalog-meta-label" className="col-span-9 lg:col-span-4 lg:col-start-1 lg:row-start-1">
           {card.agency}
-        </p>
-        <p className="col-span-9 m-0 text-[1.375rem] leading-none lg:col-span-4 lg:col-start-6">
-          <span data-slot="data-catalog-meta-label">Time Period: </span>
-          <span data-slot="data-catalog-date">{card.timePeriodLabel}</span>
         </p>
         <p
           data-slot="data-catalog-meta-label"
-          className="col-span-9 lg:col-span-4"
+          className="col-span-9 lg:col-span-4 lg:col-start-1 lg:row-start-2"
           aria-hidden={!card.subAgency}
         >
           {card.subAgency || '\u00a0'}
         </p>
-        <p className="col-span-9 m-0 text-[1.375rem] leading-none lg:col-span-4 lg:col-start-6">
+        <p className="col-span-9 m-0 text-[1.375rem] leading-none lg:col-span-4 lg:col-start-6 lg:row-start-1">
+          <span data-slot="data-catalog-meta-label">Time Period: </span>
+          <span data-slot="data-catalog-date">{card.timePeriodLabel}</span>
+        </p>
+        <p className="col-span-9 m-0 text-[1.375rem] leading-none lg:col-span-4 lg:col-start-6 lg:row-start-2">
           <span data-slot="data-catalog-meta-label">Download Date: </span>
           <span data-slot="data-catalog-date">{card.downloadDateLabel}</span>
         </p>
         {open && card.orgAbbrev ? (
-          <p className="col-span-9 lg:col-span-4">
+          <p className="col-span-9 lg:col-span-4 lg:col-start-1 lg:row-start-3">
             <span data-slot="data-catalog-org-pill">{card.orgAbbrev}</span>
           </p>
         ) : null}
         {open && card.metadataDocUrl ? (
-          <p className="col-span-9 lg:col-span-4 lg:col-start-6">
+          <p className="col-span-9 lg:col-span-4 lg:col-start-6 lg:row-start-3">
             <ContentLink
               href={card.metadataDocUrl}
               external
