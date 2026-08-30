@@ -27,8 +27,7 @@ export type SiteEventBannerFields = {
 
 export function isSiteEventBannerPlacement(value: unknown): value is SiteEventBannerPlacement {
   return (
-    typeof value === 'string' &&
-    (SITE_EVENT_BANNER_PLACEMENTS as readonly string[]).includes(value)
+    typeof value === 'string' && (SITE_EVENT_BANNER_PLACEMENTS as readonly string[]).includes(value)
   )
 }
 

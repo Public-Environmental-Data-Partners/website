@@ -67,8 +67,7 @@ const VARIANTS: Array<{
     label: 'Packed',
     note: 'Longer heading. Spacing should be near the 16px floor, still aligned with the image.',
     sectionHeading: 'MADE POSSIBLE',
-    heading:
-      '2,212 studies used disappearing federal climate justice tools. We analyzed them all.',
+    heading: '2,212 studies used disappearing federal climate justice tools. We analyzed them all.',
     body: [
       paragraph(
         'packed',
@@ -104,8 +103,8 @@ export default function HighlightBannerDevPage() {
           <h1 className="mt-2 font-sans text-2xl font-medium">Highlight banner lengths</h1>
           <p className="text-muted-foreground mt-2 max-w-3xl text-sm">
             Resize to tablet (768–1023px). Column 1 is the image (top) and the button. Column 2 is
-            section heading, heading, and body. On desktop the heading is hidden and the button moves
-            under the copy.
+            section heading, heading, and body. On desktop the heading is hidden and the button
+            moves under the copy.
           </p>
         </SiteShell>
       </SectionBand>
