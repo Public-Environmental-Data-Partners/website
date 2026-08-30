@@ -35,6 +35,23 @@ existing tokens. Use a feature CSS file when:
 Global element selectors should be rare. Scope editorial typography and feature
 styles with a data attribute or feature class.
 
+## Interactive cursor and hover
+
+`globals.css` `@layer base` sets `cursor: pointer` on `a[href]`, enabled
+`button`s, and `[role=button]`. Disabled controls use `not-allowed`. Native
+text inputs keep the I-beam.
+
+`Button` also sets `cursor-pointer` so `asChild` links and native submits match.
+Do not add one-off `cursor: pointer` in feature CSS.
+
+Filled marketing CTAs use `Button` (`size="cta"` plus a color variant). Donate
+goes through `DonateLink` → `Button variant="lightGreen"`. News hub Read More
+and Load More use `Button variant="surface"`.
+
+Body-copy links use `contentLinkClass` / `contentLinkMark()` (underline plus
+`hover:opacity-80`). Header and footer nav keep underline-on-hover because they
+are not always underlined. Do not put `contentLinkClass` on a `Button` CTA.
+
 ## Layout boundary
 
 Shell width, grid columns, shared gutters, and reusable responsive geometry are
@@ -43,10 +60,16 @@ reimplement the site shell or copy full-bleed calculations.
 
 ## Dark mode
 
-Brand tokens currently provide light values plus dark values under both
-`prefers-color-scheme` and `.dark`. Keep those paths synchronized until the
-manual-theme decision in
-[`../decisions/0006-theme-toggle.md`](../decisions/0006-theme-toggle.md) is resolved.
+The site is light-only until design finishes
+[`../design/dark-mode-color-tokens.md`](../design/dark-mode-color-tokens.md).
+Token overrides live on `:root` only. Nothing adds `.dark` on `<html>`, and
+`color-scheme: light` keeps native UI on the light palette even when the OS
+prefers dark.
+
+Long-term intent is still light and dark from OS preference
+([`../decisions/0004-light-dark-mode-switching.md`](../decisions/0004-light-dark-mode-switching.md)).
+A user-controlled toggle remains deferred
+([`../decisions/0006-theme-toggle.md`](../decisions/0006-theme-toggle.md)).
 
 ## Maintenance checklist
 
@@ -54,5 +77,5 @@ manual-theme decision in
 - Update all token paths when changing a brand value.
 - Prefer semantic variables over raw values.
 - Keep feature styles scoped.
-- Check mobile, tablet, desktop, dark mode, and reduced motion.
+- Check mobile, tablet, desktop, and reduced motion.
 - Remove obsolete feature CSS when its component is deleted.

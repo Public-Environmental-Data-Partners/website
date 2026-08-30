@@ -1,5 +1,18 @@
 import {defineField, defineType} from 'sanity'
 
+import {CatalogDatasetDerivedInput} from '../components/catalog-dataset-derived-input'
+
+/** Match Sanity client / Vision; used only for validation queries. */
+const STUDIO_API_VERSION = '2024-01-01'
+
+function siblingDocumentIds(documentId: string | undefined): string[] {
+  if (!documentId) {
+    return []
+  }
+  const base = documentId.startsWith('drafts.') ? documentId.slice(7) : documentId
+  return Array.from(new Set([documentId, `drafts.${base}`, base]))
+}
+
 export const catalogMentionedInItem = defineType({
   name: 'catalogMentionedInItem',
   title: 'Mentioned in',
@@ -27,6 +40,7 @@ export const catalogDataset = defineType({
   name: 'catalogDataset',
   title: 'Catalog dataset',
   type: 'document',
+  components: {input: CatalogDatasetDerivedInput},
   groups: [
     {name: 'identity', title: 'Identity', default: true},
     {name: 'agencies', title: 'Agencies'},
@@ -39,20 +53,19 @@ export const catalogDataset = defineType({
   ],
   fields: [
     defineField({
-      name: 'importKey',
-      title: 'Import key',
-      type: 'string',
-      group: 'identity',
-      readOnly: true,
-      description: 'Normalized DOI or backup URL used to match CSV rows on re-import.',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'archivedTitle',
       title: 'Archived title',
       type: 'string',
       group: 'identity',
       description: 'Preferred card title. Falls back to dataset title if empty.',
+      validation: (Rule) =>
+        Rule.custom((archivedTitle, context) => {
+          const archived = typeof archivedTitle === 'string' ? archivedTitle.trim() : ''
+          const datasetTitle = context.document?.datasetTitle
+          const dataset = typeof datasetTitle === 'string' ? datasetTitle.trim() : ''
+          if (archived || dataset) return true
+          return 'Add an archived title or dataset title. The public card needs one.'
+        }),
     }),
     defineField({
       name: 'datasetTitle',
@@ -72,7 +85,8 @@ export const catalogDataset = defineType({
       title: 'Deposit identifier',
       type: 'string',
       group: 'identity',
-      description: 'Normalized DOI (e.g. 10.5281/zenodo.123). Used in search.',
+      description:
+        'DOI, such as 10.5281/zenodo.123 or https://doi.org/10.5281/zenodo.123. Fills Import key. Used in search.',
     }),
     defineField({
       name: 'agency',
@@ -105,6 +119,8 @@ export const catalogDataset = defineType({
       title: 'Backup location (URL)',
       type: 'url',
       group: 'urls',
+      description:
+        'When set, the expanded card links Metadata. When empty, the card shows Metadata pending.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -113,7 +129,7 @@ export const catalogDataset = defineType({
       type: 'string',
       group: 'urls',
       description:
-        'Derived from the backup URL (Zenodo, Harvard Dataverse, SciOp, GitHub). Used in Open in X. Not a CSV column.',
+        'Filled from the backup URL (Zenodo, Harvard Dataverse, SciOp, GitHub). Used in Open in X. You can override it.',
     }),
     defineField({
       name: 'backupIsFile',
@@ -121,13 +137,16 @@ export const catalogDataset = defineType({
       type: 'boolean',
       group: 'urls',
       initialValue: false,
-      description: 'When true, the card button says Download instead of Open in …',
+      description:
+        'Filled from the backup URL. When true, the card button says Download instead of Open in …',
     }),
     defineField({
       name: 'metadataDocUrl',
       title: 'PEDP metadata doc',
       type: 'url',
       group: 'urls',
+      description:
+        'When set, the expanded card links Metadata. When empty, the card shows Metadata pending.',
     }),
     defineField({
       name: 'timePeriodRaw',
@@ -194,7 +213,7 @@ export const catalogDataset = defineType({
       rows: 8,
       group: 'copy',
       description:
-        'Word-for-word metadata description from import. Does not change with later CSV runs if already filled. Used on the card only when Summary is empty.',
+        'Word-for-word metadata description from import. Default re-import does not change it if already filled. --overwrite replaces it from the CSV on a draft. Used on the card only when Summary is empty.',
     }),
     defineField({
       name: 'archiveNotes',
@@ -208,7 +227,9 @@ export const catalogDataset = defineType({
       title: 'Keywords',
       type: 'text',
       rows: 2,
-      group: 'search',
+      group: 'copy',
+      description:
+        'Shown on the expanded card as a comma-separated list, above Mentioned in. Hidden if empty. Also used in search.',
     }),
     defineField({
       name: 'cchTerms',
@@ -230,6 +251,30 @@ export const catalogDataset = defineType({
       type: 'array',
       group: 'editorial',
       of: [{type: 'catalogMentionedInItem'}],
+    }),
+    defineField({
+      name: 'importKey',
+      title: 'Import key',
+      type: 'string',
+      group: 'import',
+      readOnly: true,
+      description:
+        'Filled from the DOI or backup URL. Used to match this record if the spreadsheet is imported again. You do not type this.',
+      validation: (Rule) =>
+        Rule.required()
+          .error('Add a deposit identifier (DOI) or backup location URL.')
+          .custom(async (value, context) => {
+            const key = typeof value === 'string' ? value.trim() : ''
+            if (!key) return true
+            const {document, getClient} = context
+            const client = getClient({apiVersion: STUDIO_API_VERSION})
+            const exclude = siblingDocumentIds(document?._id)
+            const count = await client.fetch<number>(
+              `count(*[_type == "catalogDataset" && importKey == $key && !(_id in $exclude)])`,
+              {key, exclude},
+            )
+            return count === 0 || 'A dataset with this DOI or backup URL already exists.'
+          }),
     }),
     defineField({
       name: 'datasetSize',

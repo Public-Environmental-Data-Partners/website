@@ -34,6 +34,11 @@
   text-decoration: underline;
   text-underline-offset: 0.25em;
   text-decoration-skip-ink: none;
+  transition: opacity 150ms ease;
+}
+
+[data-slot='return-to-top-strip-link']:hover {
+  opacity: 0.8;
 }
 
 [data-slot='return-to-top-strip-link'] svg {
@@ -46,4 +51,10 @@
   border-radius: 0.25rem;
   outline: 2px solid var(--ring);
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot='return-to-top-strip-link'] {
+    transition: none;
+  }
 }

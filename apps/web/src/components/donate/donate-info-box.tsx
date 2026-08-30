@@ -18,7 +18,7 @@ const bodyComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: React.ReactNode}) => (
       <strong className="font-bold">{children}</strong>
     ),
-    link: contentLinkMark('underline underline-offset-2'),
+    link: contentLinkMark(),
   },
 }
 

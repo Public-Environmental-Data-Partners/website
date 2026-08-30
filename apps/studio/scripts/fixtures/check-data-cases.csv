@@ -1,0 +1,12 @@
+Dataset/Tool Name,Agency,Original Location (URL),Backup Location (URL),PEDP Metadata Doc,Archived Title,Description,Notes,Internal Notes,Deposit Digital Identifier,Time Period / Temporal Resolution,Date Downloaded,Summary
+Good Dataset,Environmental Protection Agency,https://example.gov/orig,https://zenodo.org/records/1,https://example.com/meta,Good Archived Title,A description,Public notes,,10.5281/zenodo.1,2020-01-01 through 2021-12-31,1/15/2024,A summary
+,Environmental Protection Agency,https://example.gov/orig,https://zenodo.org/records/2,,,,,,,,
+No Agency Dataset,,https://example.gov/orig,https://zenodo.org/records/3,,,,,,,,
+No Key Dataset,Environmental Protection Agency,https://example.gov/orig,,,,,,,,,
+Bad Backup Dataset,Environmental Protection Agency,https://example.gov/orig,not-a-url,,,,,,,,
+Dup Key A,Environmental Protection Agency,https://example.gov/orig,https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/DUPKEY,,,,,,,,
+Dup Key B,Environmental Protection Agency,https://example.gov/orig,https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/DUPKEY,,,,,,,,
+Same Title,Environmental Protection Agency,https://example.gov/orig,https://github.com/pedp/one,,,,,,,,
+Same Title,Environmental Protection Agency,https://example.gov/orig,https://github.com/pedp/two,,,,,,,,
+Bare Dataset,Environmental Protection Agency,https://example.gov/orig,"https://arcgis.com/home/item.html?id=abc; contact PEDP",,,,,,,,
+Notes Fallback,Environmental Protection Agency,https://example.gov/orig,https://sciop.net/c/xyz,,,,please use internal,,,,,

@@ -2,17 +2,17 @@
 
 The accepted baseline is light and dark presentation selected by OS preference;
 see `0004-light-dark-mode-switching.md`. A user-controlled theme switch remains
-deferred.
+deferred. Dark presentation itself is also paused until design finishes
+[`../design/dark-mode-color-tokens.md`](../design/dark-mode-color-tokens.md).
 
 ## Current behavior
 
-- Brand tokens define light values and duplicate dark values under
-  `prefers-color-scheme: dark` and `.dark`.
-- Tailwind’s dark variant targets the `.dark` class.
-- A `beforeInteractive` script mirrors the OS preference onto `html.dark` and
-  listens for changes.
-- `<html>` uses `suppressHydrationWarning`.
-- There is no theme control, cookie, local-storage preference, or `next-themes`.
+- The site is light-only. Brand tokens are defined on `:root` and
+  `html` uses `color-scheme: light`.
+- Tailwind’s dark variant still targets the `.dark` class, but nothing adds
+  that class and leftover `dark:` utilities do not apply.
+- There is no theme bootstrap script, theme control, cookie, local-storage
+  preference, or `next-themes`.
 
 ## Decisions required before implementation
 

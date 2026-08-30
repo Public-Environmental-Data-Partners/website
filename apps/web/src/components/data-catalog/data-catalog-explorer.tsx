@@ -67,6 +67,7 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
       <button
         type="button"
         data-slot="data-catalog-expand"
+        className="transition-opacity hover:opacity-80"
         aria-expanded={open}
         aria-controls={panelId}
         onClick={toggleDetails}
@@ -78,7 +79,16 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
         )}
         <span className="sr-only">{open ? 'Collapse dataset' : 'Expand dataset'}</span>
       </button>
-      <h2 data-slot="data-catalog-card-title">{card.title}</h2>
+      <h2 data-slot="data-catalog-card-title">
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-controls={panelId}
+          onClick={() => setOpen((v) => !v)}
+        >
+          {card.title}
+        </button>
+      </h2>
       {open ? (
         <div id={panelId} className="mt-6 flex flex-col gap-6">
           {card.description ? (
@@ -89,7 +99,7 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
                   <ContentLink
                     href={card.backupUrl}
                     external
-                    className="font-sans text-[1.375rem] text-off-black underline underline-offset-2"
+                    className="font-sans text-[1.375rem] text-off-black underline underline-offset-2 transition-opacity hover:opacity-80"
                   >
                     Read more on {card.backupHost}
                   </ContentLink>
@@ -103,48 +113,49 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
         id={panelId}
         className="mt-10 grid grid-cols-9 items-baseline gap-x-[var(--grid-gutter)] gap-y-6 lg:mt-12"
       >
-        <p data-slot="data-catalog-meta-label" className="col-span-9 lg:col-span-4">
+        <p
+          data-slot="data-catalog-meta-label"
+          className="col-span-9 lg:col-span-4 lg:col-start-1 lg:row-start-1"
+        >
           {card.agency}
-        </p>
-        <p className="col-span-9 m-0 text-[1.375rem] leading-none lg:col-span-4 lg:col-start-6">
-          <span data-slot="data-catalog-meta-label">Time Period: </span>
-          <span data-slot="data-catalog-date">{card.timePeriodLabel}</span>
         </p>
         <p
           data-slot="data-catalog-meta-label"
-          className="col-span-9 lg:col-span-4"
+          className="col-span-9 lg:col-span-4 lg:col-start-1 lg:row-start-2"
           aria-hidden={!card.subAgency}
         >
           {card.subAgency || '\u00a0'}
         </p>
-        <p className="col-span-9 m-0 text-[1.375rem] leading-none lg:col-span-4 lg:col-start-6">
+        <p className="col-span-9 m-0 text-[1.375rem] leading-none lg:col-span-4 lg:col-start-6 lg:row-start-1">
+          <span data-slot="data-catalog-meta-label">Time Period: </span>
+          <span data-slot="data-catalog-date">{card.timePeriodLabel}</span>
+        </p>
+        <p className="col-span-9 m-0 text-[1.375rem] leading-none lg:col-span-4 lg:col-start-6 lg:row-start-2">
           <span data-slot="data-catalog-meta-label">Download Date: </span>
           <span data-slot="data-catalog-date">{card.downloadDateLabel}</span>
         </p>
         {open && card.orgAbbrev ? (
-          <p className="col-span-9 lg:col-span-4">
+          <p className="col-span-9 lg:col-span-4 lg:col-start-1 lg:row-start-3">
             <span data-slot="data-catalog-org-pill">{card.orgAbbrev}</span>
           </p>
         ) : null}
         {open && card.metadataDocUrl ? (
-          <p className="col-span-9 lg:col-span-4 lg:col-start-6">
+          <p className="col-span-9 lg:col-span-4 lg:col-start-6 lg:row-start-3">
             <ContentLink
               href={card.metadataDocUrl}
               external
-              className="font-sans text-[1.375rem] text-off-black underline underline-offset-2"
+              className="font-sans text-[1.375rem] text-off-black underline underline-offset-2 transition-opacity hover:opacity-80"
             >
               Metadata
             </ContentLink>
           </p>
-        ) : null}
-        {!open ? (
-          <div className="col-span-9 flex justify-center">
-            <Button asChild size="cta" variant="offBlack" className="px-6 text-off-white">
-              <ContentLink href={card.backupUrl} external>
-                {buttonLabel}
-              </ContentLink>
-            </Button>
-          </div>
+        ) : open ? (
+          <p
+            data-slot="data-catalog-metadata-pending"
+            className="col-span-9 m-0 font-sans text-[1.375rem] leading-none text-off-black lg:col-span-4 lg:col-start-6 lg:row-start-3"
+          >
+            Metadata pending
+          </p>
         ) : null}
       </div>
       {open ? (
@@ -154,7 +165,7 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
               <ContentLink
                 href={card.originalUrl}
                 external
-                className="font-sans text-[1.375rem] text-off-black underline underline-offset-2"
+                className="font-sans text-[1.375rem] text-off-black underline underline-offset-2 transition-opacity hover:opacity-80"
               >
                 Original URL
               </ContentLink>
@@ -168,6 +179,14 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
               </p>
             </div>
           ) : null}
+          {card.keywords ? (
+            <div>
+              <h3 data-slot="data-catalog-section-label">Keywords:</h3>
+              <p data-slot="data-catalog-body" className="mt-2">
+                {card.keywords}
+              </p>
+            </div>
+          ) : null}
           {card.mentionedIn.length > 0 ? (
             <div>
               <h3 data-slot="data-catalog-section-label">Mentioned in:</h3>
@@ -177,7 +196,7 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
                     <ContentLink
                       href={item.href}
                       external={item.external}
-                      className="font-sans text-[1.375rem] text-off-black underline underline-offset-2"
+                      className="font-sans text-[1.375rem] text-off-black underline underline-offset-2 transition-opacity hover:opacity-80"
                     >
                       {item.label}
                     </ContentLink>
@@ -186,7 +205,7 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
               </ul>
             </div>
           ) : null}
-          <div className="flex justify-center">
+          <div className="flex justify-end">
             <Button asChild size="cta" variant="offBlack" className="px-6 text-off-white">
               <ContentLink href={card.backupUrl} external>
                 {buttonLabel}
@@ -245,6 +264,8 @@ export function DataCatalogExplorer({
   const {slice, totalPages, page: safePage} = paginateCatalog(filtered, page)
   const pages = catalogPageItems(totalPages, safePage)
   const count = datasets.length
+  const hasSearch = query.trim().length > 0
+  const resultCountLabel = `${filtered.length} data set${filtered.length === 1 ? '' : 's'}`
 
   const sidebar = (
     <div className="flex flex-col gap-6">
@@ -317,6 +338,11 @@ export function DataCatalogExplorer({
           </div>
         </div>
         <div className="mt-8 flex flex-col gap-4">
+          {hasSearch ? (
+            <p data-slot="data-catalog-results-summary" role="status">
+              Showing {resultCountLabel} matching your search
+            </p>
+          ) : null}
           {slice.length === 0 ? (
             <p data-slot="data-catalog-body">No datasets match this search.</p>
           ) : (
@@ -327,7 +353,7 @@ export function DataCatalogExplorer({
           <nav className="mt-10 flex items-center justify-center gap-2" aria-label="Catalog pages">
             <button
               type="button"
-              className="p-2 text-off-black disabled:opacity-40"
+              className="p-2 text-off-black transition-opacity hover:opacity-80 disabled:opacity-40"
               disabled={safePage <= 1}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
             >
@@ -345,7 +371,7 @@ export function DataCatalogExplorer({
                   type="button"
                   data-slot="data-catalog-page-link"
                   data-active={item === safePage}
-                  className="flex size-10 items-center justify-center rounded-full font-sans text-off-black"
+                  className="flex size-10 items-center justify-center rounded-full font-sans text-off-black transition-colors hover:bg-light-beige"
                   onClick={() => setPage(item)}
                   aria-current={item === safePage ? 'page' : undefined}
                 >
@@ -355,7 +381,7 @@ export function DataCatalogExplorer({
             )}
             <button
               type="button"
-              className="p-2 text-off-black disabled:opacity-40"
+              className="p-2 text-off-black transition-opacity hover:opacity-80 disabled:opacity-40"
               disabled={safePage >= totalPages}
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             >

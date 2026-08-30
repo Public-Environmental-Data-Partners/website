@@ -26,7 +26,7 @@ const introPortableTextComponents: Partial<PortableTextComponents> = {
       <strong className="font-semibold">{children}</strong>
     ),
     em: ({children}: {children?: ReactNode}) => <em>{children}</em>,
-    link: contentLinkMark('text-dark-green underline underline-offset-2'),
+    link: contentLinkMark('text-dark-green'),
   },
 }
 

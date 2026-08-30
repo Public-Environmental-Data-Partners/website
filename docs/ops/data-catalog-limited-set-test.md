@@ -33,8 +33,10 @@ pager does not appear. That is expected.
 ## Import
 
 * `--dry-run` logs intended `drafts.catalog.…` ids and does not write.
+* `--check-data` reports errors (exit 1) and warnings without writing.
 * Real import creates drafts. New rows do not appear publicly until Publish.
-* A row with neither DOI nor backup URL logs `SKIP`.
+* A row with neither DOI nor backup URL, no title, no agency, an unusable
+  backup URL, or a duplicate import key in the file logs `SKIP`.
 * After filling Summary in Studio, re-import does not change that Summary.
   Empty fields can still fill from the CSV.
 * Backup host on a sample URL is Zenodo, Harvard Dataverse, SciOp, GitHub, or
@@ -116,7 +118,8 @@ Expanded:
 * Text longer than 450 characters is truncated and shows Read more on [host]
   (same backup URL).
 * Org abbrev pill only if that field is set.
-* Metadata link only if a URL exists (no “Metadata unavailable”).
+* Metadata link when a URL exists. Metadata pending (plain text) when it does
+  not.
 * Original URL, Archive notes, and Mentioned in when those fields are set.
 * Open in / Download sits after Archive notes and Mentioned in.
 

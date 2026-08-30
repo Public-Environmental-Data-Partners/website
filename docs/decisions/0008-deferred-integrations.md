@@ -9,6 +9,7 @@ Product and infrastructure work intentionally not implemented yet.
 | Sanity roles       | Publishing roles remain informal. Define permissions when the editor group requires separation of duties.                   |
 | Global share image | Site metadata exists, but a default Open Graph image and final production domain still need confirmation.                   |
 | Localization       | English-only remains the operating assumption.                                                                              |
+| Dark mode          | Light-only until design finishes [`../design/dark-mode-color-tokens.md`](../design/dark-mode-color-tokens.md). See [`0004-light-dark-mode-switching.md`](./0004-light-dark-mode-switching.md). |
 
 Remove an item when its product decision moves into an implementation issue or a
 dedicated architecture/operations document.

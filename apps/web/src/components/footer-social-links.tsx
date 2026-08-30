@@ -92,17 +92,27 @@ function MailIcon({className}: {className?: string}) {
 }
 
 const socialLinks: SocialEntry[] = [
-  {href: 'https://bsky.app', label: 'PEDP on Bluesky', Icon: BlueskyIcon, external: true},
   {
-    href: 'https://www.linkedin.com',
+    href: 'https://bsky.app/profile/publicenvirodata.bsky.social',
+    label: 'PEDP on Bluesky',
+    Icon: BlueskyIcon,
+    external: true,
+  },
+  {
+    href: 'https://www.linkedin.com/company/public-environmental-data-project/',
     label: 'PEDP on LinkedIn',
     Icon: LinkedInIcon,
     external: true,
   },
-  {href: 'https://github.com', label: 'PEDP on GitHub', Icon: GitHubIcon, external: true},
   {
-    href: 'mailto:kameron@policyinnovation.org',
-    label: 'Email Kameron Kerger',
+    href: 'https://github.com/Public-Environmental-Data-Partners',
+    label: 'PEDP on GitHub',
+    Icon: GitHubIcon,
+    external: true,
+  },
+  {
+    href: 'mailto:hello@publicenvirodata.org',
+    label: 'Email PEDP',
     Icon: MailIcon,
   },
 ]

@@ -35,6 +35,7 @@ export type CatalogCardProps = {
   description: string
   descriptionTruncated: boolean
   archiveNotes: string | null
+  keywords: string | null
   mentionedIn: CatalogMentionedLink[]
   searchText: string
 }
@@ -59,6 +60,16 @@ export function formatTimePeriod(
 
 export function formatDownloadDate(iso: string | null | undefined): string {
   return formatMdY(iso) ?? 'Not recorded'
+}
+
+export function formatKeywords(raw: string | null | undefined): string | null {
+  if (!raw) return null
+  const parts = raw
+    .split(/[,;\n]+/)
+    .map((part) => part.trim())
+    .filter(Boolean)
+  if (parts.length === 0) return null
+  return parts.join(', ')
 }
 
 function truncateSummary(text: string): {text: string; truncated: boolean} {
@@ -143,6 +154,7 @@ export function mapCatalogDataset(doc: CatalogDatasetFields): CatalogCardProps |
     description,
     descriptionTruncated: truncated,
     archiveNotes: doc.archiveNotes?.trim() || null,
+    keywords: formatKeywords(doc.keywords),
     mentionedIn,
     searchText,
   }

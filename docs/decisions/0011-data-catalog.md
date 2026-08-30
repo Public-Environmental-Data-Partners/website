@@ -23,7 +23,9 @@ lives in [`docs/ops/data-catalog-import.md`](../ops/data-catalog-import.md) and
   a Studio CSV uploader in v1.
 * Payload size stays reasonable if the browser loads the published catalog.
 * UI matches the Figma catalog comps (desktop and mobile).
-* Field mapping follows `Dataset Field Index - Dataset Import.csv`.
+* Field mapping follows `Dataset Field Index - Dataset Import.csv`. The live
+  inventory of catalog CSV headers versus the import script and Sanity is
+  [`docs/ops/data-catalog-csv-fields.md`](../ops/data-catalog-csv-fields.md).
 
 ## Assumptions
 
@@ -33,7 +35,9 @@ lives in [`docs/ops/data-catalog-import.md`](../ops/data-catalog-import.md) and
   in sample data is treated as a typo. Import normalizes DOIs (trim, lowercase,
   strip the `https://doi.org/` prefix) before using them as the unique key.
 * If DOI is missing, the unique key is the normalized backup URL (Dataverse
-  first, then Zenodo, if the cell has multiple URLs). If both DOI and backup URL
+  first, then Zenodo, if the cell has multiple URLs). Percent-encoded backup
+  URLs are decoded before the key is built, so `doi:` and `doi%3A` forms of
+  the same Dataverse link are one document. If both DOI and backup URL
   are missing, the row is not imported and is written to a review list.
 * Backup URLs that are themselves DOI links resolve to the same key as the DOI
   so two rows do not become two documents for one deposit.
@@ -98,6 +102,11 @@ stay unparsed in v1 (`needsReview` plus this fallback).
 ### Download Date
 
 If blank or unparsed, the card shows "Not recorded".
+
+### Keywords
+
+Shown on the expanded card above Mentioned in as a comma-separated string.
+Hidden if empty. Still included in client-side search.
 
 ### Backup Host
 
@@ -173,9 +182,14 @@ Chosen for v1:
 2. Import script from CSV. Documents created as drafts. Public catalog queries
    published documents only.
 3. Unique key: normalized DOI, else normalized backup URL. Skip and flag
-   otherwise.
-4. Re-import fills empty fields only. Existing Studio values win. Revisit
-   overwrite-vs-refresh when this ADR is next updated.
+   otherwise. Also skip missing title, missing agency, unusable backup URL, and
+   duplicate import keys in the same CSV (first row wins). `--check-data`
+   reports those errors plus card-thinness warnings without writing.
+4. Re-import fills empty fields only by default. Existing Studio values win.
+   `--overwrite` replaces fields whose CSV columns are present, writes a draft
+   (never the published document), and does not clear Summary unless the CSV
+   has a non-empty Summary. Mentioned in is never imported. A changed DOI is a
+   new key and does not update the old document.
 5. Client-side search, sort, and pagination on the published list payload.
    Search commits on button or Enter. Placeholder includes the published
    dataset count. Search fields follow the import index (name, archived title,
@@ -189,8 +203,9 @@ Chosen for v1:
    (Zenodo, Harvard Dataverse, SciOp, GitHub, or Download when the URL looks
    like a file). New tab. Read more on [host] is the same backup URL after
    truncated Summary. Original Location is a separate expanded-card link.
-   Metadata (PEDP Metadata Doc) is omitted when blank (not "Metadata
-   unavailable"). Mentioned in and Nominate open in a new tab when external.
+   Metadata (PEDP Metadata Doc) is a link when the URL is set. When it is blank
+   the expanded card shows Metadata pending (not a link). Mentioned in and
+   Nominate open in a new tab when external.
 9. Time Period and Download Date: parse when possible, set `needsReview` when
    not, keep raw import string for editors, do not block publish. Year-only
    values are unparsed in v1 (flag + fallback copy).
@@ -205,8 +220,9 @@ Chosen for v1:
   later.
 * Editors must publish drafts before rows appear. A bulk publish in Studio is
   an operational step, not a script default.
-* Re-import will not refresh a bad agency name that was already saved. That is
-  accepted for v1.
+* Re-import will not refresh a bad agency name that was already saved, unless
+  `--overwrite` is passed and the draft is published. Default fill-empty remains
+  the usual path.
 * Data Guide may 404 or be empty until that page exists. The CTA should still
   be CMS-editable.
 * Token mapping: prefer existing `pedp-token-overrides.css` values. Add tokens
@@ -215,13 +231,11 @@ Chosen for v1:
 ## Explicitly not in v1
 
 * Studio CSV upload UI.
-* Re-import that overwrites non-empty Studio fields.
 * As-you-type search.
 * Server-side GROQ search or Algolia.
 * Clickable search chips / suggested-term pills (hero may mention terms as
   plain text).
 * Accordion that closes other cards.
-* Metadata empty state "Metadata unavailable".
 * Second sub-agency abbrev pill (only Org Abbrev).
 * Agency section headers (grouping UI). Showing PEDP Agency for Sorting as its
   own card line.
@@ -236,8 +250,6 @@ Chosen for v1:
 
 ## Follow-ups (when this ADR is next edited)
 
-* Should re-import overwrite CSV-mapped fields while preserving Summary and
-  Mentioned in?
 * Rename CSV column Agency or Org Abbrev to Org Abbrev.
 * What to do with Dataset Size / units.
 * Year-only time period display (`1998 - 2024`) vs always day-precision.

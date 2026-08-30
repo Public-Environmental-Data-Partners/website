@@ -13,7 +13,7 @@ export const articleFigureCaptionComponents: Partial<PortableTextComponents> = {
     strong: ({children}: {children?: React.ReactNode}) => (
       <strong className="font-semibold">{children}</strong>
     ),
-    link: contentLinkMark('text-accent underline underline-offset-[0.15em]'),
+    link: contentLinkMark('text-accent underline-offset-[0.15em]'),
   },
 }
 

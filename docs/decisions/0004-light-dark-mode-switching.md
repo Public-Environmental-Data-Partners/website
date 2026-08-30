@@ -34,3 +34,10 @@ Note: We will punt on designing and implementing a toggle in the UI itself. For 
 ### Negative Consequences <!-- optional -->
 
 - A little but more upfront work now for design and dev
+
+## Current implementation
+
+As of 2026-08-24 the site ships light-only while design completes
+[`../design/dark-mode-color-tokens.md`](../design/dark-mode-color-tokens.md).
+OS `prefers-color-scheme` is ignored. This does not change the accepted outcome
+above; dark presentation returns after the worksheet lands.

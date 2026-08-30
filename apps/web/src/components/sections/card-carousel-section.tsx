@@ -19,7 +19,7 @@ function ViewAllLink() {
   return (
     <Link
       href={NEWS_HUB_HREF}
-      className="text-foreground inline-flex items-center justify-center gap-2 font-sans text-[1.375rem] leading-none font-semibold underline underline-offset-4"
+      className="text-foreground inline-flex items-center justify-center gap-2 font-sans text-[1.375rem] leading-none font-semibold underline underline-offset-4 transition-opacity hover:opacity-80"
     >
       <List className="size-5 shrink-0" aria-hidden />
       VIEW ALL

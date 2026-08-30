@@ -2,6 +2,7 @@ import Image from 'next/image'
 
 import {ContentLink} from '@/components/content-link'
 import type {HeroImage} from '@/components/hero/hero-image'
+import {Button} from '@/components/ui/button'
 import {cn} from '@/lib/utils'
 
 export type NewsHubCardProps = {
@@ -58,9 +59,11 @@ export function NewsHubCard({
           {title}
         </h2>
         <p data-slot="news-hub-card-excerpt">{excerpt}</p>
-        <ContentLink href={href} external={external} data-slot="news-hub-card-cta">
-          {ctaLabel}
-        </ContentLink>
+        <Button asChild variant="surface" size="cta" className="mt-auto self-center">
+          <ContentLink href={href} external={external}>
+            {ctaLabel}
+          </ContentLink>
+        </Button>
       </div>
     </article>
   )

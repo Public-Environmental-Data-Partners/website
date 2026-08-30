@@ -81,7 +81,7 @@ export async function SiteFooter() {
         <div className="flex flex-col items-center gap-6 text-center xl:hidden">
           <Link
             href="/"
-            className="focus-visible:ring-ring shrink-0 rounded-sm focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--footer)]"
+            className="focus-visible:ring-ring shrink-0 rounded-sm transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--footer)]"
             aria-label={siteName}
           >
             <FooterBrandMark size="compact" />
@@ -95,7 +95,7 @@ export async function SiteFooter() {
           <div className="col-span-2 flex flex-col gap-6">
             <Link
               href="/"
-              className="text-footer-foreground focus-visible:ring-ring w-fit shrink-0 rounded-sm no-underline focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--footer)]"
+              className="text-footer-foreground focus-visible:ring-ring w-fit shrink-0 rounded-sm no-underline transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--footer)]"
               aria-label={siteName}
             >
               <span className="flex flex-col gap-3">

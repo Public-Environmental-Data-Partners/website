@@ -241,12 +241,10 @@ export const newsPost = defineType({
       hidden: ({document}) => isNewsPostType(document),
       of: [
         articleBodyPortableTextBlock,
-        defineArrayMember({type: 'quoteBlock'}),
         defineArrayMember({type: 'imageBlock'}),
         defineArrayMember({type: 'twoImageBlock'}),
         defineArrayMember({type: 'imageTextBlock'}),
         defineArrayMember({type: 'embedBlock'}),
-        defineArrayMember({type: 'listBlock'}),
       ],
       description: 'Article content below the detail hero.',
     }),

@@ -35,7 +35,7 @@ export const sectionBodyPortableTextComponents: Partial<PortableTextComponents> 
     strong: ({children}: {children?: ReactNode}) => (
       <strong className="font-bold">{children}</strong>
     ),
-    link: contentLinkMark('text-off-black underline underline-offset-2'),
+    link: contentLinkMark('text-off-black'),
   },
 }
 

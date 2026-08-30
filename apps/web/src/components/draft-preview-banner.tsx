@@ -20,7 +20,7 @@ export async function DraftPreviewBanner() {
     >
       Draft preview, showing unpublished Sanity content.{' '}
       {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- full navigation so draft cookie clears; Link client-nav breaks disable */}
-      <a href="/api/disable-draft" className="underline">
+      <a href="/api/disable-draft" className="underline transition-opacity hover:opacity-80">
         Exit preview
       </a>
     </div>

@@ -42,6 +42,7 @@ import {newsPostTeaserFields} from './newsPostTeaserFields'
 import {page} from './page'
 import {quoteBlock} from './quoteBlock'
 import {seoFields} from './seoFields'
+import {siteEventBanner} from './siteEventBanner'
 import {siteFooter} from './siteFooter'
 import {siteNavGroup, siteNavigation, siteNavLink} from './siteNavigation'
 import {
@@ -104,6 +105,7 @@ export const schemaTypes = [
   siteNavGroup,
   siteNavigation,
   siteFooter,
+  siteEventBanner,
   newsletterSignup,
   newsHubPage,
   dataCatalogCta,

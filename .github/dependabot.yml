@@ -1,0 +1,83 @@
+# Lane 3 version updates. Policy: docs/decisions/0005-dependency-upgrades.md
+# Security updates are configured in the GitHub UI, not here.
+# Platform packages (lane 2) are ignored. Majors are ignored (lane 4).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+      - dependency-name: next
+      - dependency-name: eslint-config-next
+      - dependency-name: react
+      - dependency-name: react-dom
+      - dependency-name: "@types/react"
+      - dependency-name: "@types/react-dom"
+      - dependency-name: "@types/node"
+      - dependency-name: sanity
+      - dependency-name: "@sanity/*"
+      - dependency-name: next-sanity
+      - dependency-name: "@portabletext/react"
+    groups:
+      ui:
+        patterns:
+          - class-variance-authority
+          - clsx
+          - embla-carousel-react
+          - lucide-react
+          - radix-ui
+          - tailwind-merge
+          - tw-animate-css
+          - shadcn
+        update-types:
+          - minor
+          - patch
+      css:
+        patterns:
+          - tailwindcss
+          - "@tailwindcss/postcss"
+        update-types:
+          - minor
+          - patch
+      studio-chrome:
+        patterns:
+          - styled-components
+        update-types:
+          - minor
+          - patch
+      lint-format:
+        patterns:
+          - eslint
+          - eslint-plugin-simple-import-sort
+          - prettier
+          - typescript
+        update-types:
+          - minor
+          - patch
+      e2e:
+        patterns:
+          - "@playwright/test"
+          - "@axe-core/playwright"
+        update-types:
+          - minor
+          - patch
+      studio-scripts:
+        patterns:
+          - tsx
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      github-actions:
+        patterns:
+          - "*"

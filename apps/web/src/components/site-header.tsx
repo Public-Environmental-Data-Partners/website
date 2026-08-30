@@ -9,10 +9,13 @@ import {NavPrimaryGroup} from '@/components/nav-primary-group'
 import {donateNav} from '@/config/nav'
 import {siteName} from '@/config/site'
 import {getMainNav} from '@/lib/main-nav'
+import {footerItemsNotInPrimaryNav} from '@/lib/mobile-nav-footer'
+import {getSiteFooter} from '@/lib/site-footer'
 
-/** Global header; primary nav from CMS (`getMainNav`). Desktop: dropdown; mobile: sheet. */
+/** Global header; primary nav from CMS (`getMainNav`). Desktop: dropdown; mobile sheet adds leftover footer links. */
 export async function SiteHeader() {
-  const primaryNav = await getMainNav()
+  const [primaryNav, footer] = await Promise.all([getMainNav(), getSiteFooter()])
+  const mobileNav = [...primaryNav, ...footerItemsNotInPrimaryNav(primaryNav, footer)]
 
   return (
     <header className="bg-light-beige">
@@ -78,7 +81,7 @@ export async function SiteHeader() {
           </nav>
 
           <div className="xl:hidden">
-            <MobilePrimaryNavSheet mainNav={primaryNav} />
+            <MobilePrimaryNavSheet mainNav={mobileNav} />
           </div>
         </div>
       </SiteShell>

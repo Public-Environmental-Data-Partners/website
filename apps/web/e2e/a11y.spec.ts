@@ -11,7 +11,7 @@ const routes = [
   '/how-we-work',
   '/news-and-updates',
   '/privacy-policy',
-  '/tool-development',
+  '/tools-development',
 ]
 
 for (const path of routes) {

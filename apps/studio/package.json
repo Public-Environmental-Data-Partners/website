@@ -23,11 +23,11 @@
     "@sanity/client": "^7.23.2",
     "@sanity/ui": "^3.1.14",
     "@sanity/vision": "^6.5.0",
-    "lucide-react": "^1.8.0",
+    "lucide-react": "^1.33.0",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "sanity": "^6.5.0",
-    "styled-components": "^6.4.3"
+    "styled-components": "^6.5.3"
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "^6.0.0",
@@ -35,7 +35,7 @@
     "@types/react": "^19.2.14",
     "eslint": "^9.28",
     "eslint-plugin-simple-import-sort": "^13.0.0",
-    "prettier": "^3.5",
+    "prettier": "^3.9",
     "tsx": "^4.23.12",
     "typescript": "^5.8"
   },

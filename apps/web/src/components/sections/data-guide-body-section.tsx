@@ -25,7 +25,7 @@ const dataGuideBodyOverrides: Partial<PortableTextComponents> = {
     ),
   },
   marks: {
-    link: contentLinkMark('text-off-black underline underline-offset-2'),
+    link: contentLinkMark('text-off-black'),
   },
 }
 

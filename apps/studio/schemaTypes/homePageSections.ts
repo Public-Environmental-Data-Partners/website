@@ -350,13 +350,14 @@ export const highlightBannerSection = defineType({
       title: 'Section heading',
       type: 'string',
       initialValue: 'HIGHLIGHT BANNER',
+      description: 'Short uppercase label. Shown on every screen size (e.g. MADE POSSIBLE).',
       validation: (Rule) => Rule.required().max(80),
     }),
     defineField({
       name: 'heading',
       title: 'Heading',
       type: 'string',
-      description: 'Required. Shown on mobile and tablet; hidden on desktop.',
+      description: 'Main title. Shown on mobile and tablet; hidden on desktop.',
       validation: (Rule) => Rule.required().max(200),
     }),
     defineField({
@@ -364,6 +365,8 @@ export const highlightBannerSection = defineType({
       title: 'Body',
       type: 'array',
       of: [heroPortableText],
+      description:
+        'Shown on every screen size. On mobile and tablet this sits under the heading; on desktop this is the large serif line between the section heading and the button.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
