@@ -69,8 +69,11 @@ function HighlightCta({label, href, external}: {label: string; href: string; ext
 }
 
 /**
- * Simple forest highlight band: inset image, section heading / title / body, CTA.
- * Mobile: stack. Tablet: image | copy, CTA under image. Desktop: image | copy, title hidden, CTA under copy.
+ * Simple forest highlight band: inset image, section heading / heading / body, CTA.
+ * Mobile: stack (image, section heading, heading, body, CTA).
+ * Tablet: image + CTA | section heading, heading, body. Copy box starts at the
+ * image height (tops and bottoms aligned); gaps shrink, then the box grows.
+ * Desktop: heading hidden; section heading, body, and CTA share the image height.
  */
 export function HighlightBannerSection({
   sectionHeading,
@@ -80,8 +83,8 @@ export function HighlightBannerSection({
   ctaHref,
   ctaExternal,
   image,
-}: HighlightBannerSectionProps) {
-  const headingId = 'highlight-banner-heading'
+  headingId = 'highlight-banner-heading',
+}: HighlightBannerSectionProps & {headingId?: string}) {
   const showCta = Boolean(ctaHref && ctaLabel)
 
   return (
@@ -94,7 +97,6 @@ export function HighlightBannerSection({
                 <BannerImageBlock image={image} />
               </div>
             </div>
-            {/* Tablet: CTA under image */}
             {showCta ? (
               <div className="hidden justify-center md:flex lg:hidden">
                 <HighlightCta href={ctaHref!} label={ctaLabel!} external={ctaExternal} />
@@ -102,17 +104,17 @@ export function HighlightBannerSection({
             ) : null}
           </div>
 
-          <div className="flex min-w-0 flex-col">
+          <div className="flex min-w-0 flex-col md:aspect-[4/3] md:w-full md:justify-between md:gap-4">
             <p className="font-sans text-[1.375rem] leading-none font-semibold tracking-normal text-light-green uppercase lg:font-bold">
               {sectionHeading}
             </p>
             <h2
               id={headingId}
-              className="mt-4 font-sans text-[2.5rem] leading-none font-normal tracking-normal text-light-green lg:hidden"
+              className="mt-4 font-sans text-[2.5rem] leading-none font-normal tracking-normal text-light-green md:mt-0 lg:hidden"
             >
               {heading}
             </h2>
-            <div className="mt-4 space-y-4 lg:mt-6">
+            <div className="mt-4 space-y-4 md:mt-0">
               <PortableText value={body as never} components={richTextComponents} />
             </div>
             {/* Mobile: centered CTA under copy */}
@@ -121,9 +123,9 @@ export function HighlightBannerSection({
                 <HighlightCta href={ctaHref!} label={ctaLabel!} external={ctaExternal} />
               </div>
             ) : null}
-            {/* Desktop: CTA under copy */}
+            {/* Desktop: CTA in the copy column, flush to image bottom when space allows */}
             {showCta ? (
-              <div className="mt-10 hidden lg:block">
+              <div className="hidden lg:block">
                 <HighlightCta href={ctaHref!} label={ctaLabel!} external={ctaExternal} />
               </div>
             ) : null}
