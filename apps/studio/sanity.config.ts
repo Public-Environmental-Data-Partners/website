@@ -46,6 +46,15 @@ const structure: StructureResolver = (S) =>
         .id('footer')
         .child(S.document().schemaType('siteFooter').documentId('siteFooter').title('Site footer')),
       S.listItem()
+        .title('Event banner')
+        .id('event-banner')
+        .child(
+          S.document()
+            .schemaType('siteEventBanner')
+            .documentId('siteEventBanner')
+            .title('Event banner'),
+        ),
+      S.listItem()
         .title('Newsletter')
         .id('newsletter')
         .child(

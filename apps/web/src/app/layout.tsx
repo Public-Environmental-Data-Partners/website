@@ -18,6 +18,7 @@ import {DraftPreviewBanner} from '@/components/draft-preview-banner'
 import {ReturnToTopStrip} from '@/components/return-to-top-strip'
 import {SanityLiveRoot} from '@/components/sanity-live-root'
 import {SiteJsonLd} from '@/components/seo/site-json-ld'
+import {SiteEventBanner} from '@/components/site-event-banner'
 import {SiteFooter} from '@/components/site-footer'
 import {SiteHeader} from '@/components/site-header'
 import {defaultOgImagePath, siteDescription, siteName, siteUrl} from '@/config/site'
@@ -96,10 +97,13 @@ export default async function RootLayout({
     >
       <body id="top" className="flex min-h-full flex-col bg-background text-foreground">
         <SiteJsonLd />
+        <SiteEventBanner placement="aboveHeader" />
         <SiteHeader />
         <DraftPreviewBanner />
+        <SiteEventBanner placement="belowHeader" />
         <main className="bg-white flex flex-1 flex-col">{children}</main>
         <ReturnToTopStrip />
+        <SiteEventBanner placement="aboveFooter" />
         <SiteFooter />
         <SanityLiveRoot />
       </body>
