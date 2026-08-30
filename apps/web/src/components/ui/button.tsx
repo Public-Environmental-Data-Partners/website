@@ -47,8 +47,8 @@ const buttonVariants = cva(
         xs: "h-6 gap-1 rounded-[4px] px-2 text-xs in-data-[slot=button-group]:rounded-[4px] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
         sm: "h-7 gap-1 rounded-[4px] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-[4px] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
         lg: 'h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2',
-        /** Homepage / marketing CTA (~Figma donate / Get Involved). */
-        cta: 'h-[65px] min-w-[13.3125rem] gap-2 rounded-[10px] px-2 py-4 text-center text-[1.375rem] font-semibold leading-5',
+        /** Marketing CTA: min-height 65px; long labels wrap instead of overflowing. */
+        cta: 'max-w-full min-h-[65px] min-w-[min(13.3125rem,100%)] shrink gap-2 rounded-[10px] px-2 py-4 text-center text-[1.375rem] leading-tight font-semibold whitespace-normal',
         icon: 'size-8 rounded-[4px]',
         'icon-xs':
           "size-6 rounded-[4px] in-data-[slot=button-group]:rounded-[4px] [&_svg:not([class*='size-'])]:size-3",
