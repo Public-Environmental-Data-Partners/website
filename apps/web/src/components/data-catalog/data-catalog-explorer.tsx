@@ -5,6 +5,7 @@ import {type FormEvent, useMemo, useState} from 'react'
 
 import {ContentLink} from '@/components/content-link'
 import {Button} from '@/components/ui/button'
+import {captureEvent} from '@/lib/analytics'
 import {
   catalogButtonLabel,
   type CatalogCardProps,
@@ -49,6 +50,18 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
   const buttonLabel = catalogButtonLabel(card)
   const panelId = `${card.id}-panel`
 
+  function toggleDetails() {
+    const nextOpen = !open
+    setOpen(nextOpen)
+    if (nextOpen) {
+      captureEvent('dataset_expanded', {
+        dataset_id: card.id,
+        dataset_title: card.title,
+        agency: card.agency,
+      })
+    }
+  }
+
   return (
     <article data-slot="data-catalog-card" className="relative">
       <button
@@ -57,7 +70,7 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
         className="transition-opacity hover:opacity-80"
         aria-expanded={open}
         aria-controls={panelId}
-        onClick={() => setOpen((v) => !v)}
+        onClick={toggleDetails}
       >
         {open ? (
           <Minus className="size-10" strokeWidth={3} aria-hidden />
@@ -222,18 +235,25 @@ export function DataCatalogExplorer({
 
   function onSearch(event: FormEvent) {
     event.preventDefault()
+    const resultCount = filterCatalogCards(datasets, draftQuery).length
+    captureEvent('data_catalog_searched', {
+      has_query: draftQuery.trim().length > 0,
+      result_count: resultCount,
+    })
     setQuery(draftQuery)
     setPage(1)
   }
 
   function onSort(next: SortKey) {
-    if (sortKey === next) {
-      setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'))
-    } else {
-      setSortKey(next)
-      setSortDir('asc')
-    }
+    const nextDir: SortDir = sortKey === next ? (sortDir === 'asc' ? 'desc' : 'asc') : 'asc'
+
+    setSortKey(next)
+    setSortDir(nextDir)
     setPage(1)
+    captureEvent('data_catalog_sorted', {
+      sort_key: next,
+      sort_dir: nextDir,
+    })
   }
 
   const filtered = useMemo(() => {

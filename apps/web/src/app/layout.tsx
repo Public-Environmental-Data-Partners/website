@@ -15,6 +15,7 @@ import type {Metadata} from 'next'
 import {Figtree, Geist_Mono, Source_Serif_4} from 'next/font/google'
 
 import {DraftPreviewBanner} from '@/components/draft-preview-banner'
+import {PostHogInit} from '@/components/posthog-init'
 import {ReturnToTopStrip} from '@/components/return-to-top-strip'
 import {SanityLiveRoot} from '@/components/sanity-live-root'
 import {SiteJsonLd} from '@/components/seo/site-json-ld'
@@ -106,6 +107,7 @@ export default async function RootLayout({
         <SiteEventBanner placement="aboveFooter" />
         <SiteFooter />
         <SanityLiveRoot />
+        <PostHogInit />
       </body>
     </html>
   )

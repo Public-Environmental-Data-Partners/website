@@ -5,6 +5,7 @@ import {useId, useState} from 'react'
 
 import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import {Button} from '@/components/ui/button'
+import {captureEvent} from '@/lib/analytics'
 import type {NewsletterSectionProps} from '@/lib/mappers/newsletter-section'
 import {cn} from '@/lib/utils'
 
@@ -53,6 +54,7 @@ export function NewsletterSection({
         return
       }
       setSuccess(true)
+      captureEvent('newsletter_subscribed')
     } catch {
       setError('Something went wrong. Please try again.')
     } finally {
