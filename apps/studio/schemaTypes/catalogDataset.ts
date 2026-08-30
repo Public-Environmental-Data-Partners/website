@@ -120,7 +120,7 @@ export const catalogDataset = defineType({
       type: 'url',
       group: 'urls',
       description:
-        'Required. Zenodo, Dataverse, or other archive URL. Fills Import key when there is no DOI, and sets Backup host.',
+        'When set, the expanded card links Metadata. When empty, the card shows Metadata pending.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -145,6 +145,8 @@ export const catalogDataset = defineType({
       title: 'PEDP metadata doc',
       type: 'url',
       group: 'urls',
+      description:
+        'When set, the expanded card links Metadata. When empty, the card shows Metadata pending.',
     }),
     defineField({
       name: 'timePeriodRaw',

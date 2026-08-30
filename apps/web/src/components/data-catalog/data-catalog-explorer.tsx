@@ -100,7 +100,10 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
         id={panelId}
         className="mt-10 grid grid-cols-9 items-baseline gap-x-[var(--grid-gutter)] gap-y-6 lg:mt-12"
       >
-        <p data-slot="data-catalog-meta-label" className="col-span-9 lg:col-span-4 lg:col-start-1 lg:row-start-1">
+        <p
+          data-slot="data-catalog-meta-label"
+          className="col-span-9 lg:col-span-4 lg:col-start-1 lg:row-start-1"
+        >
           {card.agency}
         </p>
         <p
@@ -132,6 +135,13 @@ function DatasetCard({card}: {card: CatalogCardProps}) {
             >
               Metadata
             </ContentLink>
+          </p>
+        ) : open ? (
+          <p
+            data-slot="data-catalog-metadata-pending"
+            className="col-span-9 m-0 font-sans text-[1.375rem] leading-none text-off-black lg:col-span-4 lg:col-start-6 lg:row-start-3"
+          >
+            Metadata pending
           </p>
         ) : null}
       </div>

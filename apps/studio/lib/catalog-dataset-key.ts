@@ -1,7 +1,17 @@
 /** Unique key and backup-host helpers shared by Studio and CSV import. */
 
-export function normalizeDoi(raw: string): string | null {
+export function decodeUrlish(raw: string): string {
   const t = raw.trim()
+  if (!t) return t
+  try {
+    return decodeURIComponent(t)
+  } catch {
+    return t
+  }
+}
+
+export function normalizeDoi(raw: string): string | null {
+  const t = decodeUrlish(raw)
   if (!t) return null
   const m = t.match(
     /(?:doi:\s*|https?:\/\/(?:dx\.)?doi\.org\/)?(10\.\d{4,9}\/[-._;()/:A-Za-z0-9]+)/i,
@@ -17,7 +27,7 @@ export function normalizeDoi(raw: string): string | null {
 export function catalogImportKey(depositId: string, backupUrl: string): string | null {
   const fromDoi = normalizeDoi(depositId)
   if (fromDoi) return fromDoi
-  const url = backupUrl.trim()
+  const url = decodeUrlish(backupUrl)
   if (!url) return null
   const asDoi = normalizeDoi(url)
   if (asDoi) return asDoi

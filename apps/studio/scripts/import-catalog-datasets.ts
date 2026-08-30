@@ -2,6 +2,8 @@
  * Import catalog datasets from CSV into Sanity as drafts.
  *
  * Unique key: normalized DOI, else backup URL. Skips rows with neither.
+ * Also skips missing title, missing agency, unusable backup URL, and
+ * duplicate import keys in the same CSV (first row wins).
  * Re-import fills empty fields only unless --overwrite is passed.
  * --overwrite updates a draft (never the published doc). It only writes
  * fields whose CSV columns are present. Empty cells unset those fields,
@@ -9,17 +11,23 @@
  * Mentioned in is not in the CSV and is never written.
  * A changed DOI is a new key and will not update the old document.
  * Studio-created documents (random ids) are matched by importKey.
+ * --check-data reports errors and warnings and does not write.
  *
  * Runbook: docs/ops/data-catalog-import.md
  * Field rules: docs/decisions/0011-data-catalog.md
  */
 import {existsSync, readFileSync} from 'node:fs'
-import {dirname, isAbsolute, resolve} from 'node:path'
+import {basename, dirname, isAbsolute, resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
 
 import {createClient} from '@sanity/client'
 
-import {catalogImportKey, normalizeDoi, parseBackupHost} from '../lib/catalog-dataset-key'
+import {
+  catalogImportKey,
+  decodeUrlish,
+  normalizeDoi,
+  parseBackupHost,
+} from '../lib/catalog-dataset-key'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const DEFAULT_CSV = resolve(HERE, 'fixtures/sample-combined.csv')
@@ -132,6 +140,13 @@ function parseCsv(text: string): CsvRow[] {
   })
 }
 
+const TITLE_HEADERS = [
+  'Archived Title',
+  'Dataset Title',
+  'Dataset/Tool Name',
+  'Dataset/Tool Name Backup',
+] as const
+
 function cell(row: CsvRow, ...names: string[]): string {
   for (const name of names) {
     const v = row[name]
@@ -140,10 +155,32 @@ function cell(row: CsvRow, ...names: string[]): string {
   return ''
 }
 
+function displayTitle(row: CsvRow): string {
+  return cell(row, ...TITLE_HEADERS) || '(untitled)'
+}
+
+function isHttpUrl(raw: string): boolean {
+  try {
+    const parsed = new URL(raw)
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:'
+  } catch {
+    return false
+  }
+}
+
+function backupCellFlags(raw: string): {multipleUrls: boolean; extraText: boolean} {
+  const urls = extractUrls(raw)
+  const leftover = raw
+    .replace(/https?:\/\/[^\s,;]+/gi, '')
+    .replace(/[(),.;:/#?&=_\s-]+/g, '')
+    .trim()
+  return {multipleUrls: urls.length > 1, extraText: leftover.length > 0}
+}
+
 function extractUrls(raw: string): string[] {
   if (!raw.trim()) return []
   const matches = raw.match(/https?:\/\/[^\s,;]+/gi) ?? []
-  return matches.map((u) => u.replace(/[),.\]]+$/, ''))
+  return matches.map((u) => decodeUrlish(u.replace(/[),.\]]+$/, '')))
 }
 
 function pickBackupUrl(raw: string): {url: string | null; flag: boolean} {
@@ -378,10 +415,25 @@ async function findExisting(
 function rowToDoc(
   row: CsvRow,
 ): {ok: false; skip: string} | {ok: true; id: string; doc: Record<string, unknown>} {
+  const title = cell(row, ...TITLE_HEADERS)
+  if (!title) {
+    return {ok: false, skip: 'missing title'}
+  }
+  const agency = cell(row, 'Agency')
+  if (!agency) {
+    return {ok: false, skip: 'missing agency'}
+  }
+
   const doiRaw = cell(row, 'Deposit Digital Identifier')
   const doi = normalizeDoi(doiRaw)
   const backupCell = cell(row, 'Backup Location (URL)')
   const backupPick = pickBackupUrl(backupCell)
+  if (backupCell && !backupPick.url && !doi) {
+    return {ok: false, skip: 'unusable backup URL'}
+  }
+  if (backupPick.url && !isHttpUrl(backupPick.url)) {
+    return {ok: false, skip: 'unusable backup URL'}
+  }
   const importKey = catalogImportKey(doiRaw, backupPick.url || '')
   if (!importKey) {
     return {ok: false, skip: 'missing DOI and backup URL'}
@@ -391,6 +443,9 @@ function rowToDoc(
   const backupUrl = backupPick.url || (doi ? `https://doi.org/${doi}` : undefined)
   if (!backupUrl) {
     return {ok: false, skip: 'missing backup URL'}
+  }
+  if (!isHttpUrl(backupUrl)) {
+    return {ok: false, skip: 'unusable backup URL'}
   }
   const {host, isFile} = parseBackupHost(backupUrl)
   const timeRaw = cell(row, 'Time Period / Temporal Resolution')
@@ -407,7 +462,7 @@ function rowToDoc(
       cell(row, 'Dataset Title', 'Dataset/Tool Name', 'Dataset/Tool Name Backup') || undefined,
     orgAbbrev: cell(row, 'Org Abbrev', 'Agency or Org Abbrev') || undefined,
     depositId: doi || undefined,
-    agency: cell(row, 'Agency') || undefined,
+    agency,
     subAgency: cell(row, 'Sub-Agency/Org') || undefined,
     pedpAgencyForSorting: cell(row, 'PEDP Agency for Sorting') || undefined,
     originalUrl: original,
@@ -435,8 +490,261 @@ function rowToDoc(
   return {ok: true, id: sanityIdFromKey(importKey), doc}
 }
 
+type CheckItem = {row: number; title: string; detail?: string}
+
+type CheckReport = {
+  fileErrors: string[]
+  errors: Record<string, CheckItem[]>
+  warnings: Record<string, CheckItem[]>
+  duplicateKeyRows: Set<number>
+}
+
+const ERROR_ORDER = [
+  'missing title',
+  'missing agency',
+  'missing DOI and backup URL',
+  'missing backup URL',
+  'unusable backup URL',
+  'duplicate import key',
+]
+
+const WARN_ORDER = [
+  'no metadata doc',
+  'no summary or description',
+  'no time period',
+  'no download date',
+  'unknown backup host',
+  'multiple backup URLs or extra text',
+  'duplicate title (different keys)',
+  'already in Sanity',
+]
+
+function addCheckItem(bucket: Record<string, CheckItem[]>, code: string, item: CheckItem) {
+  if (!bucket[code]) bucket[code] = []
+  bucket[code].push(item)
+}
+
+function headerErrors(headers: Set<string>): string[] {
+  const out: string[] = []
+  if (!hasHeader(headers, 'Agency')) out.push('missing header: Agency')
+  if (!hasHeader(headers, 'Backup Location (URL)')) {
+    out.push('missing header: Backup Location (URL)')
+  }
+  if (!hasHeader(headers, ...TITLE_HEADERS)) {
+    out.push(
+      'missing title header: need Archived Title, Dataset Title, Dataset/Tool Name, or Dataset/Tool Name Backup',
+    )
+  }
+  return out
+}
+
+function buildCheckReport(rows: CsvRow[], headers: Set<string>): CheckReport {
+  const report: CheckReport = {
+    fileErrors: headerErrors(headers),
+    errors: {},
+    warnings: {},
+    duplicateKeyRows: new Set(),
+  }
+  const firstKey = new Map<string, {row: number; title: string}>()
+  const titles = new Map<string, CheckItem[]>()
+
+  rows.forEach((row, index) => {
+    const sheetRow = index + 2
+    const title = displayTitle(row)
+    const mapped = rowToDoc(row)
+    if (!mapped.ok) {
+      addCheckItem(report.errors, mapped.skip, {row: sheetRow, title})
+      return
+    }
+    const importKey = String(mapped.doc.importKey)
+    const prev = firstKey.get(importKey)
+    if (prev) {
+      report.duplicateKeyRows.add(index)
+      addCheckItem(report.errors, 'duplicate import key', {
+        row: sheetRow,
+        title,
+        detail: `key=${importKey} also row ${prev.row} (${prev.title})`,
+      })
+      return
+    }
+    firstKey.set(importKey, {row: sheetRow, title})
+
+    const titleList = titles.get(title.toLowerCase()) ?? []
+    titleList.push({row: sheetRow, title, detail: `key=${importKey}`})
+    titles.set(title.toLowerCase(), titleList)
+
+    if (!mapped.doc.metadataDocUrl) {
+      addCheckItem(report.warnings, 'no metadata doc', {row: sheetRow, title})
+    }
+    if (!mapped.doc.summary && !mapped.doc.description) {
+      addCheckItem(report.warnings, 'no summary or description', {row: sheetRow, title})
+    }
+    if (!mapped.doc.timePeriodStart && !mapped.doc.timePeriodEnd) {
+      addCheckItem(report.warnings, 'no time period', {row: sheetRow, title})
+    }
+    if (!mapped.doc.downloadDate) {
+      addCheckItem(report.warnings, 'no download date', {row: sheetRow, title})
+    }
+    if (mapped.doc.backupHost === 'Archive') {
+      addCheckItem(report.warnings, 'unknown backup host', {
+        row: sheetRow,
+        title,
+        detail: String(mapped.doc.backupUrl),
+      })
+    }
+    const flags = backupCellFlags(cell(row, 'Backup Location (URL)'))
+    if (flags.multipleUrls || flags.extraText) {
+      addCheckItem(report.warnings, 'multiple backup URLs or extra text', {
+        row: sheetRow,
+        title,
+      })
+    }
+  })
+
+  for (const items of titles.values()) {
+    if (items.length < 2) continue
+    for (const item of items) {
+      addCheckItem(report.warnings, 'duplicate title (different keys)', item)
+    }
+  }
+
+  return report
+}
+
+function countCheckItems(bucket: Record<string, CheckItem[]>): number {
+  return Object.values(bucket).reduce((n, items) => n + items.length, 0)
+}
+
+const LIST_ALL_BELOW = 25
+const TITLE_WIDTH = 64
+
+function shortTitle(title: string): string {
+  if (title.length <= TITLE_WIDTH) return title
+  return `${title.slice(0, TITLE_WIDTH - 1)}…`
+}
+
+function orderedCodes(order: string[], bucket: Record<string, CheckItem[]>): string[] {
+  const seen = new Set<string>()
+  const out: string[] = []
+  for (const code of order) {
+    if (!bucket[code]?.length) continue
+    seen.add(code)
+    out.push(code)
+  }
+  for (const code of Object.keys(bucket)) {
+    if (seen.has(code) || bucket[code].length === 0) continue
+    out.push(code)
+  }
+  return out
+}
+
+function printItemList(items: CheckItem[]) {
+  for (const item of items) {
+    console.log(`    ${String(item.row).padStart(4, ' ')}  ${shortTitle(item.title)}`)
+    if (item.detail) {
+      console.log(`          ${item.detail}`)
+    }
+  }
+}
+
+function printCheckReport(report: CheckReport, csvPath: string, rowCount: number) {
+  const errorCount = report.fileErrors.length + countCheckItems(report.errors)
+  const warnCount = countCheckItems(report.warnings)
+  const errorCodes = orderedCodes(ERROR_ORDER, report.errors)
+  const warnCodes = orderedCodes(WARN_ORDER, report.warnings)
+  const rule = '─'.repeat(72)
+
+  console.log('')
+  console.log(rule)
+  console.log('Catalog CSV check')
+  console.log(rule)
+  console.log(`  File      ${basename(csvPath)}`)
+  console.log(`  Path      ${csvPath}`)
+  console.log(`  Rows      ${rowCount}`)
+  console.log(`  Errors    ${errorCount}`)
+  console.log(`  Warnings  ${warnCount}`)
+  console.log(rule)
+
+  if (errorCount === 0 && warnCount === 0 && report.fileErrors.length === 0) {
+    console.log('')
+    console.log('  No issues.')
+    console.log('')
+    return
+  }
+
+  if (errorCount > 0) {
+    console.log('')
+    console.log('ERRORS')
+    console.log('------')
+    for (const err of report.fileErrors) {
+      console.log(`  • ${err}`)
+    }
+    for (const code of errorCodes) {
+      const items = report.errors[code]
+      console.log('')
+      console.log(`  ${code}  (${items.length})`)
+      printItemList(items)
+    }
+  }
+
+  if (warnCount > 0) {
+    console.log('')
+    console.log('WARNINGS')
+    console.log('--------')
+    console.log('')
+    const nameWidth = Math.max(...warnCodes.map((c) => c.length), 8)
+    for (const code of warnCodes) {
+      console.log(
+        `  ${code.padEnd(nameWidth)}  ${String(report.warnings[code].length).padStart(4, ' ')}`,
+      )
+    }
+    for (const code of warnCodes) {
+      const items = report.warnings[code]
+      if (items.length > LIST_ALL_BELOW) continue
+      console.log('')
+      console.log(`  ${code}  (${items.length})`)
+      printItemList(items)
+    }
+  }
+
+  console.log('')
+  console.log(rule)
+  console.log(
+    `  Result  ${errorCount > 0 ? 'FAIL' : 'PASS'}   errors=${errorCount}  warnings=${warnCount}`,
+  )
+  console.log(rule)
+  console.log('')
+}
+
+async function addSanityWouldPatch(report: CheckReport, rows: CsvRow[], client: CatalogClient) {
+  const keys: string[] = []
+  const byKey = new Map<string, CheckItem>()
+  rows.forEach((row, index) => {
+    if (report.duplicateKeyRows.has(index)) return
+    const mapped = rowToDoc(row)
+    if (!mapped.ok) return
+    const importKey = String(mapped.doc.importKey)
+    keys.push(importKey)
+    byKey.set(importKey, {
+      row: index + 2,
+      title: displayTitle(row),
+      detail: `key=${importKey}`,
+    })
+  })
+  if (keys.length === 0) return
+  const existing = await client.fetch<{importKey: string}[]>(
+    `*[_type == "catalogDataset" && importKey in $keys]{importKey}`,
+    {keys},
+  )
+  for (const doc of existing) {
+    const item = byKey.get(doc.importKey)
+    if (item) addCheckItem(report.warnings, 'already in Sanity', item)
+  }
+}
+
 async function main() {
   const args = process.argv.slice(2)
+  const checkData = args.includes('--check-data')
   const dryRun = args.includes('--dry-run')
   const overwrite = args.includes('--overwrite')
   const csvArg = args.find((a) => a !== '--' && !a.startsWith('--'))
@@ -446,15 +754,40 @@ async function main() {
     process.env.SANITY_STUDIO_PROJECT_ID || process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
   const dataset = process.env.SANITY_STUDIO_DATASET || process.env.NEXT_PUBLIC_SANITY_DATASET
   const token = process.env.SANITY_API_WRITE_TOKEN
+
+  const rows = parseCsv(readFileSync(csvPath, 'utf8'))
+  const headers = new Set(Object.keys(rows[0] ?? {}))
+  const writable = writableFieldsFromCsv(headers)
+  const report = buildCheckReport(rows, headers)
+
+  if (checkData) {
+    if (projectId && dataset && token) {
+      const client = createClient({
+        projectId,
+        dataset,
+        apiVersion: '2024-01-01',
+        token,
+        useCdn: false,
+      })
+      await addSanityWouldPatch(report, rows, client)
+    }
+    printCheckReport(report, csvPath, rows.length)
+    const errorCount = report.fileErrors.length + countCheckItems(report.errors)
+    if (errorCount > 0) process.exit(1)
+    return
+  }
+
   if (!projectId || !dataset) {
     throw new Error('Missing SANITY_STUDIO_PROJECT_ID / DATASET')
   }
   if (!dryRun && !token) {
-    throw new Error('Missing SANITY_API_WRITE_TOKEN (or pass --dry-run)')
+    throw new Error('Missing SANITY_API_WRITE_TOKEN (or pass --dry-run or --check-data)')
+  }
+  if (report.fileErrors.length > 0) {
+    for (const err of report.fileErrors) console.error(`ERROR ${err}`)
+    throw new Error('CSV header errors. Fix the file or inspect with --check-data.')
   }
 
-  const rows = parseCsv(readFileSync(csvPath, 'utf8'))
-  const writable = writableFieldsFromCsv(new Set(Object.keys(rows[0] ?? {})))
   console.log(`CSV ${csvPath}: ${rows.length} rows${overwrite ? ' overwrite' : ''}`)
 
   const client = createClient({
@@ -469,12 +802,17 @@ async function main() {
   let created = 0
   let updated = 0
 
-  for (const row of rows) {
-    const title = cell(row, 'Archived Title', 'Dataset Title', 'Dataset/Tool Name') || '(untitled)'
+  for (const [index, row] of rows.entries()) {
+    const title = displayTitle(row)
     const mapped = rowToDoc(row)
     if (!mapped.ok) {
       skipped.push({reason: mapped.skip, title})
       console.warn(`SKIP ${title}: ${mapped.skip}`)
+      continue
+    }
+    if (report.duplicateKeyRows.has(index)) {
+      skipped.push({reason: 'duplicate import key', title})
+      console.warn(`SKIP ${title}: duplicate import key`)
       continue
     }
     const {id: catalogId, doc} = mapped
@@ -528,7 +866,9 @@ async function main() {
     }
   }
 
-  console.log(`done created=${created} updated=${updated} skipped=${skipped.length}`)
+  const warnCount = countCheckItems(report.warnings)
+  const warnNote = warnCount > 0 ? ` warnings=${warnCount} (see --check-data)` : ''
+  console.log(`done created=${created} updated=${updated} skipped=${skipped.length}${warnNote}`)
 }
 
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])

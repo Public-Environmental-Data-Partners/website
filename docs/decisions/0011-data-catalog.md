@@ -35,7 +35,9 @@ lives in [`docs/ops/data-catalog-import.md`](../ops/data-catalog-import.md) and
   in sample data is treated as a typo. Import normalizes DOIs (trim, lowercase,
   strip the `https://doi.org/` prefix) before using them as the unique key.
 * If DOI is missing, the unique key is the normalized backup URL (Dataverse
-  first, then Zenodo, if the cell has multiple URLs). If both DOI and backup URL
+  first, then Zenodo, if the cell has multiple URLs). Percent-encoded backup
+  URLs are decoded before the key is built, so `doi:` and `doi%3A` forms of
+  the same Dataverse link are one document. If both DOI and backup URL
   are missing, the row is not imported and is written to a review list.
 * Backup URLs that are themselves DOI links resolve to the same key as the DOI
   so two rows do not become two documents for one deposit.
@@ -180,7 +182,9 @@ Chosen for v1:
 2. Import script from CSV. Documents created as drafts. Public catalog queries
    published documents only.
 3. Unique key: normalized DOI, else normalized backup URL. Skip and flag
-   otherwise.
+   otherwise. Also skip missing title, missing agency, unusable backup URL, and
+   duplicate import keys in the same CSV (first row wins). `--check-data`
+   reports those errors plus card-thinness warnings without writing.
 4. Re-import fills empty fields only by default. Existing Studio values win.
    `--overwrite` replaces fields whose CSV columns are present, writes a draft
    (never the published document), and does not clear Summary unless the CSV
@@ -199,8 +203,9 @@ Chosen for v1:
    (Zenodo, Harvard Dataverse, SciOp, GitHub, or Download when the URL looks
    like a file). New tab. Read more on [host] is the same backup URL after
    truncated Summary. Original Location is a separate expanded-card link.
-   Metadata (PEDP Metadata Doc) is omitted when blank (not "Metadata
-   unavailable"). Mentioned in and Nominate open in a new tab when external.
+   Metadata (PEDP Metadata Doc) is a link when the URL is set. When it is blank
+   the expanded card shows Metadata pending (not a link). Mentioned in and
+   Nominate open in a new tab when external.
 9. Time Period and Download Date: parse when possible, set `needsReview` when
    not, keep raw import string for editors, do not block publish. Year-only
    values are unparsed in v1 (flag + fallback copy).
@@ -231,7 +236,6 @@ Chosen for v1:
 * Clickable search chips / suggested-term pills (hero may mention terms as
   plain text).
 * Accordion that closes other cards.
-* Metadata empty state "Metadata unavailable".
 * Second sub-agency abbrev pill (only Org Abbrev).
 * Agency section headers (grouping UI). Showing PEDP Agency for Sorting as its
   own card line.

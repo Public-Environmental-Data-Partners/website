@@ -142,6 +142,7 @@ Search Datasets first. Do not create a second document for a deposit that alread
 - **Mentioned in** is Studio-only (not in the spreadsheet). Add internal news/pages and/or external URLs with a label.
 - **Time period:** if start/end stay blank, the card shows “See backup”.
 - **Download date:** if blank, the card shows “Not recorded”. Flags such as “needs review” mean the import could not parse the spreadsheet; you can still publish after you set the date fields.
+- **PEDP metadata doc:** if the URL is set, the expanded card links Metadata. If it is empty, the card shows Metadata pending.
 - Backup host and Backup URL is a file fill from the backup URL (import or when you paste the URL in Studio). You usually do not type the host. You can override host if needed. The button says “Open in Zenodo” (or Harvard Dataverse, SciOp, GitHub, …) or Download when the URL looks like a file.
 
 A later spreadsheet import does not overwrite fields you already filled, unless

@@ -101,5 +101,7 @@ columns.
 
 - Import creates drafts. Public `/data-catalog` lists published documents only.
 - Display title is Archived Title, else Dataset/Tool Name (`datasetTitle`).
+- `datasets_sans_metadata_20260826.csv` uses the same headers. Metadata,
+  description, dates, and DOI are empty on that file.
 - Do not put the full catalog CSV in `apps/web`. The site reads Sanity, not the
   spreadsheet.
