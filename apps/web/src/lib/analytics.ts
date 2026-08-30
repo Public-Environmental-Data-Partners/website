@@ -17,7 +17,6 @@ export type AnalyticsEventName =
   | 'data_catalog_searched'
   | 'data_catalog_sorted'
   | 'dataset_expanded'
-  | 'news_posts_loaded'
   | 'newsletter_subscribed'
 
 const productionHosts = new Set(['publicenvirodata.org', 'www.publicenvirodata.org'])

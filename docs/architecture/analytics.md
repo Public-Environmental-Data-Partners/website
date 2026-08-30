@@ -73,6 +73,7 @@ traffic after cutover.
 - Newsletter email or identity
 - Catalog search query text
 - Article title or URL on share/audio events
+- News hub Load More clicks (card counts vary by breakpoint)
 - Session replay
 - Localhost, Vercel Preview, and `pedp-website.vercel.app` unless the non-production flag is set
 
