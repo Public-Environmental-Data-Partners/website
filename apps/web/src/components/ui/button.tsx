@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default: 'bg-primary text-primary-foreground hover:bg-primary/80',
         /** Header Donate and light-green marketing CTAs. */
         lightGreen:
-          'border-transparent bg-light-green text-dark-green hover:bg-light-green/90 aria-expanded:bg-light-green',
+          'border-transparent bg-light-green text-dark-green hover:bg-pedp-green aria-expanded:bg-light-green',
         outline:
           'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
         /** Soft white CTA on warm bands (e.g. What We Do “Learn More”). */

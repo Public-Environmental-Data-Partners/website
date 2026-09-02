@@ -35,10 +35,14 @@ function EventBannerChrome({
   ctaExternal,
 }: SiteEventBannerProps) {
   return (
-    <aside data-slot="site-event-banner" aria-label={sectionHeading}>
-      <SiteShell padding="none" className="px-[var(--site-padding-x)] py-4">
-        <div className="flex flex-col items-start gap-6 rounded-2xl bg-dark-beige px-5 py-6 text-cream md:flex-row md:items-center md:justify-between md:gap-6 md:px-6 md:py-4">
-          <p className="flex min-w-0 flex-col gap-2 font-sans font-normal leading-snug text-cream md:block">
+    <aside
+      data-slot="site-event-banner"
+      aria-label={sectionHeading}
+      className="bg-dark-beige text-cream"
+    >
+      <SiteShell padding="none" className="px-[var(--site-padding-x)] py-6 md:py-4">
+        <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between md:gap-6">
+          <p className="flex min-w-0 flex-col gap-2 font-sans font-normal leading-snug md:block">
             <span className="text-2xl font-semibold md:text-base">{sectionHeading}</span>
             <span className="hidden md:inline"> </span>
             <span className="text-xl md:text-base">{heading}</span>
