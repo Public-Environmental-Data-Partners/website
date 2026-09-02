@@ -108,7 +108,6 @@ Collapsed:
 * Title is Archived Title, else Dataset Title.
 * Agency and Time Period share a row; Sub-agency and Download Date share the
   next row; Open in / Download is centered under that.
-* PEDP Agency for Sorting is not a third agency line.
 * Description, notes, Mentioned in, and Metadata are not shown until expand.
 
 Expanded:
@@ -132,13 +131,12 @@ Dates:
 ## Search and sort
 
 * Typing in the field does not filter until Search or Enter.
-* A token in title, agency, PEDP Agency for Sorting, notes, keywords, summary
-  or description, time period, CCH terms, subject, or DOI finds the card.
+* A token in title, agency, notes, keywords, summary or description, time
+  period, CCH terms, subject, or DOI finds the card.
 * Backup URL and download date are not search keys.
 * Nonsense query shows “No datasets match this search.”
 * Default sort is Dataset Name A-Z. Second click on the same pill reverses.
-* Agency sort uses PEDP Agency for Sorting, then Agency. Search or sort resets
-  to page 1.
+* Agency sort uses the full Agency name. Search or sort resets to page 1.
 
 ## Pagination (limited set)
 

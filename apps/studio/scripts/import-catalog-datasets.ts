@@ -312,7 +312,6 @@ function writableFieldsFromCsv(headers: Set<string>): Set<string> {
   add(hasHeader(headers, 'Deposit Digital Identifier'), 'depositId')
   add(hasHeader(headers, 'Agency'), 'agency')
   add(hasHeader(headers, 'Sub-Agency/Org'), 'subAgency')
-  add(hasHeader(headers, 'PEDP Agency for Sorting'), 'pedpAgencyForSorting')
   add(hasHeader(headers, 'Original Location (URL)', 'Original URL'), 'originalUrl')
   add(hasHeader(headers, 'Backup Location (URL)'), 'backupUrl', 'backupHost', 'backupIsFile')
   add(hasHeader(headers, 'PEDP Metadata Doc'), 'metadataDocUrl')
@@ -464,7 +463,6 @@ function rowToDoc(
     depositId: doi || undefined,
     agency,
     subAgency: cell(row, 'Sub-Agency/Org') || undefined,
-    pedpAgencyForSorting: cell(row, 'PEDP Agency for Sorting') || undefined,
     originalUrl: original,
     backupUrl,
     backupHost: host,

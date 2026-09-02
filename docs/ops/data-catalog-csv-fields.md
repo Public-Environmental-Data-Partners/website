@@ -21,10 +21,9 @@ Product rules: [`decisions/0011-data-catalog.md`](../decisions/0011-data-catalog
 
 | Col | CSV header | Sanity field | Notes |
 | --- | --- | --- | --- |
-| A | `PEDP Agency for Sorting` | `pedpAgencyForSorting` | Sort and search. Not a visible card line. |
 | B | `Dataset/Tool Name` | `datasetTitle` | Used if `Dataset Title` is absent. Public title still prefers Archived Title. |
 | C | `Agency or Org Abbrev` | `orgAbbrev` | Alias for `Org Abbrev`. Pill on the card. |
-| D | `Agency` | `agency` | |
+| D | `Agency` | `agency` | Shown on the card. Used for Agency sort and search. |
 | E | `Sub-Agency/Org` | `subAgency` | |
 | F | `Original Location (URL)` | `originalUrl` | First URL wins; `Original URL` (AB) is the fallback. |
 | M | `Backup Location (URL)` | `backupUrl` | Also derives `backupHost` and `backupIsFile`. Part of the import key if DOI is missing. |
@@ -56,6 +55,7 @@ These exist in the CSV and are ignored. They are not Sanity fields.
 
 | Col | CSV header |
 | --- | --- |
+| A | `PEDP Agency for Sorting` |
 | G | `Downloading Entity` |
 | H | `Responsible Contact` |
 | I | `Row Updated/Reviewed Last` |

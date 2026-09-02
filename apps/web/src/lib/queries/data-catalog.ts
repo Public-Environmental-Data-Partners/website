@@ -30,7 +30,6 @@ export type CatalogDatasetFields = {
   depositId?: string | null
   agency?: string | null
   subAgency?: string | null
-  pedpAgencyForSorting?: string | null
   originalUrl?: string | null
   backupUrl?: string | null
   backupHost?: string | null
@@ -79,7 +78,6 @@ const DATASETS_QUERY = `*[_type == "catalogDataset"] | order(coalesce(archivedTi
   depositId,
   agency,
   subAgency,
-  pedpAgencyForSorting,
   originalUrl,
   backupUrl,
   backupHost,

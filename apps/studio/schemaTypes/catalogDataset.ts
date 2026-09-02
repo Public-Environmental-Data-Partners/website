@@ -93,6 +93,7 @@ export const catalogDataset = defineType({
       title: 'Agency',
       type: 'string',
       group: 'agencies',
+      description: 'Shown on the card. Used for Agency sort and search.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -100,13 +101,6 @@ export const catalogDataset = defineType({
       title: 'Sub-agency / org',
       type: 'string',
       group: 'agencies',
-    }),
-    defineField({
-      name: 'pedpAgencyForSorting',
-      title: 'PEDP agency for sorting',
-      type: 'string',
-      group: 'agencies',
-      description: 'Sort and search key. Not shown as its own line on the card.',
     }),
     defineField({
       name: 'originalUrl',

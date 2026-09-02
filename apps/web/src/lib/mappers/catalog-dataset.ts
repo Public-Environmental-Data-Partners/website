@@ -24,7 +24,6 @@ export type CatalogCardProps = {
   agency: string
   subAgency: string | null
   orgAbbrev: string | null
-  sortAgency: string
   timePeriodLabel: string
   downloadDateLabel: string
   backupUrl: string
@@ -102,7 +101,6 @@ export function mapCatalogDataset(doc: CatalogDatasetFields): CatalogCardProps |
 
   const bodySource = (doc.summary || doc.description || '').trim()
   const {text: description, truncated} = truncateSummary(bodySource)
-  const sortAgency = (doc.pedpAgencyForSorting || agency).trim()
   const mentionedIn: CatalogMentionedLink[] = []
   for (const item of doc.mentionedIn ?? []) {
     if (!item) continue
@@ -123,7 +121,6 @@ export function mapCatalogDataset(doc: CatalogDatasetFields): CatalogCardProps |
     doc.datasetTitle,
     agency,
     doc.subAgency,
-    doc.pedpAgencyForSorting,
     doc.archiveNotes,
     doc.keywords,
     doc.description,
@@ -143,7 +140,6 @@ export function mapCatalogDataset(doc: CatalogDatasetFields): CatalogCardProps |
     agency,
     subAgency: doc.subAgency?.trim() || null,
     orgAbbrev: doc.orgAbbrev?.trim() || null,
-    sortAgency,
     timePeriodLabel: formatTimePeriod(doc.timePeriodStart, doc.timePeriodEnd),
     downloadDateLabel: formatDownloadDate(doc.downloadDate),
     backupUrl,
@@ -178,8 +174,8 @@ export function sortCatalogCards(
 ): CatalogCardProps[] {
   const mul = dir === 'asc' ? 1 : -1
   return [...cards].sort((a, b) => {
-    const av = key === 'name' ? a.title : a.sortAgency
-    const bv = key === 'name' ? b.title : b.sortAgency
+    const av = key === 'name' ? a.title : a.agency
+    const bv = key === 'name' ? b.title : b.agency
     return av.localeCompare(bv, undefined, {sensitivity: 'base'}) * mul
   })
 }
