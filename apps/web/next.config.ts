@@ -1,3 +1,4 @@
+import {withSentryConfig} from '@sentry/nextjs/config'
 import type {NextConfig} from 'next'
 
 /**
@@ -44,4 +45,15 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default nextConfig
+export default withSentryConfig(nextConfig, {
+  org: 'pedp',
+  project: 'pedp-web',
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  silent: !process.env.CI,
+  widenClientFileUpload: true,
+  webpack: {
+    treeshake: {
+      removeDebugLogging: true,
+    },
+  },
+})

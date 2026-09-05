@@ -41,6 +41,9 @@ monitoring are needed. A simpler uptime provider is sufficient only if
 URL/status/keyword checks meet the launch requirement. Vercel Observability is
 diagnostic telemetry, not a substitute for independent uptime checks.
 
+Sentry on `apps/web` is error and sampled-trace telemetry, not uptime. See
+[`../architecture/error-monitoring.md`](../architecture/error-monitoring.md).
+
 ## Out of scope until needed
 
 - broad visual regression

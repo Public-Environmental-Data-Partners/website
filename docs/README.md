@@ -18,6 +18,7 @@ checklists should not remain after their useful content is incorporated here.
 - [`architecture/article-components.md`](./architecture/article-components.md)
 - [`architecture/news-and-updates.md`](./architecture/news-and-updates.md)
 - [`architecture/analytics.md`](./architecture/analytics.md): PostHog events and privacy defaults
+- [`architecture/error-monitoring.md`](./architecture/error-monitoring.md): Sentry errors, tracing, and privacy defaults
 
 ## Decisions
 

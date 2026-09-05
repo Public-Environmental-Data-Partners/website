@@ -1,5 +1,6 @@
 'use client'
 
+import * as Sentry from '@sentry/nextjs'
 import {useEffect} from 'react'
 
 import {captureException, initPosthog} from '@/lib/analytics'
@@ -12,6 +13,7 @@ export default function GlobalError({
   reset: () => void
 }>) {
   useEffect(() => {
+    Sentry.captureException(error)
     initPosthog()
     captureException(error)
   }, [error])
