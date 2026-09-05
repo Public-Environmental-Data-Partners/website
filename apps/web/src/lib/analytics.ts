@@ -57,9 +57,8 @@ export function initPosthog() {
     debug: process.env.NODE_ENV === 'development',
   })
 
-  // publicenvirodata.org is live on Squarespace until this app takes over.
   // Opt out on localhost, Vercel previews, and pedp-website.vercel.app so those
-  // sessions do not mix with production. Capture starts when DNS points here.
+  // sessions do not mix with production.
   // NEXT_PUBLIC_POSTHOG_CAPTURE_NON_PRODUCTION=true opts back in for testing
   // on this single Free-plan project; events are tagged app_environment.
   const isProductionHost = productionHosts.has(window.location.hostname)

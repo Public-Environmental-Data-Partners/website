@@ -6,10 +6,10 @@ export const siteDescription =
 
 /**
  * Absolute site origin for canonicals, Open Graph, sitemap, and JSON-LD.
- * Set `NEXT_PUBLIC_SITE_URL` (no trailing slash) when the production domain is ready.
+ * Set `NEXT_PUBLIC_SITE_URL` (no trailing slash) on Vercel Production.
  */
 export const siteUrl = (
-  process.env.NEXT_PUBLIC_SITE_URL?.trim() || 'https://pedp-website.vercel.app'
+  process.env.NEXT_PUBLIC_SITE_URL?.trim() || 'https://www.publicenvirodata.org'
 ).replace(/\/$/, '')
 
 /** Default social share card (1200×630) featuring the PEDP logo. */

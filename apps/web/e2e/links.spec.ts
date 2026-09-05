@@ -48,7 +48,7 @@ let crawl: CrawlResult | undefined
 /** Local baseURL plus the configured public site origin (sitemap / absolute CMS links). */
 function sameSiteOrigins(localOrigin: string): Set<string> {
   const origins = new Set([localOrigin])
-  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim() || 'https://pedp-website.vercel.app'
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim() || 'https://www.publicenvirodata.org'
   try {
     origins.add(new URL(configured).origin)
   } catch {

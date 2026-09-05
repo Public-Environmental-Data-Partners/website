@@ -34,7 +34,7 @@ From the **repo root**, `pnpm dev` runs `web` and `studio` in parallel via the w
 
 Although it is recommended to run all apps from root, if you must run it from the `apps/web` dir, use `pnpm dev`.
 
-To view this app in production go to [https://pedp-website.vercel.app/](https://pedp-website.vercel.app/)
+To view this app in production go to [https://www.publicenvirodata.org/](https://www.publicenvirodata.org/). [https://pedp-website.vercel.app/](https://pedp-website.vercel.app/) still works as an alias.
 
 ## Draft mode (Sanity preview)
 
@@ -51,7 +51,7 @@ Optional: `&slug=/` or another path — where to redirect after enabling (defaul
 **Enable it on production by** opening the following URL
 
 ```text
-https://pedp-website.vercel.app/api/draft?secret=<SANITY_PREVIEW_SECRET>
+https://www.publicenvirodata.org/api/draft?secret=<SANITY_PREVIEW_SECRET>
 ```
 
 **Disable:** visit `/api/disable-draft`, or use **Exit preview** in the amber bar at the top of the site when draft mode is active.

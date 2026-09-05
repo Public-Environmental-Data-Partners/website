@@ -14,7 +14,7 @@ In the Studio, unpublished work stays as **drafts** until you **Publish**.
 
 ## The production website
 
-**Published** content is what most visitors see on the **production** site. This can be seen at [https://pedp-website.vercel.app/](https://pedp-website.vercel.app/). This will eventually be replaced by the real domain for the PEDP website.
+**Published** content is what most visitors see on the **production** site. This can be seen at [https://www.publicenvirodata.org/](https://www.publicenvirodata.org/).
 
 ## Draft preview (before you publish)
 
@@ -22,7 +22,7 @@ Sometimes you want to see **unpublished** (or draft) changes on the **production
 
 In order to view **unpublished** changes on the **production** site, navigate here:
 
-https://pedp-website.vercel.app/api/draft?secret=<SANITY_PREVIEW_SECRET>
+https://www.publicenvirodata.org/api/draft?secret=<SANITY_PREVIEW_SECRET>
 
 Ask the dev team for the SANITY_PREVIEW_SECRET and then bookmark that URL.
 
@@ -118,7 +118,7 @@ If you need Vimeo, Google Drive, Facebook, Instagram, or any other provider, dro
 
 ## Data Catalog
 
-The public list is [https://pedp-website.vercel.app/data-catalog](https://pedp-website.vercel.app/data-catalog) (or the production domain once it replaces that URL). The page is not in the main navigation.
+The public list is [https://www.publicenvirodata.org/data-catalog](https://www.publicenvirodata.org/data-catalog). The page is not in the main navigation.
 
 How-to for the CSV import script is for engineering:
 [`docs/ops/data-catalog-import.md`](./ops/data-catalog-import.md). Field meaning (Summary vs Description, dates, Open in / Download) is in

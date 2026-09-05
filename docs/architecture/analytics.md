@@ -31,9 +31,8 @@ defines on purpose.
 Cookieless capture only works if Cookieless server hash mode is enabled in the
 PostHog project (Project settings, Web analytics).
 
-The live public site is still Squarespace at `publicenvirodata.org`. This app
-opts out unless the page host is `publicenvirodata.org` or
-`www.publicenvirodata.org`. After DNS points here, production capture starts.
+Capture runs when the page host is `www.publicenvirodata.org` or
+`publicenvirodata.org`. Apex redirects to www, so production traffic is on www.
 
 To send events from localhost or Vercel Preview into the same project, set
 `NEXT_PUBLIC_POSTHOG_CAPTURE_NON_PRODUCTION=true`. Those events get
@@ -54,7 +53,7 @@ calls are no-ops. Production builds skip the log.
 
 `app_environment` is `production` or `non_production` on every captured event
 when capture is on. Filter insights to `app_environment = production` for live
-traffic after cutover.
+traffic.
 
 | Event or signal | Properties | Question it answers |
 | --------------- | ---------- | ------------------- |
@@ -79,7 +78,7 @@ traffic after cutover.
 
 ## Follow-ups (not in this setup)
 
-- Privacy policy copy in Sanity should describe PostHog once this site is live.
+- Privacy policy copy in Sanity should describe PostHog.
 - A reverse proxy would send events via this origin so ad blockers drop fewer
   `$pageview`s. That is optional and is a privacy tradeoff.
 - A second PostHog project for preview/local needs a paid plan (six projects).

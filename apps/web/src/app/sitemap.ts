@@ -1,7 +1,10 @@
 import type {MetadataRoute} from 'next'
 
 import {siteUrl} from '@/config/site'
-import {client} from '@/sanity/client'
+import {sanityFetch} from '@/sanity/live'
+
+/** Do not statically cache; retired CMS slugs must drop out of the sitemap. */
+export const dynamic = 'force-dynamic'
 
 type SitePageSlugRow = {
   slug?: string | null
@@ -34,10 +37,12 @@ function toLastModified(value: string | null | undefined): Date | undefined {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [sitePages, newsPosts] = await Promise.all([
-    client.fetch<SitePageSlugRow[]>(SITE_PAGE_SLUGS_QUERY),
-    client.fetch<NewsPostSlugRow[]>(NEWS_POST_SLUGS_QUERY),
+  const [sitePagesResult, newsPostsResult] = await Promise.all([
+    sanityFetch({query: SITE_PAGE_SLUGS_QUERY, perspective: 'published'}),
+    sanityFetch({query: NEWS_POST_SLUGS_QUERY, perspective: 'published'}),
   ])
+  const sitePages = (sitePagesResult.data ?? []) as SitePageSlugRow[]
+  const newsPosts = (newsPostsResult.data ?? []) as NewsPostSlugRow[]
 
   const entries: MetadataRoute.Sitemap = [
     {
