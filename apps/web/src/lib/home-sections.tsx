@@ -5,6 +5,7 @@ import {SectionSpacer} from '@/components/home/section-spacer'
 import {ByTheNumbersSection} from '@/components/sections/by-the-numbers-section'
 import {CardCarouselSection} from '@/components/sections/card-carousel-section'
 import {PartnerLogosSection} from '@/components/sections/partner-logos-section'
+import {SimpleSection} from '@/components/sections/simple-section'
 import {TestimonialSection} from '@/components/sections/testimonial-section'
 import {WhatWeDoSection} from '@/components/sections/what-we-do-section'
 import type {ContentLinkGroq} from '@/lib/content-link'
@@ -18,6 +19,8 @@ import type {NewsletterSectionFields} from '@/lib/mappers/newsletter-section'
 import {mapNewsletterSectionToProps} from '@/lib/mappers/newsletter-section'
 import type {PartnerLogosSectionFields} from '@/lib/mappers/partner-logos-section'
 import {mapPartnerLogosSectionToProps} from '@/lib/mappers/partner-logos-section'
+import type {SimpleSectionFields} from '@/lib/mappers/simple-section'
+import {mapSimpleSectionToProps} from '@/lib/mappers/simple-section'
 import type {TestimonialSectionFields} from '@/lib/mappers/testimonial-section'
 import {mapTestimonialSectionToProps} from '@/lib/mappers/testimonial-section'
 import type {WhatWeDoSectionFields} from '@/lib/mappers/what-we-do-section'
@@ -75,6 +78,7 @@ export type HomeSectionGroq =
   | ({_type: 'whatWeDoSection'; _key: string} & WhatWeDoSectionFields)
   | ({_type: 'testimonialSection'; _key: string} & TestimonialSectionFields)
   | ({_type: 'partnerLogosSection'; _key: string} & PartnerLogosSectionFields)
+  | ({_type: 'simpleSection'; _key: string} & SimpleSectionFields)
   | ({_type: 'byTheNumbersSection'; _key: string} & ByTheNumbersSectionFields)
   | HighlightBannerSectionGroq
   | CardCarouselSectionGroq
@@ -112,6 +116,12 @@ export function HomeSectionRow({section}: {section: HomeSectionGroq}) {
       const props = mapPartnerLogosSectionToProps(section)
       return props ? (
         <PartnerLogosSection {...props} headingId={`partner-logos-${section._key}`} />
+      ) : null
+    }
+    case 'simpleSection': {
+      const props = mapSimpleSectionToProps(section)
+      return props ? (
+        <SimpleSection {...props} headingId={`simple-section-${section._key}`} />
       ) : null
     }
     case 'byTheNumbersSection': {

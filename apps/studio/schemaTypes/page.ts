@@ -10,7 +10,7 @@ export const page = defineType({
       title: 'Homepage sections',
       type: 'array',
       description:
-        'Ordered blocks for /. Add Hero, What We Do, Testimonial, Section spacer, By the numbers, Highlight banner, Card carousel, Newsletter, Partner logos, etc. Drag to reorder.',
+        'Ordered blocks for /. Add Hero, What We Do, Testimonial, Section spacer, By the numbers, Highlight banner, Card carousel, Newsletter, Partner logos, Simple section, etc. Drag to reorder.',
       of: [
         {type: 'homeHero'},
         {type: 'whatWeDoSection'},
@@ -21,6 +21,7 @@ export const page = defineType({
         {type: 'cardCarouselSection'},
         {type: 'newsletterSection'},
         {type: 'partnerLogosSection'},
+        {type: 'simpleSection'},
       ],
       options: {
         insertMenu: {
@@ -40,6 +41,7 @@ export const page = defineType({
                 'newsletterSection',
                 'partnerLogosSection',
                 'sectionSpacer',
+                'simpleSection',
                 'testimonialSection',
               ],
             },

@@ -235,14 +235,30 @@ export const contactSection = defineType({
   },
 })
 
+const simpleSectionPortableText = {
+  type: 'block',
+  styles: [{title: 'Normal', value: 'normal'}],
+  lists: [{title: 'Bullet', value: 'bullet'}],
+  marks: {
+    decorators: [{title: 'Strong', value: 'strong'}],
+    annotations: [contentLinkAnnotation],
+  },
+} as const
+
+const SIMPLE_SECTION_BACKGROUNDS = [
+  {title: 'Cream', value: 'cream'},
+  {title: 'Off white', value: 'offWhite'},
+  {title: 'Light beige', value: 'lightBeige'},
+] as const
+
 export const simpleSection = defineType({
   name: 'simpleSection',
   title: 'Simple section',
   type: 'object',
   fields: [
     defineField({
-      name: 'heading',
-      title: 'Heading',
+      name: 'sectionHeading',
+      title: 'Section heading',
       type: 'string',
       validation: (Rule) => Rule.required().max(120),
     }),
@@ -250,10 +266,37 @@ export const simpleSection = defineType({
       name: 'body',
       title: 'Body',
       type: 'array',
-      of: [sectionPortableTextBlock],
+      of: [simpleSectionPortableText],
+      description: 'Paragraphs, bold, bullet lists, and links. No headings or numbered lists.',
+      validation: (Rule) => Rule.required().min(1),
+    }),
+    defineField({
+      name: 'background',
+      title: 'Background',
+      type: 'string',
+      options: {list: [...SIMPLE_SECTION_BACKGROUNDS], layout: 'radio'},
+      initialValue: 'cream',
       validation: (Rule) => Rule.required(),
     }),
   ],
+  preview: {
+    select: {
+      sectionHeading: 'sectionHeading',
+      background: 'background',
+    },
+    prepare({sectionHeading, background}) {
+      const fill =
+        background === 'offWhite'
+          ? 'off white'
+          : background === 'lightBeige'
+            ? 'light beige'
+            : 'cream'
+      return {
+        title: 'Simple section',
+        subtitle: [sectionHeading?.trim(), fill].filter(Boolean).join(' · '),
+      }
+    },
+  },
 })
 
 /**

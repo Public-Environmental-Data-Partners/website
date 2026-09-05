@@ -19,6 +19,7 @@ import {FocusOnAccessSection} from '@/components/sections/focus-on-access-sectio
 import {MetadataStandardsSection} from '@/components/sections/metadata-standards-section'
 import {PartnerLogosSection} from '@/components/sections/partner-logos-section'
 import {RiskNominateSection} from '@/components/sections/risk-nominate-section'
+import {SimpleSection} from '@/components/sections/simple-section'
 import {TestimonialSection} from '@/components/sections/testimonial-section'
 import {TextImageSection} from '@/components/sections/text-image-section'
 import {ToolCategorySection} from '@/components/sections/tool-category-section'
@@ -29,7 +30,6 @@ import {type ContactCtaBlock, ContactSection} from '@/components/site-page/conta
 import {GetInvolvedIntroSection} from '@/components/site-page/get-involved-intro-section'
 import {LegalDocumentSection} from '@/components/site-page/legal-document-section'
 import {OtherWaysSection} from '@/components/site-page/other-ways-section'
-import {SimpleSectionBlock} from '@/components/site-page/simple-section-block'
 import {ARTICLE_COL_PROSE_CLASS} from '@/lib/article-body-grid'
 import {CONTENT_LINK_GROQ, PT_BLOCKS_GROQ, PT_MARK_DEFS_GROQ} from '@/lib/content-link'
 import type {AdvocacyHeroFields} from '@/lib/mappers/advocacy-sections'
@@ -75,6 +75,8 @@ import {mapNewsletterSectionToProps} from '@/lib/mappers/newsletter-section'
 import type {PartnerLogosSectionFields} from '@/lib/mappers/partner-logos-section'
 import {mapPartnerLogosSectionToProps} from '@/lib/mappers/partner-logos-section'
 import {mapSanityImage, type SanityImageData} from '@/lib/mappers/sanity-image'
+import type {SimpleSectionFields} from '@/lib/mappers/simple-section'
+import {mapSimpleSectionToProps} from '@/lib/mappers/simple-section'
 import type {TestimonialSectionFields} from '@/lib/mappers/testimonial-section'
 import {mapTestimonialSectionToProps} from '@/lib/mappers/testimonial-section'
 import type {TextImageSectionFields} from '@/lib/mappers/text-image-section'
@@ -206,9 +208,7 @@ export const SITE_PAGE_QUERY = `*[_type == "sitePage" && slug.current == $slug][
 export type SimpleSectionGroq = {
   _type: 'simpleSection'
   _key: string
-  heading?: string | null
-  body?: PortableTextBlock[] | null
-}
+} & SimpleSectionFields
 
 export type LegalDocumentSectionGroq = {
   _type: 'legalDocumentSection'
@@ -439,15 +439,10 @@ function getLegalDocumentSection(sections: SitePageSectionGroq[]): LegalDocument
 function renderMarketingSection(section: SitePageSectionGroq) {
   switch (section._type) {
     case 'simpleSection': {
-      const heading = section.heading?.trim()
-      if (!heading) {
-        return null
-      }
-      return (
-        <SiteShell key={section._key} padding="none" className="px-[var(--site-padding-x)]">
-          <SimpleSectionBlock heading={heading} body={section.body ?? undefined} />
-        </SiteShell>
-      )
+      const props = mapSimpleSectionToProps(section)
+      return props ? (
+        <SimpleSection key={section._key} {...props} headingId={`simple-section-${section._key}`} />
+      ) : null
     }
     case 'byTheNumbersSection': {
       const props = mapByTheNumbersSectionToProps(section)

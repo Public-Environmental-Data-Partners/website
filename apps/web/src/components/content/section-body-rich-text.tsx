@@ -5,7 +5,7 @@ import {contentLinkMark} from '@/components/content/portable-text-link'
 
 /**
  * Site-page section body copy — Figtree Regular 22 / 100%, bold lead-ins at 700.
- * Shared by About intro and Text + image rows so the two stay in sync.
+ * Shared by About intro, Text + image rows, and Simple section.
  */
 export const sectionBodyPortableTextComponents: Partial<PortableTextComponents> = {
   block: {

@@ -27,8 +27,8 @@ uppercase sans-serif text.
 - Examples: `WHAT WE DO`, `OUR PARTNERS`, `PEDP BY THE NUMBERS`, `LATEST NEWS`,
   `MEMBER TESTIMONIAL`, `STAY IN TOUCH`, and `REQUEST SUPPORT`
 - Applies to: What We Do, partner logos, By the Numbers, card carousel,
-  testimonial, newsletter's top label, highlight banner's top label, and
-  contact sections
+  testimonial, newsletter's top label, highlight banner's top label,
+  contact sections, and simple section
 
 Use this term instead of `kicker` for the end-to-end content model. “Kicker”
 may remain useful in informal design discussion, but should not be the canonical
@@ -41,8 +41,7 @@ section heading and establishes the block's content hierarchy.
 
 - Studio title: **Heading**
 - Stored field and code: `heading`
-- Examples: a hero headline, simple-section title, or highlight banner's main
-  title
+- Examples: a hero headline or highlight banner's main title
 
 ### Prompt
 
