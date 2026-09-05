@@ -117,3 +117,6 @@ Document the editor-facing publish/refresh workflow after that choice.
 - Lane 2: quarterly human review (stay put is allowed)
 - Lane 3: monthly Dependabot version PRs
 - Lane 4: when a major is worth the risk, not on a schedule
+
+Last lane 2 review: 2026-09-04. Stay put on Node, pnpm, Next.js, React, and
+Sanity (soft-launch and domain cutover). Next check: mid-October 2026.

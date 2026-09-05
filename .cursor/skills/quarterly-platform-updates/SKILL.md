@@ -107,5 +107,6 @@ on the current PR) and the user wants to continue.
 ## After the review
 
 If Node or pnpm pins changed, keep `docs/decisions/0005-dependency-upgrades.md`
-"Current platform" in sync. State clearly if the review ended with stay put
-on any pairing.
+"Current platform" in sync. Update the "Last lane 2 review" line under Cadence
+with the date, stay-put vs bumped pairings, and the next check. State clearly
+if the review ended with stay put on any pairing.
