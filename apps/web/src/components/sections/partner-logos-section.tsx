@@ -169,8 +169,11 @@ export function PartnerLogosSection({
   return (
     <SectionBand className="bg-cream" aria-labelledby={headingId}>
       <SiteShell>
-        <ContentStack>
-          <h2 id={headingId} className="section-label-heading text-muted-foreground">
+        <ContentStack className="gap-10 md:gap-12">
+          <h2
+            id={headingId}
+            className="section-label-heading text-muted-foreground text-center md:text-left"
+          >
             {sectionHeading}
           </h2>
           {strip}
