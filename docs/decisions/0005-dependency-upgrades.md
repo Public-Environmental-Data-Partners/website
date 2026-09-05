@@ -31,7 +31,8 @@ be auto-dismissed in the GitHub UI; do not auto-dismiss malware.
 Node, pnpm, Next.js, React, and Sanity. Also the CMS companions that change
 fetching or rendering: `next-sanity`, `@sanity/image-url`, `@portabletext/react`.
 `@types/node` moves only with a Node major. `@types/react` and
-`@types/react-dom` move with React.
+`@types/react-dom` move with React. `posthog-js` and `@sentry/nextjs` are not
+lane 2. They are app SDKs (see lane 3 and lane 4).
 
 One pairing per PR, in this order: Node, pnpm, Next.js (with
 `eslint-config-next`), React in both apps, then Sanity (runtime and types
@@ -55,6 +56,7 @@ Patch and minor only, grouped, on a monthly schedule. Config:
   `typescript`
 - E2E: `@playwright/test`, `@axe-core/playwright`
 - Studio scripts: `tsx`
+- Observability: `posthog-js`, `@sentry/nextjs`
 - GitHub Actions: workflow action pins
 
 CI is the merge gate. If a grouped PR is messy, split it rather than widening
@@ -63,7 +65,9 @@ the group. Do not add Renovate unless these groups prove too coarse.
 ### 4. Majors
 
 No bot. Tailwind, ESLint, Playwright, Radix, `shadcn`, `styled-components`,
-and anything in lane 2. Open a small human PR (or skip) after reading notes.
+`posthog-js`, `@sentry/nextjs`, and anything in lane 2. Open a small human PR
+(or skip) after reading notes. A Sentry major in particular needs a review of
+`withSentryConfig` imports and init files (`docs/architecture/error-monitoring.md`).
 
 ## Upgrade principles
 
@@ -77,7 +81,10 @@ and anything in lane 2. Open a small human PR (or skip) after reading notes.
 ## Transitives
 
 Do not manage lockfile-only packages directly. They move when a direct
-dependency moves, or when a security PR requires it.
+dependency moves, or when a security PR requires it. Sentry transitives such
+as `@sentry/cli` and `@sentry/core` follow `@sentry/nextjs`. Approving the
+`@sentry/cli` install script is `allowBuilds` in `pnpm-workspace.yaml`, not a
+version bump.
 
 ## pnpm 11
 

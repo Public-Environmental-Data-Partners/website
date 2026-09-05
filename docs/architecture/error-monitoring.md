@@ -91,6 +91,10 @@ If the auth token is missing on a Vercel build, the site still deploys; stack
 traces may point at minified bundles until the token is set and the project is
 redeployed.
 
+`@sentry/cli` must be allowed to run its install script so the CLI binary is
+present for source-map upload. That is `"@sentry/cli": true` under `allowBuilds`
+in [`pnpm-workspace.yaml`](../../pnpm-workspace.yaml). `core-js` stays `false`.
+
 ## What we send
 
 | Signal | Where | Question it answers |

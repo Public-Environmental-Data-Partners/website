@@ -72,6 +72,13 @@ updates:
         update-types:
           - minor
           - patch
+      observability:
+        patterns:
+          - posthog-js
+          - "@sentry/nextjs"
+        update-types:
+          - minor
+          - patch
 
   - package-ecosystem: github-actions
     directory: /
