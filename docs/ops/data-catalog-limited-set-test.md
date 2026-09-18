@@ -152,6 +152,7 @@ Dates:
 * Desktop: CTAs in the left 3 columns; search and cards in 9; meta columns
   4 / gap / 4.
 * Expand control has an accessible name. Keyboard can submit search (Enter).
+* Clear (X) appears when the field has text or results are still filtered. Clicking it, or Escape in the field, restores the full list and keeps focus in the input.
 
 ## After the full set lands
 

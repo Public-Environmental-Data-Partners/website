@@ -1,7 +1,7 @@
 'use client'
 
-import {ChevronLeft, ChevronRight, Minus, Plus, Search} from 'lucide-react'
-import {type FormEvent, useMemo, useState} from 'react'
+import {ChevronLeft, ChevronRight, Minus, Plus, Search, X} from 'lucide-react'
+import {type FormEvent, type KeyboardEvent, useMemo, useRef, useState} from 'react'
 
 import {ContentLink} from '@/components/content-link'
 import {Button} from '@/components/ui/button'
@@ -232,6 +232,21 @@ export function DataCatalogExplorer({
   const [sortKey, setSortKey] = useState<SortKey>('name')
   const [sortDir, setSortDir] = useState<SortDir>('asc')
   const [page, setPage] = useState(1)
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const canClear = draftQuery.length > 0 || query.trim().length > 0
+
+  function clearSearch() {
+    setDraftQuery('')
+    setQuery('')
+    setPage(1)
+    searchInputRef.current?.focus()
+  }
+
+  function onSearchInputKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key !== 'Escape' || !canClear) return
+    event.preventDefault()
+    clearSearch()
+  }
 
   function onSearch(event: FormEvent) {
     event.preventDefault()
@@ -297,14 +312,28 @@ export function DataCatalogExplorer({
           <label className="sr-only" htmlFor="data-catalog-search">
             Search datasets
           </label>
-          <input
-            id="data-catalog-search"
-            data-slot="data-catalog-search-input"
-            className="col-span-12 lg:col-span-10"
-            value={draftQuery}
-            onChange={(e) => setDraftQuery(e.target.value)}
-            placeholder={`Search ${count} datasets...`}
-          />
+          <div className="col-span-12 lg:col-span-10" data-slot="data-catalog-search-field">
+            <input
+              ref={searchInputRef}
+              id="data-catalog-search"
+              data-slot="data-catalog-search-input"
+              value={draftQuery}
+              onChange={(e) => setDraftQuery(e.target.value)}
+              onKeyDown={onSearchInputKeyDown}
+              placeholder={`Search ${count} datasets...`}
+              autoComplete="off"
+            />
+            {canClear ? (
+              <button
+                type="button"
+                data-slot="data-catalog-search-clear"
+                aria-label="Clear search"
+                onClick={clearSearch}
+              >
+                <X className="size-5" aria-hidden />
+              </button>
+            ) : null}
+          </div>
           <Button
             type="submit"
             size="cta"
