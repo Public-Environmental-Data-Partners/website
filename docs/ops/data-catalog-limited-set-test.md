@@ -133,6 +133,12 @@ Dates:
 * Typing in the field does not filter until Search or Enter.
 * A token in title, agency, notes, keywords, summary or description, time
   period, CCH terms, subject, or DOI finds the card.
+* `"plant"` or `'plant'` finds the same cards as `plant`. Quote marks do not
+  have to appear in the dataset text.
+* `"plant hardiness"` matches that consecutive phrase. Unquoted `plant hardiness`
+  still matches when both words appear anywhere in the searchable text.
+* `plan` does not match `planned`, `plant`, or `explanation`. Prefix fragments
+  such as `hardin` do not match `hardiness`.
 * Backup URL and download date are not search keys.
 * Nonsense query shows “No datasets match this search.”
 * Default sort is Dataset Name A-Z. Second click on the same pill reverses.

@@ -1,6 +1,8 @@
 import {resolveContentLink} from '@/lib/content-link'
 import type {CatalogDatasetFields, DataCatalogCtaFields} from '@/lib/queries/data-catalog'
 
+import {catalogSearchTokens, catalogTokenMatches} from './catalog-search'
+
 export const CATALOG_PAGE_SIZE = 10
 export const SUMMARY_MAX_CHARS = 450
 
@@ -162,9 +164,9 @@ export function catalogButtonLabel(card: CatalogCardProps): string {
 }
 
 export function filterCatalogCards(cards: CatalogCardProps[], query: string): CatalogCardProps[] {
-  const tokens = query.toLowerCase().trim().split(/\s+/).filter(Boolean)
+  const tokens = catalogSearchTokens(query)
   if (tokens.length === 0) return cards
-  return cards.filter((card) => tokens.every((t) => card.searchText.includes(t)))
+  return cards.filter((card) => tokens.every((t) => catalogTokenMatches(card.searchText, t)))
 }
 
 export function sortCatalogCards(

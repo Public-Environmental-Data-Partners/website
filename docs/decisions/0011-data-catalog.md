@@ -195,7 +195,11 @@ Chosen for v1:
    agencies, notes, keywords, description /
    summary, time period, CCH terms, subject, deposit identifier). Do not search
    URLs or download date. List payload omits full Description when a short
-   Summary can be sent instead.
+   Summary can be sent instead. Quoted spans (`"plant hardiness"` or `'plant'`)
+   are one phrase and match that consecutive text. Quote marks are syntax, not
+   characters to find. Unquoted tokens still split on whitespace and AND
+   together. Tokens match whole words (or a whole quoted phrase), not
+   substrings: `plan` does not match `planned` or `plant`.
 6. Page size 10, hardcoded, same on all breakpoints. Not a Studio field.
 7. Multiple cards may stay expanded. Expand control is + / -.
 8. Open in [host] / Download uses backup URL and host parsed from that URL
