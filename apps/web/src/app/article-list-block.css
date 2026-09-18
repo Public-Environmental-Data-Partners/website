@@ -54,7 +54,7 @@
   font-family: var(--font-sans);
   font-size: var(--list-block-body-size);
   font-weight: 500;
-  line-height: 1;
+  line-height: var(--text-body-lg-leading, 1.3);
   letter-spacing: 0;
 }
 
@@ -186,7 +186,7 @@
   font-family: var(--font-sans);
   font-size: var(--list-block-body-size);
   font-weight: 500;
-  line-height: 1;
+  line-height: var(--text-body-lg-leading, 1.3);
   letter-spacing: 0;
   margin: 0;
   padding-block: 0.35em;

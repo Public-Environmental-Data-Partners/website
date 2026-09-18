@@ -104,9 +104,9 @@
   --spacing-site-padding-x: var(--site-padding-x);
   --spacing-section-padding-y: var(--section-padding-y);
   --spacing-grid-gutter: var(--grid-gutter);
-  /* Body large — Figma 22px / 100% line-height (teaser excerpt, etc.) */
+  /* Body large — 22px / 1.3 leading (marketing page body copy). */
   --text-body-lg: 1.375rem;
-  --text-body-lg--line-height: 1;
+  --text-body-lg--line-height: 1.3;
 }
 
 /*
@@ -119,7 +119,7 @@
   --section-padding-y: 2.5rem;
   --section-padding-y-md: 3.5rem;
   --text-body-lg-size: 1.375rem;
-  --text-body-lg-leading: 1;
+  --text-body-lg-leading: 1.3;
   /* Article detail body column — tunable; default matches Tailwind prose (~12 words/line). */
   --article-prose-max-width: 65ch;
   --article-image-aspect: 3 / 2;
@@ -150,7 +150,7 @@ body {
 }
 
 @layer base {
-  /* Global paragraph default: 22px / relaxed leading. Use `text-body-lg` for 22px / 100%. */
+  /* Article/legal default: 22px / relaxed leading. Use `text-body-lg` for marketing body (22px / 1.3). */
   p {
     font-size: 1.375rem;
     font-weight: 400;

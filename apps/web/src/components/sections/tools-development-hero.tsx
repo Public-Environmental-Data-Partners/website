@@ -9,15 +9,13 @@ import Image from 'next/image'
 import {contentLinkMark} from '@/components/content/portable-text-link'
 import {ContentStack, Grid12, SectionBand, SiteShell} from '@/components/layout'
 import type {ToolsDevelopmentHeroProps} from '@/lib/mappers/tools-development'
-import {SITE_PAGE_HERO_HEADING_CLASS} from '@/lib/typography'
+import {BODY_LG_CLASS, SITE_PAGE_HERO_HEADING_CLASS} from '@/lib/typography'
 import {cn} from '@/lib/utils'
 
 const bodyPortableTextComponents: Partial<PortableTextComponents> = {
   block: {
     normal: ({children}: {children?: React.ReactNode}) => (
-      <p className="text-off-black mb-4 font-sans text-[1.375rem] leading-none font-normal tracking-normal last:mb-0">
-        {children}
-      </p>
+      <p className={cn(BODY_LG_CLASS, 'text-off-black mb-4 font-normal last:mb-0')}>{children}</p>
     ),
   },
   marks: {

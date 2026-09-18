@@ -10,12 +10,13 @@ import type {ReactNode} from 'react'
 import {contentLinkMark} from '@/components/content/portable-text-link'
 import {ContentLink} from '@/components/content-link'
 import {Button} from '@/components/ui/button'
+import {BODY_LG_CLASS} from '@/lib/typography'
 import {cn} from '@/lib/utils'
 
 const bodyPortableTextComponents: Partial<PortableTextComponents> = {
   block: {
     normal: ({children}: {children?: ReactNode}) => (
-      <p className="text-body-lg text-foreground font-sans font-normal last:mb-0">{children}</p>
+      <p className={cn(BODY_LG_CLASS, 'text-foreground font-normal last:mb-0')}>{children}</p>
     ),
   },
   marks: {

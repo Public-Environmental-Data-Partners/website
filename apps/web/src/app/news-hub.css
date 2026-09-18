@@ -39,7 +39,7 @@
   font-family: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
   font-size: 1.375rem;
   font-weight: 600;
-  line-height: 1;
+  line-height: var(--text-body-lg-leading, 1.3);
   letter-spacing: 0;
   text-align: center;
 }
@@ -100,7 +100,7 @@
   font-family: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
   font-size: 1.375rem;
   font-weight: 600;
-  line-height: 1;
+  line-height: var(--text-body-lg-leading, 1.3);
   letter-spacing: 0;
 }
 

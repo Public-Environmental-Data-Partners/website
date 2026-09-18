@@ -16,6 +16,8 @@ import {Grid12, SectionBand} from '@/components/layout'
 import {type ContactCtaBlock} from '@/components/site-page/contact-section'
 import {Button} from '@/components/ui/button'
 import {resolveContentLink} from '@/lib/content-link'
+import {BODY_LG_CLASS} from '@/lib/typography'
+import {cn} from '@/lib/utils'
 
 type GetInvolvedIntroSectionProps = {
   title: string
@@ -46,9 +48,7 @@ function CalloutCta({value}: PortableTextTypeComponentProps<ContactCtaBlock>) {
 const calloutPortableTextComponents: Partial<PortableTextComponents> = {
   block: {
     normal: ({children}: {children?: ReactNode}) => (
-      <p className="text-foreground mb-6 font-sans text-[1.375rem] leading-7 font-medium tracking-normal last:mb-0">
-        {children}
-      </p>
+      <p className={cn(BODY_LG_CLASS, 'text-foreground mb-6 font-medium last:mb-0')}>{children}</p>
     ),
   },
   marks: {
@@ -66,9 +66,7 @@ const calloutPortableTextComponents: Partial<PortableTextComponents> = {
 const bodyPortableTextComponents: Partial<PortableTextComponents> = {
   block: {
     normal: ({children}: {children?: ReactNode}) => (
-      <p className="text-foreground mb-6 font-sans text-[1.375rem] leading-relaxed font-normal tracking-normal last:mb-0">
-        {children}
-      </p>
+      <p className={cn(BODY_LG_CLASS, 'text-foreground mb-6 font-normal last:mb-0')}>{children}</p>
     ),
     h2: ({children}: {children?: ReactNode}) => (
       <h2 className="section-label-heading text-foreground mb-6 mt-10 first:mt-0">{children}</h2>
@@ -79,12 +77,22 @@ const bodyPortableTextComponents: Partial<PortableTextComponents> = {
   },
   list: {
     bullet: ({children}: {children?: ReactNode}) => (
-      <ul className="text-foreground mb-6 list-disc space-y-4 ps-6 font-sans text-[1.375rem] leading-relaxed font-normal last:mb-0">
+      <ul
+        className={cn(
+          BODY_LG_CLASS,
+          'text-foreground mb-6 list-disc space-y-4 ps-6 font-normal last:mb-0',
+        )}
+      >
         {children}
       </ul>
     ),
     number: ({children}: {children?: ReactNode}) => (
-      <ol className="text-foreground mb-6 list-decimal space-y-4 ps-6 font-sans text-[1.375rem] leading-relaxed font-normal last:mb-0">
+      <ol
+        className={cn(
+          BODY_LG_CLASS,
+          'text-foreground mb-6 list-decimal space-y-4 ps-6 font-normal last:mb-0',
+        )}
+      >
         {children}
       </ol>
     ),

@@ -13,16 +13,18 @@ import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import {ImageWithShelf} from '@/components/media/image-with-shelf'
 import {Button} from '@/components/ui/button'
 import type {AdvocacyHeroProps} from '@/lib/mappers/advocacy-sections'
-import {SECTION_LABEL_HEADING_CLASS, SITE_PAGE_HERO_HEADING_CLASS} from '@/lib/typography'
+import {
+  BODY_LG_CLASS,
+  SECTION_LABEL_HEADING_CLASS,
+  SITE_PAGE_HERO_HEADING_CLASS,
+} from '@/lib/typography'
 import {cn} from '@/lib/utils'
 
-/** Approach card body: Figtree Medium 22 / 28 (matches Nominate card). */
+/** Approach card body: Figtree Medium 22 / 1.3. */
 const cardBodyPortableTextComponents: Partial<PortableTextComponents> = {
   block: {
     normal: ({children}: {children?: ReactNode}) => (
-      <p className="font-sans text-[1.375rem] leading-7 font-medium text-off-black last:mb-0">
-        {children}
-      </p>
+      <p className={cn(BODY_LG_CLASS, 'font-medium text-off-black last:mb-0')}>{children}</p>
     ),
   },
   marks: {

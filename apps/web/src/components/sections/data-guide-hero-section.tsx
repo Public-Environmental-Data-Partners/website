@@ -9,15 +9,13 @@ import type {ReactNode} from 'react'
 import {contentLinkMark} from '@/components/content/portable-text-link'
 import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import type {DataGuideHeroProps} from '@/lib/mappers/data-guide-sections'
-import {SITE_PAGE_HERO_HEADING_CLASS} from '@/lib/typography'
+import {BODY_LG_CLASS, SITE_PAGE_HERO_HEADING_CLASS} from '@/lib/typography'
 import {cn} from '@/lib/utils'
 
 const introPortableTextComponents: Partial<PortableTextComponents> = {
   block: {
     normal: ({children}: {children?: ReactNode}) => (
-      <p className="font-sans text-[1.375rem] leading-[1.375rem] font-normal text-dark-green last:mb-0">
-        {children}
-      </p>
+      <p className={cn(BODY_LG_CLASS, 'font-normal text-dark-green last:mb-0')}>{children}</p>
     ),
   },
   marks: {

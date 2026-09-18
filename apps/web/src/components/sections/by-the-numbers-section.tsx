@@ -16,14 +16,13 @@ import {
   type ByTheNumbersSectionProps,
   type ByTheNumbersStatProps,
 } from '@/lib/mappers/by-the-numbers-section'
+import {BODY_LG_CLASS} from '@/lib/typography'
 import {cn} from '@/lib/utils'
 
 const bodyPortableTextComponents: Partial<PortableTextComponents> = {
   block: {
     normal: ({children}: {children?: React.ReactNode}) => (
-      <p className="font-sans text-[1.375rem] leading-none font-normal text-foreground last:mb-0">
-        {children}
-      </p>
+      <p className={cn(BODY_LG_CLASS, 'font-normal text-foreground last:mb-0')}>{children}</p>
     ),
   },
   marks: {

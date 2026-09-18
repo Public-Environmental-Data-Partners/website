@@ -7,6 +7,7 @@ import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import {Button} from '@/components/ui/button'
 import {captureEvent} from '@/lib/analytics'
 import type {NewsletterSectionProps} from '@/lib/mappers/newsletter-section'
+import {BODY_LG_CLASS} from '@/lib/typography'
 import {cn} from '@/lib/utils'
 
 export type {NewsletterSectionProps}
@@ -79,9 +80,7 @@ export function NewsletterSection({
                   >
                     {sectionHeading}
                   </h2>
-                  <p className="text-off-black font-sans text-[1.375rem] leading-none font-semibold tracking-normal">
-                    {prompt}
-                  </p>
+                  <p className={cn(BODY_LG_CLASS, 'text-off-black font-semibold')}>{prompt}</p>
                   <form
                     className="mt-8 flex max-w-[42rem] flex-col gap-4 sm:flex-row sm:items-start"
                     onSubmit={(event) => {
@@ -147,7 +146,7 @@ export function NewsletterSection({
                   aria-live="polite"
                   aria-hidden={!success}
                 >
-                  <p className="text-off-black font-sans text-[1.375rem] leading-none font-semibold">
+                  <p className={cn(BODY_LG_CLASS, 'text-off-black font-semibold')}>
                     Thank you for signing up.
                   </p>
                 </div>

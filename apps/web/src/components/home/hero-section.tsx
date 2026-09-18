@@ -14,6 +14,8 @@ import {ImageWithShelf} from '@/components/media/image-with-shelf'
 import {Button} from '@/components/ui/button'
 import type {ImageShelfSettings} from '@/lib/mappers/image-shelf'
 import {DEFAULT_IMAGE_SHELF_SETTINGS} from '@/lib/mappers/image-shelf'
+import {BODY_LG_CLASS} from '@/lib/typography'
+import {cn} from '@/lib/utils'
 
 export type HomeHeroCta = {
   label: string
@@ -35,7 +37,7 @@ export type HomeHeroSectionProps = {
 const homeHeroPortableTextComponents: Partial<PortableTextComponents> = {
   block: {
     normal: ({children}: {children?: React.ReactNode}) => (
-      <p className="text-body-lg text-foreground font-sans font-normal last:mb-0">{children}</p>
+      <p className={cn(BODY_LG_CLASS, 'text-foreground font-normal last:mb-0')}>{children}</p>
     ),
   },
   marks: {

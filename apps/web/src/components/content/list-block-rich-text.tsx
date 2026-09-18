@@ -1,12 +1,14 @@
 import {defaultComponents, mergeComponents, type PortableTextComponents} from '@portabletext/react'
 
 import {contentLinkMark} from '@/components/content/portable-text-link'
+import {BODY_LG_CLASS} from '@/lib/typography'
+import {cn} from '@/lib/utils'
 
-/** Rich text inside list-block rows — Figtree 22px, inherited foreground, tight leading. */
+/** Rich text inside list-block rows — Figtree 22px / 1.3 leading. */
 export const listBlockRichTextComponents: Partial<PortableTextComponents> = {
   block: {
     normal: ({children}: {children?: React.ReactNode}) => (
-      <p className="m-0 leading-none [&+p]:mt-3">{children}</p>
+      <p className={cn(BODY_LG_CLASS, 'm-0 [&+p]:mt-3')}>{children}</p>
     ),
   },
   marks: {

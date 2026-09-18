@@ -1,6 +1,6 @@
 /*
  * Donate info box — light-green band with section heading, lead body, prompt, and icon rows.
- * Visual grammar borrows ListBlock's hairline rules; type matches marketing Figtree 22 / leading-none.
+ * Visual grammar borrows ListBlock's hairline rules; type matches marketing Figtree 22 / 1.3.
  */
 
 [data-slot='donate-info-box'] {
@@ -43,12 +43,13 @@
   font-family: var(--font-sans);
   font-size: 1.375rem;
   font-weight: 600;
-  line-height: 1;
+  line-height: var(--text-body-lg-leading, 1.3);
   letter-spacing: 0;
 }
 
 [data-slot='donate-info-body'] p {
   margin: 0;
+  line-height: inherit;
 }
 
 [data-slot='donate-info-body'] p + p {
@@ -114,6 +115,6 @@
   font-family: var(--font-sans);
   font-size: 1.375rem;
   font-weight: 600;
-  line-height: 1;
+  line-height: var(--text-body-lg-leading, 1.3);
   letter-spacing: 0;
 }

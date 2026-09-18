@@ -12,14 +12,14 @@ import {ContentLink} from '@/components/content-link'
 import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import {Button} from '@/components/ui/button'
 import type {RiskNominateSectionProps} from '@/lib/mappers/data-preservation-sections'
+import {BODY_LG_CLASS} from '@/lib/typography'
+import {cn} from '@/lib/utils'
 
-/** Nominate card body: Figtree Medium 22 / 28. */
+/** Nominate card body: Figtree Medium 22 / 1.3. */
 const cardBodyPortableTextComponents: Partial<PortableTextComponents> = {
   block: {
     normal: ({children}: {children?: ReactNode}) => (
-      <p className="font-sans text-[1.375rem] leading-7 font-medium text-dark-blue last:mb-0">
-        {children}
-      </p>
+      <p className={cn(BODY_LG_CLASS, 'font-medium text-dark-blue last:mb-0')}>{children}</p>
     ),
   },
   marks: {

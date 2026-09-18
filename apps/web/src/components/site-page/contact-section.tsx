@@ -12,6 +12,8 @@ import {ContentLink} from '@/components/content-link'
 import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import {Button} from '@/components/ui/button'
 import {type ContentLinkGroq, resolveContentLink} from '@/lib/content-link'
+import {BODY_LG_CLASS} from '@/lib/typography'
+import {cn} from '@/lib/utils'
 
 export type ContactCtaBlock = {
   _type: 'contactCta'
@@ -46,19 +48,27 @@ function ContactCta({value}: PortableTextTypeComponentProps<ContactCtaBlock>) {
 const portableTextComponents: Partial<PortableTextComponents> = {
   block: {
     normal: ({children}: {children?: React.ReactNode}) => (
-      <p className="text-off-black mb-6 font-sans text-[1.375rem] leading-none font-semibold tracking-normal last:mb-0">
-        {children}
-      </p>
+      <p className={cn(BODY_LG_CLASS, 'text-off-black mb-6 font-semibold last:mb-0')}>{children}</p>
     ),
   },
   list: {
     bullet: ({children}: {children?: React.ReactNode}) => (
-      <ul className="text-off-black mb-6 list-disc space-y-3 ps-6 font-sans text-[1.375rem] leading-none font-semibold last:mb-0">
+      <ul
+        className={cn(
+          BODY_LG_CLASS,
+          'text-off-black mb-6 list-disc space-y-3 ps-6 font-semibold last:mb-0',
+        )}
+      >
         {children}
       </ul>
     ),
     number: ({children}: {children?: React.ReactNode}) => (
-      <ol className="text-off-black mb-6 list-decimal space-y-3 ps-6 font-sans text-[1.375rem] leading-none font-semibold last:mb-0">
+      <ol
+        className={cn(
+          BODY_LG_CLASS,
+          'text-off-black mb-6 list-decimal space-y-3 ps-6 font-semibold last:mb-0',
+        )}
+      >
         {children}
       </ol>
     ),

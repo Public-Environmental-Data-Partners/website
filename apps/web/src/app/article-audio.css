@@ -29,7 +29,7 @@
   font-family: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
   font-size: var(--text-body-lg-size, 1.375rem);
   font-weight: 600;
-  line-height: var(--text-body-lg-leading, 1);
+  line-height: 1;
   letter-spacing: 0;
   text-transform: uppercase;
   color: var(--foreground);
@@ -83,7 +83,7 @@
   font-family: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
   font-size: var(--text-body-lg-size, 1.375rem);
   font-weight: 600;
-  line-height: var(--text-body-lg-leading, 1);
+  line-height: 1;
   letter-spacing: 0;
   text-transform: uppercase;
   color: inherit;

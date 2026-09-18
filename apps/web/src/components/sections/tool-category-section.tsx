@@ -11,13 +11,13 @@ import {ContentLink} from '@/components/content-link'
 import {ContentStack, Grid12, SectionBand, SiteShell} from '@/components/layout'
 import {Button} from '@/components/ui/button'
 import type {ToolCategorySectionProps} from '@/lib/mappers/tools-development'
+import {BODY_LG_CLASS} from '@/lib/typography'
+import {cn} from '@/lib/utils'
 
 const bodyPortableTextComponents: Partial<PortableTextComponents> = {
   block: {
     normal: ({children}: {children?: React.ReactNode}) => (
-      <p className="text-off-black mb-4 font-sans text-[1.375rem] leading-none font-normal tracking-normal last:mb-0">
-        {children}
-      </p>
+      <p className={cn(BODY_LG_CLASS, 'text-off-black mb-4 font-normal last:mb-0')}>{children}</p>
     ),
   },
   marks: {
@@ -66,7 +66,7 @@ export function ToolCategorySection({
             </div>
             {showGuide ? (
               <div className="col-span-12 flex flex-col gap-5 lg:col-span-4 lg:col-start-9 lg:pt-10">
-                <p className="text-off-black text-left font-sans text-[1.375rem] leading-none font-normal tracking-normal">
+                <p className={cn(BODY_LG_CLASS, 'text-off-black text-left font-normal')}>
                   {guidePrompt}
                 </p>
                 <div className="flex w-full justify-center">
