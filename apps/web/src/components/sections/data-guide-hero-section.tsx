@@ -4,13 +4,17 @@ import {
   PortableText,
   type PortableTextComponents,
 } from '@portabletext/react'
+import {ChevronLeft} from 'lucide-react'
 import type {ReactNode} from 'react'
 
-import {contentLinkMark} from '@/components/content/portable-text-link'
+import {ContentLink} from '@/components/content-link'
+import {contentLinkClass, contentLinkMark} from '@/components/content/portable-text-link'
 import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import type {DataGuideHeroProps} from '@/lib/mappers/data-guide-sections'
 import {BODY_LG_CLASS, SITE_PAGE_HERO_HEADING_CLASS} from '@/lib/typography'
 import {cn} from '@/lib/utils'
+
+const DATA_CATALOG_PATH = '/data-catalog'
 
 const introPortableTextComponents: Partial<PortableTextComponents> = {
   block: {
@@ -51,6 +55,16 @@ export function DataGuideHeroSection({pageTitle, body}: DataGuideHeroProps) {
         <div className="xl:ps-[calc(56px+0.75rem)]">
           <Grid12>
             <div className="col-span-12 min-w-0 lg:col-span-7">
+              <ContentLink
+                href={DATA_CATALOG_PATH}
+                className={cn(
+                  BODY_LG_CLASS,
+                  'mb-3 inline-flex min-h-11 max-w-full items-center gap-1 font-normal text-dark-green transition-opacity hover:opacity-80',
+                )}
+              >
+                <ChevronLeft className="size-5 shrink-0" aria-hidden />
+                <span className={contentLinkClass}>Data catalog</span>
+              </ContentLink>
               <h1 id={headingId} className={cn(SITE_PAGE_HERO_HEADING_CLASS, 'text-dark-green')}>
                 {pageTitle}
               </h1>
