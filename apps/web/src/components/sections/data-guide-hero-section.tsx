@@ -7,8 +7,8 @@ import {
 import {ChevronLeft} from 'lucide-react'
 import type {ReactNode} from 'react'
 
-import {ContentLink} from '@/components/content-link'
 import {contentLinkClass, contentLinkMark} from '@/components/content/portable-text-link'
+import {ContentLink} from '@/components/content-link'
 import {Grid12, SectionBand, SiteShell} from '@/components/layout'
 import type {DataGuideHeroProps} from '@/lib/mappers/data-guide-sections'
 import {BODY_LG_CLASS, SITE_PAGE_HERO_HEADING_CLASS} from '@/lib/typography'
