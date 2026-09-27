@@ -26,7 +26,8 @@ defines on purpose.
 - `disable_session_recording: true`: session replay cannot be enabled from the
   PostHog UI without a code change.
 - One PostHog project (Free plan). Production and test data share that project.
-- Events do not include email, search text, or share URLs.
+- Events do not include newsletter email or share URLs.
+- `data_catalog_searched` includes the submitted query text. A person can type an email or a name into that box, and that text is sent as `query`.
 
 Cookieless capture only works if Cookieless server hash mode is enabled in the
 PostHog project (Project settings, Web analytics).
@@ -63,14 +64,13 @@ traffic.
 | `article_audio_started` | `duration_minutes` | Do people start the article audio (first play near the beginning, not resume)? |
 | `article_shared` | `share_method`: `native` or `clipboard` | Do people share articles, and do they use the system share sheet or copy link? |
 | `newsletter_subscribed` | none | Did the newsletter form succeed? (Email is not sent to PostHog.) |
-| `data_catalog_searched` | `has_query` (boolean), `result_count` | Do people search the catalog, and do they get results? (The query string is not sent.) |
+| `data_catalog_searched` | `query`, `has_query` (boolean), `result_count` | Which terms do people search in the catalog, and do they get results? |
 | `data_catalog_sorted` | `sort_key`, `sort_dir` | Which catalog sort (name or agency, asc or desc) do people choose? |
 | `dataset_expanded` | `dataset_id`, `dataset_title`, `agency` | Which catalog datasets do people open? |
 
 ## What we do not track
 
 - Newsletter email or identity
-- Catalog search query text
 - Article title or URL on share/audio events
 - News hub Load More clicks (card counts vary by breakpoint)
 - Session replay

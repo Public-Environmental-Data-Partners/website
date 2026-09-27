@@ -250,9 +250,11 @@ export function DataCatalogExplorer({
 
   function onSearch(event: FormEvent) {
     event.preventDefault()
+    const queryText = draftQuery.trim()
     const resultCount = filterCatalogCards(datasets, draftQuery).length
     captureEvent('data_catalog_searched', {
-      has_query: draftQuery.trim().length > 0,
+      query: queryText,
+      has_query: queryText.length > 0,
       result_count: resultCount,
     })
     setQuery(draftQuery)
