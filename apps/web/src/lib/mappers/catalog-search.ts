@@ -28,3 +28,43 @@ export function catalogMatchesQuery(searchText: string, query: string): boolean 
   if (tokens.length === 0) return true
   return tokens.every((token) => catalogTokenMatches(searchText, token))
 }
+
+export type CatalogSearchSource = {
+  title: string
+  archivedTitle?: string | null
+  datasetTitle?: string | null
+  agency?: string | null
+  subAgency?: string | null
+  orgAbbrev?: string | null
+  archiveNotes?: string | null
+  keywords?: string | null
+  description?: string | null
+  summary?: string | null
+  timePeriod?: string | null
+  cchTerms?: string | null
+  subject?: string | null
+  depositId?: string | null
+}
+
+/** Lowercased blob matched by catalog search. Org abbrev is the card pill. */
+export function catalogCardSearchText(source: CatalogSearchSource): string {
+  return [
+    source.title,
+    source.archivedTitle,
+    source.datasetTitle,
+    source.agency,
+    source.subAgency,
+    source.orgAbbrev,
+    source.archiveNotes,
+    source.keywords,
+    source.description,
+    source.summary,
+    source.timePeriod,
+    source.cchTerms,
+    source.subject,
+    source.depositId,
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase()
+}

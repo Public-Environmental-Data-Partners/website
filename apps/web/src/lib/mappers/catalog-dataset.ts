@@ -1,7 +1,7 @@
 import {resolveContentLink} from '@/lib/content-link'
 import type {CatalogDatasetFields, DataCatalogCtaFields} from '@/lib/queries/data-catalog'
 
-import {catalogSearchTokens, catalogTokenMatches} from './catalog-search'
+import {catalogCardSearchText, catalogSearchTokens, catalogTokenMatches} from './catalog-search'
 
 export const CATALOG_PAGE_SIZE = 10
 export const SUMMARY_MAX_CHARS = 450
@@ -117,24 +117,22 @@ export function mapCatalogDataset(doc: CatalogDatasetFields): CatalogCardProps |
     })
   }
 
-  const searchText = [
+  const searchText = catalogCardSearchText({
     title,
-    doc.archivedTitle,
-    doc.datasetTitle,
+    archivedTitle: doc.archivedTitle,
+    datasetTitle: doc.datasetTitle,
     agency,
-    doc.subAgency,
-    doc.archiveNotes,
-    doc.keywords,
-    doc.description,
-    doc.summary,
-    formatTimePeriod(doc.timePeriodStart, doc.timePeriodEnd),
-    doc.cchTerms,
-    doc.subject,
-    doc.depositId,
-  ]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase()
+    subAgency: doc.subAgency,
+    orgAbbrev: doc.orgAbbrev,
+    archiveNotes: doc.archiveNotes,
+    keywords: doc.keywords,
+    description: doc.description,
+    summary: doc.summary,
+    timePeriod: formatTimePeriod(doc.timePeriodStart, doc.timePeriodEnd),
+    cchTerms: doc.cchTerms,
+    subject: doc.subject,
+    depositId: doc.depositId,
+  })
 
   return {
     id: doc._id,

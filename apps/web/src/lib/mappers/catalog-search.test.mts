@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
 
-import {catalogMatchesQuery, catalogSearchTokens} from './catalog-search.ts'
+import {catalogCardSearchText, catalogMatchesQuery, catalogSearchTokens} from './catalog-search.ts'
 
 const plantMap = '2023 plant hardiness zone map united states department of agriculture'
 
@@ -62,6 +62,40 @@ test('tokens match whole words, not substrings', () => {
   assert.equal(catalogMatchesQuery(tedsNotes, 'plant'), true)
   assert.equal(catalogMatchesQuery(plantMap, 'hardin'), false)
   assert.equal(catalogMatchesQuery(plantMap, 'plant'), true)
+})
+
+test('org abbreviation matches as a whole word, including quoted', () => {
+  const text = catalogCardSearchText({
+    title: 'Toxic release inventory',
+    agency: 'Environmental Protection Agency',
+    orgAbbrev: 'EPA',
+  })
+  assert.equal(catalogMatchesQuery(text, 'epa'), true)
+  assert.equal(catalogMatchesQuery(text, '"EPA"'), true)
+  assert.equal(catalogMatchesQuery(text, "'epa'"), true)
+  assert.equal(catalogMatchesQuery(text, 'ep'), false)
+})
+
+test('hyphenated org abbreviation matches a part and the full pill', () => {
+  const text = catalogCardSearchText({
+    title: 'Survey',
+    agency: 'Department of Health and Human Services',
+    orgAbbrev: 'DHHS - CDC',
+  })
+  assert.equal(catalogMatchesQuery(text, 'cdc'), true)
+  assert.equal(catalogMatchesQuery(text, '"dhhs - cdc"'), true)
+  assert.equal(catalogMatchesQuery(text, '"dhhs cdc"'), false)
+})
+
+test('multi-part org abbreviation matches only consecutive parts', () => {
+  const text = catalogCardSearchText({
+    title: 'Survey',
+    agency: 'Department of Commerce',
+    orgAbbrev: 'DOC - NOAA - Interagency Sea Level Task Force',
+  })
+  assert.equal(catalogMatchesQuery(text, '"sea level"'), true)
+  assert.equal(catalogMatchesQuery(text, '"noaa - interagency"'), true)
+  assert.equal(catalogMatchesQuery(text, '"doc - interagency"'), false)
 })
 
 test('regex characters in a token are literal', () => {

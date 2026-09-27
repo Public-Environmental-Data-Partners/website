@@ -1,0 +1,14 @@
+// The app tsconfig excludes *.test.ts and *.test.mts, so the editor typechecks
+// those files on their own and cannot see @types/node. This config is named
+// tsconfig.json and lives under src so the editor finds it by walking up from
+// a test file. It loads Node types for node:test and node:assert, and allows
+// the .ts import extensions that `node --test` requires.
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "allowImportingTsExtensions": true
+  },
+  "include": ["**/*.test.ts", "**/*.test.mts"],
+  "exclude": ["node_modules"]
+}

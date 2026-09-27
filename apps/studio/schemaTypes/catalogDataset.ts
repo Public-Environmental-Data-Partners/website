@@ -78,7 +78,7 @@ export const catalogDataset = defineType({
       title: 'Org abbrev',
       type: 'string',
       group: 'identity',
-      description: 'Single pill on the expanded card. Hidden if empty.',
+      description: 'Single pill on the expanded card. Hidden if empty. Also used in search.',
     }),
     defineField({
       name: 'depositId',

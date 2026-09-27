@@ -19,32 +19,32 @@ Product rules: [`decisions/0011-data-catalog.md`](../decisions/0011-data-catalog
 
 ## Columns the script reads (stored in Sanity)
 
-| Col | CSV header | Sanity field | Notes |
-| --- | --- | --- | --- |
-| B | `Dataset/Tool Name` | `datasetTitle` | Used if `Dataset Title` is absent. Public title still prefers Archived Title. |
-| C | `Agency or Org Abbrev` | `orgAbbrev` | Alias for `Org Abbrev`. Pill on the card. |
-| D | `Agency` | `agency` | Shown on the card. Used for Agency sort and search. |
-| E | `Sub-Agency/Org` | `subAgency` | |
-| F | `Original Location (URL)` | `originalUrl` | First URL wins; `Original URL` (AB) is the fallback. |
-| M | `Backup Location (URL)` | `backupUrl` | Also derives `backupHost` and `backupIsFile`. Part of the import key if DOI is missing. |
-| O | `PEDP Metadata Doc` | `metadataDocUrl` | First URL in the cell. |
-| P | `Dataset Size` | `datasetSize` | Stored. Not shown or searched on the public catalog. |
-| Q | `Dataset Size_Units (MB,GB,TB, etc.)` | `datasetSizeUnits` | Stored. Not shown or searched on the public catalog. |
-| V | `Dataset/Tool Name Backup` | `datasetTitle` | Used only if B (and `Dataset Title`) are empty. |
-| X | `Archived Title` | `archivedTitle` | Preferred public title. |
-| Y | `Keywords` | `keywords` | |
-| Z | `CCH Terms` | `cchTerms` | Search only. |
-| AA | `Subject` | `subject` | Search only. |
-| AB | `Original URL` | `originalUrl` | Used if F has no URL. |
-| AC | `Date Downloaded` | `downloadDateRaw`, `downloadDate`, `downloadDateNeedsReview` | Alias `Capture / Download Date` is not in this file. |
-| AE | `Description` | `description` | Card body only when Summary is empty. |
-| AH | `Notes` | `archiveNotes` | |
-| AJ | `Deposit Digital Identifier` | `depositId`, `importKey` | Normalized DOI is the unique key. |
-| AM | `Time Period / Temporal Resolution` | `timePeriodRaw`, `timePeriodStart`, `timePeriodEnd`, `timePeriodNeedsReview` | |
+| Col | CSV header | Sanity field | Used In Search? | Notes |
+| --- | --- | --- | --- | --- |
+| B | `Dataset/Tool Name` | `datasetTitle` | Yes | Used if `Dataset Title` is absent. Public title still prefers Archived Title. |
+| C | `Agency or Org Abbrev` | `orgAbbrev` | Yes | Alias for `Org Abbrev`. Pill on the card. |
+| D | `Agency` | `agency` | Yes | Shown on the card. Used for Agency sort. |
+| E | `Sub-Agency/Org` | `subAgency` | Yes | |
+| F | `Original Location (URL)` | `originalUrl` | No | First URL wins; `Original URL` (AB) is the fallback. |
+| M | `Backup Location (URL)` | `backupUrl` | No | Also derives `backupHost` and `backupIsFile`. Part of the import key if DOI is missing. |
+| O | `PEDP Metadata Doc` | `metadataDocUrl` | No | First URL in the cell. |
+| P | `Dataset Size` | `datasetSize` | No | Stored. Not shown on the public catalog. |
+| Q | `Dataset Size_Units (MB,GB,TB, etc.)` | `datasetSizeUnits` | No | Stored. Not shown on the public catalog. |
+| V | `Dataset/Tool Name Backup` | `datasetTitle` | Yes | Used only if B (and `Dataset Title`) are empty. |
+| X | `Archived Title` | `archivedTitle` | Yes | Preferred public title. |
+| Y | `Keywords` | `keywords` | Yes | |
+| Z | `CCH Terms` | `cchTerms` | Yes | Search only. |
+| AA | `Subject` | `subject` | Yes | Search only. |
+| AB | `Original URL` | `originalUrl` | No | Used if F has no URL. |
+| AC | `Date Downloaded` | `downloadDateRaw`, `downloadDate`, `downloadDateNeedsReview` | No | Alias `Capture / Download Date` is not in this file. |
+| AE | `Description` | `description` | Yes | Card body only when Summary is empty. Searched in that same case. |
+| AH | `Notes` | `archiveNotes` | Yes | |
+| AJ | `Deposit Digital Identifier` | `depositId`, `importKey` | Yes | `depositId` is searched. Normalized DOI is the unique key. |
+| AM | `Time Period / Temporal Resolution` | `timePeriodRaw`, `timePeriodStart`, `timePeriodEnd`, `timePeriodNeedsReview` | Yes | Parsed dates shown on the card are searched. The raw imported string is not. |
 
 This file has no `Summary` column. `summary` stays empty unless editors fill it
-in Studio. `--overwrite` will not clear an existing Summary when the column is
-absent.
+in Studio, and that Studio text is included in search. `--overwrite` will not
+clear an existing Summary when the column is absent.
 
 This file has no `Capture / Download Date`, `Dataset Title`, or `Org Abbrev`
 headers. Those are script aliases for AC, B, and C.

@@ -49,7 +49,8 @@ lives in [`docs/ops/data-catalog-import.md`](../ops/data-catalog-import.md) and
 * Agency sort and search use the full Agency name shown on the card. Visible
   lines are Agency then Sub-Agency/Org.
 * Org Abbrev (CSV column today: Agency or Org Abbrev) drives a single pill.
-  Blank means no pill. Rename the CSV column to Org Abbrev when convenient.
+  Blank means no pill. The abbreviation is included in search. Rename the CSV
+  column to Org Abbrev when convenient.
 * Mentioned in is Studio-only (internal news/blog and/or external URLs). CSV
   does not include it.
 * Data Guide is an internal page to be designed later. Nominate Data is an
@@ -192,7 +193,7 @@ Chosen for v1:
 5. Client-side search, sort, and pagination on the published list payload.
    Search commits on button or Enter. Placeholder includes the published
    dataset count. Search fields follow the import index (name, archived title,
-   agencies, notes, keywords, description /
+   agencies, org abbrev, notes, keywords, description /
    summary, time period, CCH terms, subject, deposit identifier). Do not search
    URLs or download date. List payload omits full Description when a short
    Summary can be sent instead. Quoted spans (`"plant hardiness"` or `'plant'`)

@@ -131,8 +131,8 @@ Dates:
 ## Search and sort
 
 * Typing in the field does not filter until Search or Enter.
-* A token in title, agency, notes, keywords, summary or description, time
-  period, CCH terms, subject, or DOI finds the card.
+* A token in title, agency, org abbrev (the card pill), notes, keywords, summary
+  or description, time period, CCH terms, subject, or DOI finds the card.
 * `"plant"` or `'plant'` finds the same cards as `plant`. Quote marks do not
   have to appear in the dataset text.
 * `"plant hardiness"` matches that consecutive phrase. Unquoted `plant hardiness`
