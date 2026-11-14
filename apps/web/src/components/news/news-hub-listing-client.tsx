@@ -1,6 +1,6 @@
 'use client'
 
-import {useCallback, useState, useSyncExternalStore} from 'react'
+import {useState, useSyncExternalStore} from 'react'
 
 import {NewsHubCard, type NewsHubCardProps} from '@/components/news/news-hub-card'
 import {Button} from '@/components/ui/button'
@@ -69,7 +69,7 @@ export function NewsHubListingClient({
   const hasMore = displayCount < total
   const visiblePosts = posts.slice(0, displayCount)
 
-  const onLoadMore = useCallback(async () => {
+  async function onLoadMore() {
     if (loading || displayCount >= total) {
       return
     }
@@ -98,7 +98,7 @@ export function NewsHubListingClient({
     } finally {
       setLoading(false)
     }
-  }, [displayCount, extraCount, initialCount, loadMoreCount, loading, posts, total])
+  }
 
   return (
     <>
