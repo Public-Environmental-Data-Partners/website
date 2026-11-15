@@ -37,6 +37,20 @@ GitHub CLI (`gh`). git-cliff reads [`cliff.toml`](../../cliff.toml) and groups
 commits into Features, Bug Fixes, Dependencies, and the other conventional
 types. Dependency bumps stay in the notes.
 
+Each note is a heading for the commit type, then one bullet per commit. The
+bullet starts with the scope in italics, then the subject, then the short
+hash. Example:
+
+```markdown
+### Bug Fixes
+
+- *(web)* Patch Next.js to 16.4.6 (#224) ([2f000e3](https://github.com/Public-Environmental-Data-Partners/website/commit/2f000e3b558cb959be015877ebe1c4c0bf6642fe))
+
+### Dependencies
+
+- *(deps)* Bump the ui group across 1 directory with 4 updates (#223) ([a886536](https://github.com/Public-Environmental-Data-Partners/website/commit/a8865364e8b63cdf10c351d6855bfb214aba21e2))
+```
+
 ## Steps
 
 From the repo root, on the latest `main`:
@@ -75,12 +89,12 @@ gh release create "$next" --latest --title "${next#v}" --notes-file "/tmp/${next
 
 ## Commit messages
 
-Write conventional commits so the next notes group themselves:
+Write conventional commits with a scope so each note matches the example
+above. The scope is the word in parentheses. `!` after the type or scope marks
+a breaking change.
 
 - `feat(web): add a catalog clear control`
 - `fix(web): correct the sitemap origin`
 - `chore(deps): bump the ui group`
+- `docs(ops): describe how to cut a GitHub release`
 - `feat(web)!: remove the legacy catalog route`
-
-The scope in parentheses is optional. `!` after the type or scope marks a
-breaking change.

@@ -1,8 +1,10 @@
 # Release notes for `git cliff <previous>..<current> --tag vX.Y.Z`.
 # https://git-cliff.org/docs/configuration
 #
-# Groups conventional commits by type. Dependency bumps stay in the notes
-# because a patch release can be made of those commits alone.
+# Groups conventional commits by type. Each commit needs a scope, such as
+# feat(web) or chore(deps), so every note starts with *(scope)*.
+# Dependency bumps stay in the notes because a patch release can be made of
+# those commits alone.
 
 [changelog]
 body = """
