@@ -120,3 +120,6 @@ Document the editor-facing publish/refresh workflow after that choice.
 
 Last lane 2 review: 2026-09-04. Stay put on Node, pnpm, Next.js, React, and
 Sanity (soft-launch and domain cutover). Next check: mid-October 2026.
+
+After a check-in, record what shipped with a GitHub release. Procedure:
+[`docs/ops/releases.md`](../ops/releases.md).

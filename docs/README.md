@@ -34,6 +34,7 @@ Numbered ADRs in [`decisions/`](./decisions/). Recent and open notes:
 
 ## Operations
 
+- [`ops/releases.md`](./ops/releases.md) — when to tag a GitHub release and how to write the notes
 - [`ops/newsletter-signup.md`](./ops/newsletter-signup.md)
 - [`ops/data-catalog-import.md`](./ops/data-catalog-import.md) — CSV import for catalog datasets
 - [`ops/data-catalog-csv-fields.md`](./ops/data-catalog-csv-fields.md) — catalog CSV headers vs import and Sanity; copy this file for future imports
