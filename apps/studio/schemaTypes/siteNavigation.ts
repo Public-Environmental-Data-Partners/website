@@ -74,7 +74,7 @@ export const siteNavGroup = defineType({
       title: 'Nav group label',
       type: 'string',
       description:
-        'Text shown in the primary navigation: the desktop dropdown label and the section heading above links in the mobile menu.',
+        'Text shown in the primary navigation: the desktop dropdown label and the mobile menu row that expands the links in this group.',
       validation: (Rule) => Rule.required().max(80),
     }),
     defineField({

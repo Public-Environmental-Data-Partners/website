@@ -1,6 +1,6 @@
 'use client'
 
-import {Menu} from 'lucide-react'
+import {ChevronDown, Menu} from 'lucide-react'
 import Link from 'next/link'
 import {usePathname} from 'next/navigation'
 import {useState} from 'react'
@@ -15,7 +15,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import {donateNav, type MainNavEntry} from '@/config/nav'
+import {donateNav, type MainNavEntry, type NavGroup} from '@/config/nav'
 import {isActiveNavPath} from '@/lib/nav-active'
 import {cn} from '@/lib/utils'
 
@@ -64,12 +64,85 @@ function MobileDonateLink({onNavigate}: {onNavigate: () => void}) {
   )
 }
 
+function MobileNavGroup({
+  entry,
+  pathname,
+  expanded,
+  onToggle,
+  onNavigate,
+}: {
+  entry: NavGroup
+  pathname: string
+  expanded: boolean
+  onToggle: () => void
+  onNavigate: () => void
+}) {
+  const groupHasActive = entry.items.some((item) => isActiveNavPath(pathname, item.href))
+  const listId = `mobile-nav-${entry.id}`
+
+  return (
+    <div className="flex flex-col gap-2">
+      <button
+        type="button"
+        className={cn(
+          navRowTextClass,
+          'focus-visible:ring-ring flex w-full items-center justify-between gap-3 text-left transition-colors hover:bg-muted hover:text-foreground/90 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-light-beige focus-visible:outline-none',
+          groupHasActive && 'underline decoration-foreground/40 underline-offset-4',
+        )}
+        aria-expanded={expanded}
+        aria-controls={listId}
+        onClick={onToggle}
+      >
+        <span>{entry.label}</span>
+        <ChevronDown
+          aria-hidden
+          className={cn('size-4 shrink-0 opacity-90', expanded && 'rotate-180')}
+        />
+      </button>
+      <ul id={listId} className={cn('flex flex-col gap-0.5', !expanded && 'hidden')}>
+        {entry.items.map((item) => {
+          const active = isActiveNavPath(pathname, item.href)
+          return (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                className={cn(
+                  subLinkInactive,
+                  active && 'bg-muted/80 text-foreground font-semibold',
+                )}
+                aria-current={active ? 'page' : undefined}
+                onClick={onNavigate}
+              >
+                {item.label}
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
+    </div>
+  )
+}
+
 function MobilePrimaryNavSheetInner({mainNav}: {mainNav: MainNavEntry[]}) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [expandedId, setExpandedId] = useState<string | null>(null)
+
+  function closeSheet() {
+    setOpen(false)
+    setExpandedId(null)
+  }
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next)
+        if (!next) {
+          setExpandedId(null)
+        }
+      }}
+    >
       <SheetTrigger asChild>
         <Button
           type="button"
@@ -92,49 +165,28 @@ function MobilePrimaryNavSheetInner({mainNav}: {mainNav: MainNavEntry[]}) {
         <nav aria-label="Primary navigation" className="flex flex-1 flex-col gap-5">
           {mainNav.map((entry, index) =>
             entry.kind === 'group' ? (
-              <div key={entry.id} className="flex flex-col gap-2">
-                <p
-                  className={cn(
-                    navRowTextClass,
-                    entry.items.some((item) => isActiveNavPath(pathname, item.href)) &&
-                      'font-semibold underline decoration-foreground/40 underline-offset-4',
-                  )}
-                >
-                  {entry.label}
-                </p>
-                <ul className="flex flex-col gap-0.5">
-                  {entry.items.map((item) => {
-                    const active = isActiveNavPath(pathname, item.href)
-                    return (
-                      <li key={item.href}>
-                        <Link
-                          href={item.href}
-                          className={cn(
-                            subLinkInactive,
-                            active && 'bg-muted/80 text-foreground font-semibold',
-                          )}
-                          aria-current={active ? 'page' : undefined}
-                          onClick={() => setOpen(false)}
-                        >
-                          {item.label}
-                        </Link>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
+              <MobileNavGroup
+                key={entry.id}
+                entry={entry}
+                pathname={pathname}
+                expanded={expandedId === entry.id}
+                onToggle={() =>
+                  setExpandedId((current) => (current === entry.id ? null : entry.id))
+                }
+                onNavigate={closeSheet}
+              />
             ) : (
               <TopLevelSheetLink
                 key={`sheet-link-${index}-${entry.href}`}
                 href={entry.href}
                 label={entry.label}
                 pathname={pathname}
-                onNavigate={() => setOpen(false)}
+                onNavigate={closeSheet}
               />
             ),
           )}
           <div className="border-border mt-auto border-t pt-4">
-            <MobileDonateLink onNavigate={() => setOpen(false)} />
+            <MobileDonateLink onNavigate={closeSheet} />
           </div>
         </nav>
       </SheetContent>
