@@ -27,8 +27,7 @@ pager does not appear. That is expected.
 * At least a few `catalogDataset` documents are published.
 * At least one imported dataset is left as a draft (must not appear on the
   public page).
-* Public site: `/data-catalog`. Draft preview URL as in the content editors
-  guide.
+* Public site: `/data-catalog`.
 
 ## Import
 
@@ -98,7 +97,6 @@ Studio-only (not in the CSV). Import must not add, overwrite, or clear it.
 ## Draft vs published
 
 * Unpublished dataset is absent from the public catalog.
-* Draft preview shows that unpublished card.
 * After Publish, a refresh shows it on the public page.
 
 ## Cards

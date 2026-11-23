@@ -1,4 +1,3 @@
-import {draftMode} from 'next/headers'
 import {cache} from 'react'
 
 import {sanityFetch} from '@/sanity/live'
@@ -75,12 +74,11 @@ const NEWS_HUB_QUERY = `*[_type == "newsHubPage" && _id == "page.newsHub"][0]{
   }
 }`
 
-/** Per-request memoization for page + generateMetadata. */
+/** Shared by the page and generateMetadata during one render. */
 export const getNewsHubPage = cache(async function getNewsHubPage(): Promise<NewsHubPageData> {
-  const {isEnabled: isDraftMode} = await draftMode()
   const {data} = await sanityFetch({
     query: NEWS_HUB_QUERY,
-    perspective: isDraftMode ? 'drafts' : 'published',
+    perspective: 'published',
   })
   return data as NewsHubPageData
 })

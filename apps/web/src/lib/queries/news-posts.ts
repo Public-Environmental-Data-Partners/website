@@ -1,4 +1,3 @@
-import {draftMode} from 'next/headers'
 import {cache} from 'react'
 
 import type {NewsPostListItem} from '@/lib/mappers/news-post'
@@ -48,7 +47,6 @@ export const getNewsPostsSlice = cache(async function getNewsPostsSlice(
   offset = 0,
   limit = 9,
 ): Promise<NewsPostsSliceResult> {
-  const {isEnabled: isDraftMode} = await draftMode()
   const safeOffset = clampNonNegativeInt(offset, 0)
   const safeLimit = clampPositiveInt(limit, 9)
   const start = safeOffset
@@ -57,7 +55,7 @@ export const getNewsPostsSlice = cache(async function getNewsPostsSlice(
   const {data} = await sanityFetch({
     query: NEWS_POSTS_SLICE_QUERY,
     params: {start, end},
-    perspective: isDraftMode ? 'drafts' : 'published',
+    perspective: 'published',
   })
 
   const result = data as {posts?: NewsPostListItem[]; total?: number} | null

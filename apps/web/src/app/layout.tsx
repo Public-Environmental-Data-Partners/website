@@ -14,7 +14,6 @@ import './pedp-token-overrides.css'
 import type {Metadata} from 'next'
 import {Figtree, Geist_Mono, Source_Serif_4} from 'next/font/google'
 
-import {DraftPreviewBanner} from '@/components/draft-preview-banner'
 import {PostHogInit} from '@/components/posthog-init'
 import {ReturnToTopStrip} from '@/components/return-to-top-strip'
 import {SanityLiveRoot} from '@/components/sanity-live-root'
@@ -100,7 +99,6 @@ export default async function RootLayout({
         <SiteJsonLd />
         <SiteEventBanner placement="aboveHeader" />
         <SiteHeader />
-        <DraftPreviewBanner />
         <SiteEventBanner placement="belowHeader" />
         <main className="bg-white flex flex-1 flex-col">{children}</main>
         <ReturnToTopStrip />

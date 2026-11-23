@@ -6,8 +6,6 @@ import {buildPageMetadata, resolveSeoDescription, resolveSeoTitle} from '@/lib/m
 import {getNewsHubPage, resolveNewsHubLoadConfig} from '@/lib/queries/news-hub-page'
 import {getNewsPostsSlice} from '@/lib/queries/news-posts'
 
-export const dynamic = 'force-dynamic'
-
 const DEFAULT_TITLE = 'News & Updates'
 const NEWS_HUB_PATH = '/news-and-updates'
 

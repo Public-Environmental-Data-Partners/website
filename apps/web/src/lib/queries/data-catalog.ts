@@ -1,5 +1,4 @@
 import type {PortableTextBlock} from '@portabletext/react'
-import {draftMode} from 'next/headers'
 import {cache} from 'react'
 
 import {CONTENT_LINK_GROQ, type ContentLinkGroq, PT_BLOCKS_GROQ} from '@/lib/content-link'
@@ -101,10 +100,9 @@ const DATASETS_QUERY = `*[_type == "catalogDataset"] | order(coalesce(archivedTi
 
 export const getDataCatalogPage = cache(
   async function getDataCatalogPage(): Promise<DataCatalogPageData> {
-    const {isEnabled: isDraftMode} = await draftMode()
     const {data} = await sanityFetch({
       query: PAGE_QUERY,
-      perspective: isDraftMode ? 'drafts' : 'published',
+      perspective: 'published',
     })
     return data as DataCatalogPageData
   },
@@ -113,10 +111,9 @@ export const getDataCatalogPage = cache(
 export const getCatalogDatasets = cache(async function getCatalogDatasets(): Promise<
   CatalogDatasetFields[]
 > {
-  const {isEnabled: isDraftMode} = await draftMode()
   const {data} = await sanityFetch({
     query: DATASETS_QUERY,
-    perspective: isDraftMode ? 'drafts' : 'published',
+    perspective: 'published',
   })
   return (data as CatalogDatasetFields[] | null) ?? []
 })

@@ -1,4 +1,3 @@
-import {draftMode} from 'next/headers'
 import {cache} from 'react'
 
 import {type MainNavEntry, type NavLeaf} from '@/config/nav'
@@ -119,10 +118,9 @@ function mapSiteNavigationData(data: SiteNavigationGroq | null): MainNavEntry[] 
 }
 
 async function loadMainNav(): Promise<MainNavEntry[]> {
-  const {isEnabled: isDraftMode} = await draftMode()
   const {data} = await sanityFetch({
     query: NAV_QUERY,
-    perspective: isDraftMode ? 'drafts' : 'published',
+    perspective: 'published',
   })
 
   return mapSiteNavigationData(data as SiteNavigationGroq | null)

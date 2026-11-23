@@ -42,10 +42,15 @@ export function isWithinEventWindow(startsAt: string, endsAt: string, now: Date)
   return t >= start && t <= end
 }
 
-export function mapSiteEventBannerToProps(
+export type SiteEventBannerSchedule = SiteEventBannerProps & {
+  startsAt: string
+  endsAt: string
+}
+
+/** Valid banner copy and window bounds. Does not apply the current time. */
+export function mapSiteEventBannerSchedule(
   data: SiteEventBannerFields | null | undefined,
-  now: Date,
-): SiteEventBannerProps | null {
+): SiteEventBannerSchedule | null {
   if (!data) {
     return null
   }
@@ -59,7 +64,10 @@ export function mapSiteEventBannerToProps(
   if (!isSiteEventBannerPlacement(data.placement)) {
     return null
   }
-  if (!isWithinEventWindow(startsAt, endsAt, now)) {
+  if (Number.isNaN(Date.parse(startsAt)) || Number.isNaN(Date.parse(endsAt))) {
+    return null
+  }
+  if (Date.parse(endsAt) <= Date.parse(startsAt)) {
     return null
   }
 
@@ -71,6 +79,8 @@ export function mapSiteEventBannerToProps(
     sectionHeading,
     heading,
     placement: data.placement,
+    startsAt,
+    endsAt,
     ...(ctaHref && ctaLabel ? {ctaLabel, ctaHref, ctaExternal: resolved?.external === true} : {}),
   }
 }

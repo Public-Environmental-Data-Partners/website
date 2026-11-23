@@ -1,6 +1,5 @@
 import type {PortableTextBlock} from '@portabletext/react'
 import type {Metadata} from 'next'
-import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
 import {cache} from 'react'
 
@@ -378,23 +377,21 @@ export type SitePageData = {
 }
 
 /**
- * Per-request memoization: `generateMetadata` and `SitePageRoute` share one Sanity fetch
- * (and one `draftMode()` read) for the same `slugSegment`.
+ * Shared by `generateMetadata` and `SitePageRoute` for the same `slugSegment`.
  */
 export const fetchSitePage = cache(async function fetchSitePage(
   slugSegment: string,
-): Promise<{data: SitePageData | null; isDraftMode: boolean}> {
-  const {isEnabled: isDraftMode} = await draftMode()
+): Promise<SitePageData | null> {
   const {data} = await sanityFetch({
     query: SITE_PAGE_QUERY,
-    perspective: isDraftMode ? 'drafts' : 'published',
+    perspective: 'published',
     params: {slug: slugSegment},
   })
-  return {data: data as SitePageData | null, isDraftMode}
+  return data as SitePageData | null
 })
 
 export async function sitePageMetadata(slugSegment: string): Promise<Metadata> {
-  const {data} = await fetchSitePage(slugSegment)
+  const data = await fetchSitePage(slugSegment)
 
   const pageTitle = data?.title?.trim()
   if (!data || !pageTitle) {
@@ -723,7 +720,7 @@ function LegalDocumentHeader({title, lastUpdated}: {title: string; lastUpdated?:
 }
 
 export async function SitePageRoute({slugSegment}: {slugSegment: string}) {
-  const {data} = await fetchSitePage(slugSegment)
+  const data = await fetchSitePage(slugSegment)
 
   if (!data) {
     notFound()
