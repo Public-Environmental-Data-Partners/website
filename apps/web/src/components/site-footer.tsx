@@ -68,6 +68,7 @@ export async function SiteFooter() {
   const cmsFooter = await getSiteFooter()
   const column1Items = cmsFooter?.column1Items ?? []
   const column2Items = cmsFooter?.column2Items ?? []
+  const socialLinks = cmsFooter?.socialLinks ?? []
 
   return (
     <footer data-site-footer className="bg-footer text-footer-foreground mt-auto w-full shrink-0">
@@ -86,7 +87,7 @@ export async function SiteFooter() {
           >
             <FooterBrandMark size="compact" />
           </Link>
-          <FooterSocialLinks />
+          <FooterSocialLinks links={socialLinks} />
           <FooterCopyright className="max-w-[317px] font-sans text-base font-normal leading-none text-footer-foreground" />
         </div>
 
@@ -109,7 +110,7 @@ export async function SiteFooter() {
                 </span>
               </span>
             </Link>
-            <FooterSocialLinks />
+            <FooterSocialLinks links={socialLinks} />
             <FooterCopyright />
           </div>
 
