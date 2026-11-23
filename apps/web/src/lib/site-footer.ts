@@ -1,6 +1,13 @@
 import {draftMode} from 'next/headers'
 import {cache} from 'react'
 
+import {CONTENT_LINK_GROQ} from '@/lib/content-link'
+import {
+  type FooterSocialLink,
+  type FooterSocialLinkFields,
+  mapFooterSocialLinks,
+} from '@/lib/mappers/footer-social-links'
+import {SANITY_IMAGE_PROJECTION} from '@/lib/queries/sanity-image-projection'
 import {sanityFetch} from '@/sanity/live'
 
 export type FooterLinkItem = {
@@ -20,6 +27,8 @@ export type FooterItem = FooterLinkItem | FooterGroupItem
 export type SiteFooterData = {
   column1Items: FooterItem[]
   column2Items: FooterItem[]
+  /** Social icons from Studio. Empty when none are saved. */
+  socialLinks: FooterSocialLink[]
 }
 
 const FOOTER_QUERY = `*[_type == "siteFooter" && _id == "siteFooter"][0]{
@@ -58,6 +67,12 @@ const FOOTER_QUERY = `*[_type == "siteFooter" && _id == "siteFooter"][0]{
         slug
       }
     }
+  },
+  socialLinks[]{
+    _key,
+    label,
+    icon${SANITY_IMAGE_PROJECTION},
+    link${CONTENT_LINK_GROQ}
   }
 }`
 
@@ -85,6 +100,7 @@ type FooterItemDoc = NavLinkDoc | SitePageDoc | NavGroupDoc
 type SiteFooterGroq = {
   column1Items?: (FooterItemDoc | null)[] | null
   column2Items?: (FooterItemDoc | null)[] | null
+  socialLinks?: FooterSocialLinkFields[] | null
 }
 
 function normalizePath(path: string | null | undefined): string | null {
@@ -171,6 +187,7 @@ function mapFooterData(data: SiteFooterGroq | null): SiteFooterData | null {
   return {
     column1Items: mapColumn(data.column1Items),
     column2Items: mapColumn(data.column2Items),
+    socialLinks: mapFooterSocialLinks(data.socialLinks),
   }
 }
 
