@@ -1,6 +1,6 @@
 # For content editors
 
-Reference for **Sanity Studio**, the **production website**, and **draft preview**. Technical setup lives in the main [README](../README.md) and [`apps/web`](../apps/web/README.md).
+Reference for Sanity Studio and the production website. Technical setup lives in the main [README](../README.md) and [`apps/web`](../apps/web/README.md).
 
 ## Where to edit content
 
@@ -14,25 +14,7 @@ In the Studio, unpublished work stays as **drafts** until you **Publish**.
 
 ## The production website
 
-**Published** content is what most visitors see on the **production** site. This can be seen at [https://www.publicenvirodata.org/](https://www.publicenvirodata.org/).
-
-## Draft preview (before you publish)
-
-Sometimes you want to see **unpublished** (or draft) changes on the **production** site before clicking **Publish** in Studio.
-
-In order to view **unpublished** changes on the **production** site, navigate here:
-
-https://www.publicenvirodata.org/api/draft?secret=<SANITY_PREVIEW_SECRET>
-
-Ask the dev team for the SANITY_PREVIEW_SECRET and then bookmark that URL.
-
-After you open this URL, you may see an **amber bar** at the top. That means you are viewing **draft** content. Draft content and unpublished content is used interchangably.
-
-Use **Exit preview** when you are done.
-
-Do **not** post preview links or secrets in public channels.
-
-Questions about access or broken preview: **[dev@publicenvirodata.org](mailto:dev@publicenvirodata.org)**.
+Published content is what visitors see on the production site: [https://www.publicenvirodata.org/](https://www.publicenvirodata.org/). The site does not show unpublished drafts. Publish in Studio, then refresh the page.
 
 ## SEO (search & sharing)
 
@@ -108,7 +90,7 @@ News and Updates posts can include a video with an Embed block in the article bo
    - `https://www.youtube.com/shorts/...`
    - `https://www.youtube.com/live/...`
 4. Optionally add a caption below the embed.
-5. Publish the post (or use draft preview to check first).
+5. Publish the post.
 
 YouTube is the only video source supported in posts right now. Unsupported URLs will not show on the website.
 
@@ -129,7 +111,7 @@ How-to for the CSV import script is for engineering:
 - **Data Catalog page** (one document): hero title, intro, Data Guide CTA, Nominate Data CTA, SEO. Publish this or the route has no chrome.
 - Catalog dataset (one document per archived dataset): card title, agencies, dates, Summary, imported Description, links, Mentioned in.
 
-Spreadsheet import creates dataset documents as drafts. You can also create a Catalog dataset in Studio: Data Catalog, Datasets, then Create. New documents (imported or created in Studio) do not appear on the public catalog until you Publish. You can use [draft preview](#draft-preview-before-you-publish) to check unpublished cards.
+Spreadsheet import creates dataset documents as drafts. You can also create a Catalog dataset in Studio: Data Catalog, Datasets, then Create. New documents (imported or created in Studio) do not appear on the public catalog until you Publish.
 
 Required to publish a dataset you add by hand: archived title or dataset title, agency, and backup location URL. Deposit identifier (DOI) is optional but preferred when the dataset has one. Import key, backup host, and the file/page flag fill in from the DOI or backup URL. You do not type Import key.
 

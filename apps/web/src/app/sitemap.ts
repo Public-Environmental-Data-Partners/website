@@ -3,9 +3,6 @@ import type {MetadataRoute} from 'next'
 import {siteUrl} from '@/config/site'
 import {sanityFetch} from '@/sanity/live'
 
-/** Do not statically cache; retired CMS slugs must drop out of the sitemap. */
-export const dynamic = 'force-dynamic'
-
 type SitePageSlugRow = {
   slug?: string | null
   _updatedAt?: string | null

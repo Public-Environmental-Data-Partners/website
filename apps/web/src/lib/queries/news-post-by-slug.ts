@@ -1,4 +1,3 @@
-import {draftMode} from 'next/headers'
 import {cache} from 'react'
 
 import {PT_BLOCKS_GROQ, PT_MARK_DEFS_GROQ} from '@/lib/content-link'
@@ -88,11 +87,10 @@ export const getNewsPostBySlug = cache(async function getNewsPostBySlug(
     return null
   }
 
-  const {isEnabled: isDraftMode} = await draftMode()
   const {data} = await sanityFetch({
     query: NEWS_POST_BY_SLUG_QUERY,
     params: {slug: trimmed},
-    perspective: isDraftMode ? 'drafts' : 'published',
+    perspective: 'published',
   })
 
   return (data as NewsPostDetail | null) ?? null

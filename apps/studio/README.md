@@ -18,7 +18,7 @@ After schema changes, run **`pnpm run deploy`** from this directory to update th
 
 ## For editors
 
-Start here: **[`docs/content-managers.md`](../../docs/content-managers.md)** — hosted Studio, the live site, and how draft preview works in plain language.
+Start here: [`docs/content-managers.md`](../../docs/content-managers.md). It covers the hosted Studio and the live site. The public site shows published documents.
 
 ## Scripts
 

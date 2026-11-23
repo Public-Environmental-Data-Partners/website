@@ -36,25 +36,16 @@ Although it is recommended to run all apps from root, if you must run it from th
 
 To view this app in production go to [https://www.publicenvirodata.org/](https://www.publicenvirodata.org/). [https://pedp-website.vercel.app/](https://pedp-website.vercel.app/) still works as an alias.
 
-## Draft mode (Sanity preview)
+The site renders published Sanity content and caches those pages. Sanity Live refreshes a page after its published content changes. Unpublished drafts stay in Studio until you publish.
 
-**What it is:** The site uses [Next.js Draft Mode](https://nextjs.org/docs/app/building-your-application/configuring/draft-mode). When draft mode is **on** for your browser session, the app requests Sanity with the `drafts` perspective so you can see **unpublished** changes. When it is **off**, only **published** content is shown. Draft mode is toggled with a cookie; it is not the same as logging into Studio.
+`pnpm dev` renders every request and does not show that cache. To check it locally, build and start the production server:
 
-**Enable it locally by** opening the following URL (use the real value of `SANITY_PREVIEW_SECRET` from your env):
-
-```text
-http://localhost:3000/api/draft?secret=<SANITY_PREVIEW_SECRET>
+```bash
+pnpm --filter web build
+pnpm --filter web start
 ```
 
-Optional: `&slug=/` or another path — where to redirect after enabling (defaults to `/`).
-
-**Enable it on production by** opening the following URL
-
-```text
-https://www.publicenvirodata.org/api/draft?secret=<SANITY_PREVIEW_SECRET>
-```
-
-**Disable:** visit `/api/disable-draft`, or use **Exit preview** in the amber bar at the top of the site when draft mode is active.
+The build route table should list public pages as static. Repeat loads of a page are served from that cache.
 
 ## Learn more
 

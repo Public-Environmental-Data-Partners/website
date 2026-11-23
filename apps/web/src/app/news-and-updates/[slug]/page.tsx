@@ -15,11 +15,32 @@ import {
   resolveNewsPostSeoContent,
 } from '@/lib/metadata/news-post'
 import {getNewsPostBySlug} from '@/lib/queries/news-post-by-slug'
+import {sanityFetch} from '@/sanity/live'
 
-export const dynamic = 'force-dynamic'
+/**
+ * A dynamic segment stays server-rendered unless `generateStaticParams` returns
+ * an array. `force-static` caches posts that are published after the build.
+ */
+export const dynamic = 'force-static'
+
+const NEWS_POST_SLUGS_QUERY = `*[_type == "newsPost" && postType != "news" && defined(slug.current) && defined(publishedAt) && !(_id in path("drafts.**"))]{
+  "slug": slug.current
+}`
 
 type NewsPostPageProps = {
   params: Promise<{slug: string}>
+}
+
+export async function generateStaticParams(): Promise<{slug: string}[]> {
+  const {data} = await sanityFetch({
+    query: NEWS_POST_SLUGS_QUERY,
+    perspective: 'published',
+  })
+  const rows = (data ?? []) as {slug?: string | null}[]
+  return rows.flatMap((row) => {
+    const slug = row.slug?.trim()
+    return slug ? [{slug}] : []
+  })
 }
 
 export async function generateMetadata({params}: NewsPostPageProps): Promise<Metadata> {

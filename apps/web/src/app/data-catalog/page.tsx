@@ -5,8 +5,6 @@ import {mapCatalogCta, mapCatalogDataset} from '@/lib/mappers/catalog-dataset'
 import {buildPageMetadata, resolveSeoDescription, resolveSeoTitle} from '@/lib/metadata/page-seo'
 import {getCatalogDatasets, getDataCatalogPage} from '@/lib/queries/data-catalog'
 
-export const dynamic = 'force-dynamic'
-
 const DEFAULT_TITLE = 'Data Catalog'
 const PATH = '/data-catalog'
 

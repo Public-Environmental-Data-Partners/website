@@ -11,13 +11,13 @@ Monorepo for the PEDP public website: a [Next.js](https://nextjs.org/) app (`app
 
 ## Content Managers
 
-Non-technical overview (Studio, live site, draft preview): [`docs/content-managers.md`](docs/content-managers.md).
+Non-technical overview (Studio and the live site): [`docs/content-managers.md`](docs/content-managers.md).
 
 ## Local development (developers)
 
 - **Install:** from the repo root (`website/`), run `pnpm install`.
 - **Run:** `pnpm dev` — Next.js at [http://localhost:3000](http://localhost:3000), Studio at [http://localhost:3333](http://localhost:3333). Configure env files first; see [Quick start](#quick-start) below.
-- **Draft preview** on your machine: [Draft mode (Sanity preview)](apps/web/README.md#draft-mode-sanity-preview) in the web app README.
+- **Cached pages:** `pnpm dev` does not cache. See [Running the app](apps/web/README.md#running-the-app) for a local production build.
 
 ## Prerequisites
 
@@ -57,9 +57,9 @@ Non-technical overview (Studio, live site, draft preview): [`docs/content-manage
    pnpm build
    ```
 
-## Sanity and draft preview
+## Published content
 
-The Next app can show **unpublished** Sanity content in the browser using [Next.js Draft Mode](https://nextjs.org/docs/app/building-your-application/configuring/draft-mode) and a secret-gated route. For developers: notes are in the web app README — [Draft mode (Sanity preview)](apps/web/README.md#draft-mode-sanity-preview).
+The public site shows published Sanity documents. Editors publish in Studio. The Next app caches those pages and refreshes them when published content changes. Notes for developers are in the [web app README](apps/web/README.md#running-the-app).
 
 ## Linting and formatting
 

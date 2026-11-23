@@ -1,4 +1,3 @@
-import {draftMode} from 'next/headers'
 import {cache} from 'react'
 
 import {sanityFetch} from '@/sanity/live'
@@ -175,10 +174,9 @@ function mapFooterData(data: SiteFooterGroq | null): SiteFooterData | null {
 }
 
 async function loadSiteFooter(): Promise<SiteFooterData | null> {
-  const {isEnabled: isDraftMode} = await draftMode()
   const {data} = await sanityFetch({
     query: FOOTER_QUERY,
-    perspective: isDraftMode ? 'drafts' : 'published',
+    perspective: 'published',
   })
   return mapFooterData(data as SiteFooterGroq | null)
 }
