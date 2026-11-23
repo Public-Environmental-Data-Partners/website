@@ -5,10 +5,7 @@ import {useSyncExternalStore} from 'react'
 import {ContentLink} from '@/components/content-link'
 import {SiteShell} from '@/components/layout'
 import {Button} from '@/components/ui/button'
-import {
-  isWithinEventWindow,
-  type SiteEventBannerSchedule,
-} from '@/lib/mappers/site-event-banner'
+import {isWithinEventWindow, type SiteEventBannerSchedule} from '@/lib/mappers/site-event-banner'
 
 function EventBannerCta({
   label,
