@@ -1,6 +1,7 @@
 'use client'
 
 import {Menu} from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import {usePathname} from 'next/navigation'
 import {useState} from 'react'
@@ -16,6 +17,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import {donateNav, type MainNavEntry} from '@/config/nav'
+import {siteName} from '@/config/site'
 import {isActiveNavPath} from '@/lib/nav-active'
 import {cn} from '@/lib/utils'
 
@@ -53,6 +55,25 @@ function TopLevelSheetLink({
   )
 }
 
+function MobileHomeLogo({onNavigate}: {onNavigate: () => void}) {
+  return (
+    <Link
+      href="/"
+      aria-label={siteName}
+      onClick={onNavigate}
+      className="text-foreground focus-visible:ring-ring shrink-0 rounded-sm no-underline transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-light-beige focus-visible:outline-none"
+    >
+      <Image
+        src="/brand/icon.webp"
+        alt=""
+        width={56}
+        height={46}
+        className="h-[46px] w-[56px] shrink-0"
+      />
+    </Link>
+  )
+}
+
 function MobileDonateLink({onNavigate}: {onNavigate: () => void}) {
   return (
     <DonateLink
@@ -86,7 +107,10 @@ function MobilePrimaryNavSheetInner({mainNav}: {mainNav: MainNavEntry[]}) {
         className="bg-light-beige flex w-full max-w-sm flex-col gap-6 overflow-y-auto p-6 [&_[data-slot=sheet-close-button]]:ring-offset-light-beige"
       >
         <SheetHeader>
-          <SheetTitle>Menu</SheetTitle>
+          <div className="flex items-center gap-3">
+            <MobileHomeLogo onNavigate={() => setOpen(false)} />
+            <SheetTitle>Menu</SheetTitle>
+          </div>
           <SheetDescription className="sr-only">Primary navigation for the site.</SheetDescription>
         </SheetHeader>
         <nav aria-label="Primary navigation" className="flex flex-1 flex-col gap-5">
